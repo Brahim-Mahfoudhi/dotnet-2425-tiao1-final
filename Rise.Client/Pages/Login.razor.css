@@ -1,0 +1,32 @@
+.login-card{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    
+}
+
+.login-title{
+    margin: 0;
+}
+
+.login-input{
+    margin: 10px;
+    padding-left: 10px;
+    border-radius: 20px;
+}
+
+.login-buttons{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: row;
+    margin: 10px;
+    gap: 30px;
+}
+
+.login-btn{
+    padding: 1px 10px;
+    border-radius: 20px;
+}
+

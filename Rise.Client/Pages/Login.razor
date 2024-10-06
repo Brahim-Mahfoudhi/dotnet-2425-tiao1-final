@@ -1,0 +1,38 @@
+@page "/login"
+@inject HttpClient HttpClient
+@inject NavigationManager NavigationManager
+
+<div class="login-card">
+
+    <p class="login-title">Login</p>
+
+    <input class="login-input" type="email" @bind="email" placeholder="Email" />
+
+    <input class="login-input" type="password" @bind="password" placeholder="Password" />
+
+    <span>No account yet? <a class="login-link" href="/">Register</a></span>
+
+    <div class="login-buttons">
+        <button class="login-btn btn-primary" type="button" @onclick="Submit">Login</button>
+        <button class="login-btn btn-secondary" type="button" @onclick="Cancel">Cancel</button>
+    </div>
+
+</div>
+
+
+@code {
+    private string? email;
+    private string? password;
+    private bool isSubmitted = false;
+
+    private void Submit()
+    {
+        isSubmitted = true;
+        NavigationManager.NavigateTo("/");
+    }
+
+    private void Cancel()
+    {
+        NavigationManager.NavigateTo("/");
+    }
+}
