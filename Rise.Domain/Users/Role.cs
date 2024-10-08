@@ -2,11 +2,11 @@ namespace Rise.Domain.Users;
 
 public class Role : Entity
 {
-    private RolesEnum name = RolesEnum.User;
+    private RolesEnum _name = RolesEnum.User;
 
-    public required RolesEnum Name
+    public RolesEnum Name
     {
-        get => name;
-        set => name = Guard.Against.Null(value);
+        get => _name;
+        set => _name = Guard.Against.EnumOutOfRange(value);
     }
 }
