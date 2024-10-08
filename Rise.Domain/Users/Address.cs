@@ -11,6 +11,13 @@ public class Address : Entity
         Street = street;
         HouseNumber = houseNumber;
     }
+
+    public Address(string street, int houseNumber, string bus)
+    {
+        Street = street;
+        HouseNumber = houseNumber;
+        Bus = bus;
+    }
     
     public string Street
     {
