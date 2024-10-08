@@ -2,16 +2,32 @@ namespace Rise.Domain.Users;
 
 public class Address : Entity
 {
+    private StreetEnum _street = default!;
+    private int _houseNumber = default!;
+    private string? _bus = default!;
 
-    private StreetEnum street = default!;
-    private int houseNumber = default!;
-    private string? bus = default!;
-    public required string Street
+    public Address(string street, int houseNumber)
     {
-        get => street.GetStreetName();
-        set => street = StreetEnumExtensions.GetStreetEnum(value);
+        Street = street;
+        HouseNumber = houseNumber;
     }
-    public required int HouseNumber { get => houseNumber; set => houseNumber = Guard.Against.NegativeOrZero(value); }
-    public string? Bus { get => bus; set => bus = value; }
+    
+    public string Street
+    {
+        get => _street.GetStreetName();
+        set => _street = Guard.Against.Null(StreetEnumExtensions.GetStreetEnum(value));
+    }
+
+    public int HouseNumber
+    {
+        get => _houseNumber; 
+        set => _houseNumber = Guard.Against.NegativeOrZero(value);
+    }
+
+    public string? Bus
+    {
+        get => _bus; 
+        set => _bus = value;
+    }
 }
 

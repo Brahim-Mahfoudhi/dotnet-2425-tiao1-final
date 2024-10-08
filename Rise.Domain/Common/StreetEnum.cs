@@ -1,8 +1,8 @@
-using System;
-using System.Collections.Generic;
+namespace Rise.Domain.Common;
 
 public enum StreetEnum
 {
+    NULL,
     AFRIKALAAN,
     BATAVIABRUG,
     DECKERSTRAAT,
@@ -47,6 +47,7 @@ public static class StreetEnumExtensions
 {
     private static readonly Dictionary<StreetEnum, string> StreetNames = new Dictionary<StreetEnum, string>
     {
+        { StreetEnum.NULL, "NULL" },
         { StreetEnum.AFRIKALAAN, "Afrikalaan" },
         { StreetEnum.BATAVIABRUG, "Bataviabrug" },
         { StreetEnum.DECKERSTRAAT, "Deckerstraat" },
@@ -94,7 +95,10 @@ public static class StreetEnumExtensions
 
     public static StreetEnum GetStreetEnum(this string streetName)
     {
-        return StreetNames.FirstOrDefault(x => x.Value.Equals(streetName, StringComparison.OrdinalIgnoreCase)).Key;
+        return Guard
+            .Against
+            .Default(StreetNames
+                .FirstOrDefault(x => x.Value.Equals(streetName, StringComparison.OrdinalIgnoreCase))
+                .Key);
     }
 }
-
