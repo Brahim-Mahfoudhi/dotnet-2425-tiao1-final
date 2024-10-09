@@ -9,4 +9,9 @@ public class Role : Entity
         get => _name;
         set => _name = Guard.Against.EnumOutOfRange(value);
     }
+
+    public Role(RolesEnum name)
+    {
+        Name = name;
+    }
 }

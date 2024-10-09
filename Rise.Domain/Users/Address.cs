@@ -12,13 +12,13 @@ public class Address : Entity
         HouseNumber = houseNumber;
     }
 
-    public Address(string street, int houseNumber, string bus)
+    public Address(string street, int houseNumber, string? bus = null)
     {
         Street = street;
         HouseNumber = houseNumber;
         Bus = bus;
     }
-    
+
     public string Street
     {
         get => _street.GetStreetName();
@@ -27,13 +27,13 @@ public class Address : Entity
 
     public int HouseNumber
     {
-        get => _houseNumber; 
+        get => _houseNumber;
         set => _houseNumber = Guard.Against.NegativeOrZero(value);
     }
 
     public string? Bus
     {
-        get => _bus; 
+        get => _bus;
         set => _bus = value;
     }
 }
