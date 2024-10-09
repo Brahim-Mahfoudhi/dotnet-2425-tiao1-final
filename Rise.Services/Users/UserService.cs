@@ -2,7 +2,6 @@ using Microsoft.EntityFrameworkCore;
 using Rise.Persistence;
 using Rise.Shared.Users;
 using Rise.Domain.Users;
-using Microsoft.VisualBasic;
 
 namespace Rise.Services.Users;
 
@@ -119,6 +118,7 @@ public class UserService : IUserService
             user.Address.HouseNumber,
             user.Address.Bus
         );
+        
         var entity = await dbContext.Users.FindAsync(user.Id) ?? throw new Exception("User not found");
         entity.FirstName = user.FirstName;
         entity.LastName = user.LastName;

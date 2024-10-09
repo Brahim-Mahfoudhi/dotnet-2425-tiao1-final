@@ -75,8 +75,6 @@ public class User : Entity
         get => _phoneNumber;
         set => _phoneNumber = Guard.Against.NullOrWhiteSpace(value, nameof(PhoneNumber));
     }
-
-
     #endregion
 
 

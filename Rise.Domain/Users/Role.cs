@@ -2,7 +2,7 @@ namespace Rise.Domain.Users;
 
 public class Role : Entity
 {
-    private RolesEnum _name = RolesEnum.User;
+    private RolesEnum _name;
 
     public RolesEnum Name
     {
@@ -10,7 +10,7 @@ public class Role : Entity
         set => _name = Guard.Against.EnumOutOfRange(value);
     }
 
-    public Role(RolesEnum name)
+    public Role(RolesEnum name = RolesEnum.User)
     {
         Name = name;
     }
