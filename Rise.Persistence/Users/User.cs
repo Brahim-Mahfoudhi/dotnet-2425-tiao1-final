@@ -19,8 +19,6 @@ internal class UserConfiguration : EntityConfiguration<User>
         builder.Property(x => x.Password).IsRequired();
         builder.Property(x => x.BirthDate).IsRequired();
         builder.Property(x => x.PhoneNumber).IsRequired();
-        builder.Property(x => x.CreatedAt).IsRequired();
-        builder.Property(x => x.UpdatedAt).IsRequired();
 
         builder
             .HasOne(x => x.Address)
