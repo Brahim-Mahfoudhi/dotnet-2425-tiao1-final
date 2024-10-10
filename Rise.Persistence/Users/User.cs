@@ -24,8 +24,8 @@ internal class UserConfiguration : EntityConfiguration<User>
 
         builder
             .HasOne(x => x.Address)
-            .WithOne()
-            .HasForeignKey(typeof(Address))
+            .WithOne(x => x.User)
+            .HasForeignKey<Address>(x => x.Id)
             .IsRequired();
         
         builder
