@@ -2,6 +2,7 @@ namespace Rise.Domain.Users;
 
 public class Address : Entity
 {
+    private User _user;
     private StreetEnum _street = default!;
     private int _houseNumber = default!;
     private string? _bus = default!;
@@ -17,6 +18,12 @@ public class Address : Entity
         Street = street;
         HouseNumber = houseNumber;
         Bus = bus;
+    }
+
+    public User User
+    {
+        get => _user;
+        set => _user = Guard.Against.Null(value);
     }
 
     public string Street

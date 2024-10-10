@@ -25,8 +25,6 @@ public class User : Entity
         BirthDate = birthDate;
         Address = address;
         PhoneNumber = phoneNumber;
-        CreatedAt = DateTime.UtcNow;
-        UpdatedAt = DateTime.UtcNow;
     }
     #endregion
 
