@@ -15,7 +15,8 @@ public class User : Entity
     #endregion
 
     #region Constructors
-    protected User() { }
+    //Private constructor for EF Core
+    private User() { }
     public User(string firstName, string lastName, string email, string password, DateTime birthDate, Address address, string phoneNumber)
     {
         FirstName = firstName;

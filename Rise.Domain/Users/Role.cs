@@ -10,6 +10,11 @@ public class Role : Entity
         set => _name = Guard.Against.EnumOutOfRange(value);
     }
 
+    //Private constructor for EF Core
+    private Role()
+    {
+    }
+
     public Role(RolesEnum name = RolesEnum.User)
     {
         Name = name;

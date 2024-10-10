@@ -7,6 +7,11 @@ public class Address : Entity
     private int _houseNumber = default!;
     private string? _bus = default!;
 
+    //Private constructor for EF Core
+    private Address()
+    {
+    }
+
     public Address(string street, int houseNumber)
     {
         Street = street;

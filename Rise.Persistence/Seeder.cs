@@ -1,4 +1,4 @@
-﻿using Rise.Domain.Products;
+using Rise.Domain.Products;
 
 namespace Rise.Persistence;
 
@@ -13,10 +13,9 @@ public class Seeder
 
     public void Seed()
     {
-        if (HasAlreadyBeenSeeded())
-            return;
-
-        SeedProducts();
+        if (!HasAlreadyBeenSeeded())
+            SeedProducts();
+        
     }
 
     private bool HasAlreadyBeenSeeded()
