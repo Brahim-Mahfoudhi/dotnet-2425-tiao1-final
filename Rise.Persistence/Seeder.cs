@@ -1,4 +1,5 @@
 using Rise.Domain.Products;
+using Rise.Domain.Users;
 
 namespace Rise.Persistence;
 
@@ -23,9 +24,10 @@ public class Seeder
     /// </summary>
     public void Seed()
     {
-        if (!HasAlreadyBeenSeeded())
+        if (!ProductsHasAlreadyBeenSeeded())
             SeedProducts();
-        
+        if (!UsersHasAlreadyBeenSeeded())
+            SeedUsers();
     }
 
     /// <summary>
@@ -34,9 +36,20 @@ public class Seeder
     /// <returns>
     /// <c>true</c> if the database already contains product entries; otherwise, <c>false</c>.
     /// </returns>
-    private bool HasAlreadyBeenSeeded()
+    private bool ProductsHasAlreadyBeenSeeded()
     {
         return dbContext.Products.Any();
+    }
+    
+    /// <summary>
+    /// Checks if the database has already been seeded with users.
+    /// </summary>
+    /// <returns>
+    /// <c>true</c> if the database already contains user entries; otherwise, <c>false</c>.
+    /// </returns>
+    private bool UsersHasAlreadyBeenSeeded()
+    {
+        return dbContext.Users.Any();
     }
 
     /// <summary>
@@ -50,6 +63,14 @@ public class Seeder
 
         dbContext.Products.AddRange(products);
         dbContext.SaveChanges();
+    }
+
+    /// <summary>
+    /// Seeds the database with 2 user entities.
+    /// </summary>
+    private void SeedUsers()
+    {
+        dbContext.Users.Add(new User("Lorenz", "Debie", "lorenzdebie@gmail.com", "123456", new DateTime(1980, 01, 01), new Address("Brusselsesteenweg", 5), "+32478457845"));
     }
 }
 
