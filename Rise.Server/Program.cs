@@ -19,7 +19,16 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 });
 
 builder.Services.AddScoped<IProductService, ProductService>();
-
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("CorsPolicy", builder =>
+    {
+        builder.WithOrigins("https://localhost:5003") // Allow specific origin
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials(); // If you use cookies or authentication tokens
+    });
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -35,7 +44,7 @@ app.UseBlazorFrameworkFiles();
 app.UseStaticFiles();
 
 app.UseRouting();
-
+app.UseCors("CorsPolicy");
 app.MapControllers();
 app.MapFallbackToFile("index.html");
 

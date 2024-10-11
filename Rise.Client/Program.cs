@@ -10,7 +10,7 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 
 builder.Services.AddHttpClient<IProductService, ProductService>(client =>
 {
-    client.BaseAddress = new Uri($"{builder.HostEnvironment.BaseAddress}api/");
+    client.BaseAddress = new Uri($"http://127.0.0.1:5001/api/");
 });
 
 await builder.Build().RunAsync();
