@@ -4,8 +4,15 @@ using Rise.Domain.Users;
 
 namespace Rise.Persistence.Users;
 
+/// <summary>
+/// Provides configuration settings for the <see cref="User"/> entity in the persistence layer.
+/// </summary>
 internal class UserConfiguration : EntityConfiguration<User>
 {
+    /// <summary>
+    /// Configures the <see cref="User"/> entity using the specified <see cref="EntityTypeBuilder{TEntity}"/>.
+    /// </summary>
+    /// <param name="builder">The builder used to configure the <see cref="User"/> entity.</param>
     public override void Configure(EntityTypeBuilder<User> builder)
     {
         base.Configure(builder);
