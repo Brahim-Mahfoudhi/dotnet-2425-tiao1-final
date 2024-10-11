@@ -1,0 +1,23 @@
+### YamlMime:ManagedReference
+items:
+- uid: Rise.Domain.Tests.Products
+  commentId: N:Rise.Domain.Tests.Products
+  id: Rise.Domain.Tests.Products
+  children:
+  - Rise.Domain.Tests.Products.ProductShould
+  langs:
+  - csharp
+  - vb
+  name: Rise.Domain.Tests.Products
+  nameWithType: Rise.Domain.Tests.Products
+  fullName: Rise.Domain.Tests.Products
+  type: Namespace
+  assemblies:
+  - Rise.Domain.Tests
+references:
+- uid: Rise.Domain.Tests.Products.ProductShould
+  commentId: T:Rise.Domain.Tests.Products.ProductShould
+  href: Rise.Domain.Tests.Products.ProductShould.html
+  name: ProductShould
+  nameWithType: ProductShould
+  fullName: Rise.Domain.Tests.Products.ProductShould

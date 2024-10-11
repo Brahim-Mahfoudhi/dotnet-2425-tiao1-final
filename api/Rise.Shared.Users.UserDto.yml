@@ -1,0 +1,788 @@
+### YamlMime:ManagedReference
+items:
+- uid: Rise.Shared.Users.UserDto
+  commentId: T:Rise.Shared.Users.UserDto
+  id: UserDto
+  parent: Rise.Shared.Users
+  children:
+  - Rise.Shared.Users.UserDto.Address
+  - Rise.Shared.Users.UserDto.BirthDate
+  - Rise.Shared.Users.UserDto.Email
+  - Rise.Shared.Users.UserDto.FirstName
+  - Rise.Shared.Users.UserDto.Id
+  - Rise.Shared.Users.UserDto.LastName
+  - Rise.Shared.Users.UserDto.Password
+  - Rise.Shared.Users.UserDto.PhoneNumber
+  - Rise.Shared.Users.UserDto.Roles
+  langs:
+  - csharp
+  - vb
+  name: UserDto
+  nameWithType: UserDto
+  fullName: Rise.Shared.Users.UserDto
+  type: Class
+  source:
+    remote:
+      path: Rise.Shared/Users/UserDto.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: UserDto
+    path: Rise.Shared/Users/UserDto.cs
+    startLine: 5
+  assemblies:
+  - Rise.Shared
+  namespace: Rise.Shared.Users
+  summary: Data Transfer Object (DTO) representing a user.
+  example: []
+  syntax:
+    content: public class UserDto
+    content.vb: Public Class UserDto
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Rise.Shared.Users.UserDto.Id
+  commentId: P:Rise.Shared.Users.UserDto.Id
+  id: Id
+  parent: Rise.Shared.Users.UserDto
+  langs:
+  - csharp
+  - vb
+  name: Id
+  nameWithType: UserDto.Id
+  fullName: Rise.Shared.Users.UserDto.Id
+  type: Property
+  source:
+    remote:
+      path: Rise.Shared/Users/UserDto.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: Id
+    path: Rise.Shared/Users/UserDto.cs
+    startLine: 10
+  assemblies:
+  - Rise.Shared
+  namespace: Rise.Shared.Users
+  summary: Gets or sets the unique identifier of the user.
+  example: []
+  syntax:
+    content: public int Id { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property Id As Integer
+  overload: Rise.Shared.Users.UserDto.Id*
+- uid: Rise.Shared.Users.UserDto.FirstName
+  commentId: P:Rise.Shared.Users.UserDto.FirstName
+  id: FirstName
+  parent: Rise.Shared.Users.UserDto
+  langs:
+  - csharp
+  - vb
+  name: FirstName
+  nameWithType: UserDto.FirstName
+  fullName: Rise.Shared.Users.UserDto.FirstName
+  type: Property
+  source:
+    remote:
+      path: Rise.Shared/Users/UserDto.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: FirstName
+    path: Rise.Shared/Users/UserDto.cs
+    startLine: 14
+  assemblies:
+  - Rise.Shared
+  namespace: Rise.Shared.Users
+  summary: Gets or sets the first name of the user.
+  example: []
+  syntax:
+    content: public string FirstName { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property FirstName As String
+  overload: Rise.Shared.Users.UserDto.FirstName*
+- uid: Rise.Shared.Users.UserDto.LastName
+  commentId: P:Rise.Shared.Users.UserDto.LastName
+  id: LastName
+  parent: Rise.Shared.Users.UserDto
+  langs:
+  - csharp
+  - vb
+  name: LastName
+  nameWithType: UserDto.LastName
+  fullName: Rise.Shared.Users.UserDto.LastName
+  type: Property
+  source:
+    remote:
+      path: Rise.Shared/Users/UserDto.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: LastName
+    path: Rise.Shared/Users/UserDto.cs
+    startLine: 18
+  assemblies:
+  - Rise.Shared
+  namespace: Rise.Shared.Users
+  summary: Gets or sets the last name of the user.
+  example: []
+  syntax:
+    content: public string LastName { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property LastName As String
+  overload: Rise.Shared.Users.UserDto.LastName*
+- uid: Rise.Shared.Users.UserDto.Email
+  commentId: P:Rise.Shared.Users.UserDto.Email
+  id: Email
+  parent: Rise.Shared.Users.UserDto
+  langs:
+  - csharp
+  - vb
+  name: Email
+  nameWithType: UserDto.Email
+  fullName: Rise.Shared.Users.UserDto.Email
+  type: Property
+  source:
+    remote:
+      path: Rise.Shared/Users/UserDto.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: Email
+    path: Rise.Shared/Users/UserDto.cs
+    startLine: 22
+  assemblies:
+  - Rise.Shared
+  namespace: Rise.Shared.Users
+  summary: Gets or sets the email address of the user.
+  example: []
+  syntax:
+    content: public string Email { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property Email As String
+  overload: Rise.Shared.Users.UserDto.Email*
+- uid: Rise.Shared.Users.UserDto.Password
+  commentId: P:Rise.Shared.Users.UserDto.Password
+  id: Password
+  parent: Rise.Shared.Users.UserDto
+  langs:
+  - csharp
+  - vb
+  name: Password
+  nameWithType: UserDto.Password
+  fullName: Rise.Shared.Users.UserDto.Password
+  type: Property
+  source:
+    remote:
+      path: Rise.Shared/Users/UserDto.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: Password
+    path: Rise.Shared/Users/UserDto.cs
+    startLine: 26
+  assemblies:
+  - Rise.Shared
+  namespace: Rise.Shared.Users
+  summary: Gets or sets the password of the user.
+  example: []
+  syntax:
+    content: public string Password { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property Password As String
+  overload: Rise.Shared.Users.UserDto.Password*
+- uid: Rise.Shared.Users.UserDto.BirthDate
+  commentId: P:Rise.Shared.Users.UserDto.BirthDate
+  id: BirthDate
+  parent: Rise.Shared.Users.UserDto
+  langs:
+  - csharp
+  - vb
+  name: BirthDate
+  nameWithType: UserDto.BirthDate
+  fullName: Rise.Shared.Users.UserDto.BirthDate
+  type: Property
+  source:
+    remote:
+      path: Rise.Shared/Users/UserDto.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: BirthDate
+    path: Rise.Shared/Users/UserDto.cs
+    startLine: 30
+  assemblies:
+  - Rise.Shared
+  namespace: Rise.Shared.Users
+  summary: Gets or sets the birth date of the user.
+  example: []
+  syntax:
+    content: public DateTime BirthDate { get; set; }
+    parameters: []
+    return:
+      type: System.DateTime
+    content.vb: Public Property BirthDate As Date
+  overload: Rise.Shared.Users.UserDto.BirthDate*
+- uid: Rise.Shared.Users.UserDto.Address
+  commentId: P:Rise.Shared.Users.UserDto.Address
+  id: Address
+  parent: Rise.Shared.Users.UserDto
+  langs:
+  - csharp
+  - vb
+  name: Address
+  nameWithType: UserDto.Address
+  fullName: Rise.Shared.Users.UserDto.Address
+  type: Property
+  source:
+    remote:
+      path: Rise.Shared/Users/UserDto.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: Address
+    path: Rise.Shared/Users/UserDto.cs
+    startLine: 34
+  assemblies:
+  - Rise.Shared
+  namespace: Rise.Shared.Users
+  summary: Gets or sets the address of the user.
+  example: []
+  syntax:
+    content: public AddressDto Address { get; set; }
+    parameters: []
+    return:
+      type: Rise.Shared.Users.AddressDto
+    content.vb: Public Property Address As AddressDto
+  overload: Rise.Shared.Users.UserDto.Address*
+- uid: Rise.Shared.Users.UserDto.Roles
+  commentId: P:Rise.Shared.Users.UserDto.Roles
+  id: Roles
+  parent: Rise.Shared.Users.UserDto
+  langs:
+  - csharp
+  - vb
+  name: Roles
+  nameWithType: UserDto.Roles
+  fullName: Rise.Shared.Users.UserDto.Roles
+  type: Property
+  source:
+    remote:
+      path: Rise.Shared/Users/UserDto.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: Roles
+    path: Rise.Shared/Users/UserDto.cs
+    startLine: 38
+  assemblies:
+  - Rise.Shared
+  namespace: Rise.Shared.Users
+  summary: Gets or sets the list of roles assigned to the user.
+  example: []
+  syntax:
+    content: public List<RoleDto> Roles { get; set; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.List{Rise.Shared.Users.RoleDto}
+    content.vb: Public Property Roles As List(Of RoleDto)
+  overload: Rise.Shared.Users.UserDto.Roles*
+- uid: Rise.Shared.Users.UserDto.PhoneNumber
+  commentId: P:Rise.Shared.Users.UserDto.PhoneNumber
+  id: PhoneNumber
+  parent: Rise.Shared.Users.UserDto
+  langs:
+  - csharp
+  - vb
+  name: PhoneNumber
+  nameWithType: UserDto.PhoneNumber
+  fullName: Rise.Shared.Users.UserDto.PhoneNumber
+  type: Property
+  source:
+    remote:
+      path: Rise.Shared/Users/UserDto.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: PhoneNumber
+    path: Rise.Shared/Users/UserDto.cs
+    startLine: 42
+  assemblies:
+  - Rise.Shared
+  namespace: Rise.Shared.Users
+  summary: Gets or sets the phone number of the user.
+  example: []
+  syntax:
+    content: public string PhoneNumber { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property PhoneNumber As String
+  overload: Rise.Shared.Users.UserDto.PhoneNumber*
+references:
+- uid: Rise.Shared.Users
+  commentId: N:Rise.Shared.Users
+  href: Rise.html
+  name: Rise.Shared.Users
+  nameWithType: Rise.Shared.Users
+  fullName: Rise.Shared.Users
+  spec.csharp:
+  - uid: Rise
+    name: Rise
+    href: Rise.html
+  - name: .
+  - uid: Rise.Shared
+    name: Shared
+    href: Rise.Shared.html
+  - name: .
+  - uid: Rise.Shared.Users
+    name: Users
+    href: Rise.Shared.Users.html
+  spec.vb:
+  - uid: Rise
+    name: Rise
+    href: Rise.html
+  - name: .
+  - uid: Rise.Shared
+    name: Shared
+    href: Rise.Shared.html
+  - name: .
+  - uid: Rise.Shared.Users
+    name: Users
+    href: Rise.Shared.Users.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Rise.Shared.Users.UserDto.Id*
+  commentId: Overload:Rise.Shared.Users.UserDto.Id
+  href: Rise.Shared.Users.UserDto.html#Rise_Shared_Users_UserDto_Id
+  name: Id
+  nameWithType: UserDto.Id
+  fullName: Rise.Shared.Users.UserDto.Id
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: Rise.Shared.Users.UserDto.FirstName*
+  commentId: Overload:Rise.Shared.Users.UserDto.FirstName
+  href: Rise.Shared.Users.UserDto.html#Rise_Shared_Users_UserDto_FirstName
+  name: FirstName
+  nameWithType: UserDto.FirstName
+  fullName: Rise.Shared.Users.UserDto.FirstName
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: Rise.Shared.Users.UserDto.LastName*
+  commentId: Overload:Rise.Shared.Users.UserDto.LastName
+  href: Rise.Shared.Users.UserDto.html#Rise_Shared_Users_UserDto_LastName
+  name: LastName
+  nameWithType: UserDto.LastName
+  fullName: Rise.Shared.Users.UserDto.LastName
+- uid: Rise.Shared.Users.UserDto.Email*
+  commentId: Overload:Rise.Shared.Users.UserDto.Email
+  href: Rise.Shared.Users.UserDto.html#Rise_Shared_Users_UserDto_Email
+  name: Email
+  nameWithType: UserDto.Email
+  fullName: Rise.Shared.Users.UserDto.Email
+- uid: Rise.Shared.Users.UserDto.Password*
+  commentId: Overload:Rise.Shared.Users.UserDto.Password
+  href: Rise.Shared.Users.UserDto.html#Rise_Shared_Users_UserDto_Password
+  name: Password
+  nameWithType: UserDto.Password
+  fullName: Rise.Shared.Users.UserDto.Password
+- uid: Rise.Shared.Users.UserDto.BirthDate*
+  commentId: Overload:Rise.Shared.Users.UserDto.BirthDate
+  href: Rise.Shared.Users.UserDto.html#Rise_Shared_Users_UserDto_BirthDate
+  name: BirthDate
+  nameWithType: UserDto.BirthDate
+  fullName: Rise.Shared.Users.UserDto.BirthDate
+- uid: System.DateTime
+  commentId: T:System.DateTime
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.datetime
+  name: DateTime
+  nameWithType: DateTime
+  fullName: System.DateTime
+  nameWithType.vb: Date
+  fullName.vb: Date
+  name.vb: Date
+- uid: Rise.Shared.Users.UserDto.Address*
+  commentId: Overload:Rise.Shared.Users.UserDto.Address
+  href: Rise.Shared.Users.UserDto.html#Rise_Shared_Users_UserDto_Address
+  name: Address
+  nameWithType: UserDto.Address
+  fullName: Rise.Shared.Users.UserDto.Address
+- uid: Rise.Shared.Users.AddressDto
+  commentId: T:Rise.Shared.Users.AddressDto
+  parent: Rise.Shared.Users
+  href: Rise.Shared.Users.AddressDto.html
+  name: AddressDto
+  nameWithType: AddressDto
+  fullName: Rise.Shared.Users.AddressDto
+- uid: Rise.Shared.Users.UserDto.Roles*
+  commentId: Overload:Rise.Shared.Users.UserDto.Roles
+  href: Rise.Shared.Users.UserDto.html#Rise_Shared_Users_UserDto_Roles
+  name: Roles
+  nameWithType: UserDto.Roles
+  fullName: Rise.Shared.Users.UserDto.Roles
+- uid: System.Collections.Generic.List{Rise.Shared.Users.RoleDto}
+  commentId: T:System.Collections.Generic.List{Rise.Shared.Users.RoleDto}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.List`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<RoleDto>
+  nameWithType: List<RoleDto>
+  fullName: System.Collections.Generic.List<Rise.Shared.Users.RoleDto>
+  nameWithType.vb: List(Of RoleDto)
+  fullName.vb: System.Collections.Generic.List(Of Rise.Shared.Users.RoleDto)
+  name.vb: List(Of RoleDto)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: Rise.Shared.Users.RoleDto
+    name: RoleDto
+    href: Rise.Shared.Users.RoleDto.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Rise.Shared.Users.RoleDto
+    name: RoleDto
+    href: Rise.Shared.Users.RoleDto.html
+  - name: )
+- uid: System.Collections.Generic.List`1
+  commentId: T:System.Collections.Generic.List`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  name: List<T>
+  nameWithType: List<T>
+  fullName: System.Collections.Generic.List<T>
+  nameWithType.vb: List(Of T)
+  fullName.vb: System.Collections.Generic.List(Of T)
+  name.vb: List(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: Rise.Shared.Users.UserDto.PhoneNumber*
+  commentId: Overload:Rise.Shared.Users.UserDto.PhoneNumber
+  href: Rise.Shared.Users.UserDto.html#Rise_Shared_Users_UserDto_PhoneNumber
+  name: PhoneNumber
+  nameWithType: UserDto.PhoneNumber
+  fullName: Rise.Shared.Users.UserDto.PhoneNumber

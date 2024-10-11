@@ -1,0 +1,30 @@
+### YamlMime:ManagedReference
+items:
+- uid: Rise.Server.Controllers
+  commentId: N:Rise.Server.Controllers
+  id: Rise.Server.Controllers
+  children:
+  - Rise.Server.Controllers.ProductController
+  - Rise.Server.Controllers.UserController
+  langs:
+  - csharp
+  - vb
+  name: Rise.Server.Controllers
+  nameWithType: Rise.Server.Controllers
+  fullName: Rise.Server.Controllers
+  type: Namespace
+  assemblies:
+  - Rise.Server
+references:
+- uid: Rise.Server.Controllers.ProductController
+  commentId: T:Rise.Server.Controllers.ProductController
+  href: Rise.Server.Controllers.ProductController.html
+  name: ProductController
+  nameWithType: ProductController
+  fullName: Rise.Server.Controllers.ProductController
+- uid: Rise.Server.Controllers.UserController
+  commentId: T:Rise.Server.Controllers.UserController
+  href: Rise.Server.Controllers.UserController.html
+  name: UserController
+  nameWithType: UserController
+  fullName: Rise.Server.Controllers.UserController

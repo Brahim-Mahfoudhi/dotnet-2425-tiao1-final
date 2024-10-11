@@ -1,0 +1,54 @@
+### YamlMime:ManagedReference
+items:
+- uid: Rise.Shared.Enums
+  commentId: N:Rise.Shared.Enums
+  id: Rise.Shared.Enums
+  children:
+  - Rise.Shared.Enums.RolesEnum
+  langs:
+  - csharp
+  - vb
+  name: Rise.Shared.Enums
+  nameWithType: Rise.Shared.Enums
+  fullName: Rise.Shared.Enums
+  type: Namespace
+  assemblies:
+  - Rise.Shared
+references:
+- uid: Rise.Shared.Enums.RolesEnum
+  commentId: T:Rise.Shared.Enums.RolesEnum
+  parent: Rise.Shared.Enums
+  href: Rise.Shared.Enums.RolesEnum.html
+  name: RolesEnum
+  nameWithType: RolesEnum
+  fullName: Rise.Shared.Enums.RolesEnum
+- uid: Rise.Shared.Enums
+  commentId: N:Rise.Shared.Enums
+  href: Rise.html
+  name: Rise.Shared.Enums
+  nameWithType: Rise.Shared.Enums
+  fullName: Rise.Shared.Enums
+  spec.csharp:
+  - uid: Rise
+    name: Rise
+    href: Rise.html
+  - name: .
+  - uid: Rise.Shared
+    name: Shared
+    href: Rise.Shared.html
+  - name: .
+  - uid: Rise.Shared.Enums
+    name: Enums
+    href: Rise.Shared.Enums.html
+  spec.vb:
+  - uid: Rise
+    name: Rise
+    href: Rise.html
+  - name: .
+  - uid: Rise.Shared
+    name: Shared
+    href: Rise.Shared.html
+  - name: .
+  - uid: Rise.Shared.Enums
+    name: Enums
+    href: Rise.Shared.Enums.html

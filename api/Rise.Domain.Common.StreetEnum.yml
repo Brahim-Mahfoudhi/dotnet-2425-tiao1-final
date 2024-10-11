@@ -1,0 +1,1178 @@
+### YamlMime:ManagedReference
+items:
+- uid: Rise.Domain.Common.StreetEnum
+  commentId: T:Rise.Domain.Common.StreetEnum
+  id: StreetEnum
+  parent: Rise.Domain.Common
+  children:
+  - Rise.Domain.Common.StreetEnum.AFRIKALAAN
+  - Rise.Domain.Common.StreetEnum.BATAVIABRUG
+  - Rise.Domain.Common.StreetEnum.DECKERSTRAAT
+  - Rise.Domain.Common.StreetEnum.DOKNOORD
+  - Rise.Domain.Common.StreetEnum.DOORNZELESTRAAT
+  - Rise.Domain.Common.StreetEnum.FINLANDSTRAAT
+  - Rise.Domain.Common.StreetEnum.GASMETERLAAN
+  - Rise.Domain.Common.StreetEnum.GOUDBLOEMSTRAAT
+  - Rise.Domain.Common.StreetEnum.GROENDREEF
+  - Rise.Domain.Common.StreetEnum.GROTEMUIDE
+  - Rise.Domain.Common.StreetEnum.HALVEMAANSTRAAT
+  - Rise.Domain.Common.StreetEnum.HAM
+  - Rise.Domain.Common.StreetEnum.HAMERSTRAAT
+  - Rise.Domain.Common.StreetEnum.INDUSTRIEWEG
+  - Rise.Domain.Common.StreetEnum.KARELANTHEUNISSTRAAT
+  - Rise.Domain.Common.StreetEnum.KIEKENBOSSTRAAT
+  - Rise.Domain.Common.StreetEnum.KOOPVAARDIJLAAN
+  - Rise.Domain.Common.StreetEnum.LANGERBRUGGEKAAI
+  - Rise.Domain.Common.StreetEnum.MEULESTEDEBRUG
+  - Rise.Domain.Common.StreetEnum.MEULESTEDEDIJK
+  - Rise.Domain.Common.StreetEnum.MEULESTEDEHOF
+  - Rise.Domain.Common.StreetEnum.MEULESTEDEKAAI
+  - Rise.Domain.Common.StreetEnum.MEULESTEEDSESTEENWEG
+  - Rise.Domain.Common.StreetEnum.MUIDEHOFSTRAAT
+  - Rise.Domain.Common.StreetEnum.MUIDEKAAI
+  - Rise.Domain.Common.StreetEnum.MUIDELAAN
+  - Rise.Domain.Common.StreetEnum.MUIDEPOORT
+  - Rise.Domain.Common.StreetEnum.NEERMEERSKAAI
+  - Rise.Domain.Common.StreetEnum.NIEUWEVAART
+  - Rise.Domain.Common.StreetEnum.NULL
+  - Rise.Domain.Common.StreetEnum.OKTROOIPLEIN
+  - Rise.Domain.Common.StreetEnum.SCHELDEKAAI
+  - Rise.Domain.Common.StreetEnum.SCHOONSCHIPSTRAAT
+  - Rise.Domain.Common.StreetEnum.SPANJAARDSTRAAT
+  - Rise.Domain.Common.StreetEnum.STAPELPLEIN
+  - Rise.Domain.Common.StreetEnum.VOORHAVENKAAI
+  - Rise.Domain.Common.StreetEnum.ZEESCHIPSTRAAT
+  - Rise.Domain.Common.StreetEnum.ZEESCHIPSTRAATJE
+  - Rise.Domain.Common.StreetEnum.ZONGELAAN
+  langs:
+  - csharp
+  - vb
+  name: StreetEnum
+  nameWithType: StreetEnum
+  fullName: Rise.Domain.Common.StreetEnum
+  type: Enum
+  source:
+    remote:
+      path: Rise.Domain/Common/AdressEnum.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: StreetEnum
+    path: Rise.Domain/Common/AdressEnum.cs
+    startLine: 2
+  assemblies:
+  - Rise.Domain
+  namespace: Rise.Domain.Common
+  syntax:
+    content: public enum StreetEnum
+    content.vb: Public Enum StreetEnum
+  extensionMethods:
+  - Rise.Domain.Common.StreetEnum.Rise.Domain.Common.StreetEnumExtensions.GetStreetName
+- uid: Rise.Domain.Common.StreetEnum.NULL
+  commentId: F:Rise.Domain.Common.StreetEnum.NULL
+  id: "NULL"
+  parent: Rise.Domain.Common.StreetEnum
+  langs:
+  - csharp
+  - vb
+  name: "NULL"
+  nameWithType: StreetEnum.NULL
+  fullName: Rise.Domain.Common.StreetEnum.NULL
+  type: Field
+  source:
+    remote:
+      path: Rise.Domain/Common/AdressEnum.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: "NULL"
+    path: Rise.Domain/Common/AdressEnum.cs
+    startLine: 4
+  assemblies:
+  - Rise.Domain
+  namespace: Rise.Domain.Common
+  syntax:
+    content: NULL = 0
+    return:
+      type: Rise.Domain.Common.StreetEnum
+- uid: Rise.Domain.Common.StreetEnum.AFRIKALAAN
+  commentId: F:Rise.Domain.Common.StreetEnum.AFRIKALAAN
+  id: AFRIKALAAN
+  parent: Rise.Domain.Common.StreetEnum
+  langs:
+  - csharp
+  - vb
+  name: AFRIKALAAN
+  nameWithType: StreetEnum.AFRIKALAAN
+  fullName: Rise.Domain.Common.StreetEnum.AFRIKALAAN
+  type: Field
+  source:
+    remote:
+      path: Rise.Domain/Common/AdressEnum.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: AFRIKALAAN
+    path: Rise.Domain/Common/AdressEnum.cs
+    startLine: 5
+  assemblies:
+  - Rise.Domain
+  namespace: Rise.Domain.Common
+  syntax:
+    content: AFRIKALAAN = 1
+    return:
+      type: Rise.Domain.Common.StreetEnum
+- uid: Rise.Domain.Common.StreetEnum.BATAVIABRUG
+  commentId: F:Rise.Domain.Common.StreetEnum.BATAVIABRUG
+  id: BATAVIABRUG
+  parent: Rise.Domain.Common.StreetEnum
+  langs:
+  - csharp
+  - vb
+  name: BATAVIABRUG
+  nameWithType: StreetEnum.BATAVIABRUG
+  fullName: Rise.Domain.Common.StreetEnum.BATAVIABRUG
+  type: Field
+  source:
+    remote:
+      path: Rise.Domain/Common/AdressEnum.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: BATAVIABRUG
+    path: Rise.Domain/Common/AdressEnum.cs
+    startLine: 6
+  assemblies:
+  - Rise.Domain
+  namespace: Rise.Domain.Common
+  syntax:
+    content: BATAVIABRUG = 2
+    return:
+      type: Rise.Domain.Common.StreetEnum
+- uid: Rise.Domain.Common.StreetEnum.DECKERSTRAAT
+  commentId: F:Rise.Domain.Common.StreetEnum.DECKERSTRAAT
+  id: DECKERSTRAAT
+  parent: Rise.Domain.Common.StreetEnum
+  langs:
+  - csharp
+  - vb
+  name: DECKERSTRAAT
+  nameWithType: StreetEnum.DECKERSTRAAT
+  fullName: Rise.Domain.Common.StreetEnum.DECKERSTRAAT
+  type: Field
+  source:
+    remote:
+      path: Rise.Domain/Common/AdressEnum.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: DECKERSTRAAT
+    path: Rise.Domain/Common/AdressEnum.cs
+    startLine: 7
+  assemblies:
+  - Rise.Domain
+  namespace: Rise.Domain.Common
+  syntax:
+    content: DECKERSTRAAT = 3
+    return:
+      type: Rise.Domain.Common.StreetEnum
+- uid: Rise.Domain.Common.StreetEnum.DOKNOORD
+  commentId: F:Rise.Domain.Common.StreetEnum.DOKNOORD
+  id: DOKNOORD
+  parent: Rise.Domain.Common.StreetEnum
+  langs:
+  - csharp
+  - vb
+  name: DOKNOORD
+  nameWithType: StreetEnum.DOKNOORD
+  fullName: Rise.Domain.Common.StreetEnum.DOKNOORD
+  type: Field
+  source:
+    remote:
+      path: Rise.Domain/Common/AdressEnum.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: DOKNOORD
+    path: Rise.Domain/Common/AdressEnum.cs
+    startLine: 8
+  assemblies:
+  - Rise.Domain
+  namespace: Rise.Domain.Common
+  syntax:
+    content: DOKNOORD = 4
+    return:
+      type: Rise.Domain.Common.StreetEnum
+- uid: Rise.Domain.Common.StreetEnum.DOORNZELESTRAAT
+  commentId: F:Rise.Domain.Common.StreetEnum.DOORNZELESTRAAT
+  id: DOORNZELESTRAAT
+  parent: Rise.Domain.Common.StreetEnum
+  langs:
+  - csharp
+  - vb
+  name: DOORNZELESTRAAT
+  nameWithType: StreetEnum.DOORNZELESTRAAT
+  fullName: Rise.Domain.Common.StreetEnum.DOORNZELESTRAAT
+  type: Field
+  source:
+    remote:
+      path: Rise.Domain/Common/AdressEnum.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: DOORNZELESTRAAT
+    path: Rise.Domain/Common/AdressEnum.cs
+    startLine: 9
+  assemblies:
+  - Rise.Domain
+  namespace: Rise.Domain.Common
+  syntax:
+    content: DOORNZELESTRAAT = 5
+    return:
+      type: Rise.Domain.Common.StreetEnum
+- uid: Rise.Domain.Common.StreetEnum.FINLANDSTRAAT
+  commentId: F:Rise.Domain.Common.StreetEnum.FINLANDSTRAAT
+  id: FINLANDSTRAAT
+  parent: Rise.Domain.Common.StreetEnum
+  langs:
+  - csharp
+  - vb
+  name: FINLANDSTRAAT
+  nameWithType: StreetEnum.FINLANDSTRAAT
+  fullName: Rise.Domain.Common.StreetEnum.FINLANDSTRAAT
+  type: Field
+  source:
+    remote:
+      path: Rise.Domain/Common/AdressEnum.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: FINLANDSTRAAT
+    path: Rise.Domain/Common/AdressEnum.cs
+    startLine: 10
+  assemblies:
+  - Rise.Domain
+  namespace: Rise.Domain.Common
+  syntax:
+    content: FINLANDSTRAAT = 6
+    return:
+      type: Rise.Domain.Common.StreetEnum
+- uid: Rise.Domain.Common.StreetEnum.GASMETERLAAN
+  commentId: F:Rise.Domain.Common.StreetEnum.GASMETERLAAN
+  id: GASMETERLAAN
+  parent: Rise.Domain.Common.StreetEnum
+  langs:
+  - csharp
+  - vb
+  name: GASMETERLAAN
+  nameWithType: StreetEnum.GASMETERLAAN
+  fullName: Rise.Domain.Common.StreetEnum.GASMETERLAAN
+  type: Field
+  source:
+    remote:
+      path: Rise.Domain/Common/AdressEnum.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: GASMETERLAAN
+    path: Rise.Domain/Common/AdressEnum.cs
+    startLine: 11
+  assemblies:
+  - Rise.Domain
+  namespace: Rise.Domain.Common
+  syntax:
+    content: GASMETERLAAN = 7
+    return:
+      type: Rise.Domain.Common.StreetEnum
+- uid: Rise.Domain.Common.StreetEnum.GOUDBLOEMSTRAAT
+  commentId: F:Rise.Domain.Common.StreetEnum.GOUDBLOEMSTRAAT
+  id: GOUDBLOEMSTRAAT
+  parent: Rise.Domain.Common.StreetEnum
+  langs:
+  - csharp
+  - vb
+  name: GOUDBLOEMSTRAAT
+  nameWithType: StreetEnum.GOUDBLOEMSTRAAT
+  fullName: Rise.Domain.Common.StreetEnum.GOUDBLOEMSTRAAT
+  type: Field
+  source:
+    remote:
+      path: Rise.Domain/Common/AdressEnum.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: GOUDBLOEMSTRAAT
+    path: Rise.Domain/Common/AdressEnum.cs
+    startLine: 12
+  assemblies:
+  - Rise.Domain
+  namespace: Rise.Domain.Common
+  syntax:
+    content: GOUDBLOEMSTRAAT = 8
+    return:
+      type: Rise.Domain.Common.StreetEnum
+- uid: Rise.Domain.Common.StreetEnum.GROENDREEF
+  commentId: F:Rise.Domain.Common.StreetEnum.GROENDREEF
+  id: GROENDREEF
+  parent: Rise.Domain.Common.StreetEnum
+  langs:
+  - csharp
+  - vb
+  name: GROENDREEF
+  nameWithType: StreetEnum.GROENDREEF
+  fullName: Rise.Domain.Common.StreetEnum.GROENDREEF
+  type: Field
+  source:
+    remote:
+      path: Rise.Domain/Common/AdressEnum.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: GROENDREEF
+    path: Rise.Domain/Common/AdressEnum.cs
+    startLine: 13
+  assemblies:
+  - Rise.Domain
+  namespace: Rise.Domain.Common
+  syntax:
+    content: GROENDREEF = 9
+    return:
+      type: Rise.Domain.Common.StreetEnum
+- uid: Rise.Domain.Common.StreetEnum.GROTEMUIDE
+  commentId: F:Rise.Domain.Common.StreetEnum.GROTEMUIDE
+  id: GROTEMUIDE
+  parent: Rise.Domain.Common.StreetEnum
+  langs:
+  - csharp
+  - vb
+  name: GROTEMUIDE
+  nameWithType: StreetEnum.GROTEMUIDE
+  fullName: Rise.Domain.Common.StreetEnum.GROTEMUIDE
+  type: Field
+  source:
+    remote:
+      path: Rise.Domain/Common/AdressEnum.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: GROTEMUIDE
+    path: Rise.Domain/Common/AdressEnum.cs
+    startLine: 14
+  assemblies:
+  - Rise.Domain
+  namespace: Rise.Domain.Common
+  syntax:
+    content: GROTEMUIDE = 10
+    return:
+      type: Rise.Domain.Common.StreetEnum
+- uid: Rise.Domain.Common.StreetEnum.HALVEMAANSTRAAT
+  commentId: F:Rise.Domain.Common.StreetEnum.HALVEMAANSTRAAT
+  id: HALVEMAANSTRAAT
+  parent: Rise.Domain.Common.StreetEnum
+  langs:
+  - csharp
+  - vb
+  name: HALVEMAANSTRAAT
+  nameWithType: StreetEnum.HALVEMAANSTRAAT
+  fullName: Rise.Domain.Common.StreetEnum.HALVEMAANSTRAAT
+  type: Field
+  source:
+    remote:
+      path: Rise.Domain/Common/AdressEnum.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: HALVEMAANSTRAAT
+    path: Rise.Domain/Common/AdressEnum.cs
+    startLine: 15
+  assemblies:
+  - Rise.Domain
+  namespace: Rise.Domain.Common
+  syntax:
+    content: HALVEMAANSTRAAT = 11
+    return:
+      type: Rise.Domain.Common.StreetEnum
+- uid: Rise.Domain.Common.StreetEnum.HAM
+  commentId: F:Rise.Domain.Common.StreetEnum.HAM
+  id: HAM
+  parent: Rise.Domain.Common.StreetEnum
+  langs:
+  - csharp
+  - vb
+  name: HAM
+  nameWithType: StreetEnum.HAM
+  fullName: Rise.Domain.Common.StreetEnum.HAM
+  type: Field
+  source:
+    remote:
+      path: Rise.Domain/Common/AdressEnum.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: HAM
+    path: Rise.Domain/Common/AdressEnum.cs
+    startLine: 16
+  assemblies:
+  - Rise.Domain
+  namespace: Rise.Domain.Common
+  syntax:
+    content: HAM = 12
+    return:
+      type: Rise.Domain.Common.StreetEnum
+- uid: Rise.Domain.Common.StreetEnum.HAMERSTRAAT
+  commentId: F:Rise.Domain.Common.StreetEnum.HAMERSTRAAT
+  id: HAMERSTRAAT
+  parent: Rise.Domain.Common.StreetEnum
+  langs:
+  - csharp
+  - vb
+  name: HAMERSTRAAT
+  nameWithType: StreetEnum.HAMERSTRAAT
+  fullName: Rise.Domain.Common.StreetEnum.HAMERSTRAAT
+  type: Field
+  source:
+    remote:
+      path: Rise.Domain/Common/AdressEnum.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: HAMERSTRAAT
+    path: Rise.Domain/Common/AdressEnum.cs
+    startLine: 17
+  assemblies:
+  - Rise.Domain
+  namespace: Rise.Domain.Common
+  syntax:
+    content: HAMERSTRAAT = 13
+    return:
+      type: Rise.Domain.Common.StreetEnum
+- uid: Rise.Domain.Common.StreetEnum.INDUSTRIEWEG
+  commentId: F:Rise.Domain.Common.StreetEnum.INDUSTRIEWEG
+  id: INDUSTRIEWEG
+  parent: Rise.Domain.Common.StreetEnum
+  langs:
+  - csharp
+  - vb
+  name: INDUSTRIEWEG
+  nameWithType: StreetEnum.INDUSTRIEWEG
+  fullName: Rise.Domain.Common.StreetEnum.INDUSTRIEWEG
+  type: Field
+  source:
+    remote:
+      path: Rise.Domain/Common/AdressEnum.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: INDUSTRIEWEG
+    path: Rise.Domain/Common/AdressEnum.cs
+    startLine: 18
+  assemblies:
+  - Rise.Domain
+  namespace: Rise.Domain.Common
+  syntax:
+    content: INDUSTRIEWEG = 14
+    return:
+      type: Rise.Domain.Common.StreetEnum
+- uid: Rise.Domain.Common.StreetEnum.KARELANTHEUNISSTRAAT
+  commentId: F:Rise.Domain.Common.StreetEnum.KARELANTHEUNISSTRAAT
+  id: KARELANTHEUNISSTRAAT
+  parent: Rise.Domain.Common.StreetEnum
+  langs:
+  - csharp
+  - vb
+  name: KARELANTHEUNISSTRAAT
+  nameWithType: StreetEnum.KARELANTHEUNISSTRAAT
+  fullName: Rise.Domain.Common.StreetEnum.KARELANTHEUNISSTRAAT
+  type: Field
+  source:
+    remote:
+      path: Rise.Domain/Common/AdressEnum.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: KARELANTHEUNISSTRAAT
+    path: Rise.Domain/Common/AdressEnum.cs
+    startLine: 19
+  assemblies:
+  - Rise.Domain
+  namespace: Rise.Domain.Common
+  syntax:
+    content: KARELANTHEUNISSTRAAT = 15
+    return:
+      type: Rise.Domain.Common.StreetEnum
+- uid: Rise.Domain.Common.StreetEnum.KIEKENBOSSTRAAT
+  commentId: F:Rise.Domain.Common.StreetEnum.KIEKENBOSSTRAAT
+  id: KIEKENBOSSTRAAT
+  parent: Rise.Domain.Common.StreetEnum
+  langs:
+  - csharp
+  - vb
+  name: KIEKENBOSSTRAAT
+  nameWithType: StreetEnum.KIEKENBOSSTRAAT
+  fullName: Rise.Domain.Common.StreetEnum.KIEKENBOSSTRAAT
+  type: Field
+  source:
+    remote:
+      path: Rise.Domain/Common/AdressEnum.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: KIEKENBOSSTRAAT
+    path: Rise.Domain/Common/AdressEnum.cs
+    startLine: 20
+  assemblies:
+  - Rise.Domain
+  namespace: Rise.Domain.Common
+  syntax:
+    content: KIEKENBOSSTRAAT = 16
+    return:
+      type: Rise.Domain.Common.StreetEnum
+- uid: Rise.Domain.Common.StreetEnum.KOOPVAARDIJLAAN
+  commentId: F:Rise.Domain.Common.StreetEnum.KOOPVAARDIJLAAN
+  id: KOOPVAARDIJLAAN
+  parent: Rise.Domain.Common.StreetEnum
+  langs:
+  - csharp
+  - vb
+  name: KOOPVAARDIJLAAN
+  nameWithType: StreetEnum.KOOPVAARDIJLAAN
+  fullName: Rise.Domain.Common.StreetEnum.KOOPVAARDIJLAAN
+  type: Field
+  source:
+    remote:
+      path: Rise.Domain/Common/AdressEnum.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: KOOPVAARDIJLAAN
+    path: Rise.Domain/Common/AdressEnum.cs
+    startLine: 21
+  assemblies:
+  - Rise.Domain
+  namespace: Rise.Domain.Common
+  syntax:
+    content: KOOPVAARDIJLAAN = 17
+    return:
+      type: Rise.Domain.Common.StreetEnum
+- uid: Rise.Domain.Common.StreetEnum.LANGERBRUGGEKAAI
+  commentId: F:Rise.Domain.Common.StreetEnum.LANGERBRUGGEKAAI
+  id: LANGERBRUGGEKAAI
+  parent: Rise.Domain.Common.StreetEnum
+  langs:
+  - csharp
+  - vb
+  name: LANGERBRUGGEKAAI
+  nameWithType: StreetEnum.LANGERBRUGGEKAAI
+  fullName: Rise.Domain.Common.StreetEnum.LANGERBRUGGEKAAI
+  type: Field
+  source:
+    remote:
+      path: Rise.Domain/Common/AdressEnum.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: LANGERBRUGGEKAAI
+    path: Rise.Domain/Common/AdressEnum.cs
+    startLine: 22
+  assemblies:
+  - Rise.Domain
+  namespace: Rise.Domain.Common
+  syntax:
+    content: LANGERBRUGGEKAAI = 18
+    return:
+      type: Rise.Domain.Common.StreetEnum
+- uid: Rise.Domain.Common.StreetEnum.MEULESTEDEBRUG
+  commentId: F:Rise.Domain.Common.StreetEnum.MEULESTEDEBRUG
+  id: MEULESTEDEBRUG
+  parent: Rise.Domain.Common.StreetEnum
+  langs:
+  - csharp
+  - vb
+  name: MEULESTEDEBRUG
+  nameWithType: StreetEnum.MEULESTEDEBRUG
+  fullName: Rise.Domain.Common.StreetEnum.MEULESTEDEBRUG
+  type: Field
+  source:
+    remote:
+      path: Rise.Domain/Common/AdressEnum.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: MEULESTEDEBRUG
+    path: Rise.Domain/Common/AdressEnum.cs
+    startLine: 23
+  assemblies:
+  - Rise.Domain
+  namespace: Rise.Domain.Common
+  syntax:
+    content: MEULESTEDEBRUG = 19
+    return:
+      type: Rise.Domain.Common.StreetEnum
+- uid: Rise.Domain.Common.StreetEnum.MEULESTEDEDIJK
+  commentId: F:Rise.Domain.Common.StreetEnum.MEULESTEDEDIJK
+  id: MEULESTEDEDIJK
+  parent: Rise.Domain.Common.StreetEnum
+  langs:
+  - csharp
+  - vb
+  name: MEULESTEDEDIJK
+  nameWithType: StreetEnum.MEULESTEDEDIJK
+  fullName: Rise.Domain.Common.StreetEnum.MEULESTEDEDIJK
+  type: Field
+  source:
+    remote:
+      path: Rise.Domain/Common/AdressEnum.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: MEULESTEDEDIJK
+    path: Rise.Domain/Common/AdressEnum.cs
+    startLine: 24
+  assemblies:
+  - Rise.Domain
+  namespace: Rise.Domain.Common
+  syntax:
+    content: MEULESTEDEDIJK = 20
+    return:
+      type: Rise.Domain.Common.StreetEnum
+- uid: Rise.Domain.Common.StreetEnum.MEULESTEDEHOF
+  commentId: F:Rise.Domain.Common.StreetEnum.MEULESTEDEHOF
+  id: MEULESTEDEHOF
+  parent: Rise.Domain.Common.StreetEnum
+  langs:
+  - csharp
+  - vb
+  name: MEULESTEDEHOF
+  nameWithType: StreetEnum.MEULESTEDEHOF
+  fullName: Rise.Domain.Common.StreetEnum.MEULESTEDEHOF
+  type: Field
+  source:
+    remote:
+      path: Rise.Domain/Common/AdressEnum.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: MEULESTEDEHOF
+    path: Rise.Domain/Common/AdressEnum.cs
+    startLine: 25
+  assemblies:
+  - Rise.Domain
+  namespace: Rise.Domain.Common
+  syntax:
+    content: MEULESTEDEHOF = 21
+    return:
+      type: Rise.Domain.Common.StreetEnum
+- uid: Rise.Domain.Common.StreetEnum.MEULESTEDEKAAI
+  commentId: F:Rise.Domain.Common.StreetEnum.MEULESTEDEKAAI
+  id: MEULESTEDEKAAI
+  parent: Rise.Domain.Common.StreetEnum
+  langs:
+  - csharp
+  - vb
+  name: MEULESTEDEKAAI
+  nameWithType: StreetEnum.MEULESTEDEKAAI
+  fullName: Rise.Domain.Common.StreetEnum.MEULESTEDEKAAI
+  type: Field
+  source:
+    remote:
+      path: Rise.Domain/Common/AdressEnum.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: MEULESTEDEKAAI
+    path: Rise.Domain/Common/AdressEnum.cs
+    startLine: 26
+  assemblies:
+  - Rise.Domain
+  namespace: Rise.Domain.Common
+  syntax:
+    content: MEULESTEDEKAAI = 22
+    return:
+      type: Rise.Domain.Common.StreetEnum
+- uid: Rise.Domain.Common.StreetEnum.MEULESTEEDSESTEENWEG
+  commentId: F:Rise.Domain.Common.StreetEnum.MEULESTEEDSESTEENWEG
+  id: MEULESTEEDSESTEENWEG
+  parent: Rise.Domain.Common.StreetEnum
+  langs:
+  - csharp
+  - vb
+  name: MEULESTEEDSESTEENWEG
+  nameWithType: StreetEnum.MEULESTEEDSESTEENWEG
+  fullName: Rise.Domain.Common.StreetEnum.MEULESTEEDSESTEENWEG
+  type: Field
+  source:
+    remote:
+      path: Rise.Domain/Common/AdressEnum.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: MEULESTEEDSESTEENWEG
+    path: Rise.Domain/Common/AdressEnum.cs
+    startLine: 27
+  assemblies:
+  - Rise.Domain
+  namespace: Rise.Domain.Common
+  syntax:
+    content: MEULESTEEDSESTEENWEG = 23
+    return:
+      type: Rise.Domain.Common.StreetEnum
+- uid: Rise.Domain.Common.StreetEnum.MUIDEHOFSTRAAT
+  commentId: F:Rise.Domain.Common.StreetEnum.MUIDEHOFSTRAAT
+  id: MUIDEHOFSTRAAT
+  parent: Rise.Domain.Common.StreetEnum
+  langs:
+  - csharp
+  - vb
+  name: MUIDEHOFSTRAAT
+  nameWithType: StreetEnum.MUIDEHOFSTRAAT
+  fullName: Rise.Domain.Common.StreetEnum.MUIDEHOFSTRAAT
+  type: Field
+  source:
+    remote:
+      path: Rise.Domain/Common/AdressEnum.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: MUIDEHOFSTRAAT
+    path: Rise.Domain/Common/AdressEnum.cs
+    startLine: 28
+  assemblies:
+  - Rise.Domain
+  namespace: Rise.Domain.Common
+  syntax:
+    content: MUIDEHOFSTRAAT = 24
+    return:
+      type: Rise.Domain.Common.StreetEnum
+- uid: Rise.Domain.Common.StreetEnum.MUIDEKAAI
+  commentId: F:Rise.Domain.Common.StreetEnum.MUIDEKAAI
+  id: MUIDEKAAI
+  parent: Rise.Domain.Common.StreetEnum
+  langs:
+  - csharp
+  - vb
+  name: MUIDEKAAI
+  nameWithType: StreetEnum.MUIDEKAAI
+  fullName: Rise.Domain.Common.StreetEnum.MUIDEKAAI
+  type: Field
+  source:
+    remote:
+      path: Rise.Domain/Common/AdressEnum.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: MUIDEKAAI
+    path: Rise.Domain/Common/AdressEnum.cs
+    startLine: 29
+  assemblies:
+  - Rise.Domain
+  namespace: Rise.Domain.Common
+  syntax:
+    content: MUIDEKAAI = 25
+    return:
+      type: Rise.Domain.Common.StreetEnum
+- uid: Rise.Domain.Common.StreetEnum.MUIDELAAN
+  commentId: F:Rise.Domain.Common.StreetEnum.MUIDELAAN
+  id: MUIDELAAN
+  parent: Rise.Domain.Common.StreetEnum
+  langs:
+  - csharp
+  - vb
+  name: MUIDELAAN
+  nameWithType: StreetEnum.MUIDELAAN
+  fullName: Rise.Domain.Common.StreetEnum.MUIDELAAN
+  type: Field
+  source:
+    remote:
+      path: Rise.Domain/Common/AdressEnum.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: MUIDELAAN
+    path: Rise.Domain/Common/AdressEnum.cs
+    startLine: 30
+  assemblies:
+  - Rise.Domain
+  namespace: Rise.Domain.Common
+  syntax:
+    content: MUIDELAAN = 26
+    return:
+      type: Rise.Domain.Common.StreetEnum
+- uid: Rise.Domain.Common.StreetEnum.MUIDEPOORT
+  commentId: F:Rise.Domain.Common.StreetEnum.MUIDEPOORT
+  id: MUIDEPOORT
+  parent: Rise.Domain.Common.StreetEnum
+  langs:
+  - csharp
+  - vb
+  name: MUIDEPOORT
+  nameWithType: StreetEnum.MUIDEPOORT
+  fullName: Rise.Domain.Common.StreetEnum.MUIDEPOORT
+  type: Field
+  source:
+    remote:
+      path: Rise.Domain/Common/AdressEnum.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: MUIDEPOORT
+    path: Rise.Domain/Common/AdressEnum.cs
+    startLine: 31
+  assemblies:
+  - Rise.Domain
+  namespace: Rise.Domain.Common
+  syntax:
+    content: MUIDEPOORT = 27
+    return:
+      type: Rise.Domain.Common.StreetEnum
+- uid: Rise.Domain.Common.StreetEnum.NEERMEERSKAAI
+  commentId: F:Rise.Domain.Common.StreetEnum.NEERMEERSKAAI
+  id: NEERMEERSKAAI
+  parent: Rise.Domain.Common.StreetEnum
+  langs:
+  - csharp
+  - vb
+  name: NEERMEERSKAAI
+  nameWithType: StreetEnum.NEERMEERSKAAI
+  fullName: Rise.Domain.Common.StreetEnum.NEERMEERSKAAI
+  type: Field
+  source:
+    remote:
+      path: Rise.Domain/Common/AdressEnum.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: NEERMEERSKAAI
+    path: Rise.Domain/Common/AdressEnum.cs
+    startLine: 32
+  assemblies:
+  - Rise.Domain
+  namespace: Rise.Domain.Common
+  syntax:
+    content: NEERMEERSKAAI = 28
+    return:
+      type: Rise.Domain.Common.StreetEnum
+- uid: Rise.Domain.Common.StreetEnum.NIEUWEVAART
+  commentId: F:Rise.Domain.Common.StreetEnum.NIEUWEVAART
+  id: NIEUWEVAART
+  parent: Rise.Domain.Common.StreetEnum
+  langs:
+  - csharp
+  - vb
+  name: NIEUWEVAART
+  nameWithType: StreetEnum.NIEUWEVAART
+  fullName: Rise.Domain.Common.StreetEnum.NIEUWEVAART
+  type: Field
+  source:
+    remote:
+      path: Rise.Domain/Common/AdressEnum.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: NIEUWEVAART
+    path: Rise.Domain/Common/AdressEnum.cs
+    startLine: 33
+  assemblies:
+  - Rise.Domain
+  namespace: Rise.Domain.Common
+  syntax:
+    content: NIEUWEVAART = 29
+    return:
+      type: Rise.Domain.Common.StreetEnum
+- uid: Rise.Domain.Common.StreetEnum.OKTROOIPLEIN
+  commentId: F:Rise.Domain.Common.StreetEnum.OKTROOIPLEIN
+  id: OKTROOIPLEIN
+  parent: Rise.Domain.Common.StreetEnum
+  langs:
+  - csharp
+  - vb
+  name: OKTROOIPLEIN
+  nameWithType: StreetEnum.OKTROOIPLEIN
+  fullName: Rise.Domain.Common.StreetEnum.OKTROOIPLEIN
+  type: Field
+  source:
+    remote:
+      path: Rise.Domain/Common/AdressEnum.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: OKTROOIPLEIN
+    path: Rise.Domain/Common/AdressEnum.cs
+    startLine: 34
+  assemblies:
+  - Rise.Domain
+  namespace: Rise.Domain.Common
+  syntax:
+    content: OKTROOIPLEIN = 30
+    return:
+      type: Rise.Domain.Common.StreetEnum
+- uid: Rise.Domain.Common.StreetEnum.SCHELDEKAAI
+  commentId: F:Rise.Domain.Common.StreetEnum.SCHELDEKAAI
+  id: SCHELDEKAAI
+  parent: Rise.Domain.Common.StreetEnum
+  langs:
+  - csharp
+  - vb
+  name: SCHELDEKAAI
+  nameWithType: StreetEnum.SCHELDEKAAI
+  fullName: Rise.Domain.Common.StreetEnum.SCHELDEKAAI
+  type: Field
+  source:
+    remote:
+      path: Rise.Domain/Common/AdressEnum.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: SCHELDEKAAI
+    path: Rise.Domain/Common/AdressEnum.cs
+    startLine: 35
+  assemblies:
+  - Rise.Domain
+  namespace: Rise.Domain.Common
+  syntax:
+    content: SCHELDEKAAI = 31
+    return:
+      type: Rise.Domain.Common.StreetEnum
+- uid: Rise.Domain.Common.StreetEnum.SCHOONSCHIPSTRAAT
+  commentId: F:Rise.Domain.Common.StreetEnum.SCHOONSCHIPSTRAAT
+  id: SCHOONSCHIPSTRAAT
+  parent: Rise.Domain.Common.StreetEnum
+  langs:
+  - csharp
+  - vb
+  name: SCHOONSCHIPSTRAAT
+  nameWithType: StreetEnum.SCHOONSCHIPSTRAAT
+  fullName: Rise.Domain.Common.StreetEnum.SCHOONSCHIPSTRAAT
+  type: Field
+  source:
+    remote:
+      path: Rise.Domain/Common/AdressEnum.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: SCHOONSCHIPSTRAAT
+    path: Rise.Domain/Common/AdressEnum.cs
+    startLine: 36
+  assemblies:
+  - Rise.Domain
+  namespace: Rise.Domain.Common
+  syntax:
+    content: SCHOONSCHIPSTRAAT = 32
+    return:
+      type: Rise.Domain.Common.StreetEnum
+- uid: Rise.Domain.Common.StreetEnum.SPANJAARDSTRAAT
+  commentId: F:Rise.Domain.Common.StreetEnum.SPANJAARDSTRAAT
+  id: SPANJAARDSTRAAT
+  parent: Rise.Domain.Common.StreetEnum
+  langs:
+  - csharp
+  - vb
+  name: SPANJAARDSTRAAT
+  nameWithType: StreetEnum.SPANJAARDSTRAAT
+  fullName: Rise.Domain.Common.StreetEnum.SPANJAARDSTRAAT
+  type: Field
+  source:
+    remote:
+      path: Rise.Domain/Common/AdressEnum.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: SPANJAARDSTRAAT
+    path: Rise.Domain/Common/AdressEnum.cs
+    startLine: 37
+  assemblies:
+  - Rise.Domain
+  namespace: Rise.Domain.Common
+  syntax:
+    content: SPANJAARDSTRAAT = 33
+    return:
+      type: Rise.Domain.Common.StreetEnum
+- uid: Rise.Domain.Common.StreetEnum.STAPELPLEIN
+  commentId: F:Rise.Domain.Common.StreetEnum.STAPELPLEIN
+  id: STAPELPLEIN
+  parent: Rise.Domain.Common.StreetEnum
+  langs:
+  - csharp
+  - vb
+  name: STAPELPLEIN
+  nameWithType: StreetEnum.STAPELPLEIN
+  fullName: Rise.Domain.Common.StreetEnum.STAPELPLEIN
+  type: Field
+  source:
+    remote:
+      path: Rise.Domain/Common/AdressEnum.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: STAPELPLEIN
+    path: Rise.Domain/Common/AdressEnum.cs
+    startLine: 38
+  assemblies:
+  - Rise.Domain
+  namespace: Rise.Domain.Common
+  syntax:
+    content: STAPELPLEIN = 34
+    return:
+      type: Rise.Domain.Common.StreetEnum
+- uid: Rise.Domain.Common.StreetEnum.VOORHAVENKAAI
+  commentId: F:Rise.Domain.Common.StreetEnum.VOORHAVENKAAI
+  id: VOORHAVENKAAI
+  parent: Rise.Domain.Common.StreetEnum
+  langs:
+  - csharp
+  - vb
+  name: VOORHAVENKAAI
+  nameWithType: StreetEnum.VOORHAVENKAAI
+  fullName: Rise.Domain.Common.StreetEnum.VOORHAVENKAAI
+  type: Field
+  source:
+    remote:
+      path: Rise.Domain/Common/AdressEnum.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: VOORHAVENKAAI
+    path: Rise.Domain/Common/AdressEnum.cs
+    startLine: 39
+  assemblies:
+  - Rise.Domain
+  namespace: Rise.Domain.Common
+  syntax:
+    content: VOORHAVENKAAI = 35
+    return:
+      type: Rise.Domain.Common.StreetEnum
+- uid: Rise.Domain.Common.StreetEnum.ZEESCHIPSTRAAT
+  commentId: F:Rise.Domain.Common.StreetEnum.ZEESCHIPSTRAAT
+  id: ZEESCHIPSTRAAT
+  parent: Rise.Domain.Common.StreetEnum
+  langs:
+  - csharp
+  - vb
+  name: ZEESCHIPSTRAAT
+  nameWithType: StreetEnum.ZEESCHIPSTRAAT
+  fullName: Rise.Domain.Common.StreetEnum.ZEESCHIPSTRAAT
+  type: Field
+  source:
+    remote:
+      path: Rise.Domain/Common/AdressEnum.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: ZEESCHIPSTRAAT
+    path: Rise.Domain/Common/AdressEnum.cs
+    startLine: 40
+  assemblies:
+  - Rise.Domain
+  namespace: Rise.Domain.Common
+  syntax:
+    content: ZEESCHIPSTRAAT = 36
+    return:
+      type: Rise.Domain.Common.StreetEnum
+- uid: Rise.Domain.Common.StreetEnum.ZEESCHIPSTRAATJE
+  commentId: F:Rise.Domain.Common.StreetEnum.ZEESCHIPSTRAATJE
+  id: ZEESCHIPSTRAATJE
+  parent: Rise.Domain.Common.StreetEnum
+  langs:
+  - csharp
+  - vb
+  name: ZEESCHIPSTRAATJE
+  nameWithType: StreetEnum.ZEESCHIPSTRAATJE
+  fullName: Rise.Domain.Common.StreetEnum.ZEESCHIPSTRAATJE
+  type: Field
+  source:
+    remote:
+      path: Rise.Domain/Common/AdressEnum.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: ZEESCHIPSTRAATJE
+    path: Rise.Domain/Common/AdressEnum.cs
+    startLine: 41
+  assemblies:
+  - Rise.Domain
+  namespace: Rise.Domain.Common
+  syntax:
+    content: ZEESCHIPSTRAATJE = 37
+    return:
+      type: Rise.Domain.Common.StreetEnum
+- uid: Rise.Domain.Common.StreetEnum.ZONGELAAN
+  commentId: F:Rise.Domain.Common.StreetEnum.ZONGELAAN
+  id: ZONGELAAN
+  parent: Rise.Domain.Common.StreetEnum
+  langs:
+  - csharp
+  - vb
+  name: ZONGELAAN
+  nameWithType: StreetEnum.ZONGELAAN
+  fullName: Rise.Domain.Common.StreetEnum.ZONGELAAN
+  type: Field
+  source:
+    remote:
+      path: Rise.Domain/Common/AdressEnum.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: ZONGELAAN
+    path: Rise.Domain/Common/AdressEnum.cs
+    startLine: 42
+  assemblies:
+  - Rise.Domain
+  namespace: Rise.Domain.Common
+  syntax:
+    content: ZONGELAAN = 38
+    return:
+      type: Rise.Domain.Common.StreetEnum
+references:
+- uid: Rise.Domain.Common
+  commentId: N:Rise.Domain.Common
+  href: Rise.html
+  name: Rise.Domain.Common
+  nameWithType: Rise.Domain.Common
+  fullName: Rise.Domain.Common
+  spec.csharp:
+  - uid: Rise
+    name: Rise
+    href: Rise.html
+  - name: .
+  - uid: Rise.Domain
+    name: Domain
+    href: Rise.Domain.html
+  - name: .
+  - uid: Rise.Domain.Common
+    name: Common
+    href: Rise.Domain.Common.html
+  spec.vb:
+  - uid: Rise
+    name: Rise
+    href: Rise.html
+  - name: .
+  - uid: Rise.Domain
+    name: Domain
+    href: Rise.Domain.html
+  - name: .
+  - uid: Rise.Domain.Common
+    name: Common
+    href: Rise.Domain.Common.html
+- uid: Rise.Domain.Common.StreetEnum.Rise.Domain.Common.StreetEnumExtensions.GetStreetName
+  commentId: M:Rise.Domain.Common.StreetEnumExtensions.GetStreetName(Rise.Domain.Common.StreetEnum)
+  parent: Rise.Domain.Common.StreetEnumExtensions
+  definition: Rise.Domain.Common.StreetEnumExtensions.GetStreetName(Rise.Domain.Common.StreetEnum)
+  href: Rise.Domain.Common.StreetEnumExtensions.html#Rise_Domain_Common_StreetEnumExtensions_GetStreetName_Rise_Domain_Common_StreetEnum_
+  name: GetStreetName(StreetEnum)
+  nameWithType: StreetEnumExtensions.GetStreetName(StreetEnum)
+  fullName: Rise.Domain.Common.StreetEnumExtensions.GetStreetName(Rise.Domain.Common.StreetEnum)
+  spec.csharp:
+  - uid: Rise.Domain.Common.StreetEnumExtensions.GetStreetName(Rise.Domain.Common.StreetEnum)
+    name: GetStreetName
+    href: Rise.Domain.Common.StreetEnumExtensions.html#Rise_Domain_Common_StreetEnumExtensions_GetStreetName_Rise_Domain_Common_StreetEnum_
+  - name: (
+  - uid: Rise.Domain.Common.StreetEnum
+    name: StreetEnum
+    href: Rise.Domain.Common.StreetEnum.html
+  - name: )
+  spec.vb:
+  - uid: Rise.Domain.Common.StreetEnumExtensions.GetStreetName(Rise.Domain.Common.StreetEnum)
+    name: GetStreetName
+    href: Rise.Domain.Common.StreetEnumExtensions.html#Rise_Domain_Common_StreetEnumExtensions_GetStreetName_Rise_Domain_Common_StreetEnum_
+  - name: (
+  - uid: Rise.Domain.Common.StreetEnum
+    name: StreetEnum
+    href: Rise.Domain.Common.StreetEnum.html
+  - name: )
+- uid: Rise.Domain.Common.StreetEnumExtensions.GetStreetName(Rise.Domain.Common.StreetEnum)
+  commentId: M:Rise.Domain.Common.StreetEnumExtensions.GetStreetName(Rise.Domain.Common.StreetEnum)
+  href: Rise.Domain.Common.StreetEnumExtensions.html#Rise_Domain_Common_StreetEnumExtensions_GetStreetName_Rise_Domain_Common_StreetEnum_
+  name: GetStreetName(StreetEnum)
+  nameWithType: StreetEnumExtensions.GetStreetName(StreetEnum)
+  fullName: Rise.Domain.Common.StreetEnumExtensions.GetStreetName(Rise.Domain.Common.StreetEnum)
+  spec.csharp:
+  - uid: Rise.Domain.Common.StreetEnumExtensions.GetStreetName(Rise.Domain.Common.StreetEnum)
+    name: GetStreetName
+    href: Rise.Domain.Common.StreetEnumExtensions.html#Rise_Domain_Common_StreetEnumExtensions_GetStreetName_Rise_Domain_Common_StreetEnum_
+  - name: (
+  - uid: Rise.Domain.Common.StreetEnum
+    name: StreetEnum
+    href: Rise.Domain.Common.StreetEnum.html
+  - name: )
+  spec.vb:
+  - uid: Rise.Domain.Common.StreetEnumExtensions.GetStreetName(Rise.Domain.Common.StreetEnum)
+    name: GetStreetName
+    href: Rise.Domain.Common.StreetEnumExtensions.html#Rise_Domain_Common_StreetEnumExtensions_GetStreetName_Rise_Domain_Common_StreetEnum_
+  - name: (
+  - uid: Rise.Domain.Common.StreetEnum
+    name: StreetEnum
+    href: Rise.Domain.Common.StreetEnum.html
+  - name: )
+- uid: Rise.Domain.Common.StreetEnumExtensions
+  commentId: T:Rise.Domain.Common.StreetEnumExtensions
+  parent: Rise.Domain.Common
+  href: Rise.Domain.Common.StreetEnumExtensions.html
+  name: StreetEnumExtensions
+  nameWithType: StreetEnumExtensions
+  fullName: Rise.Domain.Common.StreetEnumExtensions
+- uid: Rise.Domain.Common.StreetEnum
+  commentId: T:Rise.Domain.Common.StreetEnum
+  parent: Rise.Domain.Common
+  href: Rise.Domain.Common.StreetEnum.html
+  name: StreetEnum
+  nameWithType: StreetEnum
+  fullName: Rise.Domain.Common.StreetEnum

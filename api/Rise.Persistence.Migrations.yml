@@ -1,0 +1,30 @@
+### YamlMime:ManagedReference
+items:
+- uid: Rise.Persistence.Migrations
+  commentId: N:Rise.Persistence.Migrations
+  id: Rise.Persistence.Migrations
+  children:
+  - Rise.Persistence.Migrations.Initial
+  - Rise.Persistence.Migrations.addedUserTables
+  langs:
+  - csharp
+  - vb
+  name: Rise.Persistence.Migrations
+  nameWithType: Rise.Persistence.Migrations
+  fullName: Rise.Persistence.Migrations
+  type: Namespace
+  assemblies:
+  - Rise.Persistence
+references:
+- uid: Rise.Persistence.Migrations.Initial
+  commentId: T:Rise.Persistence.Migrations.Initial
+  href: Rise.Persistence.Migrations.Initial.html
+  name: Initial
+  nameWithType: Initial
+  fullName: Rise.Persistence.Migrations.Initial
+- uid: Rise.Persistence.Migrations.addedUserTables
+  commentId: T:Rise.Persistence.Migrations.addedUserTables
+  href: Rise.Persistence.Migrations.addedUserTables.html
+  name: addedUserTables
+  nameWithType: addedUserTables
+  fullName: Rise.Persistence.Migrations.addedUserTables

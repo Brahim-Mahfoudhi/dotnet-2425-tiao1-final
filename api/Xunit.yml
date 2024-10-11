@@ -1,0 +1,23 @@
+### YamlMime:ManagedReference
+items:
+- uid: Xunit
+  commentId: N:Xunit
+  id: Xunit
+  children:
+  - Xunit.ServiceCollectionLoggingExtensions
+  langs:
+  - csharp
+  - vb
+  name: Xunit
+  nameWithType: Xunit
+  fullName: Xunit
+  type: Namespace
+  assemblies:
+  - Rise.Client.Tests
+references:
+- uid: Xunit.ServiceCollectionLoggingExtensions
+  commentId: T:Xunit.ServiceCollectionLoggingExtensions
+  href: Xunit.ServiceCollectionLoggingExtensions.html
+  name: ServiceCollectionLoggingExtensions
+  nameWithType: ServiceCollectionLoggingExtensions
+  fullName: Xunit.ServiceCollectionLoggingExtensions

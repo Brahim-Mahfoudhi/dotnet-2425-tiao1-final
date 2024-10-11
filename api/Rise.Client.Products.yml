@@ -1,0 +1,51 @@
+### YamlMime:ManagedReference
+items:
+- uid: Rise.Client.Products
+  commentId: N:Rise.Client.Products
+  id: Rise.Client.Products
+  children:
+  - Rise.Client.Products.FakeProductService
+  - Rise.Client.Products.Index
+  - Rise.Client.Products.IndexShould
+  - Rise.Client.Products.IndexWithMockExampleShould
+  - Rise.Client.Products.ProductService
+  langs:
+  - csharp
+  - vb
+  name: Rise.Client.Products
+  nameWithType: Rise.Client.Products
+  fullName: Rise.Client.Products
+  type: Namespace
+  assemblies:
+  - Rise.Client
+references:
+- uid: Rise.Client.Products.Index
+  commentId: T:Rise.Client.Products.Index
+  href: Rise.Client.Products.Index.html
+  name: Index
+  nameWithType: Index
+  fullName: Rise.Client.Products.Index
+- uid: Rise.Client.Products.ProductService
+  commentId: T:Rise.Client.Products.ProductService
+  href: Rise.Client.Products.ProductService.html
+  name: ProductService
+  nameWithType: ProductService
+  fullName: Rise.Client.Products.ProductService
+- uid: Rise.Client.Products.FakeProductService
+  commentId: T:Rise.Client.Products.FakeProductService
+  href: Rise.Client.Products.FakeProductService.html
+  name: FakeProductService
+  nameWithType: FakeProductService
+  fullName: Rise.Client.Products.FakeProductService
+- uid: Rise.Client.Products.IndexShould
+  commentId: T:Rise.Client.Products.IndexShould
+  href: Rise.Client.Products.IndexShould.html
+  name: IndexShould
+  nameWithType: IndexShould
+  fullName: Rise.Client.Products.IndexShould
+- uid: Rise.Client.Products.IndexWithMockExampleShould
+  commentId: T:Rise.Client.Products.IndexWithMockExampleShould
+  href: Rise.Client.Products.IndexWithMockExampleShould.html
+  name: IndexWithMockExampleShould
+  nameWithType: IndexWithMockExampleShould
+  fullName: Rise.Client.Products.IndexWithMockExampleShould

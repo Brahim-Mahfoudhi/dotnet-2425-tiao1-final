@@ -1,0 +1,206 @@
+### YamlMime:ManagedReference
+items:
+- uid: Rise.Shared.Products.IProductService
+  commentId: T:Rise.Shared.Products.IProductService
+  id: IProductService
+  parent: Rise.Shared.Products
+  children:
+  - Rise.Shared.Products.IProductService.GetProductsAsync
+  langs:
+  - csharp
+  - vb
+  name: IProductService
+  nameWithType: IProductService
+  fullName: Rise.Shared.Products.IProductService
+  type: Interface
+  source:
+    remote:
+      path: Rise.Shared/Products/IProductService.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: IProductService
+    path: Rise.Shared/Products/IProductService.cs
+    startLine: 4
+  assemblies:
+  - Rise.Shared
+  namespace: Rise.Shared.Products
+  syntax:
+    content: public interface IProductService
+    content.vb: Public Interface IProductService
+- uid: Rise.Shared.Products.IProductService.GetProductsAsync
+  commentId: M:Rise.Shared.Products.IProductService.GetProductsAsync
+  id: GetProductsAsync
+  parent: Rise.Shared.Products.IProductService
+  langs:
+  - csharp
+  - vb
+  name: GetProductsAsync()
+  nameWithType: IProductService.GetProductsAsync()
+  fullName: Rise.Shared.Products.IProductService.GetProductsAsync()
+  type: Method
+  source:
+    remote:
+      path: Rise.Shared/Products/IProductService.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: GetProductsAsync
+    path: Rise.Shared/Products/IProductService.cs
+    startLine: 6
+  assemblies:
+  - Rise.Shared
+  namespace: Rise.Shared.Products
+  syntax:
+    content: Task<IEnumerable<ProductDto>> GetProductsAsync()
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{Rise.Shared.Products.ProductDto}}
+    content.vb: Function GetProductsAsync() As Task(Of IEnumerable(Of ProductDto))
+  overload: Rise.Shared.Products.IProductService.GetProductsAsync*
+references:
+- uid: Rise.Shared.Products
+  commentId: N:Rise.Shared.Products
+  href: Rise.html
+  name: Rise.Shared.Products
+  nameWithType: Rise.Shared.Products
+  fullName: Rise.Shared.Products
+  spec.csharp:
+  - uid: Rise
+    name: Rise
+    href: Rise.html
+  - name: .
+  - uid: Rise.Shared
+    name: Shared
+    href: Rise.Shared.html
+  - name: .
+  - uid: Rise.Shared.Products
+    name: Products
+    href: Rise.Shared.Products.html
+  spec.vb:
+  - uid: Rise
+    name: Rise
+    href: Rise.html
+  - name: .
+  - uid: Rise.Shared
+    name: Shared
+    href: Rise.Shared.html
+  - name: .
+  - uid: Rise.Shared.Products
+    name: Products
+    href: Rise.Shared.Products.html
+- uid: Rise.Shared.Products.IProductService.GetProductsAsync*
+  commentId: Overload:Rise.Shared.Products.IProductService.GetProductsAsync
+  href: Rise.Shared.Products.IProductService.html#Rise_Shared_Products_IProductService_GetProductsAsync
+  name: GetProductsAsync
+  nameWithType: IProductService.GetProductsAsync
+  fullName: Rise.Shared.Products.IProductService.GetProductsAsync
+- uid: System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{Rise.Shared.Products.ProductDto}}
+  commentId: T:System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{Rise.Shared.Products.ProductDto}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<IEnumerable<ProductDto>>
+  nameWithType: Task<IEnumerable<ProductDto>>
+  fullName: System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<Rise.Shared.Products.ProductDto>>
+  nameWithType.vb: Task(Of IEnumerable(Of ProductDto))
+  fullName.vb: System.Threading.Tasks.Task(Of System.Collections.Generic.IEnumerable(Of Rise.Shared.Products.ProductDto))
+  name.vb: Task(Of IEnumerable(Of ProductDto))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: Rise.Shared.Products.ProductDto
+    name: ProductDto
+    href: Rise.Shared.Products.ProductDto.html
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Rise.Shared.Products.ProductDto
+    name: ProductDto
+    href: Rise.Shared.Products.ProductDto.html
+  - name: )
+  - name: )
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks

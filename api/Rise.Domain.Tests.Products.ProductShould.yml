@@ -1,0 +1,497 @@
+### YamlMime:ManagedReference
+items:
+- uid: Rise.Domain.Tests.Products.ProductShould
+  commentId: T:Rise.Domain.Tests.Products.ProductShould
+  id: ProductShould
+  parent: Rise.Domain.Tests.Products
+  children:
+  - Rise.Domain.Tests.Products.ProductShould.BeCreated
+  - Rise.Domain.Tests.Products.ProductShould.NotBeChangedToHaveAnInvalidName(System.String)
+  - Rise.Domain.Tests.Products.ProductShould.NotBeCreatedWithAnInvalidName(System.String)
+  langs:
+  - csharp
+  - vb
+  name: ProductShould
+  nameWithType: ProductShould
+  fullName: Rise.Domain.Tests.Products.ProductShould
+  type: Class
+  source:
+    remote:
+      path: Rise.Domain.Tests/Products/ProductShould.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: ProductShould
+    path: Rise.Domain.Tests/Products/ProductShould.cs
+    startLine: 9
+  assemblies:
+  - Rise.Domain.Tests
+  namespace: Rise.Domain.Tests.Products
+  summary: >-
+    Example Domain Tests using xUnit and Shouldly
+
+    https://xunit.net
+
+    https://docs.shouldly.org
+  example: []
+  syntax:
+    content: public class ProductShould
+    content.vb: Public Class ProductShould
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Rise.Domain.Tests.Products.ProductShould.BeCreated
+  commentId: M:Rise.Domain.Tests.Products.ProductShould.BeCreated
+  id: BeCreated
+  parent: Rise.Domain.Tests.Products.ProductShould
+  langs:
+  - csharp
+  - vb
+  name: BeCreated()
+  nameWithType: ProductShould.BeCreated()
+  fullName: Rise.Domain.Tests.Products.ProductShould.BeCreated()
+  type: Method
+  source:
+    remote:
+      path: Rise.Domain.Tests/Products/ProductShould.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: BeCreated
+    path: Rise.Domain.Tests/Products/ProductShould.cs
+    startLine: 11
+  assemblies:
+  - Rise.Domain.Tests
+  namespace: Rise.Domain.Tests.Products
+  syntax:
+    content: >-
+      [Fact]
+
+      public void BeCreated()
+    content.vb: >-
+      <Fact>
+
+      Public Sub BeCreated()
+  overload: Rise.Domain.Tests.Products.ProductShould.BeCreated*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: Rise.Domain.Tests.Products.ProductShould.NotBeCreatedWithAnInvalidName(System.String)
+  commentId: M:Rise.Domain.Tests.Products.ProductShould.NotBeCreatedWithAnInvalidName(System.String)
+  id: NotBeCreatedWithAnInvalidName(System.String)
+  parent: Rise.Domain.Tests.Products.ProductShould
+  langs:
+  - csharp
+  - vb
+  name: NotBeCreatedWithAnInvalidName(string?)
+  nameWithType: ProductShould.NotBeCreatedWithAnInvalidName(string?)
+  fullName: Rise.Domain.Tests.Products.ProductShould.NotBeCreatedWithAnInvalidName(string?)
+  type: Method
+  source:
+    remote:
+      path: Rise.Domain.Tests/Products/ProductShould.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: NotBeCreatedWithAnInvalidName
+    path: Rise.Domain.Tests/Products/ProductShould.cs
+    startLine: 19
+  assemblies:
+  - Rise.Domain.Tests
+  namespace: Rise.Domain.Tests.Products
+  syntax:
+    content: >-
+      [Theory]
+
+      [InlineData(null)]
+
+      [InlineData(new object[] { "   " })]
+
+      [InlineData(new object[] { "" })]
+
+      public void NotBeCreatedWithAnInvalidName(string? name)
+    parameters:
+    - id: name
+      type: System.String
+    content.vb: >-
+      <Theory>
+
+      <InlineData(Nothing)>
+
+      <InlineData(New Object() { "   " })>
+
+      <InlineData(New Object() { "" })>
+
+      Public Sub NotBeCreatedWithAnInvalidName(name As String)
+  overload: Rise.Domain.Tests.Products.ProductShould.NotBeCreatedWithAnInvalidName*
+  attributes:
+  - type: Xunit.TheoryAttribute
+    ctor: Xunit.TheoryAttribute.#ctor
+    arguments: []
+  nameWithType.vb: ProductShould.NotBeCreatedWithAnInvalidName(String)
+  fullName.vb: Rise.Domain.Tests.Products.ProductShould.NotBeCreatedWithAnInvalidName(String)
+  name.vb: NotBeCreatedWithAnInvalidName(String)
+- uid: Rise.Domain.Tests.Products.ProductShould.NotBeChangedToHaveAnInvalidName(System.String)
+  commentId: M:Rise.Domain.Tests.Products.ProductShould.NotBeChangedToHaveAnInvalidName(System.String)
+  id: NotBeChangedToHaveAnInvalidName(System.String)
+  parent: Rise.Domain.Tests.Products.ProductShould
+  langs:
+  - csharp
+  - vb
+  name: NotBeChangedToHaveAnInvalidName(string?)
+  nameWithType: ProductShould.NotBeChangedToHaveAnInvalidName(string?)
+  fullName: Rise.Domain.Tests.Products.ProductShould.NotBeChangedToHaveAnInvalidName(string?)
+  type: Method
+  source:
+    remote:
+      path: Rise.Domain.Tests/Products/ProductShould.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: NotBeChangedToHaveAnInvalidName
+    path: Rise.Domain.Tests/Products/ProductShould.cs
+    startLine: 32
+  assemblies:
+  - Rise.Domain.Tests
+  namespace: Rise.Domain.Tests.Products
+  syntax:
+    content: >-
+      [Theory]
+
+      [InlineData(null)]
+
+      [InlineData(new object[] { "   " })]
+
+      [InlineData(new object[] { "" })]
+
+      public void NotBeChangedToHaveAnInvalidName(string? name)
+    parameters:
+    - id: name
+      type: System.String
+    content.vb: >-
+      <Theory>
+
+      <InlineData(Nothing)>
+
+      <InlineData(New Object() { "   " })>
+
+      <InlineData(New Object() { "" })>
+
+      Public Sub NotBeChangedToHaveAnInvalidName(name As String)
+  overload: Rise.Domain.Tests.Products.ProductShould.NotBeChangedToHaveAnInvalidName*
+  attributes:
+  - type: Xunit.TheoryAttribute
+    ctor: Xunit.TheoryAttribute.#ctor
+    arguments: []
+  nameWithType.vb: ProductShould.NotBeChangedToHaveAnInvalidName(String)
+  fullName.vb: Rise.Domain.Tests.Products.ProductShould.NotBeChangedToHaveAnInvalidName(String)
+  name.vb: NotBeChangedToHaveAnInvalidName(String)
+references:
+- uid: Rise.Domain.Tests.Products
+  commentId: N:Rise.Domain.Tests.Products
+  href: Rise.html
+  name: Rise.Domain.Tests.Products
+  nameWithType: Rise.Domain.Tests.Products
+  fullName: Rise.Domain.Tests.Products
+  spec.csharp:
+  - uid: Rise
+    name: Rise
+    href: Rise.html
+  - name: .
+  - uid: Rise.Domain
+    name: Domain
+    href: Rise.Domain.html
+  - name: .
+  - uid: Rise.Domain.Tests
+    name: Tests
+    href: Rise.Domain.Tests.html
+  - name: .
+  - uid: Rise.Domain.Tests.Products
+    name: Products
+    href: Rise.Domain.Tests.Products.html
+  spec.vb:
+  - uid: Rise
+    name: Rise
+    href: Rise.html
+  - name: .
+  - uid: Rise.Domain
+    name: Domain
+    href: Rise.Domain.html
+  - name: .
+  - uid: Rise.Domain.Tests
+    name: Tests
+    href: Rise.Domain.Tests.html
+  - name: .
+  - uid: Rise.Domain.Tests.Products
+    name: Products
+    href: Rise.Domain.Tests.Products.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Rise.Domain.Tests.Products.ProductShould.BeCreated*
+  commentId: Overload:Rise.Domain.Tests.Products.ProductShould.BeCreated
+  href: Rise.Domain.Tests.Products.ProductShould.html#Rise_Domain_Tests_Products_ProductShould_BeCreated
+  name: BeCreated
+  nameWithType: ProductShould.BeCreated
+  fullName: Rise.Domain.Tests.Products.ProductShould.BeCreated
+- uid: Rise.Domain.Tests.Products.ProductShould.NotBeCreatedWithAnInvalidName*
+  commentId: Overload:Rise.Domain.Tests.Products.ProductShould.NotBeCreatedWithAnInvalidName
+  href: Rise.Domain.Tests.Products.ProductShould.html#Rise_Domain_Tests_Products_ProductShould_NotBeCreatedWithAnInvalidName_System_String_
+  name: NotBeCreatedWithAnInvalidName
+  nameWithType: ProductShould.NotBeCreatedWithAnInvalidName
+  fullName: Rise.Domain.Tests.Products.ProductShould.NotBeCreatedWithAnInvalidName
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: Rise.Domain.Tests.Products.ProductShould.NotBeChangedToHaveAnInvalidName*
+  commentId: Overload:Rise.Domain.Tests.Products.ProductShould.NotBeChangedToHaveAnInvalidName
+  href: Rise.Domain.Tests.Products.ProductShould.html#Rise_Domain_Tests_Products_ProductShould_NotBeChangedToHaveAnInvalidName_System_String_
+  name: NotBeChangedToHaveAnInvalidName
+  nameWithType: ProductShould.NotBeChangedToHaveAnInvalidName
+  fullName: Rise.Domain.Tests.Products.ProductShould.NotBeChangedToHaveAnInvalidName

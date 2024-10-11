@@ -1,0 +1,728 @@
+{
+  "source_base_path": "C:/Users/Robin/OneDrive - Hogeschool Gent/RISE/.NET/dotnet-2425-tiao1",
+  "xrefmap": "xrefmap.yml",
+  "files": [
+    {
+      "type": "Resource",
+      "output": {
+        "resource": {
+          "relative_path": "index.json"
+        }
+      }
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "README.md",
+      "output": {
+        ".html": {
+          "relative_path": "README.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Rise.Client/wwwroot/css/open-iconic/README.md",
+      "output": {
+        ".html": {
+          "relative_path": "Rise.Client/wwwroot/css/open-iconic/README.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Rise.Client.App.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Rise.Client.App.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Rise.Client.Layout.MainLayout.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Rise.Client.Layout.MainLayout.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Rise.Client.Layout.NavMenu.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Rise.Client.Layout.NavMenu.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Rise.Client.Layout.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Rise.Client.Layout.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Rise.Client.Pages.Counter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Rise.Client.Pages.Counter.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Rise.Client.Pages.CounterShould.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Rise.Client.Pages.CounterShould.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Rise.Client.Pages.Index.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Rise.Client.Pages.Index.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Rise.Client.Pages.IndexShould.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Rise.Client.Pages.IndexShould.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Rise.Client.Pages.Login.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Rise.Client.Pages.Login.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Rise.Client.Pages.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Rise.Client.Pages.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Rise.Client.Products.FakeProductService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Rise.Client.Products.FakeProductService.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Rise.Client.Products.Index.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Rise.Client.Products.Index.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Rise.Client.Products.IndexShould.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Rise.Client.Products.IndexShould.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Rise.Client.Products.IndexWithMockExampleShould.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Rise.Client.Products.IndexWithMockExampleShould.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Rise.Client.Products.ProductService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Rise.Client.Products.ProductService.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Rise.Client.Products.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Rise.Client.Products.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Rise.Client._Imports.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Rise.Client._Imports.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Rise.Client.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Rise.Client.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Rise.Domain.Common.Entity.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Rise.Domain.Common.Entity.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Rise.Domain.Common.RolesEnum.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Rise.Domain.Common.RolesEnum.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Rise.Domain.Common.StreetEnum.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Rise.Domain.Common.StreetEnum.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Rise.Domain.Common.StreetEnumExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Rise.Domain.Common.StreetEnumExtensions.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Rise.Domain.Common.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Rise.Domain.Common.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Rise.Domain.Products.Product.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Rise.Domain.Products.Product.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Rise.Domain.Products.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Rise.Domain.Products.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Rise.Domain.Tests.Products.ProductShould.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Rise.Domain.Tests.Products.ProductShould.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Rise.Domain.Tests.Products.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Rise.Domain.Tests.Products.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Rise.Domain.Tests.Users.AddressShould.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Rise.Domain.Tests.Users.AddressShould.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Rise.Domain.Tests.Users.RoleShould.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Rise.Domain.Tests.Users.RoleShould.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Rise.Domain.Tests.Users.UserShould.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Rise.Domain.Tests.Users.UserShould.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Rise.Domain.Tests.Users.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Rise.Domain.Tests.Users.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Rise.Domain.Users.Address.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Rise.Domain.Users.Address.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Rise.Domain.Users.Role.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Rise.Domain.Users.Role.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Rise.Domain.Users.User.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Rise.Domain.Users.User.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Rise.Domain.Users.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Rise.Domain.Users.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Rise.Persistence.ApplicationDbContext.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Rise.Persistence.ApplicationDbContext.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Rise.Persistence.Migrations.Initial.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Rise.Persistence.Migrations.Initial.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Rise.Persistence.Migrations.addedUserTables.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Rise.Persistence.Migrations.addedUserTables.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Rise.Persistence.Migrations.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Rise.Persistence.Migrations.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Rise.Persistence.Seeder.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Rise.Persistence.Seeder.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Rise.Persistence.Triggers.EntityBeforeSaveTrigger.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Rise.Persistence.Triggers.EntityBeforeSaveTrigger.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Rise.Persistence.Triggers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Rise.Persistence.Triggers.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Rise.Persistence.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Rise.Persistence.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Rise.Server.Controllers.ProductController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Rise.Server.Controllers.ProductController.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Rise.Server.Controllers.UserController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Rise.Server.Controllers.UserController.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Rise.Server.Controllers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Rise.Server.Controllers.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Rise.Services.Products.ProductService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Rise.Services.Products.ProductService.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Rise.Services.Products.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Rise.Services.Products.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Rise.Services.Users.UserService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Rise.Services.Users.UserService.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Rise.Services.Users.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Rise.Services.Users.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Rise.Shared.Enums.RolesEnum.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Rise.Shared.Enums.RolesEnum.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Rise.Shared.Enums.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Rise.Shared.Enums.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Rise.Shared.Products.IProductService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Rise.Shared.Products.IProductService.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Rise.Shared.Products.ProductDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Rise.Shared.Products.ProductDto.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Rise.Shared.Products.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Rise.Shared.Products.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Rise.Shared.Users.AddressDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Rise.Shared.Users.AddressDto.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Rise.Shared.Users.IUserService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Rise.Shared.Users.IUserService.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Rise.Shared.Users.RoleDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Rise.Shared.Users.RoleDto.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Rise.Shared.Users.UserDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Rise.Shared.Users.UserDto.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Rise.Shared.Users.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Rise.Shared.Users.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Xunit.ServiceCollectionLoggingExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Xunit.ServiceCollectionLoggingExtensions.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Xunit.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Xunit.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "api/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/toc.html"
+        },
+        ".json": {
+          "relative_path": "api/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/getting-started.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/getting-started.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/introduction.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/introduction.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "docs/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docs/toc.html"
+        },
+        ".json": {
+          "relative_path": "docs/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "index.md",
+      "output": {
+        ".html": {
+          "relative_path": "index.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "toc.html"
+        },
+        ".json": {
+          "relative_path": "toc.json"
+        }
+      },
+      "version": ""
+    }
+  ],
+  "groups": [
+    {
+      "xrefmap": "xrefmap.yml"
+    }
+  ]
+}

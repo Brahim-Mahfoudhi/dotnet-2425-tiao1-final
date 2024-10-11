@@ -1,0 +1,51 @@
+### YamlMime:ManagedReference
+items:
+- uid: Rise.Client.Pages
+  commentId: N:Rise.Client.Pages
+  id: Rise.Client.Pages
+  children:
+  - Rise.Client.Pages.Counter
+  - Rise.Client.Pages.CounterShould
+  - Rise.Client.Pages.Index
+  - Rise.Client.Pages.IndexShould
+  - Rise.Client.Pages.Login
+  langs:
+  - csharp
+  - vb
+  name: Rise.Client.Pages
+  nameWithType: Rise.Client.Pages
+  fullName: Rise.Client.Pages
+  type: Namespace
+  assemblies:
+  - Rise.Client
+references:
+- uid: Rise.Client.Pages.Login
+  commentId: T:Rise.Client.Pages.Login
+  href: Rise.Client.Pages.Login.html
+  name: Login
+  nameWithType: Login
+  fullName: Rise.Client.Pages.Login
+- uid: Rise.Client.Pages.Index
+  commentId: T:Rise.Client.Pages.Index
+  href: Rise.Client.Pages.Index.html
+  name: Index
+  nameWithType: Index
+  fullName: Rise.Client.Pages.Index
+- uid: Rise.Client.Pages.Counter
+  commentId: T:Rise.Client.Pages.Counter
+  href: Rise.Client.Pages.Counter.html
+  name: Counter
+  nameWithType: Counter
+  fullName: Rise.Client.Pages.Counter
+- uid: Rise.Client.Pages.CounterShould
+  commentId: T:Rise.Client.Pages.CounterShould
+  href: Rise.Client.Pages.CounterShould.html
+  name: CounterShould
+  nameWithType: CounterShould
+  fullName: Rise.Client.Pages.CounterShould
+- uid: Rise.Client.Pages.IndexShould
+  commentId: T:Rise.Client.Pages.IndexShould
+  href: Rise.Client.Pages.IndexShould.html
+  name: IndexShould
+  nameWithType: IndexShould
+  fullName: Rise.Client.Pages.IndexShould
