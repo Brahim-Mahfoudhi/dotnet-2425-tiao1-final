@@ -28,7 +28,7 @@ public class UserService : IUserService
                 Name = (Shared.Enums.RolesEnum)r.Name
             }).ToList()
         });
-        
+
         return query.ToListAsync();
     }
 
@@ -73,7 +73,7 @@ public class UserService : IUserService
         return user;
     }
 
-    public async Task<UserDetailsDto?> GetUserDetailsAsync(int id)
+    public async Task<UserDetailsDto?> GetUserDetailsByIdAsync(int id)
     {
         IQueryable<UserDetailsDto> query = dbContext.Users.Where(x => x.Id == id).Select(x => new UserDetailsDto
         {
@@ -102,7 +102,7 @@ public class UserService : IUserService
     }
 
 
-    public async Task<UserDetailsDto?> CreateUserAsync(UserDetailsDto userDetails)
+    public async Task<bool> CreateUserAsync(UserDetailsDto userDetails)
     {
         var adress = new Address
         (
@@ -121,11 +121,10 @@ public class UserService : IUserService
         );
 
         dbContext.Users.Add(entity);
-        await dbContext.SaveChangesAsync();
+        int response = await dbContext.SaveChangesAsync();
 
-        userDetails.Id = entity.Id;
+        return response > 0;
 
-        return userDetails ?? null;
     }
 
     public async Task<bool> UpdateUserAsync(UserDetailsDto userDetails)
@@ -136,7 +135,7 @@ public class UserService : IUserService
             userDetails.Address.HouseNumber,
             userDetails.Address.Bus
         );
-        
+
         var entity = await dbContext.Users.FindAsync(userDetails.Id) ?? throw new Exception("User not found");
         entity.FirstName = userDetails.FirstName;
         entity.LastName = userDetails.LastName;
