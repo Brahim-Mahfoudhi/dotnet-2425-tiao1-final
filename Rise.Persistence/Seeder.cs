@@ -1,3 +1,4 @@
+using Rise.Domain.Common;
 using Rise.Domain.Products;
 using Rise.Domain.Users;
 
@@ -70,7 +71,16 @@ public class Seeder
     /// </summary>
     private void SeedUsers()
     {
-        dbContext.Users.Add(new User("Lorenz", "Debie", "lorenzdebie@gmail.com", "123456", new DateTime(1980, 01, 01), new Address("Brusselsesteenweg", 5), "+32478457845"));
+        var userAdmin = new User("Lorenz", "Debie", "lorenzdebie@gmail.com", "123456", new DateTime(1980, 01, 01), new Address("Afrikalaan", 5), "+32478457845");
+        userAdmin.AddRole(new Role(RolesEnum.Admin));
+        dbContext.Users.Add(userAdmin);
+        var userUser = new User("Glen", "Heyvaert", "glenheyvaert@gmail.com", "strongP@ssword", new DateTime(1986, 09, 27), new Address("Bataviabrug", 35), "+32478471869");
+        userUser.AddRole(new Role());
+        dbContext.Users.Add(userUser);
+        var userGodparent = new User("Andreeas", "Firoiu", "andreeasfiroiu@gmail.com", "654321", new DateTime(1990, 05,16), new Address("Deckerstraat",4), "+32474771836");
+        userGodparent.AddRole(new Role(RolesEnum.Godparent));
+        dbContext.Users.Add(userGodparent);
+        dbContext.SaveChanges();
     }
 }
 
