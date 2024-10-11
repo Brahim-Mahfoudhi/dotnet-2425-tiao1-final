@@ -2,7 +2,9 @@ using Microsoft.EntityFrameworkCore;
 using Rise.Persistence;
 using Rise.Persistence.Triggers;
 using Rise.Services.Products;
+using Rise.Services.Users;
 using Rise.Shared.Products;
+using Rise.Shared.Users;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +21,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 });
 
 builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 var app = builder.Build();
 
