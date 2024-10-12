@@ -17,19 +17,19 @@ public class UserService : IUserService
     public Task<List<UserDto.GetUser>> GetAllAsync()
     {
         IQueryable<UserDto.GetUser> query = dbContext.Users
+            .Where(x => x.IsDeleted == false)
             .Select(x => new UserDto.GetUser
-        {
-            Id = x.Id,
-            FirstName = x.FirstName,
-            LastName = x.LastName,
-            Email = x.Email,
-            Roles = x.Roles.Select(r => new RoleDto
-            {
-                Id = r.Id,
-                Name = (Shared.Enums.RolesEnum)r.Name
-            }).ToList()
-        })
-            .Where(x => x.IsDeleted == false);
+                {
+                    Id = x.Id,
+                    FirstName = x.FirstName,
+                    LastName = x.LastName,
+                    Email = x.Email,
+                    Roles = x.Roles.Select(r => new RoleDto
+                    {
+                        Id = r.Id,
+                        Name = (Shared.Enums.RolesEnum)r.Name
+                    }).ToList()
+                });
 
         return query.ToListAsync();
     }
@@ -37,19 +37,19 @@ public class UserService : IUserService
     public async Task<UserDto.GetUser?> GetUserAsync()
     {
         IQueryable<UserDto.GetUser> query = dbContext.Users
+            .Where(x => x.IsDeleted == false)
             .Select(x => new UserDto.GetUser
-        {
-            Id = x.Id,
-            FirstName = x.FirstName,
-            LastName = x.LastName,
-            Email = x.Email,
-            Roles = x.Roles.Select(r => new RoleDto
-            {
-                Id = r.Id,
-                Name = (Shared.Enums.RolesEnum)r.Name
-            }).ToList()
-        })
-            .Where(x => x.IsDeleted == false);
+                {
+                    Id = x.Id,
+                    FirstName = x.FirstName,
+                    LastName = x.LastName,
+                    Email = x.Email,
+                    Roles = x.Roles.Select(r => new RoleDto
+                    {
+                        Id = r.Id,
+                        Name = (Shared.Enums.RolesEnum)r.Name
+                    }).ToList()
+                });
 
         var user = await query.FirstOrDefaultAsync();
 
@@ -61,18 +61,18 @@ public class UserService : IUserService
     public async Task<UserDto.GetUser?> GetUserByIdAsync(int id)
     {
         IQueryable<UserDto.GetUser> query = dbContext.Users
+            .Where(x => x.Id == id && x.IsDeleted == false)
             .Select(x => new UserDto.GetUser
-        {
-            Id = x.Id,
-            FirstName = x.FirstName,
-            LastName = x.LastName,
-            Email = x.Email,
-            Roles = x.Roles.Select(r => new RoleDto
-            {
-                Name = (Shared.Enums.RolesEnum)r.Name
-            }).ToList()
-        })
-            .Where(x => x.Id == id && x.IsDeleted == false);
+                {
+                    Id = x.Id,
+                    FirstName = x.FirstName,
+                    LastName = x.LastName,
+                    Email = x.Email,
+                    Roles = x.Roles.Select(r => new RoleDto
+                    {
+                        Name = (Shared.Enums.RolesEnum)r.Name
+                    }).ToList()
+                });
 
         var user = await query.FirstOrDefaultAsync();
 
@@ -82,27 +82,27 @@ public class UserService : IUserService
     public async Task<UserDto.GetUserDetails?> GetUserDetailsByIdAsync(int id)
     {
         IQueryable<UserDto.GetUserDetails> query = dbContext.Users
+            .Where(x => x.Id == id && x.IsDeleted == false)
             .Select(x => new UserDto.GetUserDetails
-        {
-            Id = x.Id,
-            FirstName = x.FirstName,
-            LastName = x.LastName,
-            Email = x.Email,
-            BirthDate = x.BirthDate,
-            Address = new AddressDto.GetAdress
-            {
-                Street = x.Address.Street,
-                HouseNumber = x.Address.HouseNumber,
-                Bus = x.Address.Bus
-            },
-            Roles = x.Roles.Select(r => new RoleDto
-            {
-                Id = r.Id,
-                Name = (Shared.Enums.RolesEnum)r.Name
-            }).ToList(),
-            PhoneNumber = x.PhoneNumber
-        })
-            .Where(x => x.Id == id && x.IsDeleted == false);
+                {
+                    Id = x.Id,
+                    FirstName = x.FirstName,
+                    LastName = x.LastName,
+                    Email = x.Email,
+                    BirthDate = x.BirthDate,
+                    Address = new AddressDto.GetAdress
+                    {
+                        Street = x.Address.Street,
+                        HouseNumber = x.Address.HouseNumber,
+                        Bus = x.Address.Bus
+                    },
+                    Roles = x.Roles.Select(r => new RoleDto
+                    {
+                        Id = r.Id,
+                        Name = (Shared.Enums.RolesEnum)r.Name
+                    }).ToList(),
+                    PhoneNumber = x.PhoneNumber
+                });
 
         var user = await query.FirstOrDefaultAsync();
 
