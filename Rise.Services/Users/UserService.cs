@@ -14,9 +14,10 @@ public class UserService : IUserService
         this.dbContext = dbContext;
     }
 
-    public Task<List<UserDto>> GetAllAsync()
+    public Task<List<UserDto.GetUser>> GetAllAsync()
     {
-        IQueryable<UserDto> query = dbContext.Users.Select(x => new UserDto
+        IQueryable<UserDto.GetUser> query = dbContext.Users
+            .Select(x => new UserDto.GetUser
         {
             Id = x.Id,
             FirstName = x.FirstName,
@@ -27,14 +28,16 @@ public class UserService : IUserService
                 Id = r.Id,
                 Name = (Shared.Enums.RolesEnum)r.Name
             }).ToList()
-        });
+        })
+            .Where(x => x.IsDeleted == false);
 
         return query.ToListAsync();
     }
 
-    public async Task<UserDto?> GetUserAsync()
+    public async Task<UserDto.GetUser?> GetUserAsync()
     {
-        IQueryable<UserDto> query = dbContext.Users.Select(x => new UserDto
+        IQueryable<UserDto.GetUser> query = dbContext.Users
+            .Select(x => new UserDto.GetUser
         {
             Id = x.Id,
             FirstName = x.FirstName,
@@ -45,7 +48,8 @@ public class UserService : IUserService
                 Id = r.Id,
                 Name = (Shared.Enums.RolesEnum)r.Name
             }).ToList()
-        });
+        })
+            .Where(x => x.IsDeleted == false);
 
         var user = await query.FirstOrDefaultAsync();
 
@@ -54,9 +58,10 @@ public class UserService : IUserService
 
 
 
-    public async Task<UserDto?> GetUserByIdAsync(int id)
+    public async Task<UserDto.GetUser?> GetUserByIdAsync(int id)
     {
-        IQueryable<UserDto> query = dbContext.Users.Where(x => x.Id == id).Select(x => new UserDto
+        IQueryable<UserDto.GetUser> query = dbContext.Users
+            .Select(x => new UserDto.GetUser
         {
             Id = x.Id,
             FirstName = x.FirstName,
@@ -66,23 +71,25 @@ public class UserService : IUserService
             {
                 Name = (Shared.Enums.RolesEnum)r.Name
             }).ToList()
-        });
+        })
+            .Where(x => x.Id == id && x.IsDeleted == false);
 
         var user = await query.FirstOrDefaultAsync();
 
         return user;
     }
 
-    public async Task<UserDetailsDto?> GetUserDetailsByIdAsync(int id)
+    public async Task<UserDto.GetUserDetails?> GetUserDetailsByIdAsync(int id)
     {
-        IQueryable<UserDetailsDto> query = dbContext.Users.Where(x => x.Id == id).Select(x => new UserDetailsDto
+        IQueryable<UserDto.GetUserDetails> query = dbContext.Users
+            .Select(x => new UserDto.GetUserDetails
         {
             Id = x.Id,
             FirstName = x.FirstName,
             LastName = x.LastName,
             Email = x.Email,
             BirthDate = x.BirthDate,
-            Address = new AddressDto
+            Address = new AddressDto.GetAdress
             {
                 Street = x.Address.Street,
                 HouseNumber = x.Address.HouseNumber,
@@ -94,7 +101,8 @@ public class UserService : IUserService
                 Name = (Shared.Enums.RolesEnum)r.Name
             }).ToList(),
             PhoneNumber = x.PhoneNumber
-        });
+        })
+            .Where(x => x.Id == id && x.IsDeleted == false);
 
         var user = await query.FirstOrDefaultAsync();
 
@@ -102,7 +110,7 @@ public class UserService : IUserService
     }
 
 
-    public async Task<bool> CreateUserAsync(UserDetailsDto userDetails)
+    public async Task<bool> CreateUserAsync(UserDto.CreateUser userDetails)
     {
         var adress = new Address
         (
@@ -110,6 +118,7 @@ public class UserService : IUserService
             userDetails.Address.HouseNumber,
             userDetails.Address.Bus
         );
+        
         var entity = new User(
             firstName: userDetails.FirstName,
             lastName: userDetails.LastName,
@@ -127,22 +136,23 @@ public class UserService : IUserService
 
     }
 
-    public async Task<bool> UpdateUserAsync(UserDetailsDto userDetails)
+    public async Task<bool> UpdateUserAsync(UserDto.UpdateUser userDetails)
     {
+        var entity = await dbContext.Users.FindAsync(userDetails.Id) ?? throw new Exception("User not found");
+        
         var adress = new Address
         (
-            userDetails.Address.Street,
-            userDetails.Address.HouseNumber,
-            userDetails.Address.Bus
+            userDetails.Address.Street ?? entity.Address.Street,
+            userDetails.Address.HouseNumber ?? entity.Address.HouseNumber,
+            userDetails.Address.Bus ?? entity.Address.Bus
         );
-
-        var entity = await dbContext.Users.FindAsync(userDetails.Id) ?? throw new Exception("User not found");
-        entity.FirstName = userDetails.FirstName;
-        entity.LastName = userDetails.LastName;
-        entity.Email = userDetails.Email;
-        entity.BirthDate = userDetails.BirthDate;
+        
+        entity.FirstName = userDetails.FirstName ?? entity.FirstName;
+        entity.LastName = userDetails.LastName ?? entity.LastName;
+        entity.Email = userDetails.Email ?? entity.Email;
+        entity.BirthDate = userDetails.BirthDate ?? entity.BirthDate;
         entity.Address = adress;
-        entity.PhoneNumber = userDetails.PhoneNumber;
+        entity.PhoneNumber = userDetails.PhoneNumber ?? entity.PhoneNumber;
 
         dbContext.Users.Update(entity);
         int response = await dbContext.SaveChangesAsync();

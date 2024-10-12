@@ -26,7 +26,7 @@ public class UserController : ControllerBase
     /// </summary>
     /// <returns>The current <see cref="UserDto"/> object or <c>null</c> if no user is found.</returns>
     [HttpGet]
-    public async Task<UserDto?> Get()
+    public async Task<UserDto.GetUser?> Get()
     {
         var user = await userService.GetUserAsync();
         return user;
@@ -37,7 +37,7 @@ public class UserController : ControllerBase
     /// </summary>
     /// <returns>List of <see cref="UserDto"/> objects or <c>null</c> if no users are found.</returns>
     [HttpGet("all")]
-    public async Task<List<UserDto>?> GetAllUsers()
+    public async Task<List<UserDto.GetUser>?> GetAllUsers()
     {
         var users = await userService.GetAllAsync();
         return users;
@@ -49,7 +49,7 @@ public class UserController : ControllerBase
     /// <param name="id">The ID of the user to retrieve.</param>
     /// <returns>The <see cref="UserDto"/> object or <c>null</c> if no user with the specified ID is found.</returns>
     [HttpGet("{id}")]
-    public async Task<UserDto?> Get(int id)
+    public async Task<UserDto.GetUser?> Get(int id)
     {
         var user = await userService.GetUserByIdAsync(id);
         return user;
@@ -61,7 +61,7 @@ public class UserController : ControllerBase
     /// <param name="id">The ID of the user to retrieve details for.</param>
     /// <returns>The detailed <see cref="UserDetailsDto"/> object or <c>null</c> if no user with the specified ID is found.</returns>
     [HttpGet("details/{id}")]
-    public async Task<UserDetailsDto?> GetDetails(int id)
+    public async Task<UserDto.GetUserDetails?> GetDetails(int id)
     {
         var user = await userService.GetUserDetailsByIdAsync(id);
         return user;
@@ -73,7 +73,7 @@ public class UserController : ControllerBase
     /// <param name="userDetails">The <see cref="UserDetailsDto"/> object containing user details to create.</param>
     /// <returns>The created <see cref="UserDetailsDto"/> object or <c>null</c> if the user creation fails.</returns>
     [HttpPost]
-    public async Task<bool> Post(UserDetailsDto userDetails)
+    public async Task<bool> Post(UserDto.CreateUser userDetails)
     {
         var created = await userService.CreateUserAsync(userDetails);
         return created;
@@ -85,7 +85,7 @@ public class UserController : ControllerBase
     /// <param name="userDetails">The <see cref="UserDetailsDto"/> object containing updated user details.</param>
     /// <returns><c>true</c> if the update is successful; otherwise, <c>false</c>.</returns>
     [HttpPut]
-    public async Task<bool> Put(UserDetailsDto userDetails)
+    public async Task<bool> Put(UserDto.UpdateUser userDetails)
     {
         var updated = await userService.UpdateUserAsync(userDetails);
         return updated;
