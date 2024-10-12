@@ -84,10 +84,10 @@ public class UserController : ControllerBase
     /// </summary>
     /// <param name="userDetails">The <see cref="UserDetailsDto"/> object containing updated user details.</param>
     /// <returns><c>true</c> if the update is successful; otherwise, <c>false</c>.</returns>
-    [HttpPut]
-    public async Task<bool> Put(UserDto.UpdateUser userDetails)
+    [HttpPut("{id}")]
+    public async Task<bool> Put(int id, UserDto.UpdateUser userDetails)
     {
-        var updated = await userService.UpdateUserAsync(userDetails);
+        var updated = await userService.UpdateUserAsync(id, userDetails);
         return updated;
     }
 

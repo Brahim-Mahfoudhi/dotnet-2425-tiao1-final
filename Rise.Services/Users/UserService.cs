@@ -136,22 +136,14 @@ public class UserService : IUserService
 
     }
 
-    public async Task<bool> UpdateUserAsync(UserDto.UpdateUser userDetails)
+    public async Task<bool> UpdateUserAsync(int id, UserDto.UpdateUser userDetails)
     {
-        var entity = await dbContext.Users.FindAsync(userDetails.Id) ?? throw new Exception("User not found");
-        
-        var adress = new Address
-        (
-            userDetails.Address.Street ?? entity.Address.Street,
-            userDetails.Address.HouseNumber ?? entity.Address.HouseNumber,
-            userDetails.Address.Bus ?? entity.Address.Bus
-        );
+        var entity = await dbContext.Users.FindAsync(id) ?? throw new Exception("User not found");
         
         entity.FirstName = userDetails.FirstName ?? entity.FirstName;
         entity.LastName = userDetails.LastName ?? entity.LastName;
         entity.Email = userDetails.Email ?? entity.Email;
         entity.BirthDate = userDetails.BirthDate ?? entity.BirthDate;
-        entity.Address = adress;
         entity.PhoneNumber = userDetails.PhoneNumber ?? entity.PhoneNumber;
 
         dbContext.Users.Update(entity);
