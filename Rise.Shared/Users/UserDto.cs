@@ -31,24 +31,24 @@ public class UserDto
         public bool IsDeleted { get; set; } = default!;
     }
         
-    public class GetUserDetails
+    public class GetUserDetails : GetUser
     {
         /// <summary>
-        /// Gets or sets the unique identifier of the user.
+        /// Gets or sets the birth date of the user.
         /// </summary>
-        public int Id { get; set; }
+        public DateTime BirthDate { get; set; }
         /// <summary>
-        /// Gets or sets the first name of the user.
+        /// Gets or sets the address of the user.
         /// </summary>
-        public string FirstName { get; set; } = default!;
+        public AddressDto.GetAdress Address { get; set; } = default!;
         /// <summary>
-        /// Gets or sets the last name of the user.
+        /// Gets or sets the phone number of the user.
         /// </summary>
-        public string LastName { get; set; } = default!;
-        /// <summary>
-        /// Gets or sets the email address of the user.
-        /// </summary>
-        public string Email { get; set; } = default!;
+        public string PhoneNumber { get; set; } = default!;
+    }
+
+    public class CreateUser : GetUser
+    {
         /// <summary>
         /// Gets or sets the password of the user.
         /// </summary>
@@ -61,52 +61,6 @@ public class UserDto
         /// Gets or sets the address of the user.
         /// </summary>
         public AddressDto.GetAdress Address { get; set; } = default!;
-        /// <summary>
-        /// Gets or sets the list of roles assigned to the user.
-        /// </summary>
-        public List<RoleDto> Roles { get; set; } = new();
-        /// <summary>
-        /// Gets or sets the phone number of the user.
-        /// </summary>
-        public string PhoneNumber { get; set; } = default!;
-
-        public bool IsDeleted { get; set; } = default!;
-    }
-
-    public class CreateUser
-    {
-        /// <summary>
-        /// Gets or sets the unique identifier of the user.
-        /// </summary>
-        public int Id { get; set; }
-        /// <summary>
-        /// Gets or sets the first name of the user.
-        /// </summary>
-        public string FirstName { get; set; } = default!;
-        /// <summary>
-        /// Gets or sets the last name of the user.
-        /// </summary>
-        public string LastName { get; set; } = default!;
-        /// <summary>
-        /// Gets or sets the email address of the user.
-        /// </summary>
-        public string Email { get; set; } = default!;
-        /// <summary>
-        /// Gets or sets the password of the user.
-        /// </summary>
-        public string Password { get; set; } = default!;
-        /// <summary>
-        /// Gets or sets the birth date of the user.
-        /// </summary>
-        public DateTime BirthDate { get; set; }
-        /// <summary>
-        /// Gets or sets the address of the user.
-        /// </summary>
-        public AddressDto.CreateAddress Address { get; set; } = default!;
-        /// <summary>
-        /// Gets or sets the list of roles assigned to the user.
-        /// </summary>
-        public List<RoleDto> Roles { get; set; } = new();
         /// <summary>
         /// Gets or sets the phone number of the user.
         /// </summary>
