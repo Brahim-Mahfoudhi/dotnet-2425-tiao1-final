@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Rise.Domain.Users;
 using Rise.Shared.Users;
 
 namespace Rise.Server.Controllers;
@@ -10,7 +11,7 @@ namespace Rise.Server.Controllers;
 [Route("api/[controller]")]
 public class UserController : ControllerBase
 {
-    private readonly IUserService userService;
+    private readonly IUserService _userService;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="UserController"/> class with the specified user service.
@@ -18,7 +19,7 @@ public class UserController : ControllerBase
     /// <param name="userService">The user service that handles user operations.</param>
     public UserController(IUserService userService)
     {
-        this.userService = userService;
+        _userService = userService;
     }
 
     /// <summary>
@@ -28,7 +29,7 @@ public class UserController : ControllerBase
     [HttpGet]
     public async Task<UserDto.GetUser?> Get()
     {
-        var user = await userService.GetUserAsync();
+        var user = await _userService.GetUserAsync();
         return user;
     }
 
@@ -39,7 +40,7 @@ public class UserController : ControllerBase
     [HttpGet("all")]
     public async Task<List<UserDto.GetUser>?> GetAllUsers()
     {
-        var users = await userService.GetAllAsync();
+        var users = await _userService.GetAllAsync();
         return users;
     }
 
@@ -51,7 +52,7 @@ public class UserController : ControllerBase
     [HttpGet("{id}")]
     public async Task<UserDto.GetUser?> Get(int id)
     {
-        var user = await userService.GetUserByIdAsync(id);
+        var user = await _userService.GetUserByIdAsync(id);
         return user;
     }
 
@@ -59,35 +60,36 @@ public class UserController : ControllerBase
     /// Retrieves detailed information about a user by their ID asynchronously.
     /// </summary>
     /// <param name="id">The ID of the user to retrieve details for.</param>
-    /// <returns>The detailed <see cref="UserDetailsDto"/> object or <c>null</c> if no user with the specified ID is found.</returns>
+    /// <returns>The detailed <see cref="UserDto.GetUserDetails"/> object or <c>null</c> if no user with the specified ID is found.</returns>
     [HttpGet("details/{id}")]
     public async Task<UserDto.GetUserDetails?> GetDetails(int id)
     {
-        var user = await userService.GetUserDetailsByIdAsync(id);
+        var user = await _userService.GetUserDetailsByIdAsync(id);
         return user;
     }
 
     /// <summary>
     /// Creates a new user asynchronously.
     /// </summary>
-    /// <param name="userDetails">The <see cref="UserDetailsDto"/> object containing user details to create.</param>
-    /// <returns>The created <see cref="UserDetailsDto"/> object or <c>null</c> if the user creation fails.</returns>
+    /// <param name="userDetails">The <see cref="UserDto.CreateUser"/> object containing user details to create.</param>
+    /// <returns>The created <see cref="UserDto.CreateUser"/> object or <c>null</c> if the user creation fails.</returns>
     [HttpPost]
     public async Task<bool> Post(UserDto.CreateUser userDetails)
     {
-        var created = await userService.CreateUserAsync(userDetails);
+        var created = await _userService.CreateUserAsync(userDetails);
         return created;
     }
 
     /// <summary>
     /// Updates an existing user asynchronously.
     /// </summary>
-    /// <param name="userDetails">The <see cref="UserDetailsDto"/> object containing updated user details.</param>
+    /// <param name="id">The id of an existing <see cref="User"/></param>
+    /// <param name="userDetails">The <see cref="UserDto.UpdateUser"/> object containing updated user details.</param>
     /// <returns><c>true</c> if the update is successful; otherwise, <c>false</c>.</returns>
     [HttpPut("{id}")]
     public async Task<bool> Put(int id, UserDto.UpdateUser userDetails)
     {
-        var updated = await userService.UpdateUserAsync(id, userDetails);
+        var updated = await _userService.UpdateUserAsync(id, userDetails);
         return updated;
     }
 
@@ -99,7 +101,7 @@ public class UserController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<bool> Delete(int id)
     {
-        var deleted = await userService.DeleteUserAsync(id);
+        var deleted = await _userService.DeleteUserAsync(id);
         return deleted;
     }
 
