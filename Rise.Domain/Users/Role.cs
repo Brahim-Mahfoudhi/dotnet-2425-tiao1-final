@@ -1,4 +1,5 @@
 namespace Rise.Domain.Users;
+using Rise.Shared.Enums;
 
 /// <summary>
 /// Represents a role assigned to a user in the system.

@@ -38,7 +38,7 @@ public class UserController : ControllerBase
     /// </summary>
     /// <returns>List of <see cref="UserDto"/> objects or <c>null</c> if no users are found.</returns>
     [HttpGet("all")]
-    public async Task<List<UserDto.GetUser>?> GetAllUsers()
+    public async Task<IEnumerable<UserDto.GetUser>?> GetAllUsers()
     {
         var users = await _userService.GetAllAsync();
         return users;

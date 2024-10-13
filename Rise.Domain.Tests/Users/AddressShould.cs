@@ -8,7 +8,7 @@ public class AddressShould
     [Fact]
     public void ShouldAssignCorrectStreet()
     {
-        Address address = new Address("Afrikalaan", 1);
+        Address address = new Address("Afrikalaan", "1");
         
         address.Street.ShouldBe("Afrikalaan");
     }
@@ -18,7 +18,7 @@ public class AddressShould
     {
         Action action = () =>
         {
-            new Address("Waregemsestraat", 1);
+            new Address("Waregemsestraat", "1");
         };
 
         action.ShouldThrow<ArgumentException>();
@@ -27,15 +27,15 @@ public class AddressShould
     [Fact]
     public void ShouldAssignCorrectHouseNumber()
     {
-        Address address = new Address("Afrikalaan", 1);
+        Address address = new Address("Afrikalaan", "1");
         
-        address.HouseNumber.ShouldBe(1);
+        address.HouseNumber.ShouldBe("1");
     }
 
     [Theory]
-    [InlineData(0)]
-    [InlineData(-1)]
-    public void ShouldThrowIncorrectHouseNumber(int houseNumber)
+    [InlineData("0")]
+    [InlineData("-1")]
+    public void ShouldThrowIncorrectHouseNumber(string houseNumber)
     {
         Action act = () =>
         {

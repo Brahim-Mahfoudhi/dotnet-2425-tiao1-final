@@ -1,5 +1,4 @@
 namespace Rise.Shared.Users;
-
 /// <summary>
 /// Data Transfer Object (DTO) representing a user with minimal info.
 /// </summary>
@@ -30,7 +29,7 @@ public class UserDto
 
         public bool IsDeleted { get; set; } = default!;
     }
-        
+
     public class GetUserDetails : GetUser
     {
         /// <summary>
@@ -46,7 +45,6 @@ public class UserDto
         /// </summary>
         public string PhoneNumber { get; set; } = default!;
     }
-
     public class CreateUser : GetUser
     {
         /// <summary>
@@ -56,11 +54,11 @@ public class UserDto
         /// <summary>
         /// Gets or sets the birth date of the user.
         /// </summary>
-        public DateTime BirthDate { get; set; }
+        public DateTime BirthDate { get; set; } = DateTime.Now;
         /// <summary>
         /// Gets or sets the address of the user.
         /// </summary>
-        public AddressDto.GetAdress Address { get; set; } = default!;
+        public AddressDto.CreateAddress Address { get; set; } = new AddressDto.CreateAddress();
         /// <summary>
         /// Gets or sets the phone number of the user.
         /// </summary>

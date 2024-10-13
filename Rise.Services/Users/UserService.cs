@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Rise.Persistence;
 using Rise.Shared.Users;
 using Rise.Domain.Users;
+using Rise.Shared.Enums;
 
 namespace Rise.Services.Users;
 
@@ -14,7 +15,7 @@ public class UserService : IUserService
         this.dbContext = dbContext;
     }
 
-    public Task<List<UserDto.GetUser>> GetAllAsync()
+    public async Task<IEnumerable<UserDto.GetUser>> GetAllAsync()
     {
         IQueryable<UserDto.GetUser> query = dbContext.Users
             .Where(x => x.IsDeleted == false)
@@ -31,7 +32,8 @@ public class UserService : IUserService
                     }).ToList()
                 });
 
-        return query.ToListAsync();
+        var users = await query.ToListAsync();
+        return users;
     }
 
     public async Task<UserDto.GetUser?> GetUserAsync()
@@ -84,25 +86,25 @@ public class UserService : IUserService
         IQueryable<UserDto.GetUserDetails> query = dbContext.Users
             .Where(x => x.Id == id && x.IsDeleted == false)
             .Select(x => new UserDto.GetUserDetails
+            {
+                Id = x.Id,
+                FirstName = x.FirstName,
+                LastName = x.LastName,
+                Email = x.Email,
+                BirthDate = x.BirthDate,
+                Address = new AddressDto.GetAdress
                 {
-                    Id = x.Id,
-                    FirstName = x.FirstName,
-                    LastName = x.LastName,
-                    Email = x.Email,
-                    BirthDate = x.BirthDate,
-                    Address = new AddressDto.GetAdress
-                    {
-                        Street = x.Address.Street,
-                        HouseNumber = x.Address.HouseNumber,
-                        Bus = x.Address.Bus
-                    },
-                    Roles = x.Roles.Select(r => new RoleDto
-                    {
-                        Id = r.Id,
-                        Name = (Shared.Enums.RolesEnum)r.Name
-                    }).ToList(),
-                    PhoneNumber = x.PhoneNumber
-                });
+                    Street = StreetEnumExtensions.GetStreetEnum(x.Address.Street),
+                    HouseNumber = x.Address.HouseNumber,
+                    Bus = x.Address.Bus
+                },
+                Roles = x.Roles.Select(r => new RoleDto
+                {
+                    Id = r.Id,
+                    Name = (Shared.Enums.RolesEnum)r.Name
+                }).ToList(),
+                PhoneNumber = x.PhoneNumber
+            });
 
         var user = await query.FirstOrDefaultAsync();
 
@@ -114,11 +116,11 @@ public class UserService : IUserService
     {
         var adress = new Address
         (
-            userDetails.Address.Street,
-            userDetails.Address.HouseNumber,
+            StreetEnumExtensions.GetStreetName(userDetails.Address.Street),
+            userDetails.Address.HouseNumber ?? "",
             userDetails.Address.Bus
         );
-        
+
         var entity = new User(
             firstName: userDetails.FirstName,
             lastName: userDetails.LastName,
@@ -128,6 +130,7 @@ public class UserService : IUserService
             address: adress,
             phoneNumber: userDetails.PhoneNumber
         );
+        entity.AddRole(new Role(RolesEnum.Pending));
 
         dbContext.Users.Add(entity);
         int response = await dbContext.SaveChangesAsync();
@@ -139,7 +142,7 @@ public class UserService : IUserService
     public async Task<bool> UpdateUserAsync(int id, UserDto.UpdateUser userDetails)
     {
         var entity = await dbContext.Users.FindAsync(id) ?? throw new Exception("User not found");
-        
+
         entity.FirstName = userDetails.FirstName ?? entity.FirstName;
         entity.LastName = userDetails.LastName ?? entity.LastName;
         entity.Email = userDetails.Email ?? entity.Email;

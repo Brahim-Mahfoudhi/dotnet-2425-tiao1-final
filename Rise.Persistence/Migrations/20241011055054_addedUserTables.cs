@@ -38,7 +38,7 @@ namespace Rise.Persistence.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false),
                     Street = table.Column<string>(type: "nvarchar(4000)", maxLength: 4000, nullable: false),
-                    HouseNumber = table.Column<int>(type: "int", nullable: false),
+                    HouseNumber = table.Column<string>(type: "nvarchar(10)", nullable: false),
                     Bus = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),

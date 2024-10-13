@@ -1,0 +1,53 @@
+.form-card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.form-title {
+  margin: 0;
+}
+
+.form-items {
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  flex-direction: column;
+}
+
+.form-label {
+  margin: 10px;
+  width: 150px;
+}
+
+.form-label-small {
+  margin: 10px;
+  max-width: 120px;
+}
+.form-input-small {
+  margin: 10px;
+  padding-left: 10px;
+  border-radius: 20px;
+  width: 50px;
+}
+
+.form-input {
+  margin: 10px;
+  padding-left: 10px;
+  border-radius: 20px;
+}
+
+.form-buttons {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-direction: row;
+  margin: 10px;
+  gap: 30px;
+}
+
+.form-btn {
+  padding: 1px 10px;
+  border-radius: 20px;
+}

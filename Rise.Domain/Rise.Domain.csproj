@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Rise.Shared\Rise.Shared.csproj" />
     <PackageReference Include="Ardalis.GuardClauses" Version="4.6.0" />
   </ItemGroup>
 </Project>

@@ -1,4 +1,4 @@
-namespace Rise.Domain.Common;
+namespace Rise.Shared.Enums;
 
 public enum StreetEnum
 {

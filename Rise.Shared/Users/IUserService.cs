@@ -2,7 +2,7 @@ namespace Rise.Shared.Users;
 
 public interface IUserService
 {
-    Task<List<UserDto.GetUser>> GetAllAsync();
+    Task<IEnumerable<UserDto.GetUser>> GetAllAsync();
     Task<UserDto.GetUser?> GetUserAsync();
 
     Task<UserDto.GetUser?> GetUserByIdAsync(int id);

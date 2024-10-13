@@ -1,0 +1,41 @@
+@page "/login"
+@inject HttpClient HttpClient
+@inject NavigationManager NavigationManager
+<link href="css/shared-form.css" rel="stylesheet" />
+
+<PageTitle>Login</PageTitle>
+
+<h1 class="form-title">Login</h1>
+
+<div class="form-card">
+
+    <input class="form-input" type="email" @bind="email" placeholder="Email" />
+
+    <input class="form-input" type="password" @bind="password" placeholder="Password" />
+
+    <span>No account yet? <a class="form-link" href="register">Register</a></span>
+
+    <div class="form-buttons">
+        <button class="form-btn btn-primary" type="button" @onclick="Submit">Login</button>
+        <button class="form-btn btn-secondary" type="button" @onclick="Cancel">Cancel</button>
+    </div>
+
+</div>
+
+
+@code {
+    private string? email;
+    private string? password;
+    private bool isSubmitted = false;
+
+    private void Submit()
+    {
+        isSubmitted = true;
+        NavigationManager.NavigateTo("/");
+    }
+
+    private void Cancel()
+    {
+        NavigationManager.NavigateTo("/");
+    }
+}

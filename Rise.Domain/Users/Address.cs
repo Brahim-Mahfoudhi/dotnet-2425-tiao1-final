@@ -1,4 +1,5 @@
 namespace Rise.Domain.Users;
+using Rise.Shared.Enums;
 
 /// <summary>
 /// Represents a user's address in the system.
@@ -7,7 +8,7 @@ public class Address : Entity
 {
     private User _user;
     private StreetEnum _street = default!;
-    private int _houseNumber = default!;
+    private string _houseNumber = default!;
     private string? _bus = default!;
 
     /// <summary>
@@ -16,13 +17,13 @@ public class Address : Entity
     private Address()
     {
     }
-    
+
     /// <summary>
     /// Initializes a new instance of the <see cref="Address"/> class with the specified street and house number.
     /// </summary>
     /// <param name="street">The street of the address.</param>
     /// <param name="houseNumber">The house number of the address.</param> 
-    public Address(string street, int houseNumber)
+    public Address(string street, string houseNumber)
     {
         Street = street;
         HouseNumber = houseNumber;
@@ -34,7 +35,7 @@ public class Address : Entity
     /// <param name="street">The street of the address.</param>
     /// <param name="houseNumber">The house number of the address.</param>
     /// <param name="bus">The optional bus number of the address.</param>
-    public Address(string street, int houseNumber, string? bus = null)
+    public Address(string street, string houseNumber, string? bus = null)
     {
         Street = street;
         HouseNumber = houseNumber;
@@ -74,10 +75,10 @@ public class Address : Entity
     /// <exception cref="ArgumentOutOfRangeException">
     /// Thrown when the house number is less than or equal to zero.
     /// </exception>
-    public int HouseNumber
+    public string HouseNumber
     {
         get => _houseNumber;
-        set => _houseNumber = Guard.Against.NegativeOrZero(value);
+        set => _houseNumber = Guard.Against.NullOrWhiteSpace(value, nameof(HouseNumber));
     }
 
     /// <summary>
