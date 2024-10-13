@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Rise.Domain.Users;
 using Rise.Shared.Users;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Rise.Server.Controllers;
 
@@ -9,6 +10,7 @@ namespace Rise.Server.Controllers;
 /// </summary>
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class UserController : ControllerBase
 {
     private readonly IUserService _userService;
