@@ -8,6 +8,7 @@ using Rise.Shared.Users;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Auth0Net.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,6 +34,14 @@ builder.Services.AddAuthentication(options =>
         NameClaimType = ClaimTypes.NameIdentifier
     };
 });
+
+builder.Services.AddAuth0AuthenticationClient(config =>
+{
+    config.Domain = builder.Configuration["Auth0:Authority"]!;
+    config.ClientId = builder.Configuration["Auth0:M2MClientId"];
+    config.ClientSecret = builder.Configuration["Auth0:M2MClientSecret"];
+});
+builder.Services.AddAuth0ManagementClient().AddManagementAccessToken();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {

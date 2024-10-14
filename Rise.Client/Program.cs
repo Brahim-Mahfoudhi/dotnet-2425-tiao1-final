@@ -3,12 +3,13 @@ using Microsoft.AspNetCore.Components.Web;
 using Rise.Client;
 using Rise.Client.Products;
 using Rise.Shared.Products;
-using Rise.Client.Users;
 using Rise.Shared.Users;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Client.Auth;
+using Rise.Services.Users;
+using UserService = Rise.Client.Users.UserService;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -29,6 +30,11 @@ builder.Services.AddHttpClient<IProductService, ProductService>(client =>
 });
 
 builder.Services.AddHttpClient<IUserService, UserService>(client =>
+{
+    client.BaseAddress = new Uri($"{builder.HostEnvironment.BaseAddress}api/");
+}).AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
+
+builder.Services.AddHttpClient<IUserAuthService, UserAuthService>(client =>
 {
     client.BaseAddress = new Uri($"{builder.HostEnvironment.BaseAddress}api/");
 }).AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
