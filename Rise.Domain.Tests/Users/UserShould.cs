@@ -8,7 +8,7 @@ public class UserShould
     [Fact]
     public void ShouldCreateCorrectUser()
     {
-        User user = new User("Fedor", "Danilov", "fp@email.com", "pass", DateTime.Today, new Address("Afrikalaan", "1"), "000");
+        User user = new User("Fedor", "Danilov", "fp@email.com",  DateTime.Today, new Address("Afrikalaan", "1"), "000");
         
         user.FirstName.ShouldBe("Fedor");
         user.LastName.ShouldBe("Danilov");
@@ -22,7 +22,7 @@ public class UserShould
     {
         Action action = () =>
         {
-            new User(firstname, "Danilov", "fp@email.com", "pass", DateTime.Today, new Address("Afrikalaan", "1"), "000");
+            new User(firstname, "Danilov", "fp@email.com",  DateTime.Today, new Address("Afrikalaan", "1"), "000");
         };
 
         action.ShouldThrow<ArgumentException>();
@@ -36,7 +36,7 @@ public class UserShould
     {
         Action action = () =>
         {
-            new User("Fedor", lastname, "fp@email.com", "pass", DateTime.Today, new Address("Afrikalaan", "1"), "000");
+            new User("Fedor", lastname, "fp@email.com",  DateTime.Today, new Address("Afrikalaan", "1"), "000");
         };
 
         action.ShouldThrow<ArgumentException>();
@@ -50,21 +50,7 @@ public class UserShould
     {
         Action action = () =>
         {
-            new User("Fedor", "Danilov", email, "pass", DateTime.Today, new Address("Afrikalaan", "1"), "000");
-        };
-
-        action.ShouldThrow<ArgumentException>();
-    }
-
-    [Theory]
-    [InlineData(null)]
-    [InlineData("   ")]
-    [InlineData("")]
-    public void ShouldThrowIncorrectPass(string? pass)
-    {
-        Action action = () =>
-        {
-            new User("Fedor", "Danilov", "fp@email.com", pass, DateTime.Today, new Address("Afrikalaan", "1"), "000");
+            new User("Fedor", "Danilov", email,  DateTime.Today, new Address("Afrikalaan", "1"), "000");
         };
 
         action.ShouldThrow<ArgumentException>();
@@ -78,7 +64,7 @@ public class UserShould
     {
         Action action = () =>
         {
-            new User("Fedor", "Danilov", "fp@email.com", "pass", DateTime.Today, new Address("Afrikalaan", "1"), phonenumber);
+            new User("Fedor", "Danilov", "fp@email.com", DateTime.Today, new Address("Afrikalaan", "1"), phonenumber);
         };
 
         action.ShouldThrow<ArgumentException>();
@@ -87,7 +73,7 @@ public class UserShould
     [Fact]
     public void ShouldAssignCorrectAddressToUser()
     {
-        User user = new User("Fedor", "Danilov", "fp@email.com", "pass", DateTime.Today, new Address("Afrikalaan", "1"), "000");
+        User user = new User("Fedor", "Danilov", "fp@email.com", DateTime.Today, new Address("Afrikalaan", "1"), "000");
 
         user.Address = new Address("Dok Noord", "20", "A");
         
@@ -99,7 +85,7 @@ public class UserShould
     [Fact]
     public void ShouldAssignCorrectRoleToUser()
     {
-        User user = new User("Fedor", "Danilov", "fp@email.com", "pass", DateTime.Today, new Address("Afrikalaan", "1"), "000");
+        User user = new User("Fedor", "Danilov", "fp@email.com", DateTime.Today, new Address("Afrikalaan", "1"), "000");
 
         user.AddRole(new Role());
         

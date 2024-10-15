@@ -29,16 +29,14 @@ public class User : Entity
     /// <param name="firstName">The first name of the user.</param>
     /// <param name="lastName">The last name of the user.</param>
     /// <param name="email">The email address of the user.</param>
-    /// <param name="password">The password of the user.</param>
     /// <param name="birthDate">The birth date of the user.</param>
     /// <param name="address">The address of the user.</param>
     /// <param name="phoneNumber">The phone number of the user.</param>
-    public User(string firstName, string lastName, string email, string password, DateTime birthDate, Address address, string phoneNumber)
+    public User(string firstName, string lastName, string email, DateTime birthDate, Address address, string phoneNumber)
     {
         FirstName = firstName;
         LastName = lastName;
         Email = email;
-        Password = password;
         BirthDate = birthDate;
         Address = address;
         PhoneNumber = phoneNumber;

@@ -23,7 +23,6 @@ internal class UserConfiguration : EntityConfiguration<User>
         builder.Property(x => x.FirstName).IsRequired();
         builder.Property(x => x.LastName).IsRequired();
         builder.Property(x => x.Email).IsRequired();
-        builder.Property(x => x.Password).IsRequired();
         builder.Property(x => x.BirthDate).IsRequired();
         builder.Property(x => x.PhoneNumber).IsRequired();
 

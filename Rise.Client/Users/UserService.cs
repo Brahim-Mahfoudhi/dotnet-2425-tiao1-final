@@ -20,7 +20,7 @@ public class UserService : IUserService
         this.jsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
     }
 
-    public async Task<bool> CreateUserAsync(UserDto.CreateUser userDetails)
+    public async Task<bool> CreateUserAsync(UserDto.RegistrationUser userDetails)
     {
         Console.WriteLine(JsonSerializer.Serialize(userDetails, jsonSerializerOptions));
         var response = await httpClient.PostAsJsonAsync("user", userDetails);

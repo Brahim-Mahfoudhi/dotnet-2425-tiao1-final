@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using Microsoft.EntityFrameworkCore;
 using Rise.Persistence;
 using Rise.Shared.Users;
@@ -17,102 +18,94 @@ public class UserService : IUserService
 
     public async Task<IEnumerable<UserDto.UserBase>> GetAllAsync()
     {
-        IQueryable<UserDto.UserBase> query = dbContext.Users
+        // Changed method so that DTO creation is out of the LINQ Query
+        // You need to avoid using methods with optional parameters directly
+        // in the LINQ query that EF is trying to translate
+        var query = await dbContext.Users
+            .Include(x => x.Roles) // Ensure Roles are loaded (Eagerly loading)
             .Where(x => x.IsDeleted == false)
-            .Select(x => new UserDto.UserBase
-                {
-                    Id = x.Id,
-                    FirstName = x.FirstName,
-                    LastName = x.LastName,
-                    Email = x.Email,
-                    Roles = x.Roles.Select(r => new RoleDto
-                    {
-                        Id = r.Id,
-                        Name = (Shared.Enums.RolesEnum)r.Name
-                    }).ToList()
-                });
+            .ToListAsync();
+        
+        if (query == null)
+        {
+            return null;
+        }
 
-        var users = await query.ToListAsync();
+        var users = query.Select(x => MapToUserBase(x));
+        
         return users;
     }
 
     public async Task<UserDto.UserBase?> GetUserAsync()
     {
-        IQueryable<UserDto.UserBase> query = dbContext.Users
-            .Where(x => x.IsDeleted == false)
-            .Select(x => new UserDto.UserBase
-                {
-                    Id = x.Id,
-                    FirstName = x.FirstName,
-                    LastName = x.LastName,
-                    Email = x.Email,
-                    Roles = x.Roles.Select(r => new RoleDto
-                    {
-                        Id = r.Id,
-                        Name = (Shared.Enums.RolesEnum)r.Name
-                    }).ToList()
-                });
-
-        var user = await query.FirstOrDefaultAsync();
-
-        return user;
+        // Changed method so that DTO creation is out of the LINQ Query
+        // You need to avoid using methods with optional parameters directly
+        // in the LINQ query that EF is trying to translate
+        var query = await dbContext.Users
+            .Include(x => x.Roles) // Ensure Roles are loaded (Eagerly loading)
+            .FirstOrDefaultAsync(x => x.IsDeleted == false);
+        
+        if (query == null)
+        {
+            return null;
+        }
+        
+        return MapToUserBase(query);
     }
 
 
 
     public async Task<UserDto.UserBase?> GetUserByIdAsync(int id)
     {
-        IQueryable<UserDto.UserBase> query = dbContext.Users
-            .Where(x => x.Id == id && x.IsDeleted == false)
-            .Select(x => new UserDto.UserBase
-                {
-                    Id = x.Id,
-                    FirstName = x.FirstName,
-                    LastName = x.LastName,
-                    Email = x.Email,
-                    Roles = x.Roles.Select(r => new RoleDto
-                    {
-                        Name = (Shared.Enums.RolesEnum)r.Name
-                    }).ToList()
-                });
-
-        var user = await query.FirstOrDefaultAsync();
-
-        return user;
+        // Changed method so that DTO creation is out of the LINQ Query
+        // You need to avoid using methods with optional parameters directly
+        // in the LINQ query that EF is trying to translate
+        var query = await dbContext.Users
+            .Include(x => x.Roles) // Ensure Roles are loaded (Eagerly loading)
+            .FirstOrDefaultAsync(x => x.Id == id && x.IsDeleted == false);
+        
+        if (query == null)
+        {
+            return null;
+        }
+        
+        return MapToUserBase(query);
     }
 
     public async Task<UserDto.UserDetails?> GetUserDetailsByIdAsync(int id)
     {
-        IQueryable<UserDto.UserDetails> query = dbContext.Users
-            .Where(x => x.Id == id && x.IsDeleted == false)
-            .Select(x => new UserDto.UserDetails
+        // Changed method so that DTO creation is out of the LINQ Query
+        // You need to avoid using methods with optional parameters directly
+        // in the LINQ query that EF is trying to translate
+        var query = await dbContext.Users
+            .Include(x => x.Address) // Ensure Address is loaded (Eagerly loading)
+            .FirstOrDefaultAsync(x => x.Id == id && x.IsDeleted == false);
+        
+        if (query == null)
+        {
+            return null;
+        }
+        
+        var user = new UserDto.UserDetails(
+            query.Id, 
+            query.BirthDate,
+            new AddressDto.GetAdress
             {
-                Id = x.Id,
-                FirstName = x.FirstName,
-                LastName = x.LastName,
-                Email = x.Email,
-                BirthDate = x.BirthDate,
-                Address = new AddressDto.GetAdress
-                {
-                    Street = StreetEnumExtensions.GetStreetEnum(x.Address.Street),
-                    HouseNumber = x.Address.HouseNumber,
-                    Bus = x.Address.Bus
-                },
-                Roles = x.Roles.Select(r => new RoleDto
-                {
-                    Id = r.Id,
-                    Name = (Shared.Enums.RolesEnum)r.Name
-                }).ToList(),
-                PhoneNumber = x.PhoneNumber
-            });
-
-        var user = await query.FirstOrDefaultAsync();
+                Street = StreetEnumExtensions.GetStreetEnum(query.Address.Street),
+                HouseNumber = query.Address.HouseNumber,
+                Bus = query.Address.Bus
+            },
+            query.PhoneNumber,
+            query.FirstName,
+            query.LastName,
+            query.Email
+            );
 
         return user;
     }
 
 
-    public async Task<bool> CreateUserAsync(UserDto.CreateUser userDetails)
+    public async Task<bool> CreateUserAsync(UserDto.RegistrationUser userDetails)
     {
         var adress = new Address
         (
@@ -125,7 +118,6 @@ public class UserService : IUserService
             firstName: userDetails.FirstName,
             lastName: userDetails.LastName,
             email: userDetails.Email,
-            password: userDetails.Password,
             birthDate: userDetails.BirthDate,
             address: adress,
             phoneNumber: userDetails.PhoneNumber
@@ -168,5 +160,22 @@ public class UserService : IUserService
     public Task<IEnumerable<UserDto.UserTable>> GetUsersTableAsync()
     {
         throw new NotImplementedException();
+    }
+    
+    private UserDto.UserBase MapToUserBase(User user)
+    {
+        return new UserDto.UserBase
+        (
+            user.Id,
+            user.FirstName,
+            user.LastName,
+            user.Email
+        )
+        {
+            Roles = user.Roles.Select(r => new RoleDto
+            {
+                Name = (Shared.Enums.RolesEnum)r.Name
+            }).ToImmutableList()
+        };
     }
 }

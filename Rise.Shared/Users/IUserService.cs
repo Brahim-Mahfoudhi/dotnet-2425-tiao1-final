@@ -9,7 +9,7 @@ public interface IUserService
 
     Task<UserDto.UserDetails?> GetUserDetailsByIdAsync(int id);
 
-    Task<bool> CreateUserAsync(UserDto.CreateUser userDetails);
+    Task<bool> CreateUserAsync(UserDto.RegistrationUser userDetails);
 
     Task<bool> UpdateUserAsync(int id, UserDto.UpdateUser userDetails);
 
