@@ -29,7 +29,7 @@ public class UserController : ControllerBase
     /// </summary>
     /// <returns>The current <see cref="UserDto"/> object or <c>null</c> if no user is found.</returns>
     [HttpGet]
-    public async Task<UserDto.GetUser?> Get()
+    public async Task<UserDto.UserBase?> Get()
     {
         var user = await _userService.GetUserAsync();
         return user;
@@ -40,7 +40,7 @@ public class UserController : ControllerBase
     /// </summary>
     /// <returns>List of <see cref="UserDto"/> objects or <c>null</c> if no users are found.</returns>
     [HttpGet("all")]
-    public async Task<IEnumerable<UserDto.GetUser>?> GetAllUsers()
+    public async Task<IEnumerable<UserDto.UserBase>?> GetAllUsers()
     {
         var users = await _userService.GetAllAsync();
         return users;
@@ -52,7 +52,7 @@ public class UserController : ControllerBase
     /// <param name="id">The ID of the user to retrieve.</param>
     /// <returns>The <see cref="UserDto"/> object or <c>null</c> if no user with the specified ID is found.</returns>
     [HttpGet("{id}")]
-    public async Task<UserDto.GetUser?> Get(int id)
+    public async Task<UserDto.UserBase?> Get(int id)
     {
         var user = await _userService.GetUserByIdAsync(id);
         return user;
@@ -62,9 +62,9 @@ public class UserController : ControllerBase
     /// Retrieves detailed information about a user by their ID asynchronously.
     /// </summary>
     /// <param name="id">The ID of the user to retrieve details for.</param>
-    /// <returns>The detailed <see cref="UserDto.GetUserDetails"/> object or <c>null</c> if no user with the specified ID is found.</returns>
+    /// <returns>The detailed <see cref="UserDto.UserDetails"/> object or <c>null</c> if no user with the specified ID is found.</returns>
     [HttpGet("details/{id}")]
-    public async Task<UserDto.GetUserDetails?> GetDetails(int id)
+    public async Task<UserDto.UserDetails?> GetDetails(int id)
     {
         var user = await _userService.GetUserDetailsByIdAsync(id);
         return user;

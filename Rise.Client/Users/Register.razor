@@ -15,19 +15,19 @@
     <div class="form-items">
         <div>
             <label class="form-label" for="firstName">First Name: </label>
-            <input class="form-input" type="text" @bind="newUser.FirstName" placeholder="First Name" />
+            <input class="form-input" type="text" @bind="_newUser.FirstName" placeholder="First Name" />
         </div>
         <div>
             <label class="form-label" for="lastName">Last Name: </label>
-            <input class="form-input" type="text" @bind="newUser.LastName" placeholder="Last Name" />
+            <input class="form-input" type="text" @bind="_newUser.LastName" placeholder="Last Name" />
         </div>
         <div>
             <label class="form-label" for="Email">Email: </label>
-            <input class="form-input" type="email" @bind="newUser.Email" placeholder="Email" />
+            <input class="form-input" type="email" @bind="_newUser.Email" placeholder="Email" />
         </div>
         <div>
             <label class="form-label" for="phoneNumber">Phone number: </label>
-            <input class="form-input" type="tel" @bind="newUser.PhoneNumber" placeholder="Phone number" />
+            <input class="form-input" type="tel" @bind="_newUser.PhoneNumber" placeholder="Phone number" />
         </div>
         <div>
             <label class="form-label" for="password">Password: </label>
@@ -39,11 +39,11 @@
         </div>
         <div>
             <label class="form-label" for="birthDate">Birthdate: </label>
-            <input class="form-input" type="date" @bind="newUser.BirthDate" />
+            <input class="form-input" type="date" @bind="_newUser.BirthDate" />
         </div>
         <div>
             <label class="form-label" for="street">Select your address:</label>
-            <InputSelect class="form-input" id="street" @bind-Value="newUser.Address.Street">
+            <InputSelect class="form-input" id="street" @bind-Value="_newUser.Address.Street">
                 @foreach (var street in Enum.GetValues(typeof(StreetEnum)).Cast<StreetEnum>())
                 {
                     <option value="@street">@street.GetStreetName()</option>
@@ -53,11 +53,11 @@
         <div class="d-flex flex-row">
             <div>
                 <label class="form-label-small" for="houseNumber">House number: </label>
-                <input class="form-input-small" type="text" @bind="newUser.Address.HouseNumber" placeholder="nr" />
+                <input class="form-input-small" type="text" @bind="_newUser.Address.HouseNumber" placeholder="nr" />
             </div>
             <div>
                 <label class="form-label-small" for="bus">Bus: </label>
-                <input class="form-input-small" type="text" @bind="newUser.Address.Bus" placeholder="Bus" />
+                <input class="form-input-small" type="text" @bind="_newUser.Address.Bus" placeholder="Bus" />
             </div>
         </div>
 
@@ -77,19 +77,19 @@
     <div class="form-card">
     <h2>Thank you for registering!</h2>
     <p>@(userCreated ? "Your account has been created successfully." : "Failed to create account.")</p>
-    <p>firstname: @newUser.FirstName</p>
-    <p>lastname: @newUser.LastName</p>
-    <p>email: @newUser.Email</p>
-    <p>birthdate: @newUser.BirthDate</p>
-    <p>street: @newUser.Address.Street</p>
-    <p>house number: @newUser.Address.HouseNumber</p>
-    <p>bus: @newUser.Address.Bus</p>
+    <p>firstname: @_newUser.FirstName</p>
+    <p>lastname: @_newUser.LastName</p>
+    <p>email: @_newUser.Email</p>
+    <p>birthdate: @_newUser.BirthDate</p>
+    <p>street: @_newUser.Address.Street</p>
+    <p>house number: @_newUser.Address.HouseNumber</p>
+    <p>bus: @_newUser.Address.Bus</p>
 </div>
 }
 
 @code {
 
-    private UserDto.CreateUser newUser = new UserDto.CreateUser();
+    private UserDto.CreateUser _newUser = new UserDto.CreateUser();
     private string? password;
     private string? confirmPassword;
 
@@ -103,9 +103,9 @@
         {
             return;
         }
-        newUser.Password = password;
+        _newUser.Password = password;
         isSubmitted = true;
-        userCreated = await UserService.CreateUserAsync(newUser);
+        userCreated = await UserService.CreateUserAsync(_newUser);
         @* NavigationManager.NavigateTo("/login"); *@
     }
 

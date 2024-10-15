@@ -37,27 +37,27 @@ public class UserService : IUserService
         return response.IsSuccessStatusCode;
     }
 
-    public async Task<IEnumerable<UserDto.GetUser>?> GetAllAsync()
+    public async Task<IEnumerable<UserDto.UserBase>?> GetAllAsync()
     {
         var jsonResponse = await httpClient.GetStringAsync("user/all");
-        return JsonSerializer.Deserialize<IEnumerable<UserDto.GetUser>>(jsonResponse, jsonSerializerOptions); ;
+        return JsonSerializer.Deserialize<IEnumerable<UserDto.UserBase>>(jsonResponse, jsonSerializerOptions); ;
     }
 
-    public Task<UserDto.GetUser?> GetUserAsync()
+    public Task<UserDto.UserBase?> GetUserAsync()
     {
         throw new NotImplementedException();
     }
 
-    public async Task<UserDto.GetUser?> GetUserByIdAsync(int id)
+    public async Task<UserDto.UserBase?> GetUserByIdAsync(int id)
     {
         var jsonResponse = await httpClient.GetStringAsync($"user/{id}");
-        return JsonSerializer.Deserialize<UserDto.GetUser>(jsonResponse, jsonSerializerOptions);
+        return JsonSerializer.Deserialize<UserDto.UserBase>(jsonResponse, jsonSerializerOptions);
     }
 
-    public async Task<UserDto.GetUserDetails?> GetUserDetailsByIdAsync(int id)
+    public async Task<UserDto.UserDetails?> GetUserDetailsByIdAsync(int id)
     {
         var jsonResponse = await httpClient.GetStringAsync($"user/details/{id}");
-        return JsonSerializer.Deserialize<UserDto.GetUserDetails>(jsonResponse, jsonSerializerOptions);
+        return JsonSerializer.Deserialize<UserDto.UserDetails>(jsonResponse, jsonSerializerOptions);
     }
 
     public async Task<bool> UpdateUserAsync(int id, UserDto.UpdateUser userDetails)

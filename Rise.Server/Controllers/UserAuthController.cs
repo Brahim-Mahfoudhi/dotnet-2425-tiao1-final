@@ -16,11 +16,11 @@ public class UserAuthController : ControllerBase
         _managementApiClient = managementApiClient;
     }
     [HttpGet]
-    public async Task<IEnumerable<UserAuthDto.Index>> GetUsers()
+    public async Task<IEnumerable<UserDto.UserTable>> GetUsers()
     {
         var users = await _managementApiClient.Users.GetAllAsync(new GetUsersRequest(), new PaginationInfo());
         Console.WriteLine(users);
-        return users.Select(x => new UserAuthDto.Index
+        return users.Select(x => new UserDto.UserTable
         {
             Email = x.Email,
             FirstName = x.FirstName,
@@ -30,16 +30,22 @@ public class UserAuthController : ControllerBase
     }
 
     [HttpGet("user")]
-    public async Task<UserAuthDto.Index> GetUser(String id)
+    public async Task<UserDto.UserTable> GetUser(String id)
     {
         var test = await _managementApiClient.Users.GetAsync(id);
         Console.Write(test);
-        return new UserAuthDto.Index
+        return new UserDto.UserTable
         {
             Email = test.Email,
             FirstName = test.FirstName,
             LastName = test.LastName,
             Blocked = test.Blocked ?? false,
         };
+    }
+
+    [HttpPost]
+    public async Task<UserDto.UserTable> CreateUser(UserDto.UserBase userBase)
+    {
+        throw new NotImplementedException();
     }
 }

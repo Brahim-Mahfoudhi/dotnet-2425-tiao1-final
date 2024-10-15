@@ -7,9 +7,9 @@ namespace Rise.Services.Users;
 
 public class UserAuthService(HttpClient httpClient) : IUserAuthService
 {
-    public async Task<IEnumerable<UserAuthDto.Index>> GetUsersAsync()
+    public async Task<IEnumerable<UserDto.UserTable>> GetUsersAsync()
     { 
-        var users = await httpClient.GetFromJsonAsync<IEnumerable<UserAuthDto.Index>>("UserAuth");
+        var users = await httpClient.GetFromJsonAsync<IEnumerable<UserDto.UserTable>>("UserAuth");
         return users!;
     }
 }

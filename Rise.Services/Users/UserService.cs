@@ -15,11 +15,11 @@ public class UserService : IUserService
         this.dbContext = dbContext;
     }
 
-    public async Task<IEnumerable<UserDto.GetUser>> GetAllAsync()
+    public async Task<IEnumerable<UserDto.UserBase>> GetAllAsync()
     {
-        IQueryable<UserDto.GetUser> query = dbContext.Users
+        IQueryable<UserDto.UserBase> query = dbContext.Users
             .Where(x => x.IsDeleted == false)
-            .Select(x => new UserDto.GetUser
+            .Select(x => new UserDto.UserBase
                 {
                     Id = x.Id,
                     FirstName = x.FirstName,
@@ -36,11 +36,11 @@ public class UserService : IUserService
         return users;
     }
 
-    public async Task<UserDto.GetUser?> GetUserAsync()
+    public async Task<UserDto.UserBase?> GetUserAsync()
     {
-        IQueryable<UserDto.GetUser> query = dbContext.Users
+        IQueryable<UserDto.UserBase> query = dbContext.Users
             .Where(x => x.IsDeleted == false)
-            .Select(x => new UserDto.GetUser
+            .Select(x => new UserDto.UserBase
                 {
                     Id = x.Id,
                     FirstName = x.FirstName,
@@ -60,11 +60,11 @@ public class UserService : IUserService
 
 
 
-    public async Task<UserDto.GetUser?> GetUserByIdAsync(int id)
+    public async Task<UserDto.UserBase?> GetUserByIdAsync(int id)
     {
-        IQueryable<UserDto.GetUser> query = dbContext.Users
+        IQueryable<UserDto.UserBase> query = dbContext.Users
             .Where(x => x.Id == id && x.IsDeleted == false)
-            .Select(x => new UserDto.GetUser
+            .Select(x => new UserDto.UserBase
                 {
                     Id = x.Id,
                     FirstName = x.FirstName,
@@ -81,11 +81,11 @@ public class UserService : IUserService
         return user;
     }
 
-    public async Task<UserDto.GetUserDetails?> GetUserDetailsByIdAsync(int id)
+    public async Task<UserDto.UserDetails?> GetUserDetailsByIdAsync(int id)
     {
-        IQueryable<UserDto.GetUserDetails> query = dbContext.Users
+        IQueryable<UserDto.UserDetails> query = dbContext.Users
             .Where(x => x.Id == id && x.IsDeleted == false)
-            .Select(x => new UserDto.GetUserDetails
+            .Select(x => new UserDto.UserDetails
             {
                 Id = x.Id,
                 FirstName = x.FirstName,

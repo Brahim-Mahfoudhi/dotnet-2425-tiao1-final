@@ -4,7 +4,7 @@ namespace Rise.Shared.Users;
 /// </summary>
 public class UserDto
 {
-    public class GetUser
+    public class UserBase
     {
         /// <summary>
         /// Gets or sets the unique identifier of the user.
@@ -30,7 +30,7 @@ public class UserDto
         public bool IsDeleted { get; set; } = default!;
     }
 
-    public class GetUserDetails : GetUser
+    public class UserDetails : UserBase
     {
         /// <summary>
         /// Gets or sets the birth date of the user.
@@ -45,7 +45,7 @@ public class UserDto
         /// </summary>
         public string PhoneNumber { get; set; } = default!;
     }
-    public class CreateUser : GetUser
+    public class CreateUser : UserBase
     {
         /// <summary>
         /// Gets or sets the password of the user.
@@ -103,5 +103,13 @@ public class UserDto
         /// Gets or sets the phone number of the user.
         /// </summary>
         public string? PhoneNumber { get; set; } = null;
+    }
+    
+    public class UserTable
+    {
+        public required string Email { get; set; }
+        public required string FirstName { get; set; }
+        public required string LastName { get; set; }
+        public required bool Blocked { get; set; }
     }
 }
