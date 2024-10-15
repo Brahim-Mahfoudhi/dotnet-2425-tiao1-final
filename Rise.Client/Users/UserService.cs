@@ -3,7 +3,6 @@ using System.Net.Http.Json;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-
 namespace Rise.Client.Users;
 
 public class UserService : IUserService
@@ -66,7 +65,7 @@ public class UserService : IUserService
     
     public async Task<IEnumerable<UserDto.UserTable>> GetUsersTableAsync()
     { 
-        var users = await httpClient.GetFromJsonAsync<IEnumerable<UserDto.UserTable>>("UserAuth");
+        var users = await httpClient.GetFromJsonAsync<IEnumerable<UserDto.UserTable>>("user/auth/users");
         return users!;
     }
 }

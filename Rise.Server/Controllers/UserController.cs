@@ -2,6 +2,9 @@ using Microsoft.AspNetCore.Mvc;
 using Rise.Domain.Users;
 using Rise.Shared.Users;
 using Microsoft.AspNetCore.Authorization;
+using Auth0.ManagementApi;
+using Auth0.ManagementApi.Models;
+using Auth0.ManagementApi.Paging;
 
 namespace Rise.Server.Controllers;
 
@@ -10,18 +13,21 @@ namespace Rise.Server.Controllers;
 /// </summary>
 [ApiController]
 [Route("api/[controller]")]
-[Authorize]
+[Authorize(Roles = "Admin")]
 public class UserController : ControllerBase
 {
     private readonly IUserService _userService;
-
+    private readonly IManagementApiClient _managementApiClient;
+    
     /// <summary>
     /// Initializes a new instance of the <see cref="UserController"/> class with the specified user service.
     /// </summary>
     /// <param name="userService">The user service that handles user operations.</param>
-    public UserController(IUserService userService)
+    /// <param name="managementApiClient">The management API for Auth0</param>
+    public UserController(IUserService userService, IManagementApiClient managementApiClient)
     {
         _userService = userService;
+        _managementApiClient = managementApiClient;
     }
 
     /// <summary>
@@ -75,7 +81,7 @@ public class UserController : ControllerBase
     /// </summary>
     /// <param name="userDetails">The <see cref="UserDto.CreateUser"/> object containing user details to create.</param>
     /// <returns>The created <see cref="UserDto.CreateUser"/> object or <c>null</c> if the user creation fails.</returns>
-    [HttpPost]
+    [HttpPost("createuser")]
     public async Task<bool> Post(UserDto.CreateUser userDetails)
     {
         var created = await _userService.CreateUserAsync(userDetails);
@@ -105,6 +111,40 @@ public class UserController : ControllerBase
     {
         var deleted = await _userService.DeleteUserAsync(id);
         return deleted;
+    }
+    
+    [HttpGet("auth/users")]
+    public async Task<IEnumerable<UserDto.UserTable>> GetUsers()
+    {
+        var users = await _managementApiClient.Users.GetAllAsync(new GetUsersRequest(), new PaginationInfo());
+        Console.WriteLine(users);
+        return users.Select(x => new UserDto.UserTable
+        {
+            Email = x.Email,
+            FirstName = x.FirstName,
+            LastName = x.LastName,
+            Blocked = x.Blocked ?? false,
+        });
+    }
+
+    [HttpGet("auth/user")]
+    public async Task<UserDto.UserTable> GetUser(String id)
+    {
+        var test = await _managementApiClient.Users.GetAsync(id);
+        Console.Write(test);
+        return new UserDto.UserTable
+        {
+            Email = test.Email,
+            FirstName = test.FirstName,
+            LastName = test.LastName,
+            Blocked = test.Blocked ?? false,
+        };
+    }
+
+    [HttpPost("auth/user")]
+    public async Task<UserDto.UserTable> CreateUser(UserDto.UserBase userBase)
+    {
+        throw new NotImplementedException();
     }
 
 }
