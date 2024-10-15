@@ -28,4 +28,18 @@ public class UserAuthController : ControllerBase
             Blocked = x.Blocked ?? false,
         });
     }
+
+    [HttpGet("user")]
+    public async Task<UserAuthDto.Index> GetUser(String id)
+    {
+        var test = await _managementApiClient.Users.GetAsync(id);
+        Console.Write(test);
+        return new UserAuthDto.Index
+        {
+            Email = test.Email,
+            FirstName = test.FirstName,
+            LastName = test.LastName,
+            Blocked = test.Blocked ?? false,
+        };
+    }
 }
