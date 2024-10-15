@@ -11,8 +11,6 @@ public class UserService : IUserService
     private readonly HttpClient httpClient;
     private readonly JsonSerializerOptions jsonSerializerOptions;
 
-
-
     public UserService(HttpClient httpClient)
     {
         this.httpClient = httpClient;
@@ -64,5 +62,11 @@ public class UserService : IUserService
     {
         var response = await httpClient.PutAsJsonAsync($"user/{id}", userDetails);
         return response.IsSuccessStatusCode;
+    }
+    
+    public async Task<IEnumerable<UserDto.UserTable>> GetUsersTableAsync()
+    { 
+        var users = await httpClient.GetFromJsonAsync<IEnumerable<UserDto.UserTable>>("UserAuth");
+        return users!;
     }
 }

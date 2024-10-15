@@ -14,4 +14,7 @@ public interface IUserService
     Task<bool> UpdateUserAsync(int id, UserDto.UpdateUser userDetails);
 
     Task<bool> DeleteUserAsync(int id);
+    
+    Task<IEnumerable<UserDto.UserTable>> GetUsersTableAsync();
+
 }

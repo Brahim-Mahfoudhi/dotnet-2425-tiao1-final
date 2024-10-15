@@ -34,9 +34,4 @@ builder.Services.AddHttpClient<IUserService, UserService>(client =>
     client.BaseAddress = new Uri($"{builder.HostEnvironment.BaseAddress}api/");
 }).AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
 
-builder.Services.AddHttpClient<IUserAuthService, UserAuthService>(client =>
-{
-    client.BaseAddress = new Uri($"{builder.HostEnvironment.BaseAddress}api/");
-}).AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
-
 await builder.Build().RunAsync();

@@ -165,4 +165,8 @@ public class UserService : IUserService
         return true;
     }
 
+    public Task<IEnumerable<UserDto.UserTable>> GetUsersTableAsync()
+    {
+        throw new NotImplementedException();
+    }
 }

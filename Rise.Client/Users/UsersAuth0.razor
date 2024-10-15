@@ -1,6 +1,6 @@
 @page "/authusers"
 @using Rise.Shared.Users
-@inject IUserAuthService UserAuthService
+@inject IUserService UserService
 @attribute [Authorize(Roles = "Admin")]
 
 <PageTitle>Users</PageTitle>
@@ -36,6 +36,6 @@ else
     private IEnumerable<UserDto.UserTable>? users;
     protected override async Task OnInitializedAsync()
     {
-        users = await UserAuthService.GetUsersAsync();
+        users = await UserService.GetUsersTableAsync();
     }
 }
