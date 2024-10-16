@@ -51,59 +51,45 @@ public class UserDto
         }
     }
     
+    /// <summary>
+    /// DTO used for registrationform
+    /// </summary>
     public record RegistrationUser
     {
-        public int Id;
         public string FirstName { get; init; }
         public string LastName { get; init; }
         public string Email { get; init; }
-        public bool IsDeleted { get; init; }
         public string Password { get; init; }
         public string PhoneNumber { get; init; }
         public ImmutableList<RoleDto>? Roles { get; init; } = ImmutableList<RoleDto>.Empty;
         public DateTime BirthDate { get; init; } = DateTime.Now;
         public AddressDto.CreateAddress Address { get; init; } = new AddressDto.CreateAddress();
+        
+        public RegistrationUser(string firstName, string lastName, string email, string phoneNumber,
+            AddressDto.CreateAddress address , ImmutableList<RoleDto>? roles = null, DateTime? birthDate = null)
+        {
+            FirstName = firstName;
+            LastName = lastName;
+            Email = email;
+            PhoneNumber = phoneNumber;
+            Address = address;
+            Roles = roles ?? ImmutableList<RoleDto>.Empty;
+            BirthDate = birthDate ?? DateTime.Now;
+        }
 
     }
     
-    public class UpdateUser
+    public record UpdateUser
     {
-        /// <summary>
-        /// Gets or sets the unique identifier of the user.
-        /// </summary>
-        public int Id { get; set; }
-        /// <summary>
-        /// Gets or sets the first name of the user.
-        /// </summary>
-        public string? FirstName { get; set; } = null;
-        /// <summary>
-        /// Gets or sets the last name of the user.
-        /// </summary>
-        public string? LastName { get; set; } = null;
-        /// <summary>
-        /// Gets or sets the email address of the user.
-        /// </summary>
-        public string? Email { get; set; } = null;
-        /// <summary>
-        /// Gets or sets the password of the user.
-        /// </summary>
-        public string? Password { get; set; } = null;
-        /// <summary>
-        /// Gets or sets the birth date of the user.
-        /// </summary>
-        public DateTime? BirthDate { get; set; }
-        /// <summary>
-        /// Gets or sets the address of the user.
-        /// </summary>
-        public AddressDto.UpdateAddress? Address { get; set; } = null;
-        /// <summary>
-        /// Gets or sets the list of roles assigned to the user.
-        /// </summary>
-        public List<RoleDto>? Roles { get; set; } = null;
-        /// <summary>
-        /// Gets or sets the phone number of the user.
-        /// </summary>
-        public string? PhoneNumber { get; set; } = null;
+        public int Id;
+        public string FirstName { get; init; }
+        public string LastName { get; init; }
+        public string Email { get; init; }
+        public string Password { get; init; }
+        public DateTime? BirthDate { get; init; } = DateTime.Now;
+        public AddressDto.CreateAddress Address { get; init; } = new AddressDto.CreateAddress();
+        public ImmutableList<RoleDto>? Roles { get; init; } = ImmutableList<RoleDto>.Empty;
+        public string PhoneNumber { get; init; }
     }
 
     public record CreateUserAuth0

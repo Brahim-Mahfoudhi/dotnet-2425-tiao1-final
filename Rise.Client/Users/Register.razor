@@ -15,19 +15,19 @@
     <div class="form-items">
         <div>
             <label class="form-label" for="firstName">First Name: </label>
-            <input class="form-input" type="text" @bind="_newUser.FirstName" placeholder="First Name" />
+            <input class="form-input" type="text" @bind="_firstName" placeholder="First Name" />
         </div>
         <div>
             <label class="form-label" for="lastName">Last Name: </label>
-            <input class="form-input" type="text" @bind="_newUser.LastName" placeholder="Last Name" />
+            <input class="form-input" type="text" @bind="_lastName" placeholder="Last Name" />
         </div>
         <div>
             <label class="form-label" for="Email">Email: </label>
-            <input class="form-input" type="email" @bind="_newUser.Email" placeholder="Email" />
+            <input class="form-input" type="email" @bind="_email" placeholder="Email" />
         </div>
         <div>
             <label class="form-label" for="phoneNumber">Phone number: </label>
-            <input class="form-input" type="tel" @bind="_newUser.PhoneNumber" placeholder="Phone number" />
+            <input class="form-input" type="tel" @bind="_phoneNumber" placeholder="Phone number" />
         </div>
         <div>
             <label class="form-label" for="password">Password: </label>
@@ -39,11 +39,11 @@
         </div>
         <div>
             <label class="form-label" for="birthDate">Birthdate: </label>
-            <input class="form-input" type="date" @bind="_newUser.BirthDate" />
+            <input class="form-input" type="date" @bind="_birthDate" />
         </div>
         <div>
             <label class="form-label" for="street">Select your address:</label>
-            <InputSelect class="form-input" id="street" @bind-Value="_newUser.Address.Street">
+            <InputSelect class="form-input" id="street" @bind-Value="_address.Street">
                 @foreach (var street in Enum.GetValues(typeof(StreetEnum)).Cast<StreetEnum>())
                 {
                     <option value="@street">@street.GetStreetName()</option>
@@ -53,11 +53,11 @@
         <div class="d-flex flex-row">
             <div>
                 <label class="form-label-small" for="houseNumber">House number: </label>
-                <input class="form-input-small" type="text" @bind="_newUser.Address.HouseNumber" placeholder="nr" />
+                <input class="form-input-small" type="text" @bind="_address.HouseNumber" placeholder="nr" />
             </div>
             <div>
                 <label class="form-label-small" for="bus">Bus: </label>
-                <input class="form-input-small" type="text" @bind="_newUser.Address.Bus" placeholder="Bus" />
+                <input class="form-input-small" type="text" @bind="_address.Bus" placeholder="Bus" />
             </div>
         </div>
 
@@ -89,23 +89,33 @@
 
 @code {
 
-    private UserDto.RegistrationUser _newUser = new UserDto.RegistrationUser();
     private string? password;
     private string? confirmPassword;
 
     private bool userCreated = false;
 
     private bool isSubmitted = false;
+    private static string? _firstName;
+    private static string? _lastName;
+    private static string? _email;
+    private static string? _phoneNumber;
+    private static DateTime? _birthDate;
 
+    private static AddressDto.CreateAddress _address = new AddressDto.CreateAddress();
+    
+    private UserDto.RegistrationUser _newUser = new UserDto.RegistrationUser(
+        _firstName, _lastName, _email,_phoneNumber,_address , null ,_birthDate );
+    
     private async Task Submit()
     {
         if (password != null && password != confirmPassword)
         {
             return;
         }
-        _newUser.Password = password;
+
+        var regUser = _newUser with { Password = password };
         isSubmitted = true;
-        userCreated = await UserService.CreateUserAsync(_newUser);
+        userCreated = await UserService.CreateUserAsync(regUser);
         @* NavigationManager.NavigateTo("/login"); *@
     }
 
