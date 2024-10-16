@@ -23,7 +23,7 @@ public class UserService : IUserService
     public async Task<bool> CreateUserAsync(UserDto.RegistrationUser userDetails)
     {
         Console.WriteLine(JsonSerializer.Serialize(userDetails, jsonSerializerOptions));
-        var response = await httpClient.PostAsJsonAsync("user", userDetails);
+        var response = await httpClient.PostAsJsonAsync("user/create", userDetails);
         Console.WriteLine($"response: {response}");
         return true;
     }
