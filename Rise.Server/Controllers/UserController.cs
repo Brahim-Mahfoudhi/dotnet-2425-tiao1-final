@@ -81,7 +81,7 @@ public class UserController : ControllerBase
     /// </summary>
     /// <param name="userDetails">The <see cref="UserDto.CreateUser"/> object containing user details to create.</param>
     /// <returns>The created <see cref="UserDto.CreateUser"/> object or <c>null</c> if the user creation fails.</returns>
-    [HttpPost("createuser")]
+    [HttpPost("create")]
     public async Task<bool> Post(UserDto.CreateUser userDetails)
     {
         var created = await _userService.CreateUserAsync(userDetails);
