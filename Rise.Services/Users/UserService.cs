@@ -112,7 +112,7 @@ public class UserService : IUserService
             firstName: userDetails.FirstName,
             lastName: userDetails.LastName,
             email: userDetails.Email,
-            password: userDetails.Password,
+            // password: userDetails.Password,
             birthDate: userDetails.BirthDate ?? DateTime.UtcNow,
             address: adress,
             phoneNumber: userDetails.PhoneNumber
@@ -199,7 +199,7 @@ public class UserService : IUserService
             firstName: userDb.FirstName,
             lastName: userDb.LastName,
             email: userDb.Email,
-            password: null,
+            // password: null,
             birthDate: userDb.BirthDate,
             address: MapToAddress(userDb.Address),
             phoneNumber:userDb.PhoneNumber

@@ -9,7 +9,7 @@ public class User : Entity
     private string _firstName = default!;
     private string _lastName = default!;
     private string _email = default!;
-    private string _password = default!;
+    // private string _password = default!;
     private DateTime _birthDate;
     private Address _address = default!;
     private List<Role> _roles = [];
@@ -75,11 +75,11 @@ public class User : Entity
     /// <summary>
     /// Gets or sets the password of the user.
     /// </summary>
-    public string Password
-    {
-        get => _password;
-        set => _password = Guard.Against.NullOrWhiteSpace(value, nameof(Password));
-    }
+    // public string Password
+    // {
+    //     get => _password;
+    //     set => _password = Guard.Against.NullOrWhiteSpace(value, nameof(Password));
+    // }
 
     /// <summary>
     /// Gets or sets the birth date of the user.
