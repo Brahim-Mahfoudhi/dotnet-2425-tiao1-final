@@ -30,10 +30,8 @@ public class UserService : IUserService
         {
             return null;
         }
-
-        var users = query.Select(x => MapToUserBase(x));
         
-        return users;
+        return query.Select(x => MapToUserBase(x));
     }
 
     public async Task<UserDto.UserBase?> GetUserAsync()
@@ -86,22 +84,7 @@ public class UserService : IUserService
             return null;
         }
         
-        var user = new UserDto.UserDetails(
-            query.Id, 
-            query.BirthDate,
-            new AddressDto.GetAdress
-            {
-                Street = StreetEnumExtensions.GetStreetEnum(query.Address.Street),
-                HouseNumber = query.Address.HouseNumber,
-                Bus = query.Address.Bus
-            },
-            query.PhoneNumber,
-            query.FirstName,
-            query.LastName,
-            query.Email
-            );
-
-        return user;
+        return MapToUserDetails(query);
     }
 
 
@@ -165,17 +148,45 @@ public class UserService : IUserService
     private UserDto.UserBase MapToUserBase(User user)
     {
         return new UserDto.UserBase
-        (
-            user.Id,
-            user.FirstName,
-            user.LastName,
-            user.Email
-        )
+            (
+                user.Id, 
+                user.FirstName,
+                user.LastName,
+                user.Email,
+                ExtractRoles(user))
+            ;
+    }
+    
+    private UserDto.UserDetails MapToUserDetails(User user)
+    {
+        return new UserDto.UserDetails
+            (
+                user.Id, 
+                user.FirstName,
+                user.LastName,
+                user.Email,
+                ExtractAdress(user),
+                ExtractRoles(user),
+                user.BirthDate
+                )
+            ;
+    }
+
+    private ImmutableList<RoleDto> ExtractRoles(User user)
+    {
+        return user.Roles.Select(r => new RoleDto
         {
-            Roles = user.Roles.Select(r => new RoleDto
-            {
-                Name = (Shared.Enums.RolesEnum)r.Name
-            }).ToImmutableList()
+            Name = (Shared.Enums.RolesEnum)r.Name
+        }).ToImmutableList();
+    }
+
+    private AddressDto.GetAdress ExtractAdress(User user)
+    {
+        return new AddressDto.GetAdress
+        {
+            Street = StreetEnumExtensions.GetStreetEnum(user.Address.Street),
+            HouseNumber = user.Address.HouseNumber,
+            Bus = user.Address.Bus
         };
     }
 }

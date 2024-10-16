@@ -6,41 +6,61 @@ namespace Rise.Shared.Users;
 /// </summary>
 public class UserDto
 {
-    public record UserBase(
-        int Id, 
-        string FirstName = default!, 
-        string LastName= default!, 
-        string Email = default!, 
-        bool IsDeleted= default!)
+    public record UserBase
     {
+        public int Id { get; init; }
+        public string FirstName { get; init; }
+        public string LastName { get; init; }
+        public string Email { get; init; }
+        public bool IsDeleted { get; init; }
         public ImmutableList<RoleDto> Roles { get; init; } = ImmutableList<RoleDto>.Empty;
+
+        // Constructor to initialize everything
+        public UserBase(int id, string firstName, string lastName, string email, 
+            ImmutableList<RoleDto>? roles = null)
+        {
+            Id = id;
+            FirstName = firstName;
+            LastName = lastName;
+            Email = email;
+            Roles = roles ?? ImmutableList<RoleDto>.Empty;
+        }
     }
 
-    public record UserDetails(
-        int Id, 
-        DateTime BirthDate,
-        AddressDto.GetAdress Address = default!,
-        string PhoneNumber  = default!,
-        string FirstName = default!, 
-        string LastName= default!, 
-        string Email = default!, 
-        bool IsDeleted = default
-        )
+    public record UserDetails
     {
+        public int Id { get; init; }
+        public string FirstName { get; init; }
+        public string LastName { get; init; }
+        public string Email { get; init; }
+        public AddressDto.GetAdress Address { get; init; }
         public ImmutableList<RoleDto> Roles { get; init; } = ImmutableList<RoleDto>.Empty;
+        public DateTime BirthDate { get; init; } = DateTime.Now;
+
+        
+        public UserDetails(int id, string firstName, string lastName, string email, 
+            AddressDto.GetAdress address ,ImmutableList<RoleDto>? roles = null, DateTime? birthDate = null)
+        {
+            Id = id;
+            FirstName = firstName;
+            LastName = lastName;
+            Email = email;
+            Address = address;
+            Roles = roles ?? ImmutableList<RoleDto>.Empty;
+            BirthDate = birthDate ?? DateTime.Now;
+        }
     }
     
-    public record RegistrationUser(
-        int Id, 
-        string FirstName = default!, 
-        string LastName= default!, 
-        string Email = default!, 
-        bool IsDeleted= default!,
-        string Password = default!,
-        string PhoneNumber = default!
-        )
+    public record RegistrationUser
     {
-        public ImmutableList<RoleDto> Roles { get; init; } = ImmutableList<RoleDto>.Empty;
+        public int Id;
+        public string FirstName { get; init; }
+        public string LastName { get; init; }
+        public string Email { get; init; }
+        public bool IsDeleted { get; init; }
+        public string Password { get; init; }
+        public string PhoneNumber { get; init; }
+        public ImmutableList<RoleDto>? Roles { get; init; } = ImmutableList<RoleDto>.Empty;
         public DateTime BirthDate { get; init; } = DateTime.Now;
         public AddressDto.CreateAddress Address { get; init; } = new AddressDto.CreateAddress();
 
