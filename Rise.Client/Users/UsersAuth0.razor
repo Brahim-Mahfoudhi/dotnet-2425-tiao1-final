@@ -33,9 +33,9 @@ else
     </table>
 }
 @code {
-    private IEnumerable<UserDto.UserTable>? users;
+    private IEnumerable<UserDto.Auth0User>? users;
     protected override async Task OnInitializedAsync()
     {
-        users = await UserService.GetUsersTableAsync();
+        users = await UserService.GetAuth0Users();
     }
 }

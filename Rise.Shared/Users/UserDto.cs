@@ -77,33 +77,42 @@ public class UserDto
             BirthDate = birthDate ?? DateTime.Now;
         }
     }
-    
+
     /// <summary>
     /// DTO used for registrationform
     /// </summary>
-    public sealed record RegistrationUser
+    public sealed record RegistrationUser(
+        string FirstName,
+        string LastName,
+        string Email,
+        string PhoneNumber,
+        string Password,
+        AddressDto.GetAdress? Address,
+        DateTime? BirthDate = null)
     {
+        public DateTime? BirthDate { get; init; } = BirthDate ?? DateTime.UtcNow;
+    };
+    /*{
         public string FirstName { get; init; }
         public string LastName { get; init; }
         public string Email { get; init; }
         public string Password { get; init; }
         public string PhoneNumber { get; init; }
-        public ImmutableList<RoleDto>? Roles { get; init; } = ImmutableList<RoleDto>.Empty;
         public DateTime BirthDate { get; init; } = DateTime.Now;
         public AddressDto.CreateAddress Address { get; init; } = new AddressDto.CreateAddress();
-        
+
         public RegistrationUser(string firstName, string lastName, string email, string phoneNumber,
-            AddressDto.CreateAddress address , ImmutableList<RoleDto>? roles = null, DateTime? birthDate = null)
+            AddressDto.CreateAddress address , string? password = null, DateTime? birthDate = null)
         {
             FirstName = firstName;
             LastName = lastName;
             Email = email;
             PhoneNumber = phoneNumber;
             Address = address;
-            Roles = roles ?? ImmutableList<RoleDto>.Empty;
+            Password = password;
             BirthDate = birthDate ?? DateTime.Now;
         }
-    }
+    }*/
     
     /// <summary>
     /// DTO used to update a User in the DB
@@ -149,6 +158,6 @@ public class UserDto
     /// <summary>
     /// DTO used for showing users in the table on the AuthUsers page
     /// </summary>
-    public sealed record UserTable(string Email, string FirstName, string LastName, bool Blocked);
+    public sealed record Auth0User(string Email, string FirstName, string LastName, bool Blocked);
 
 }

@@ -1,4 +1,7 @@
 using System.Collections.Immutable;
+using System.Net.Http.Json;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 using Rise.Persistence;
 using Rise.Shared.Users;
@@ -10,10 +13,19 @@ namespace Rise.Services.Users;
 public class UserService : IUserService
 {
     private readonly ApplicationDbContext dbContext;
+    private readonly HttpClient httpClient;
+    private readonly JsonSerializerOptions jsonSerializerOptions;
 
-    public UserService(ApplicationDbContext dbContext)
+
+    public UserService(ApplicationDbContext dbContext, HttpClient httpClient)
     {
         this.dbContext = dbContext;
+        this.httpClient = httpClient;
+        this.jsonSerializerOptions = new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        };
+        this.jsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
     }
 
     public async Task<IEnumerable<UserDto.UserBase>> GetAllAsync()
@@ -87,6 +99,8 @@ public class UserService : IUserService
 
     public async Task<bool> CreateUserAsync(UserDto.RegistrationUser userDetails)
     {
+        
+        
         var adress = new Address
         (
             StreetEnumExtensions.GetStreetName(userDetails.Address.Street),
@@ -98,7 +112,8 @@ public class UserService : IUserService
             firstName: userDetails.FirstName,
             lastName: userDetails.LastName,
             email: userDetails.Email,
-            birthDate: userDetails.BirthDate,
+            password: userDetails.Password,
+            birthDate: userDetails.BirthDate ?? DateTime.UtcNow,
             address: adress,
             phoneNumber: userDetails.PhoneNumber
         );
@@ -136,9 +151,10 @@ public class UserService : IUserService
         return true;
     }
 
-    public Task<IEnumerable<UserDto.UserTable>> GetUsersTableAsync()
+    public async Task<IEnumerable<UserDto.Auth0User>> GetAuth0Users()
     {
-        throw new NotImplementedException();
+        var users = await httpClient.GetFromJsonAsync<IEnumerable<UserDto.Auth0User>>("user/auth/users");
+        return users!;
     }
     
     /// <summary>
@@ -183,6 +199,7 @@ public class UserService : IUserService
             firstName: userDb.FirstName,
             lastName: userDb.LastName,
             email: userDb.Email,
+            password: null,
             birthDate: userDb.BirthDate,
             address: MapToAddress(userDb.Address),
             phoneNumber:userDb.PhoneNumber

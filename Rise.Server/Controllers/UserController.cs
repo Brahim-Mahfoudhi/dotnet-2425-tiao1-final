@@ -79,9 +79,9 @@ public class UserController : ControllerBase
     /// <summary>
     /// Creates a new user asynchronously.
     /// </summary>
-    [HttpPost("create")]
     /// <param name="userDetails">The <see cref="UserDto.RegistrationUser"/> object containing user details to create.</param>
     /// <returns>The created <see cref="UserDto.RegistrationUser"/> object or <c>null</c> if the user creation fails.</returns>
+    [HttpPost("create")]
     public async Task<bool> Post(UserDto.RegistrationUser userDetails)
     {
         var created = await _userService.CreateUserAsync(userDetails);
@@ -114,11 +114,11 @@ public class UserController : ControllerBase
     }
     
     [HttpGet("auth/users")]
-    public async Task<IEnumerable<UserDto.UserTable>> GetUsers()
+    public async Task<IEnumerable<UserDto.Auth0User>> GetUsers()
     {
         var users = await _managementApiClient.Users.GetAllAsync(new GetUsersRequest(), new PaginationInfo());
         Console.WriteLine(users);
-        return users.Select(x => new UserDto.UserTable(
+        return users.Select(x => new UserDto.Auth0User(
             x.Email,
             x.FirstName,
             x.LastName,
@@ -127,21 +127,22 @@ public class UserController : ControllerBase
     }
 
     [HttpGet("auth/user")]
-    public async Task<UserDto.UserTable> GetUser(String id)
+    public async Task<UserDto.Auth0User> GetUser(String id)
     {
         var test = await _managementApiClient.Users.GetAsync(id);
         Console.Write(test);
-        return new UserDto.UserTable
+        return new UserDto.Auth0User
             (test.Email, 
             test.FirstName,
             test.LastName,
             test.Blocked ?? false);
     }
 
-    [HttpPost("auth/user")]
-    public async Task<UserDto.UserTable> CreateUser(UserDto.UserBase userBase)
+    /*[HttpPost("auth/user")]
+    public async Task<UserDto.Auth0User> CreateUser(UserDto.UserBase userBase)
     {
+        
         throw new NotImplementedException();
-    }
+    }*/
 
 }

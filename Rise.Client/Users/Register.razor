@@ -31,11 +31,11 @@
         </div>
         <div>
             <label class="form-label" for="password">Password: </label>
-            <input class="form-input" type="password" @bind="password" placeholder="Password" />
+            <input class="form-input" type="password" @bind="_password" placeholder="Password" />
         </div>
         <div>
             <label class="form-label" for="confirmPassword">Confirm password: </label>
-            <input class="form-input" type="password" @bind="confirmPassword" placeholder="Confirm Password" />
+            <input class="form-input" type="password" @bind="_confirmPassword" placeholder="Confirm Password" />
         </div>
         <div>
             <label class="form-label" for="birthDate">Birthdate: </label>
@@ -72,11 +72,11 @@
 
 </div>
 
-@if (isSubmitted)
+@if (_isSubmitted)
 {
     <div class="form-card">
     <h2>Thank you for registering!</h2>
-    <p>@(userCreated ? "Your account has been created successfully." : "Failed to create account.")</p>
+    <p>@(_userCreated ? "Your account has been created successfully." : "Failed to create account.")</p>
     <p>firstname: @_newUser.FirstName</p>
     <p>lastname: @_newUser.LastName</p>
     <p>email: @_newUser.Email</p>
@@ -89,33 +89,32 @@
 
 @code {
 
-    private string? password;
-    private string? confirmPassword;
+    private string? _password;
+    private string? _confirmPassword;
 
-    private bool userCreated = false;
+    private bool _userCreated = false;
 
-    private bool isSubmitted = false;
-    private static string? _firstName;
-    private static string? _lastName;
-    private static string? _email;
-    private static string? _phoneNumber;
-    private static DateTime? _birthDate;
+    private bool _isSubmitted = false;
+    private string? _firstName;
+    private string? _lastName;
+    private string? _email;
+    private string? _phoneNumber;
+    private DateTime _birthDate;
 
     private static AddressDto.CreateAddress _address = new AddressDto.CreateAddress();
     
-    private UserDto.RegistrationUser _newUser = new UserDto.RegistrationUser(
-        _firstName, _lastName, _email,_phoneNumber,_address , null ,_birthDate );
+    private UserDto.RegistrationUser? _newUser;
     
     private async Task Submit()
     {
-        if (password != null && password != confirmPassword)
+        if (_password != null && _password != _confirmPassword)
         {
             return;
         }
 
-        var regUser = _newUser with { Password = password };
-        isSubmitted = true;
-        userCreated = await UserService.CreateUserAsync(regUser);
+        _newUser = new UserDto.RegistrationUser(_firstName, _lastName, _email,_phoneNumber,_password,  _address, _birthDate );
+        _isSubmitted = true;
+        _userCreated = await UserService.CreateUserAsync(_newUser);
         @* NavigationManager.NavigateTo("/login"); *@
     }
 

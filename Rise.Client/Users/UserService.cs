@@ -63,9 +63,9 @@ public class UserService : IUserService
         return response.IsSuccessStatusCode;
     }
     
-    public async Task<IEnumerable<UserDto.UserTable>> GetUsersTableAsync()
+    public async Task<IEnumerable<UserDto.Auth0User>> GetAuth0Users()
     { 
-        var users = await httpClient.GetFromJsonAsync<IEnumerable<UserDto.UserTable>>("user/auth/users");
+        var users = await httpClient.GetFromJsonAsync<IEnumerable<UserDto.Auth0User>>("user/auth/users");
         return users!;
     }
 }

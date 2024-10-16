@@ -15,6 +15,6 @@ public interface IUserService
 
     Task<bool> DeleteUserAsync(int id);
     
-    Task<IEnumerable<UserDto.UserTable>> GetUsersTableAsync();
+    Task<IEnumerable<UserDto.Auth0User>> GetAuth0Users();
 
 }
