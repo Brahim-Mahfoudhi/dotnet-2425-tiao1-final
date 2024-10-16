@@ -57,9 +57,9 @@ public class UserService : IUserService
         return JsonSerializer.Deserialize<UserDto.UserDetails>(jsonResponse, jsonSerializerOptions);
     }
 
-    public async Task<bool> UpdateUserAsync(int id, UserDto.UpdateUser userDetails)
+    public async Task<bool> UpdateUserAsync(UserDto.UpdateUser userDetails)
     {
-        var response = await httpClient.PutAsJsonAsync($"user/{id}", userDetails);
+        var response = await httpClient.PutAsJsonAsync($"user/{userDetails.Id}", userDetails);
         return response.IsSuccessStatusCode;
     }
     

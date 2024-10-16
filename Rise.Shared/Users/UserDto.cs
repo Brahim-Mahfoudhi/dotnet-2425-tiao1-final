@@ -3,10 +3,12 @@ using System.Collections.Immutable;
 namespace Rise.Shared.Users;
 /// <summary>
 /// Data Transfer Object (DTO) representing a user with minimal info.
+/// Used records for the DTO's itself, because they are immutable by design
+/// Using sealed records gives a performance gain
 /// </summary>
 public class UserDto
 {
-    public record UserBase
+    public sealed record UserBase
     {
         public int Id { get; init; }
         public string FirstName { get; init; }
@@ -26,8 +28,34 @@ public class UserDto
             Roles = roles ?? ImmutableList<RoleDto>.Empty;
         }
     }
+    /// <summary>
+    /// DTO for writing User to DB
+    /// </summary>
+    public sealed record UserDb
+    {
+        public string FirstName { get; init; }
+        public string LastName { get; init; }
+        public string Email { get; init; }
+        public string PhoneNumber { get; init; }
+        public AddressDto.GetAdress Address { get; init; }
+        public DateTime BirthDate { get; init; } = DateTime.Now;
+        
+        public UserDb(string firstName, string lastName, string email, string phoneNumber,
+            AddressDto.GetAdress address , DateTime? birthDate = null)
+        {
+            FirstName = firstName;
+            LastName = lastName;
+            Email = email;
+            PhoneNumber = phoneNumber;
+            Address = address;
+            BirthDate = birthDate ?? DateTime.Now;
+        }
+    }
 
-    public record UserDetails
+    /// <summary>
+    /// DTO for showing users details in table on Users page
+    /// </summary>
+    public sealed record UserDetails
     {
         public int Id { get; init; }
         public string FirstName { get; init; }
@@ -36,7 +64,6 @@ public class UserDto
         public AddressDto.GetAdress Address { get; init; }
         public ImmutableList<RoleDto> Roles { get; init; } = ImmutableList<RoleDto>.Empty;
         public DateTime BirthDate { get; init; } = DateTime.Now;
-
         
         public UserDetails(int id, string firstName, string lastName, string email, 
             AddressDto.GetAdress address ,ImmutableList<RoleDto>? roles = null, DateTime? birthDate = null)
@@ -54,7 +81,7 @@ public class UserDto
     /// <summary>
     /// DTO used for registrationform
     /// </summary>
-    public record RegistrationUser
+    public sealed record RegistrationUser
     {
         public string FirstName { get; init; }
         public string LastName { get; init; }
@@ -76,12 +103,15 @@ public class UserDto
             Roles = roles ?? ImmutableList<RoleDto>.Empty;
             BirthDate = birthDate ?? DateTime.Now;
         }
-
     }
     
-    public record UpdateUser
+    /// <summary>
+    /// DTO used to update a User in the DB
+    /// Almost identical to RegistrationUser, but Id is now also included
+    /// </summary>
+    public sealed record UpdateUser
     {
-        public int Id;
+        public int Id { get; init; }
         public string FirstName { get; init; }
         public string LastName { get; init; }
         public string Email { get; init; }
@@ -90,38 +120,35 @@ public class UserDto
         public AddressDto.CreateAddress Address { get; init; } = new AddressDto.CreateAddress();
         public ImmutableList<RoleDto>? Roles { get; init; } = ImmutableList<RoleDto>.Empty;
         public string PhoneNumber { get; init; }
-    }
-
-    public record CreateUserAuth0
-    {
-        /// <summary>
-        /// Gets or sets the email address of the user.
-        /// </summary>
-        public string? Email { get; set; } = null;
-        /// <summary>
-        /// Gets or sets the first name of the user.
-        /// </summary>
-        public string? FirstName { get; set; } = null;
-        /// <summary>
-        /// Gets or sets the last name of the user.
-        /// </summary>
-        public string? LastName { get; set; } = null;
-        /// <summary>
-        /// Gets or sets the connection type to API, default is "Password-Username-Authentication"
-        /// </summary>
-        public string? Connection { get; set; } = "Username-Password-Authentication";
-        /// <summary>
-        /// Gets or sets the password of the user.
-        /// </summary>
-        public string? Password { get; set; } = null;
         
+        public UpdateUser(int id, string firstName, string lastName, string email,string passsword, string phoneNumber,
+            AddressDto.CreateAddress address , ImmutableList<RoleDto>? roles = null, DateTime? birthDate = null)
+        {
+            Id= id;
+            FirstName = firstName;
+            LastName = lastName;
+            Email = email;
+            Password = passsword;
+            PhoneNumber = phoneNumber;
+            Address = address;
+            Roles = roles ?? ImmutableList<RoleDto>.Empty;
+            BirthDate = birthDate ?? DateTime.Now;
+        }
     }
 
-    public class UserTable
-    {
-        public required string Email { get; set; }
-        public required string FirstName { get; set; }
-        public required string LastName { get; set; }
-        public required bool Blocked { get; set; }
-    }
+    /// <summary>
+    /// DTO used to register new user in Auth0
+    /// </summary>
+    public sealed record CreateUserAuth0(
+        string email,
+        string firstName,
+        string lastName,
+        string password,
+        string connection = "Username-Password-Authentication");
+
+    /// <summary>
+    /// DTO used for showing users in the table on the AuthUsers page
+    /// </summary>
+    public sealed record UserTable(string Email, string FirstName, string LastName, bool Blocked);
+
 }

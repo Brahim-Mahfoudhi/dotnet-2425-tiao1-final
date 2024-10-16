@@ -51,8 +51,6 @@ public class UserService : IUserService
         return MapToUserBase(query);
     }
 
-
-
     public async Task<UserDto.UserBase?> GetUserByIdAsync(int id)
     {
         // Changed method so that DTO creation is out of the LINQ Query
@@ -87,7 +85,6 @@ public class UserService : IUserService
         return MapToUserDetails(query);
     }
 
-
     public async Task<bool> CreateUserAsync(UserDto.RegistrationUser userDetails)
     {
         var adress = new Address
@@ -111,12 +108,11 @@ public class UserService : IUserService
         int response = await dbContext.SaveChangesAsync();
 
         return response > 0;
-
     }
 
-    public async Task<bool> UpdateUserAsync(int id, UserDto.UpdateUser userDetails)
+    public async Task<bool> UpdateUserAsync(UserDto.UpdateUser userDetails)
     {
-        var entity = await dbContext.Users.FindAsync(id) ?? throw new Exception("User not found");
+        var entity = await dbContext.Users.FindAsync(userDetails.Id) ?? throw new Exception("User not found");
 
         entity.FirstName = userDetails.FirstName ?? entity.FirstName;
         entity.LastName = userDetails.LastName ?? entity.LastName;
@@ -145,6 +141,11 @@ public class UserService : IUserService
         throw new NotImplementedException();
     }
     
+    /// <summary>
+    /// Maps a User to a UserBase DTO file
+    /// </summary>
+    /// <param name="user"></param>
+    /// <returns>UserDto.UserBase</returns>
     private UserDto.UserBase MapToUserBase(User user)
     {
         return new UserDto.UserBase
@@ -153,10 +154,15 @@ public class UserService : IUserService
                 user.FirstName,
                 user.LastName,
                 user.Email,
-                ExtractRoles(user))
-            ;
+                ExtractRoles(user)
+            );
     }
     
+    /// <summary>
+    /// Maps a User to a UserDetails DTO file
+    /// </summary>
+    /// <param name="user"></param>
+    /// <returns>UserDto.UserDetails</returns>
     private UserDto.UserDetails MapToUserDetails(User user)
     {
         return new UserDto.UserDetails
@@ -168,10 +174,26 @@ public class UserService : IUserService
                 ExtractAdress(user),
                 ExtractRoles(user),
                 user.BirthDate
-                )
-            ;
+            );
     }
 
+    private User MapToUser(UserDto.UserDb userDb)
+    {
+        return new User(
+            firstName: userDb.FirstName,
+            lastName: userDb.LastName,
+            email: userDb.Email,
+            birthDate: userDb.BirthDate,
+            address: MapToAddress(userDb.Address),
+            phoneNumber:userDb.PhoneNumber
+        );
+    }
+
+    /// <summary>
+    /// Extracts list of roles from a User
+    /// </summary>
+    /// <param name="user"></param>
+    /// <returns>ImmutableList<RoleDto></returns>
     private ImmutableList<RoleDto> ExtractRoles(User user)
     {
         return user.Roles.Select(r => new RoleDto
@@ -180,6 +202,11 @@ public class UserService : IUserService
         }).ToImmutableList();
     }
 
+    /// <summary>
+    /// Extracts AdressDTO from a User
+    /// </summary>
+    /// <param name="user"></param>
+    /// <returns>ddressDto.GetAdress</returns>
     private AddressDto.GetAdress ExtractAdress(User user)
     {
         return new AddressDto.GetAdress
@@ -188,5 +215,15 @@ public class UserService : IUserService
             HouseNumber = user.Address.HouseNumber,
             Bus = user.Address.Bus
         };
+    }
+
+    private Address MapToAddress(AddressDto.GetAdress adress)
+    {
+       return new Address
+        (
+            StreetEnumExtensions.GetStreetName(adress.Street),
+            adress.HouseNumber ?? "",
+            adress.Bus
+        );
     }
 }

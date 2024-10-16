@@ -95,9 +95,9 @@ public class UserController : ControllerBase
     /// <param name="userDetails">The <see cref="UserDto.UpdateUser"/> object containing updated user details.</param>
     /// <returns><c>true</c> if the update is successful; otherwise, <c>false</c>.</returns>
     [HttpPut("{id}")]
-    public async Task<bool> Put(int id, UserDto.UpdateUser userDetails)
+    public async Task<bool> Put(UserDto.UpdateUser userDetails)
     {
-        var updated = await _userService.UpdateUserAsync(id, userDetails);
+        var updated = await _userService.UpdateUserAsync(userDetails);
         return updated;
     }
 
@@ -118,13 +118,12 @@ public class UserController : ControllerBase
     {
         var users = await _managementApiClient.Users.GetAllAsync(new GetUsersRequest(), new PaginationInfo());
         Console.WriteLine(users);
-        return users.Select(x => new UserDto.UserTable
-        {
-            Email = x.Email,
-            FirstName = x.FirstName,
-            LastName = x.LastName,
-            Blocked = x.Blocked ?? false,
-        });
+        return users.Select(x => new UserDto.UserTable(
+            x.Email,
+            x.FirstName,
+            x.LastName,
+            x.Blocked ?? false
+        ));
     }
 
     [HttpGet("auth/user")]
@@ -133,12 +132,10 @@ public class UserController : ControllerBase
         var test = await _managementApiClient.Users.GetAsync(id);
         Console.Write(test);
         return new UserDto.UserTable
-        {
-            Email = test.Email,
-            FirstName = test.FirstName,
-            LastName = test.LastName,
-            Blocked = test.Blocked ?? false,
-        };
+            (test.Email, 
+            test.FirstName,
+            test.LastName,
+            test.Blocked ?? false);
     }
 
     [HttpPost("auth/user")]
