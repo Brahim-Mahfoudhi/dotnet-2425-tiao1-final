@@ -17,9 +17,8 @@ internal class RoleConfiguration : EntityConfiguration<Role>
     {
         base.Configure(builder);
         builder.ToTable(nameof(Role));
-
+        builder.HasIndex(x => x.UserId).IsUnique();
         builder.HasIndex(x => x.Id).IsUnique();
-        
         builder.Property(x => x.Name).IsRequired();
     }
 }

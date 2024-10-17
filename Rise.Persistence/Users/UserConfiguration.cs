@@ -29,12 +29,12 @@ internal class UserConfiguration : EntityConfiguration<User>
         builder
             .HasOne(x => x.Address)
             .WithOne(x => x.User)
-            .HasForeignKey<Address>(x => x.Id)
+            .HasForeignKey<Address>(x => x.UserId)
             .IsRequired();
         
         builder
             .HasMany(x => x.Roles)
             .WithOne()
-            .HasForeignKey(x => x.Id);
+            .HasForeignKey(x => x.UserId);
     }
 }

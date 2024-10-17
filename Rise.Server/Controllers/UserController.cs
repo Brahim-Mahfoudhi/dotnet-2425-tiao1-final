@@ -138,11 +138,23 @@ public class UserController : ControllerBase
             test.Blocked ?? false);
     }
 
-    /*[HttpPost("auth/user")]
-    public async Task<UserDto.Auth0User> CreateUser(UserDto.UserBase userBase)
+    [HttpPost("auth/user")]
+    public async Task<UserDto.UserDb> CreateUser(UserDto.CreateUserAuth0 user)
     {
+        var userCreateRequest = new UserCreateRequest
+        {
+            Email = user.email,
+            Password = user.password,
+            Connection = user.connection,
+            FirstName = user.firstName,
+            LastName = user.lastName,
+        };
         
-        throw new NotImplementedException();
-    }*/
+        var response = await _managementApiClient.Users.CreateAsync(userCreateRequest);
+        
+        var userDb = new UserDto.UserDb(response.UserId, response.FirstName, response.LastName, response.Email, user.PhoneNumber, user.Address, user.BirthDate );
+        
+        return userDb;
+    }
 
 }

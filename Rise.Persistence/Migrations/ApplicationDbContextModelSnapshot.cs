@@ -58,7 +58,10 @@ namespace Rise.Persistence.Migrations
             modelBuilder.Entity("Rise.Domain.Users.Address", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Bus")
                         .HasMaxLength(10)
@@ -89,9 +92,17 @@ namespace Rise.Persistence.Migrations
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("GETUTCDATE()");
 
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasMaxLength(4000)
+                        .HasColumnType("nvarchar(4000)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("Id")
+                        .IsUnique();
+
+                    b.HasIndex("UserId")
                         .IsUnique();
 
                     b.ToTable("Address", (string)null);
@@ -100,7 +111,10 @@ namespace Rise.Persistence.Migrations
             modelBuilder.Entity("Rise.Domain.Users.Role", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
@@ -120,9 +134,17 @@ namespace Rise.Persistence.Migrations
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("GETUTCDATE()");
 
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasMaxLength(4000)
+                        .HasColumnType("nvarchar(4000)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("Id")
+                        .IsUnique();
+
+                    b.HasIndex("UserId")
                         .IsUnique();
 
                     b.ToTable("Role", (string)null);
@@ -130,11 +152,9 @@ namespace Rise.Persistence.Migrations
 
             modelBuilder.Entity("Rise.Domain.Users.User", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<string>("Id")
+                        .HasMaxLength(4000)
+                        .HasColumnType("nvarchar(4000)");
 
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("datetime2");
@@ -186,7 +206,7 @@ namespace Rise.Persistence.Migrations
                 {
                     b.HasOne("Rise.Domain.Users.User", "User")
                         .WithOne("Address")
-                        .HasForeignKey("Rise.Domain.Users.Address", "Id")
+                        .HasForeignKey("Rise.Domain.Users.Address", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -197,7 +217,7 @@ namespace Rise.Persistence.Migrations
                 {
                     b.HasOne("Rise.Domain.Users.User", null)
                         .WithMany("Roles")
-                        .HasForeignKey("Id")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

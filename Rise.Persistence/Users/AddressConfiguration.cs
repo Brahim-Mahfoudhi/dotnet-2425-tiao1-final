@@ -19,7 +19,7 @@ internal class AddressConfiguration : EntityConfiguration<Address>
         builder.ToTable(nameof(Address));
         
         builder.HasIndex(x => x.Id).IsUnique();
-        
+        builder.Property(x => x.UserId).IsRequired();
         builder.Property(x => x.Street).IsRequired();
         builder.Property(x => x.HouseNumber).IsRequired();
         builder.Property(x => x.Bus).HasMaxLength(10);

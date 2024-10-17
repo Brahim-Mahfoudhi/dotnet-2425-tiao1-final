@@ -70,7 +70,7 @@ public class UserService : IUserService
         // in the LINQ query that EF is trying to translate
         var query = await dbContext.Users
             .Include(x => x.Roles) // Ensure Roles are loaded (Eagerly loading)
-            .FirstOrDefaultAsync(x => x.Id == id && x.IsDeleted == false);
+            .FirstOrDefaultAsync(x => x.Id.Equals(id.ToString()) && x.IsDeleted == false);
         
         if (query == null)
         {
@@ -87,7 +87,7 @@ public class UserService : IUserService
         // in the LINQ query that EF is trying to translate
         var query = await dbContext.Users
             .Include(x => x.Address) // Ensure Address is loaded (Eagerly loading)
-            .FirstOrDefaultAsync(x => x.Id == id && x.IsDeleted == false);
+            .FirstOrDefaultAsync(x => x.Id.Equals(id.ToString()) && x.IsDeleted == false);
         
         if (query == null)
         {
@@ -99,26 +99,24 @@ public class UserService : IUserService
 
     public async Task<bool> CreateUserAsync(UserDto.RegistrationUser userDetails)
     {
+        var users = await httpClient.PostAsJsonAsync("https//localhost:5001/api/User/auth/user", userDetails);
         
+        var httpResponse = await users.Content.ReadFromJsonAsync<UserDto.UserDb>();
         
-        var adress = new Address
-        (
-            StreetEnumExtensions.GetStreetName(userDetails.Address.Street),
-            userDetails.Address.HouseNumber ?? "",
-            userDetails.Address.Bus
-        );
-
         var entity = new User(
-            firstName: userDetails.FirstName,
-            lastName: userDetails.LastName,
-            email: userDetails.Email,
-            // password: userDetails.Password,
-            birthDate: userDetails.BirthDate ?? DateTime.UtcNow,
-            address: adress,
-            phoneNumber: userDetails.PhoneNumber
+            id : httpResponse.Id,
+            firstName: httpResponse.FirstName,
+            lastName: httpResponse.LastName,
+            email: httpResponse.Email,
+            birthDate: httpResponse.BirthDate ?? DateTime.UtcNow,
+            address: new Address(
+                street: httpResponse.Address.Street.ToString() ?? "",
+                houseNumber: httpResponse.Address.HouseNumber ?? "",
+                bus: httpResponse.Address.Bus),
+            phoneNumber: httpResponse.PhoneNumber
         );
         entity.AddRole(new Role(RolesEnum.Pending));
-
+        
         dbContext.Users.Add(entity);
         int response = await dbContext.SaveChangesAsync();
 
@@ -193,7 +191,7 @@ public class UserService : IUserService
             );
     }
 
-    private User MapToUser(UserDto.UserDb userDb)
+    /*private User MapToUser(UserDto.UserDb userDb)
     {
         return new User(
             firstName: userDb.FirstName,
@@ -204,7 +202,7 @@ public class UserService : IUserService
             address: MapToAddress(userDb.Address),
             phoneNumber:userDb.PhoneNumber
         );
-    }
+    }*/
 
     /// <summary>
     /// Extracts list of roles from a User

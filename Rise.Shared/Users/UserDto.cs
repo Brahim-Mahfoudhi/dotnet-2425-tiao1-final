@@ -10,7 +10,7 @@ public class UserDto
 {
     public sealed record UserBase
     {
-        public int Id { get; init; }
+        public string Id { get; init; }
         public string FirstName { get; init; }
         public string LastName { get; init; }
         public string Email { get; init; }
@@ -18,7 +18,7 @@ public class UserDto
         public ImmutableList<RoleDto> Roles { get; init; } = ImmutableList<RoleDto>.Empty;
 
         // Constructor to initialize everything
-        public UserBase(int id, string firstName, string lastName, string email, 
+        public UserBase(string id, string firstName, string lastName, string email, 
             ImmutableList<RoleDto>? roles = null)
         {
             Id = id;
@@ -31,33 +31,24 @@ public class UserDto
     /// <summary>
     /// DTO for writing User to DB
     /// </summary>
-    public sealed record UserDb
+    public sealed record UserDb(
+        string Id,
+        string FirstName,
+        string LastName,
+        string Email,
+        string PhoneNumber,
+        AddressDto.GetAdress? Address,
+        DateTime? BirthDate = null)
     {
-        public string FirstName { get; init; }
-        public string LastName { get; init; }
-        public string Email { get; init; }
-        public string PhoneNumber { get; init; }
-        public AddressDto.GetAdress Address { get; init; }
-        public DateTime BirthDate { get; init; } = DateTime.Now;
-        
-        public UserDb(string firstName, string lastName, string email, string phoneNumber,
-            AddressDto.GetAdress address , DateTime? birthDate = null)
-        {
-            FirstName = firstName;
-            LastName = lastName;
-            Email = email;
-            PhoneNumber = phoneNumber;
-            Address = address;
-            BirthDate = birthDate ?? DateTime.Now;
-        }
-    }
-
+        public DateTime? BirthDate { get; init; } = BirthDate ?? DateTime.UtcNow;
+    };
+    
     /// <summary>
     /// DTO for showing users details in table on Users page
     /// </summary>
     public sealed record UserDetails
     {
-        public int Id { get; init; }
+        public string Id { get; init; }
         public string FirstName { get; init; }
         public string LastName { get; init; }
         public string Email { get; init; }
@@ -65,7 +56,7 @@ public class UserDto
         public ImmutableList<RoleDto> Roles { get; init; } = ImmutableList<RoleDto>.Empty;
         public DateTime BirthDate { get; init; } = DateTime.Now;
         
-        public UserDetails(int id, string firstName, string lastName, string email, 
+        public UserDetails(string id, string firstName, string lastName, string email, 
             AddressDto.GetAdress address ,ImmutableList<RoleDto>? roles = null, DateTime? birthDate = null)
         {
             Id = id;
@@ -92,27 +83,6 @@ public class UserDto
     {
         public DateTime? BirthDate { get; init; } = BirthDate ?? DateTime.UtcNow;
     };
-    /*{
-        public string FirstName { get; init; }
-        public string LastName { get; init; }
-        public string Email { get; init; }
-        public string Password { get; init; }
-        public string PhoneNumber { get; init; }
-        public DateTime BirthDate { get; init; } = DateTime.Now;
-        public AddressDto.CreateAddress Address { get; init; } = new AddressDto.CreateAddress();
-
-        public RegistrationUser(string firstName, string lastName, string email, string phoneNumber,
-            AddressDto.CreateAddress address , string? password = null, DateTime? birthDate = null)
-        {
-            FirstName = firstName;
-            LastName = lastName;
-            Email = email;
-            PhoneNumber = phoneNumber;
-            Address = address;
-            Password = password;
-            BirthDate = birthDate ?? DateTime.Now;
-        }
-    }*/
     
     /// <summary>
     /// DTO used to update a User in the DB
@@ -153,11 +123,18 @@ public class UserDto
         string firstName,
         string lastName,
         string password,
-        string connection = "Username-Password-Authentication");
+        AddressDto.GetAdress? Address,
+        string PhoneNumber,
+        string connection = "Username-Password-Authentication",
+        DateTime? BirthDate = null)
+    {
+        public DateTime? BirthDate { get; init; } = BirthDate ?? DateTime.UtcNow;
+    };
 
     /// <summary>
     /// DTO used for showing users in the table on the AuthUsers page
     /// </summary>
     public sealed record Auth0User(string Email, string FirstName, string LastName, bool Blocked);
+
 
 }

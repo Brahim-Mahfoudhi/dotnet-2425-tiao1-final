@@ -6,6 +6,7 @@ using Rise.Shared.Enums;
 /// </summary>
 public class Address : Entity
 {
+    private string _userId; // Foreign key referencing User
     private User _user;
     private StreetEnum _street = default!;
     private string _houseNumber = default!;
@@ -40,6 +41,12 @@ public class Address : Entity
         Street = street;
         HouseNumber = houseNumber;
         Bus = bus;
+    }
+
+    public string UserId
+    {
+        get => _userId;
+        set => _userId = Guard.Against.Null(value);
     }
 
     /// <summary>
