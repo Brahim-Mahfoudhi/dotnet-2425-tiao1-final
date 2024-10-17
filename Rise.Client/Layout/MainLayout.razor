@@ -1,4 +1,8 @@
-﻿@inherits LayoutComponentBase
+﻿@using System.Globalization
+@inherits LayoutComponentBase
+@inject Microsoft.Extensions.Localization.IStringLocalizer<MainLayout> Localizer
+
+
 
 <div class="page">
     <div class="sidebar">
@@ -7,7 +11,11 @@
 
     <main>
         <div class="top-row px-4">
-            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
+            <select value="@selectedCulture" @onchange="ChangeLanguage">
+                <option value="en-US">English</option>
+                <option value="nl-BE">Nederlands</option>
+            </select>
+            <a href="https://docs.microsoft.com/aspnet/" target="_blank">@Localizer["About"]</a>
         </div>
 
         <article class="content px-4">
@@ -15,3 +23,41 @@
         </article>
     </main>
 </div>
+
+@code {
+    [Inject] IJSRuntime js { get; set; }
+    [Inject] NavigationManager NavigationManager { get; set; }
+
+    private string selectedCulture = "en-US";
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Log selected culture
+        Console.WriteLine($"Current Culture: {CultureInfo.CurrentCulture.Name}");
+        Console.WriteLine($"Current UI Culture: {CultureInfo.CurrentUICulture.Name}");
+
+        // Log available resource strings
+        var aboutText = Localizer["about"];
+        Console.WriteLine($"Localized 'about': {aboutText}");
+
+        // Get the culture from localStorage using JavaScript interop
+        var storedCulture = await js.InvokeAsync<string>("blazorCulture.get");
+
+        if (!string.IsNullOrEmpty(storedCulture))
+        {
+            selectedCulture = storedCulture;
+        }
+    }
+
+    private async void ChangeLanguage(ChangeEventArgs e)
+    {
+        var culture = new CultureInfo(e.Value.ToString());
+
+        // Store the selected culture in localStorage
+        await js.InvokeVoidAsync("blazorCulture.set", culture.Name);
+
+        // Reload the page to apply the new culture
+        NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true); ;
+    }
+}
+}
