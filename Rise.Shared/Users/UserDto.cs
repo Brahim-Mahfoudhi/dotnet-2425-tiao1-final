@@ -71,7 +71,7 @@ public class UserDto
         /// Gets or sets the phone number of the user.
         /// </summary>
         [Required(ErrorMessage = "Phone number is required.")]
-        [BelgianPhoneNumber]
+        // [BelgianPhoneNumber]
         public string PhoneNumber { get; set; } = default!;
     }
 
