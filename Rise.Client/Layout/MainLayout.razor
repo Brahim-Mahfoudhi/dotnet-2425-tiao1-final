@@ -32,14 +32,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-        // Log selected culture
-        Console.WriteLine($"Current Culture: {CultureInfo.CurrentCulture.Name}");
-        Console.WriteLine($"Current UI Culture: {CultureInfo.CurrentUICulture.Name}");
-
-        // Log available resource strings
-        var aboutText = Localizer["about"];
-        Console.WriteLine($"Localized 'about': {aboutText}");
-
         // Get the culture from localStorage using JavaScript interop
         var storedCulture = await js.InvokeAsync<string>("blazorCulture.get");
 
