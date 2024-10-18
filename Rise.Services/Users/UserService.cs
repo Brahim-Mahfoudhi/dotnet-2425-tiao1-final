@@ -99,21 +99,18 @@ public class UserService : IUserService
 
     public async Task<bool> CreateUserAsync(UserDto.RegistrationUser userDetails)
     {
-        var users = await httpClient.PostAsJsonAsync("https//localhost:5001/api/User/auth/user", userDetails);
-        
-        var httpResponse = await users.Content.ReadFromJsonAsync<UserDto.UserDb>();
-        
+        Console.WriteLine("Creating new user" + userDetails);
         var entity = new User(
-            id : httpResponse.Id,
-            firstName: httpResponse.FirstName,
-            lastName: httpResponse.LastName,
-            email: httpResponse.Email,
-            birthDate: httpResponse.BirthDate ?? DateTime.UtcNow,
+            id : userDetails.Id,
+            firstName: userDetails.FirstName,
+            lastName: userDetails.LastName,
+            email: userDetails.Email,
+            birthDate: userDetails.BirthDate ?? DateTime.UtcNow,
             address: new Address(
-                street: httpResponse.Address.Street.ToString() ?? "",
-                houseNumber: httpResponse.Address.HouseNumber ?? "",
-                bus: httpResponse.Address.Bus),
-            phoneNumber: httpResponse.PhoneNumber
+                street: userDetails.Address.Street.ToString() ?? "",
+                houseNumber: userDetails.Address.HouseNumber ?? "",
+                bus: userDetails.Address.Bus),
+            phoneNumber: userDetails.PhoneNumber
         );
         entity.AddRole(new Role(RolesEnum.Pending));
         

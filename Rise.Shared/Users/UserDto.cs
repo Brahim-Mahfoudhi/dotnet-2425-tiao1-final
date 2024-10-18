@@ -28,20 +28,6 @@ public class UserDto
             Roles = roles ?? ImmutableList<RoleDto>.Empty;
         }
     }
-    /// <summary>
-    /// DTO for writing User to DB
-    /// </summary>
-    public sealed record UserDb(
-        string Id,
-        string FirstName,
-        string LastName,
-        string Email,
-        string PhoneNumber,
-        AddressDto.GetAdress? Address,
-        DateTime? BirthDate = null)
-    {
-        public DateTime? BirthDate { get; init; } = BirthDate ?? DateTime.UtcNow;
-    };
     
     /// <summary>
     /// DTO for showing users details in table on Users page
@@ -77,7 +63,8 @@ public class UserDto
         string LastName,
         string Email,
         string PhoneNumber,
-        string Password,
+        string? Password,
+        string? Id,
         AddressDto.GetAdress? Address,
         DateTime? BirthDate = null)
     {
@@ -114,22 +101,6 @@ public class UserDto
             BirthDate = birthDate ?? DateTime.Now;
         }
     }
-
-    /// <summary>
-    /// DTO used to register new user in Auth0
-    /// </summary>
-    public sealed record CreateUserAuth0(
-        string email,
-        string firstName,
-        string lastName,
-        string password,
-        AddressDto.GetAdress? Address,
-        string PhoneNumber,
-        string connection = "Username-Password-Authentication",
-        DateTime? BirthDate = null)
-    {
-        public DateTime? BirthDate { get; init; } = BirthDate ?? DateTime.UtcNow;
-    };
 
     /// <summary>
     /// DTO used for showing users in the table on the AuthUsers page

@@ -112,7 +112,7 @@
             return;
         }
 
-        _newUser = new UserDto.RegistrationUser(_firstName, _lastName, _email,_phoneNumber,_password,  _address, _birthDate );
+        _newUser = new UserDto.RegistrationUser(_firstName, _lastName, _email,_phoneNumber,_password, null, _address, _birthDate );
         _isSubmitted = true;
         _userCreated = await UserService.CreateUserAsync(_newUser);
         @* NavigationManager.NavigateTo("/login"); *@

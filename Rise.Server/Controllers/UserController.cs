@@ -84,7 +84,8 @@ public class UserController : ControllerBase
     [HttpPost("create")]
     public async Task<bool> Post(UserDto.RegistrationUser userDetails)
     {
-        var created = await _userService.CreateUserAsync(userDetails);
+        var userDb = await RegisterUserAuth0(userDetails);
+        var created = await _userService.CreateUserAsync(userDb);
         return created;
     }
 
@@ -138,22 +139,21 @@ public class UserController : ControllerBase
             test.Blocked ?? false);
     }
 
-    [HttpPost("auth/user")]
-    public async Task<UserDto.UserDb> CreateUser(UserDto.CreateUserAuth0 user)
+    public async Task<UserDto.RegistrationUser> RegisterUserAuth0(UserDto.RegistrationUser user)
     {
         var userCreateRequest = new UserCreateRequest
         {
-            Email = user.email,
-            Password = user.password,
-            Connection = user.connection,
-            FirstName = user.firstName,
-            LastName = user.lastName,
+            Email = user.Email,
+            Password = user.Password,
+            Connection = "Username-Password-Authentication",
+            FirstName = user.FirstName,
+            LastName = user.LastName,
         };
         
         var response = await _managementApiClient.Users.CreateAsync(userCreateRequest);
-        
-        var userDb = new UserDto.UserDb(response.UserId, response.FirstName, response.LastName, response.Email, user.PhoneNumber, user.Address, user.BirthDate );
-        
+        Console.WriteLine(response);
+        var userDb = new UserDto.RegistrationUser(response.FirstName, response.LastName, response.Email, user.PhoneNumber, null, response.UserId, user.Address, user.BirthDate );
+        Console.WriteLine("Created user" + userDb);
         return userDb;
     }
 
