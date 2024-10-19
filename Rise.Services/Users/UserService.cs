@@ -12,20 +12,20 @@ namespace Rise.Services.Users;
 
 public class UserService : IUserService
 {
-    private readonly ApplicationDbContext dbContext;
-    private readonly HttpClient httpClient;
-    private readonly JsonSerializerOptions jsonSerializerOptions;
+    private readonly ApplicationDbContext _dbContext;
+    private readonly HttpClient _httpClient;
+    private readonly JsonSerializerOptions _jsonSerializerOptions;
 
 
     public UserService(ApplicationDbContext dbContext, HttpClient httpClient)
     {
-        this.dbContext = dbContext;
-        this.httpClient = httpClient;
-        this.jsonSerializerOptions = new JsonSerializerOptions
+        this._dbContext = dbContext;
+        this._httpClient = httpClient;
+        this._jsonSerializerOptions = new JsonSerializerOptions
         {
             PropertyNameCaseInsensitive = true
         };
-        this.jsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+        this._jsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
     }
 
     public async Task<IEnumerable<UserDto.UserBase>> GetAllAsync()
@@ -33,7 +33,7 @@ public class UserService : IUserService
         // Changed method so that DTO creation is out of the LINQ Query
         // You need to avoid using methods with optional parameters directly
         // in the LINQ query that EF is trying to translate
-        var query = await dbContext.Users
+        var query = await _dbContext.Users
             .Include(x => x.Roles) // Ensure Roles are loaded (Eagerly loading)
             .Where(x => x.IsDeleted == false)
             .ToListAsync();
@@ -51,7 +51,7 @@ public class UserService : IUserService
         // Changed method so that DTO creation is out of the LINQ Query
         // You need to avoid using methods with optional parameters directly
         // in the LINQ query that EF is trying to translate
-        var query = await dbContext.Users
+        var query = await _dbContext.Users
             .Include(x => x.Roles) // Ensure Roles are loaded (Eagerly loading)
             .FirstOrDefaultAsync(x => x.IsDeleted == false);
         
@@ -63,14 +63,14 @@ public class UserService : IUserService
         return MapToUserBase(query);
     }
 
-    public async Task<UserDto.UserBase?> GetUserByIdAsync(int id)
+    public async Task<UserDto.UserBase?> GetUserByIdAsync(string id)
     {
         // Changed method so that DTO creation is out of the LINQ Query
         // You need to avoid using methods with optional parameters directly
         // in the LINQ query that EF is trying to translate
-        var query = await dbContext.Users
+        var query = await _dbContext.Users
             .Include(x => x.Roles) // Ensure Roles are loaded (Eagerly loading)
-            .FirstOrDefaultAsync(x => x.Id.Equals(id.ToString()) && x.IsDeleted == false);
+            .FirstOrDefaultAsync(x => x.Id.Equals(id) && x.IsDeleted == false);
         
         if (query == null)
         {
@@ -80,14 +80,14 @@ public class UserService : IUserService
         return MapToUserBase(query);
     }
 
-    public async Task<UserDto.UserDetails?> GetUserDetailsByIdAsync(int id)
+    public async Task<UserDto.UserDetails?> GetUserDetailsByIdAsync(string id)
     {
         // Changed method so that DTO creation is out of the LINQ Query
         // You need to avoid using methods with optional parameters directly
         // in the LINQ query that EF is trying to translate
-        var query = await dbContext.Users
+        var query = await _dbContext.Users
             .Include(x => x.Address) // Ensure Address is loaded (Eagerly loading)
-            .FirstOrDefaultAsync(x => x.Id.Equals(id.ToString()) && x.IsDeleted == false);
+            .FirstOrDefaultAsync(x => x.Id.Equals(id) && x.IsDeleted == false);
         
         if (query == null)
         {
@@ -114,15 +114,15 @@ public class UserService : IUserService
         );
         entity.AddRole(new Role(RolesEnum.Pending));
         
-        dbContext.Users.Add(entity);
-        int response = await dbContext.SaveChangesAsync();
+        _dbContext.Users.Add(entity);
+        int response = await _dbContext.SaveChangesAsync();
 
         return response > 0;
     }
 
     public async Task<bool> UpdateUserAsync(UserDto.UpdateUser userDetails)
     {
-        var entity = await dbContext.Users.FindAsync(userDetails.Id) ?? throw new Exception("User not found");
+        var entity = await _dbContext.Users.FindAsync(userDetails.Id) ?? throw new Exception("User not found");
 
         entity.FirstName = userDetails.FirstName ?? entity.FirstName;
         entity.LastName = userDetails.LastName ?? entity.LastName;
@@ -130,25 +130,25 @@ public class UserService : IUserService
         entity.BirthDate = userDetails.BirthDate ?? entity.BirthDate;
         entity.PhoneNumber = userDetails.PhoneNumber ?? entity.PhoneNumber;
 
-        dbContext.Users.Update(entity);
-        int response = await dbContext.SaveChangesAsync();
+        _dbContext.Users.Update(entity);
+        int response = await _dbContext.SaveChangesAsync();
 
         return response > 0;
     }
 
-    public async Task<bool> DeleteUserAsync(int id)
+    public async Task<bool> DeleteUserAsync(string id)
     {
-        var entity = await dbContext.Users.FindAsync(id) ?? throw new Exception("User not found");
+        var entity = await _dbContext.Users.FindAsync(id) ?? throw new Exception("User not found");
 
         entity.SoftDelete();
-        dbContext.Users.Update(entity);
-        await dbContext.SaveChangesAsync();
+        _dbContext.Users.Update(entity);
+        await _dbContext.SaveChangesAsync();
         return true;
     }
 
     public async Task<IEnumerable<UserDto.Auth0User>> GetAuth0Users()
     {
-        var users = await httpClient.GetFromJsonAsync<IEnumerable<UserDto.Auth0User>>("user/auth/users");
+        var users = await _httpClient.GetFromJsonAsync<IEnumerable<UserDto.Auth0User>>("user/auth/users");
         return users!;
     }
     
@@ -187,20 +187,7 @@ public class UserService : IUserService
                 user.BirthDate
             );
     }
-
-    /*private User MapToUser(UserDto.UserDb userDb)
-    {
-        return new User(
-            firstName: userDb.FirstName,
-            lastName: userDb.LastName,
-            email: userDb.Email,
-            // password: null,
-            birthDate: userDb.BirthDate,
-            address: MapToAddress(userDb.Address),
-            phoneNumber:userDb.PhoneNumber
-        );
-    }*/
-
+    
     /// <summary>
     /// Extracts list of roles from a User
     /// </summary>

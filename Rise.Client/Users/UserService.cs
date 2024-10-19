@@ -23,12 +23,12 @@ public class UserService : IUserService
     public async Task<bool> CreateUserAsync(UserDto.RegistrationUser userDetails)
     {
         Console.WriteLine(JsonSerializer.Serialize(userDetails, jsonSerializerOptions));
-        var response = await httpClient.PostAsJsonAsync("user/create", userDetails);
+        var response = await httpClient.PostAsJsonAsync("user", userDetails);
         Console.WriteLine($"response: {response}");
         return true;
     }
 
-    public async Task<bool> DeleteUserAsync(int id)
+    public async Task<bool> DeleteUserAsync(string id)
     {
         var response = await httpClient.DeleteAsync($"user/{id}");
         return response.IsSuccessStatusCode;
@@ -45,13 +45,13 @@ public class UserService : IUserService
         throw new NotImplementedException();
     }
 
-    public async Task<UserDto.UserBase?> GetUserByIdAsync(int id)
+    public async Task<UserDto.UserBase?> GetUserByIdAsync(string id)
     {
         var jsonResponse = await httpClient.GetStringAsync($"user/{id}");
         return JsonSerializer.Deserialize<UserDto.UserBase>(jsonResponse, jsonSerializerOptions);
     }
 
-    public async Task<UserDto.UserDetails?> GetUserDetailsByIdAsync(int id)
+    public async Task<UserDto.UserDetails?> GetUserDetailsByIdAsync(string id)
     {
         var jsonResponse = await httpClient.GetStringAsync($"user/details/{id}");
         return JsonSerializer.Deserialize<UserDto.UserDetails>(jsonResponse, jsonSerializerOptions);

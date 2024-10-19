@@ -13,7 +13,7 @@ public partial class Users
 
     protected override async Task OnInitializedAsync()
     {
-        user = await UserService.GetUserByIdAsync(1);
+        user = await UserService.GetUserByIdAsync("1");
         users = await UserService.GetAllAsync();
     }
 }

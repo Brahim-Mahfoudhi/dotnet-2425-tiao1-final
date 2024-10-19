@@ -13,7 +13,8 @@ namespace Rise.Server.Controllers;
 /// </summary>
 [ApiController]
 [Route("api/[controller]")]
-[Authorize(Roles = "Admin")]
+// [Authorize(Roles = "Admin")]
+[Authorize]
 public class UserController : ControllerBase
 {
     private readonly IUserService _userService;
@@ -58,7 +59,7 @@ public class UserController : ControllerBase
     /// <param name="id">The ID of the user to retrieve.</param>
     /// <returns>The <see cref="UserDto"/> object or <c>null</c> if no user with the specified ID is found.</returns>
     [HttpGet("{id}")]
-    public async Task<UserDto.UserBase?> Get(int id)
+    public async Task<UserDto.UserBase?> Get(string id)
     {
         var user = await _userService.GetUserByIdAsync(id);
         return user;
@@ -70,7 +71,7 @@ public class UserController : ControllerBase
     /// <param name="id">The ID of the user to retrieve details for.</param>
     /// <returns>The detailed <see cref="UserDto.UserDetails"/> object or <c>null</c> if no user with the specified ID is found.</returns>
     [HttpGet("details/{id}")]
-    public async Task<UserDto.UserDetails?> GetDetails(int id)
+    public async Task<UserDto.UserDetails?> GetDetails(string id)
     {
         var user = await _userService.GetUserDetailsByIdAsync(id);
         return user;
@@ -81,7 +82,7 @@ public class UserController : ControllerBase
     /// </summary>
     /// <param name="userDetails">The <see cref="UserDto.RegistrationUser"/> object containing user details to create.</param>
     /// <returns>The created <see cref="UserDto.RegistrationUser"/> object or <c>null</c> if the user creation fails.</returns>
-    [HttpPost("create")]
+    [HttpPost]
     public async Task<bool> Post(UserDto.RegistrationUser userDetails)
     {
         var userDb = await RegisterUserAuth0(userDetails);
@@ -108,7 +109,7 @@ public class UserController : ControllerBase
     /// <param name="id">The ID of the user to delete.</param>
     /// <returns><c>true</c> if the deletion is successful; otherwise, <c>false</c>.</returns>
     [HttpDelete("{id}")]
-    public async Task<bool> Delete(int id)
+    public async Task<bool> Delete(string id)
     {
         var deleted = await _userService.DeleteUserAsync(id);
         return deleted;
@@ -128,7 +129,7 @@ public class UserController : ControllerBase
     }
 
     [HttpGet("auth/user")]
-    public async Task<UserDto.Auth0User> GetUser(String id)
+    public async Task<UserDto.Auth0User> GetUser(string id)
     {
         var test = await _managementApiClient.Users.GetAsync(id);
         Console.Write(test);
@@ -139,7 +140,7 @@ public class UserController : ControllerBase
             test.Blocked ?? false);
     }
 
-    public async Task<UserDto.RegistrationUser> RegisterUserAuth0(UserDto.RegistrationUser user)
+    private async Task<UserDto.RegistrationUser> RegisterUserAuth0(UserDto.RegistrationUser user)
     {
         var userCreateRequest = new UserCreateRequest
         {
