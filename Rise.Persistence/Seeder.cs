@@ -71,15 +71,18 @@ public class Seeder
     /// </summary>
     private void SeedUsers()
     {
-        var userAdmin = new User("1","Lorenz", "Debie", "lorenzdebie@gmail.com",  new DateTime(1980, 01, 01), new Address("Afrikalaan", "5"), "+32478457845");
+        var userAdmin = new User("auth0|6713ad524e8a8907fbf0d57f","Admin", "Gebruiker", "admin@gmail.com",  new DateTime(1980, 01, 01), new Address("Afrikalaan", "5"), "+32478457845");
         userAdmin.AddRole(new Role(RolesEnum.Admin));
         dbContext.Users.Add(userAdmin);
-        var userUser = new User("2","Glen", "Heyvaert", "glenheyvaert@gmail.com", new DateTime(1986, 09, 27), new Address("Bataviabrug", "35"), "+32478471869");
+        var userUser = new User("auth0|6713ad784fda04f4b9ae2165","GodParent", "Gebruiker", "godparent@gmail.com", new DateTime(1986, 09, 27), new Address("Bataviabrug", "35"), "+32478471869");
         userUser.AddRole(new Role());
         dbContext.Users.Add(userUser);
-        var userGodparent = new User("3","Andreeas", "Firoiu", "andreeasfiroiu@gmail.com", new DateTime(1990, 05, 16), new Address("Deckerstraat", "4"), "+32474771836");
+        var userGodparent = new User("auth0|6713ad614fda04f4b9ae2156","User", "Gebruiker", "user@gmail.com", new DateTime(1990, 05, 16), new Address("Deckerstraat", "4"), "+32474771836");
         userGodparent.AddRole(new Role(RolesEnum.Godparent));
         dbContext.Users.Add(userGodparent);
+        var userPending = new User("auth0|6713adbf2d2a7c11375ac64c","Pending", "Gebruiker", "pending@gmail.com", new DateTime(1990, 05, 16), new Address("Deckerstraat", "4"), "+32474771836");
+        userPending.AddRole(new Role(RolesEnum.Pending));
+        dbContext.Users.Add(userPending);
         dbContext.SaveChanges();
     }
 }
