@@ -2,16 +2,19 @@ namespace Rise.Shared.Users;
 
 public interface IUserService
 {
-    Task<IEnumerable<UserDto.GetUser>> GetAllAsync();
-    Task<UserDto.GetUser?> GetUserAsync();
+    Task<IEnumerable<UserDto.UserBase>> GetAllAsync();
+    Task<UserDto.UserBase?> GetUserAsync();
 
-    Task<UserDto.GetUser?> GetUserByIdAsync(int id);
+    Task<UserDto.UserBase?> GetUserByIdAsync(string id);
 
-    Task<UserDto.GetUserDetails?> GetUserDetailsByIdAsync(int id);
+    Task<UserDto.UserDetails?> GetUserDetailsByIdAsync(string id);
 
-    Task<bool> CreateUserAsync(UserDto.CreateUser userDetails);
+    Task<bool> CreateUserAsync(UserDto.RegistrationUser userDetails);
 
-    Task<bool> UpdateUserAsync(int id, UserDto.UpdateUser userDetails);
+    Task<bool> UpdateUserAsync(UserDto.UpdateUser userDetails);
 
-    Task<bool> DeleteUserAsync(int id);
+    Task<bool> DeleteUserAsync(string id);
+    
+    Task<IEnumerable<UserDto.Auth0User>> GetAuth0Users();
+
 }

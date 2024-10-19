@@ -6,10 +6,11 @@ namespace Rise.Domain.Users;
 public class User : Entity
 {
     #region Fields
+    private string _id = Guid.NewGuid().ToString();
     private string _firstName = default!;
     private string _lastName = default!;
     private string _email = default!;
-    private string _password = default!;
+    // private string _password = default!;
     private DateTime _birthDate;
     private Address _address = default!;
     private List<Role> _roles = [];
@@ -26,19 +27,19 @@ public class User : Entity
     /// <summary>
     /// Initializes a new instance of the <see cref="User"/> class with the specified details.
     /// </summary>
+    /// <param name="id">The id of the user in the db</param>
     /// <param name="firstName">The first name of the user.</param>
     /// <param name="lastName">The last name of the user.</param>
     /// <param name="email">The email address of the user.</param>
-    /// <param name="password">The password of the user.</param>
     /// <param name="birthDate">The birth date of the user.</param>
     /// <param name="address">The address of the user.</param>
     /// <param name="phoneNumber">The phone number of the user.</param>
-    public User(string firstName, string lastName, string email, string password, DateTime birthDate, Address address, string phoneNumber)
+    public User(string id, string firstName, string lastName, string email, DateTime birthDate, Address address, string phoneNumber)
     {
+        Id = id;
         FirstName = firstName;
         LastName = lastName;
         Email = email;
-        Password = password;
         BirthDate = birthDate;
         Address = address;
         PhoneNumber = phoneNumber;
@@ -47,6 +48,13 @@ public class User : Entity
 
 
     #region Properties
+
+    public string Id
+    {
+        get => _id;
+        set => _id = Guard.Against.NullOrWhiteSpace(value, nameof(Id));
+    }
+    
     /// <summary>
     /// Gets or sets the first name of the user.
     /// </summary>
@@ -72,15 +80,6 @@ public class User : Entity
     {
         get => _email;
         set => _email = Guard.Against.NullOrWhiteSpace(value, nameof(Email));
-    }
-
-    /// <summary>
-    /// Gets or sets the password of the user.
-    /// </summary>
-    public string Password
-    {
-        get => _password;
-        set => _password = Guard.Against.NullOrWhiteSpace(value, nameof(Password));
     }
 
     /// <summary>
