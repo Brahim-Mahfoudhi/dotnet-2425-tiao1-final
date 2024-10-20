@@ -1,5 +1,6 @@
 namespace Rise.Domain.Users;
 using Rise.Shared.Enums;
+using System.ComponentModel.DataAnnotations;
 
 /// <summary>
 /// Represents a user's address in the system.
@@ -70,6 +71,7 @@ public class Address : Entity
     /// <exception cref="ArgumentNullException">
     /// Thrown when the street is <c>null</c>.
     /// </exception>
+    [Required(ErrorMessage = "Street is required.")]
     public string Street
     {
         get => _street.GetStreetName();
@@ -82,6 +84,8 @@ public class Address : Entity
     /// <exception cref="ArgumentOutOfRangeException">
     /// Thrown when the house number is less than or equal to zero.
     /// </exception>
+    [NotNullOrEmpty]
+    [RegularExpression(@"^\d+\s?[A-Za-z]?$", ErrorMessage = "House number must be a number or a number followed by a letter.")]
     public string HouseNumber
     {
         get => _houseNumber;

@@ -1,4 +1,5 @@
 namespace Rise.Domain.Users;
+using System.ComponentModel.DataAnnotations;
 
 /// <summary>
 /// Represents a user entity in the system
@@ -7,6 +8,7 @@ public class User : Entity
 {
     #region Fields
     private string _id = Guid.NewGuid().ToString();
+
     private string _firstName = default!;
     private string _lastName = default!;
     private string _email = default!;

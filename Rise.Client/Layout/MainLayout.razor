@@ -1,8 +1,7 @@
 
-﻿@inherits LayoutComponentBase
-@using Rise.Client.Auth
-﻿@using System.Globalization
 @inherits LayoutComponentBase
+@using Rise.Client.Auth
+@using System.Globalization
 @inject Microsoft.Extensions.Localization.IStringLocalizer<MainLayout> Localizer
 
 <div class="page">
@@ -12,7 +11,7 @@
 
     <main>
         <div class="top-row px-4">
-            <LoginDisplay />
+            @* <LoginDisplay /> *@
             <select value="@selectedCulture" @onchange="ChangeLanguage">
                 <option value="en-US">English</option>
                 <option value="nl-BE">Nederlands</option>

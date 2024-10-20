@@ -49,7 +49,10 @@ public class UserController : ControllerBase
     [HttpGet("all")]
     public async Task<IEnumerable<UserDto.UserBase>?> GetAllUsers()
     {
+        
+        // var users2 = await _managementApiClient.Users.GetAllAsync(new GetUsersRequest(), new PaginationInfo());
         var users = await _userService.GetAllAsync();
+        // return users2.Select(x => new UserDto.UserBase(x.UserId, x.FirstName, x.LastName, x.Email));
         return users;
     }
 
@@ -128,7 +131,7 @@ public class UserController : ControllerBase
         ));
     }
 
-    [HttpGet("auth/user")]
+    [HttpGet("auth/user/{id}")]
     public async Task<UserDto.Auth0User> GetUser(string id)
     {
         var test = await _managementApiClient.Users.GetAsync(id);

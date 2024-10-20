@@ -28,7 +28,7 @@ public class UserService : IUserService
         this._jsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
     }
 
-    public async Task<IEnumerable<UserDto.UserBase>> GetAllAsync()
+    public async Task<IEnumerable<UserDto.UserBase>?> GetAllAsync()
     {
         // Changed method so that DTO creation is out of the LINQ Query
         // You need to avoid using methods with optional parameters directly
@@ -37,13 +37,13 @@ public class UserService : IUserService
             .Include(x => x.Roles) // Ensure Roles are loaded (Eagerly loading)
             .Where(x => x.IsDeleted == false)
             .ToListAsync();
-        
+
         if (query == null)
         {
             return null;
         }
-        
-        return query.Select(x => MapToUserBase(x));
+
+        return query.Select(MapToUserBase);
     }
 
     public async Task<UserDto.UserBase?> GetUserAsync()
@@ -54,12 +54,12 @@ public class UserService : IUserService
         var query = await _dbContext.Users
             .Include(x => x.Roles) // Ensure Roles are loaded (Eagerly loading)
             .FirstOrDefaultAsync(x => x.IsDeleted == false);
-        
+
         if (query == null)
         {
             return null;
         }
-        
+
         return MapToUserBase(query);
     }
 
@@ -71,12 +71,12 @@ public class UserService : IUserService
         var query = await _dbContext.Users
             .Include(x => x.Roles) // Ensure Roles are loaded (Eagerly loading)
             .FirstOrDefaultAsync(x => x.Id.Equals(id) && x.IsDeleted == false);
-        
+
         if (query == null)
         {
             return null;
         }
-        
+
         return MapToUserBase(query);
     }
 
@@ -86,14 +86,15 @@ public class UserService : IUserService
         // You need to avoid using methods with optional parameters directly
         // in the LINQ query that EF is trying to translate
         var query = await _dbContext.Users
-            .Include(x => x.Address) // Ensure Address is loaded (Eagerly loading)
+            .Include(x => x.Address)
+            .Include(x => x.Roles) // Ensure Address is loaded (Eagerly loading)
             .FirstOrDefaultAsync(x => x.Id.Equals(id) && x.IsDeleted == false);
-        
+
         if (query == null)
         {
             return null;
         }
-        
+
         return MapToUserDetails(query);
     }
 
@@ -101,7 +102,7 @@ public class UserService : IUserService
     {
         Console.WriteLine("Creating new user" + userDetails);
         var entity = new User(
-            id : userDetails.Id,
+            id: userDetails.Id,
             firstName: userDetails.FirstName,
             lastName: userDetails.LastName,
             email: userDetails.Email,
@@ -113,7 +114,7 @@ public class UserService : IUserService
             phoneNumber: userDetails.PhoneNumber
         );
         entity.AddRole(new Role(RolesEnum.Pending));
-        
+
         _dbContext.Users.Add(entity);
         int response = await _dbContext.SaveChangesAsync();
 
@@ -151,7 +152,7 @@ public class UserService : IUserService
         var users = await _httpClient.GetFromJsonAsync<IEnumerable<UserDto.Auth0User>>("user/auth/users");
         return users!;
     }
-    
+
     /// <summary>
     /// Maps a User to a UserBase DTO file
     /// </summary>
@@ -161,14 +162,14 @@ public class UserService : IUserService
     {
         return new UserDto.UserBase
             (
-                user.Id, 
+                user.Id,
                 user.FirstName,
                 user.LastName,
                 user.Email,
                 ExtractRoles(user)
             );
     }
-    
+
     /// <summary>
     /// Maps a User to a UserDetails DTO file
     /// </summary>
@@ -178,7 +179,7 @@ public class UserService : IUserService
     {
         return new UserDto.UserDetails
             (
-                user.Id, 
+                user.Id,
                 user.FirstName,
                 user.LastName,
                 user.Email,
@@ -187,7 +188,7 @@ public class UserService : IUserService
                 user.BirthDate
             );
     }
-    
+
     /// <summary>
     /// Extracts list of roles from a User
     /// </summary>
@@ -218,11 +219,11 @@ public class UserService : IUserService
 
     private Address MapToAddress(AddressDto.GetAdress adress)
     {
-       return new Address
-        (
-            StreetEnumExtensions.GetStreetName(adress.Street),
-            adress.HouseNumber ?? "",
-            adress.Bus
-        );
+        return new Address
+         (
+             StreetEnumExtensions.GetStreetName(adress.Street),
+             adress.HouseNumber ?? "",
+             adress.Bus
+         );
     }
 }

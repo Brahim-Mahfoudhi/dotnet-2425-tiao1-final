@@ -6,11 +6,8 @@ using Rise.Client;
 using Rise.Client.Products;
 using Rise.Shared.Products;
 using Rise.Shared.Users;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Client.Auth;
-using Rise.Services.Users;
 using UserService = Rise.Client.Users.UserService;
 
 

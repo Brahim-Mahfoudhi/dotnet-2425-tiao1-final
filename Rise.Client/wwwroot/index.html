@@ -16,6 +16,23 @@
         get: () => window.localStorage['blazorCulture'],
         set: (value) => window.localStorage['blazorCulture'] = value
     };
+    window.cookieHelper = {
+        deleteCookie: function (cookieName, path = "/", domain = "") {
+            if (domain) {
+                document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=${path}; domain=${domain}`;
+            } else {
+                document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=${path}`;
+            }
+        }
+    };
+    window.sessionStorageHelper = {
+        removeItem: function (key) {
+            sessionStorage.removeItem(key);
+        },
+        clearAll: function () {
+            sessionStorage.clear();
+        }
+    };
 </script>
 </head>
 
