@@ -1,5 +1,6 @@
 using Rise.Domain.Common;
 using Rise.Domain.Users;
+using Rise.Shared.Enums;
 using Shouldly;
 
 namespace Rise.Domain.Tests.Users;

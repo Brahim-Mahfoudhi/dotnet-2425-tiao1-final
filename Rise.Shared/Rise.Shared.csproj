@@ -11,6 +11,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+  <Using Include="Ardalis.GuardClauses" />
     <SupportedPlatform Include="browser" />
+  </ItemGroup>
+
+   <ItemGroup>
+    <PackageReference Include="Ardalis.GuardClauses" Version="4.6.0" />
+    <PackageReference Include="Serilog" Version="4.0.1" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="4.0.1" />
   </ItemGroup>
 </Project>

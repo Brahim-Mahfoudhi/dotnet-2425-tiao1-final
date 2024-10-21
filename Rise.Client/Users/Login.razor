@@ -1,0 +1,42 @@
+@page "/login"
+@inject HttpClient HttpClient
+@inject NavigationManager NavigationManager
+@inject Microsoft.Extensions.Localization.IStringLocalizer<Login> Localizer
+<link href="css/shared-form.css" rel="stylesheet" />
+
+<PageTitle>@Localizer["Login"]</PageTitle>
+
+<h1 class="form-title">@Localizer["Login"]</h1>
+
+<div class="form-card">
+
+    <input class="form-input" type="email" @bind="email" placeholder="@Localizer["Email"]" />
+
+    <input class="form-input" type="password" @bind="password" placeholder="@Localizer["Password"]" />
+
+    <span>@Localizer["NoAccount"] <a class="form-link" href="register">@Localizer["Register"]</a></span>
+
+    <div class="form-buttons">
+        <button class="form-btn btn-primary" type="button" @onclick="Submit">@Localizer["Login"]</button>
+        <button class="form-btn btn-secondary" type="button" @onclick="Cancel">@Localizer["Cancel"]</button>
+    </div>
+
+</div>
+
+
+@code {
+    private string? email;
+    private string? password;
+    private bool isSubmitted = false;
+
+    private void Submit()
+    {
+        isSubmitted = true;
+        NavigationManager.NavigateTo("/");
+    }
+
+    private void Cancel()
+    {
+        NavigationManager.NavigateTo("/");
+    }
+}

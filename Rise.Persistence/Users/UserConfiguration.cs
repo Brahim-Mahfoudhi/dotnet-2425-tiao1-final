@@ -23,19 +23,18 @@ internal class UserConfiguration : EntityConfiguration<User>
         builder.Property(x => x.FirstName).IsRequired();
         builder.Property(x => x.LastName).IsRequired();
         builder.Property(x => x.Email).IsRequired();
-        builder.Property(x => x.Password).IsRequired();
         builder.Property(x => x.BirthDate).IsRequired();
         builder.Property(x => x.PhoneNumber).IsRequired();
 
         builder
             .HasOne(x => x.Address)
             .WithOne(x => x.User)
-            .HasForeignKey<Address>(x => x.Id)
+            .HasForeignKey<Address>(x => x.UserId)
             .IsRequired();
         
         builder
             .HasMany(x => x.Roles)
             .WithOne()
-            .HasForeignKey(x => x.Id);
+            .HasForeignKey(x => x.UserId);
     }
 }

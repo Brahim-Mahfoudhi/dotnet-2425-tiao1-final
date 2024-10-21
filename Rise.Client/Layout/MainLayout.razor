@@ -1,4 +1,8 @@
-﻿@inherits LayoutComponentBase
+
+@inherits LayoutComponentBase
+@using Rise.Client.Auth
+@using System.Globalization
+@inject Microsoft.Extensions.Localization.IStringLocalizer<MainLayout> Localizer
 
 <div class="page">
     <div class="sidebar">
@@ -15,3 +19,33 @@
         </article>
     </main>
 </div>
+
+@code {
+    [Inject] IJSRuntime js { get; set; }
+    [Inject] NavigationManager NavigationManager { get; set; }
+
+    private string selectedCulture = "en-US";
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Get the culture from localStorage using JavaScript interop
+        var storedCulture = await js.InvokeAsync<string>("blazorCulture.get");
+
+        if (!string.IsNullOrEmpty(storedCulture))
+        {
+            selectedCulture = storedCulture;
+        }
+    }
+
+    private async void ChangeLanguage(ChangeEventArgs e)
+    {
+        var culture = new CultureInfo(e.Value.ToString());
+
+        // Store the selected culture in localStorage
+        await js.InvokeVoidAsync("blazorCulture.set", culture.Name);
+
+        // Reload the page to apply the new culture
+        NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true); ;
+    }
+}
+}

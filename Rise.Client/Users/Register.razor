@@ -1,0 +1,217 @@
+@page "/register"
+@using Microsoft.Extensions.Localization
+@using Rise.Shared.Enums
+@using Rise.Shared.Users
+@using Rise.Shared
+@inject HttpClient HttpClient
+@inject NavigationManager NavigationManager
+@inject IUserService UserService
+@inject IStringLocalizer<Register> Localizer;
+<link href="css/shared-form.css" rel="stylesheet" />
+
+<PageTitle>@Localizer["Register"]</PageTitle>
+
+<h1 class="form-title">@Localizer["Register"]</h1>
+
+<div class="form-card">
+
+    @* <div class="form-items">
+    <div>
+    <label class="form-label" for="firstName">First Name: </label>
+    <input class="form-input" type="text" @bind="_firstName" placeholder="First Name" />
+    </div>
+    <div>
+    <label class="form-label" for="lastName">Last Name: </label>
+    <input class="form-input" type="text" @bind="_lastName" placeholder="Last Name" />
+    </div>
+    <div>
+    <label class="form-label" for="Email">Email: </label>
+    <input class="form-input" type="email" @bind="_email" placeholder="Email" />
+    </div>
+    <div>
+    <label class="form-label" for="phoneNumber">Phone number: </label>
+    <input class="form-input" type="tel" @bind="_phoneNumber" placeholder="Phone number" />
+    </div>
+    <div>
+    <label class="form-label" for="password">Password: </label>
+    <input class="form-input" type="password" @bind="_password" placeholder="Password" />
+    </div>
+    <div>
+    <label class="form-label" for="confirmPassword">Confirm password: </label>
+    <input class="form-input" type="password" @bind="_confirmPassword" placeholder="Confirm Password" />
+    </div>
+    <div>
+    <label class="form-label" for="birthDate">Birthdate: </label>
+    <input class="form-input" type="date" @bind="_birthDate" />
+    </div>
+    <div>
+    <label class="form-label" for="street">Select your address:</label>
+    <InputSelect class="form-input" id="street" @bind-Value="_address.Street">
+    @foreach (var street in Enum.GetValues(typeof(StreetEnum)).Cast<StreetEnum>())
+    {
+    <option value="@street">@street.GetStreetName()</option>
+    }
+    </InputSelect>
+    </div>
+    <div class="d-flex flex-row">
+    <div>
+    <label class="form-label-small" for="houseNumber">House number: </label>
+    <input class="form-input-small" type="text" @bind="_address.HouseNumber" placeholder="nr" />
+    </div>
+    <div>
+    <label class="form-label-small" for="bus">Bus: </label>
+    <input class="form-input-small" type="text" @bind="_address.Bus" placeholder="Bus" />
+    *@
+
+
+    <EditForm Model="tempUser" OnValidSubmit="Submit">
+        <DataAnnotationsValidator />
+        <div class="form-items">
+            <div>
+                <label class="form-label" for="FirstName">@Localizer["FirstName"]: </label>
+                <InputText class="form-input" id="FirstName" @bind-Value="tempUser.FirstName"
+                    placeholder="@Localizer["FirstName"]" />
+                <ValidationMessage For="@(() => tempUser.FirstName)" />
+            </div>
+            <div>
+                <label class="form-label" for="LastName">@Localizer["LastName"]: </label>
+                <InputText class="form-input" id="LastName" @bind-Value="tempUser.LastName"
+                    placeholder="@Localizer["LastName"]" />
+                <ValidationMessage For="@(() => tempUser.LastName)" />
+            </div>
+            <div>
+                <label class="form-label" for="Email">@Localizer["Email"]: </label>
+                <InputText class="form-input" type="email" id="Email" @bind-Value="tempUser.Email"
+                    placeholder="@Localizer["Email"]" />
+                <ValidationMessage For="@(() => tempUser.Email)" />
+            </div>
+            <div>
+                <label class="form-label" for="PhoneNumber">@Localizer["PhoneNumber"]: </label>
+                <InputText class="form-input" type="tel" id="PhoneNumber" @bind-Value="tempUser.PhoneNumber"
+                    placeholder="@Localizer["PhoneNumber"]" />
+                <ValidationMessage For="@(() => tempUser.PhoneNumber)" />
+            </div>
+            <div>
+                <label class="form-label" for="Password">@Localizer["Password"]: </label>
+                <InputText class="form-input" type="password" id="Password" @bind-Value="tempUser.Password"
+                    placeholder="@Localizer["Password"]" />
+                <ValidationMessage For="@(() => tempUser.Password)" />
+            </div>
+            <div>
+                <label class="form-label" for="ConfirmPassword">@Localizer["ConfirmPassword"]: </label>
+                <InputText class="form-input" type="password" id="ConfirmPassword" @bind-Value="_confirmPassword"
+                    placeholder="@Localizer["ConfirmPassword"]" />
+                <ValidationMessage For="@(() => _confirmPassword)" />
+            </div>
+            <div>
+                <label class="form-label" for="BirthDate">@Localizer["BirthDate"]: </label>
+                <InputDate class="form-input" id="BirthDate" @bind-Value="tempUser.BirthDate" />
+                <ValidationMessage For="@(() => tempUser.BirthDate)" />
+            </div>
+            <div>
+                <label class="form-label" for="Street">@Localizer["SelectAddress"]:</label>
+                <InputSelect class="form-input" id="Street" @bind-Value="tempUser.Address.Street">
+                    @foreach (var street in Enum.GetValues(typeof(StreetEnum)).Cast<StreetEnum>())
+                    {
+                        <option value="@street">@street.GetStreetName()</option>
+                    }
+                </InputSelect>
+
+            </div>
+
+            <div class="d-flex flex-row">
+                <div class="d-flex flex-column">
+                    <div>
+                        <label class="form-label-small" for="Address.HouseNumber">@Localizer["HouseNumber"]: </label>
+                        <InputText class="form-input-small" id="HouseNumber" @bind-Value="tempUser.Address.HouseNumber"
+                            placeholder="@Localizer["Nr"]" />
+                    </div>
+                    <ValidationMessage For="@(() => tempUser.Address.HouseNumber)" />
+                </div>
+                <div>
+                    <label class="form-label-small" for="Address.Bus">@Localizer["Bus"]: </label>
+                    <InputText class="form-input-small" id="Bus" @bind-Value="tempUser.Address.Bus"
+                        placeholder="@Localizer["Bus"]" />
+                    <ValidationMessage For="@(() => tempUser.Address.Bus)" />
+                </div>
+            </div>
+
+            <span>@Localizer["AlreadyAnAccount"] <a class="form-link" href="login">@Localizer["Login"]</a></span>
+
+            <div class="form-buttons">
+                <button class="form-btn btn-primary" type="submit">@Localizer["Register"]</button>
+                <button class="form-btn btn-secondary" type="button" @onclick="Cancel">@Localizer["Cancel"]</button>
+            </div>
+        </div>
+    </EditForm>
+</div>
+@* </div>
+</div>
+</div> *@
+
+@if (_isSubmitted)
+{
+<div class="form-card">
+<h2>Thank you for registering!</h2>
+<p>@(_userCreated ? "Your account has been created successfully." : "Failed to create account.")</p>
+<p>firstname: @tempUser.FirstName</p>
+<p>lastname: @tempUser.LastName</p>
+<p>email: @tempUser.Email</p>
+<p>birthdate: @tempUser.BirthDate</p>
+<p>street: @tempUser.Address.Street</p>
+<p>house number: @tempUser.Address.HouseNumber</p>
+<p>bus: @tempUser.Address.Bus</p>
+</div>
+}
+
+@code {
+
+    private string? _password;
+    private string? _confirmPassword;
+
+    private UserDto.TempUser tempUser = new();
+
+    @* private string? confirmPassword; *@
+
+
+    private bool _userCreated = false;
+
+private bool _isSubmitted = false;
+@* private string? _firstName;
+private string? _lastName;
+private string? _email;
+private string? _phoneNumber;
+private DateTime _birthDate; *@
+
+
+    private static AddressDto.CreateAddress _address = new AddressDto.CreateAddress();
+
+    private UserDto.RegistrationUser? _newUser;
+
+    private async Task Submit()
+    {
+        if (tempUser.Password != null && tempUser.Password != _confirmPassword)
+        {
+            return;
+        }
+
+        _newUser = new UserDto.RegistrationUser(tempUser.FirstName, tempUser.LastName, tempUser.Email, tempUser.PhoneNumber, tempUser.Password, null, tempUser.Address,
+        tempUser.BirthDate);
+        _isSubmitted = true;
+        _userCreated = await UserService.CreateUserAsync(_newUser);
+
+        @* if (tempUser.Password != null && tempUser.Password != confirmPassword)
+{
+return;
+}
+isSubmitted = true;
+userCreated = await UserService.CreateUserAsync(tempUser); *@
+
+        @* NavigationManager.NavigateTo("/login"); *@
+    }
+
+    private void Cancel()
+    {
+        NavigationManager.NavigateTo("/login");
+    }
+}

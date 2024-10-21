@@ -17,10 +17,13 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.8" />
     <PackageReference Include="EntityFrameworkCore.Triggered" Version="4.0.0-preview.1" />
+    <PackageReference Include="Serilog" Version="4.0.1" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="4.0.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Rise.Domain\Rise.Domain.csproj" />
+    <ProjectReference Include="..\Rise.Shared\Rise.Shared.csproj" />
   </ItemGroup>
 
 </Project>

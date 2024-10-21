@@ -1,4 +1,6 @@
-﻿<div class="top-row ps-3 mx-auto navbar navbar-dark">
+﻿@inject Microsoft.Extensions.Localization.IStringLocalizer<NavMenu> Localizer
+
+<div class="top-row ps-3 mx-auto navbar navbar-dark">
     <div class="container-fluid">
         <a class="logo" href="">
             <img src="img/BUUT_logo.png.webp" />
@@ -13,24 +15,42 @@
     <nav class="flex-column">
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Home
+                <span class="oi oi-home" aria-hidden="true"></span> @Localizer["Home"]
             </NavLink>
         </div>
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="counter">
-                <span class="oi oi-plus" aria-hidden="true"></span> Counter
+                <span class="oi oi-plus" aria-hidden="true"></span> @Localizer["Counter"]
             </NavLink>
         </div>
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="products">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Products
+                <span class="oi oi-list-rich" aria-hidden="true"></span> @Localizer["Products"]
             </NavLink>
         </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="login">
-                <span class="oi oi-account-login" aria-hidden="true"></span> Login
-            </NavLink>
-        </div>
+        <AuthorizeView Roles="Admin">
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="users">
+                    <span class="oi oi-list-rich" aria-hidden="true"></span> @Localizer["Users"]
+                </NavLink>
+            </div>
+        </AuthorizeView>
+        <AuthorizeView Roles="Admin">
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="authusers">
+                    <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> AuthUsers
+                </NavLink>
+            </div>
+        </AuthorizeView>
+
+        <LoginDisplay />
+
+
+        @* <div class="nav-item px-3">
+        <NavLink class="nav-link" href="login">
+        <span class="oi oi-account-login" aria-hidden="true"></span> @Localizer["Login"]
+        </NavLink>
+        </div> *@
     </nav>
 </div>
 
