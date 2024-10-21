@@ -11,6 +11,7 @@ using Client.Auth;
 using UserService = Rise.Client.Users.UserService;
 
 
+
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
@@ -24,6 +25,7 @@ builder.Services.AddOidcAuthentication(options =>
     options.ProviderOptions.PostLogoutRedirectUri = builder.HostEnvironment.BaseAddress;
     options.ProviderOptions.AdditionalProviderParameters.Add("audience", builder.Configuration["Auth0:Audience"]!);
 }).AddAccountClaimsPrincipalFactory<ArrayClaimsPrincipalFactory<RemoteUserAccount>>();
+
 
 builder.Services.AddLocalization(Options => Options.ResourcesPath = "Resources.Labels");
 
