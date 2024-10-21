@@ -1,0 +1,416 @@
+### YamlMime:ManagedReference
+items:
+- uid: Rise.Domain.Products.Product
+  commentId: T:Rise.Domain.Products.Product
+  id: Product
+  parent: Rise.Domain.Products
+  children:
+  - Rise.Domain.Products.Product.Name
+  langs:
+  - csharp
+  - vb
+  name: Product
+  nameWithType: Product
+  fullName: Rise.Domain.Products.Product
+  type: Class
+  source:
+    remote:
+      path: Rise.Domain/Products/Product.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: Product
+    path: Rise.Domain/Products/Product.cs
+    startLine: 1
+  assemblies:
+  - Rise.Domain
+  namespace: Rise.Domain.Products
+  syntax:
+    content: 'public class Product : Entity'
+    content.vb: Public Class Product Inherits Entity
+  inheritance:
+  - System.Object
+  - Rise.Domain.Common.Entity
+  inheritedMembers:
+  - Rise.Domain.Common.Entity.Id
+  - Rise.Domain.Common.Entity.CreatedAt
+  - Rise.Domain.Common.Entity.UpdatedAt
+  - Rise.Domain.Common.Entity.IsDeleted
+  - Rise.Domain.Common.Entity.Equals(System.Object)
+  - Rise.Domain.Common.Entity.GetHashCode
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Rise.Domain.Products.Product.Name
+  commentId: P:Rise.Domain.Products.Product.Name
+  id: Name
+  parent: Rise.Domain.Products.Product
+  langs:
+  - csharp
+  - vb
+  name: Name
+  nameWithType: Product.Name
+  fullName: Rise.Domain.Products.Product.Name
+  type: Property
+  source:
+    remote:
+      path: Rise.Domain/Products/Product.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: Name
+    path: Rise.Domain/Products/Product.cs
+    startLine: 5
+  assemblies:
+  - Rise.Domain
+  namespace: Rise.Domain.Products
+  syntax:
+    content: public required string Name { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property Name As String
+  overload: Rise.Domain.Products.Product.Name*
+references:
+- uid: Rise.Domain.Products
+  commentId: N:Rise.Domain.Products
+  href: Rise.html
+  name: Rise.Domain.Products
+  nameWithType: Rise.Domain.Products
+  fullName: Rise.Domain.Products
+  spec.csharp:
+  - uid: Rise
+    name: Rise
+    href: Rise.html
+  - name: .
+  - uid: Rise.Domain
+    name: Domain
+    href: Rise.Domain.html
+  - name: .
+  - uid: Rise.Domain.Products
+    name: Products
+    href: Rise.Domain.Products.html
+  spec.vb:
+  - uid: Rise
+    name: Rise
+    href: Rise.html
+  - name: .
+  - uid: Rise.Domain
+    name: Domain
+    href: Rise.Domain.html
+  - name: .
+  - uid: Rise.Domain.Products
+    name: Products
+    href: Rise.Domain.Products.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: Rise.Domain.Common.Entity
+  commentId: T:Rise.Domain.Common.Entity
+  parent: Rise.Domain.Common
+  href: Rise.Domain.Common.Entity.html
+  name: Entity
+  nameWithType: Entity
+  fullName: Rise.Domain.Common.Entity
+- uid: Rise.Domain.Common.Entity.Id
+  commentId: P:Rise.Domain.Common.Entity.Id
+  parent: Rise.Domain.Common.Entity
+  href: Rise.Domain.Common.Entity.html#Rise_Domain_Common_Entity_Id
+  name: Id
+  nameWithType: Entity.Id
+  fullName: Rise.Domain.Common.Entity.Id
+- uid: Rise.Domain.Common.Entity.CreatedAt
+  commentId: P:Rise.Domain.Common.Entity.CreatedAt
+  parent: Rise.Domain.Common.Entity
+  href: Rise.Domain.Common.Entity.html#Rise_Domain_Common_Entity_CreatedAt
+  name: CreatedAt
+  nameWithType: Entity.CreatedAt
+  fullName: Rise.Domain.Common.Entity.CreatedAt
+- uid: Rise.Domain.Common.Entity.UpdatedAt
+  commentId: P:Rise.Domain.Common.Entity.UpdatedAt
+  parent: Rise.Domain.Common.Entity
+  href: Rise.Domain.Common.Entity.html#Rise_Domain_Common_Entity_UpdatedAt
+  name: UpdatedAt
+  nameWithType: Entity.UpdatedAt
+  fullName: Rise.Domain.Common.Entity.UpdatedAt
+- uid: Rise.Domain.Common.Entity.IsDeleted
+  commentId: P:Rise.Domain.Common.Entity.IsDeleted
+  parent: Rise.Domain.Common.Entity
+  href: Rise.Domain.Common.Entity.html#Rise_Domain_Common_Entity_IsDeleted
+  name: IsDeleted
+  nameWithType: Entity.IsDeleted
+  fullName: Rise.Domain.Common.Entity.IsDeleted
+- uid: Rise.Domain.Common.Entity.Equals(System.Object)
+  commentId: M:Rise.Domain.Common.Entity.Equals(System.Object)
+  parent: Rise.Domain.Common.Entity
+  isExternal: true
+  href: Rise.Domain.Common.Entity.html#Rise_Domain_Common_Entity_Equals_System_Object_
+  name: Equals(object)
+  nameWithType: Entity.Equals(object)
+  fullName: Rise.Domain.Common.Entity.Equals(object)
+  nameWithType.vb: Entity.Equals(Object)
+  fullName.vb: Rise.Domain.Common.Entity.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: Rise.Domain.Common.Entity.Equals(System.Object)
+    name: Equals
+    href: Rise.Domain.Common.Entity.html#Rise_Domain_Common_Entity_Equals_System_Object_
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: Rise.Domain.Common.Entity.Equals(System.Object)
+    name: Equals
+    href: Rise.Domain.Common.Entity.html#Rise_Domain_Common_Entity_Equals_System_Object_
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: Rise.Domain.Common.Entity.GetHashCode
+  commentId: M:Rise.Domain.Common.Entity.GetHashCode
+  parent: Rise.Domain.Common.Entity
+  href: Rise.Domain.Common.Entity.html#Rise_Domain_Common_Entity_GetHashCode
+  name: GetHashCode()
+  nameWithType: Entity.GetHashCode()
+  fullName: Rise.Domain.Common.Entity.GetHashCode()
+  spec.csharp:
+  - uid: Rise.Domain.Common.Entity.GetHashCode
+    name: GetHashCode
+    href: Rise.Domain.Common.Entity.html#Rise_Domain_Common_Entity_GetHashCode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Rise.Domain.Common.Entity.GetHashCode
+    name: GetHashCode
+    href: Rise.Domain.Common.Entity.html#Rise_Domain_Common_Entity_GetHashCode
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Rise.Domain.Common
+  commentId: N:Rise.Domain.Common
+  href: Rise.html
+  name: Rise.Domain.Common
+  nameWithType: Rise.Domain.Common
+  fullName: Rise.Domain.Common
+  spec.csharp:
+  - uid: Rise
+    name: Rise
+    href: Rise.html
+  - name: .
+  - uid: Rise.Domain
+    name: Domain
+    href: Rise.Domain.html
+  - name: .
+  - uid: Rise.Domain.Common
+    name: Common
+    href: Rise.Domain.Common.html
+  spec.vb:
+  - uid: Rise
+    name: Rise
+    href: Rise.html
+  - name: .
+  - uid: Rise.Domain
+    name: Domain
+    href: Rise.Domain.html
+  - name: .
+  - uid: Rise.Domain.Common
+    name: Common
+    href: Rise.Domain.Common.html
+- uid: Rise.Domain.Products.Product.Name*
+  commentId: Overload:Rise.Domain.Products.Product.Name
+  href: Rise.Domain.Products.Product.html#Rise_Domain_Products_Product_Name
+  name: Name
+  nameWithType: Product.Name
+  fullName: Rise.Domain.Products.Product.Name
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String

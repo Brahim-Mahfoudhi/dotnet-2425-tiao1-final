@@ -1,0 +1,23 @@
+### YamlMime:ManagedReference
+items:
+- uid: Rise.Persistence.Triggers
+  commentId: N:Rise.Persistence.Triggers
+  id: Rise.Persistence.Triggers
+  children:
+  - Rise.Persistence.Triggers.EntityBeforeSaveTrigger
+  langs:
+  - csharp
+  - vb
+  name: Rise.Persistence.Triggers
+  nameWithType: Rise.Persistence.Triggers
+  fullName: Rise.Persistence.Triggers
+  type: Namespace
+  assemblies:
+  - Rise.Persistence
+references:
+- uid: Rise.Persistence.Triggers.EntityBeforeSaveTrigger
+  commentId: T:Rise.Persistence.Triggers.EntityBeforeSaveTrigger
+  href: Rise.Persistence.Triggers.EntityBeforeSaveTrigger.html
+  name: EntityBeforeSaveTrigger
+  nameWithType: EntityBeforeSaveTrigger
+  fullName: Rise.Persistence.Triggers.EntityBeforeSaveTrigger

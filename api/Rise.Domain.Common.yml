@@ -1,0 +1,78 @@
+### YamlMime:ManagedReference
+items:
+- uid: Rise.Domain.Common
+  commentId: N:Rise.Domain.Common
+  id: Rise.Domain.Common
+  children:
+  - Rise.Domain.Common.Entity
+  - Rise.Domain.Common.RolesEnum
+  - Rise.Domain.Common.StreetEnum
+  - Rise.Domain.Common.StreetEnumExtensions
+  langs:
+  - csharp
+  - vb
+  name: Rise.Domain.Common
+  nameWithType: Rise.Domain.Common
+  fullName: Rise.Domain.Common
+  type: Namespace
+  assemblies:
+  - Rise.Domain
+references:
+- uid: Rise.Domain.Common.StreetEnum
+  commentId: T:Rise.Domain.Common.StreetEnum
+  parent: Rise.Domain.Common
+  href: Rise.Domain.Common.StreetEnum.html
+  name: StreetEnum
+  nameWithType: StreetEnum
+  fullName: Rise.Domain.Common.StreetEnum
+- uid: Rise.Domain.Common.StreetEnumExtensions
+  commentId: T:Rise.Domain.Common.StreetEnumExtensions
+  parent: Rise.Domain.Common
+  href: Rise.Domain.Common.StreetEnumExtensions.html
+  name: StreetEnumExtensions
+  nameWithType: StreetEnumExtensions
+  fullName: Rise.Domain.Common.StreetEnumExtensions
+- uid: Rise.Domain.Common.Entity
+  commentId: T:Rise.Domain.Common.Entity
+  parent: Rise.Domain.Common
+  href: Rise.Domain.Common.Entity.html
+  name: Entity
+  nameWithType: Entity
+  fullName: Rise.Domain.Common.Entity
+- uid: Rise.Domain.Common.RolesEnum
+  commentId: T:Rise.Domain.Common.RolesEnum
+  parent: Rise.Domain.Common
+  href: Rise.Domain.Common.RolesEnum.html
+  name: RolesEnum
+  nameWithType: RolesEnum
+  fullName: Rise.Domain.Common.RolesEnum
+- uid: Rise.Domain.Common
+  commentId: N:Rise.Domain.Common
+  href: Rise.html
+  name: Rise.Domain.Common
+  nameWithType: Rise.Domain.Common
+  fullName: Rise.Domain.Common
+  spec.csharp:
+  - uid: Rise
+    name: Rise
+    href: Rise.html
+  - name: .
+  - uid: Rise.Domain
+    name: Domain
+    href: Rise.Domain.html
+  - name: .
+  - uid: Rise.Domain.Common
+    name: Common
+    href: Rise.Domain.Common.html
+  spec.vb:
+  - uid: Rise
+    name: Rise
+    href: Rise.html
+  - name: .
+  - uid: Rise.Domain
+    name: Domain
+    href: Rise.Domain.html
+  - name: .
+  - uid: Rise.Domain.Common
+    name: Common
+    href: Rise.Domain.Common.html

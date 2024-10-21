@@ -6,6 +6,10 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\Rise.Shared\Rise.Shared.csproj" />
     <ProjectReference Include="..\Rise.Persistence\Rise.Persistence.csproj" />

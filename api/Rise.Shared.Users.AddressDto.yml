@@ -1,0 +1,444 @@
+### YamlMime:ManagedReference
+items:
+- uid: Rise.Shared.Users.AddressDto
+  commentId: T:Rise.Shared.Users.AddressDto
+  id: AddressDto
+  parent: Rise.Shared.Users
+  children:
+  - Rise.Shared.Users.AddressDto.Bus
+  - Rise.Shared.Users.AddressDto.HouseNumber
+  - Rise.Shared.Users.AddressDto.Street
+  langs:
+  - csharp
+  - vb
+  name: AddressDto
+  nameWithType: AddressDto
+  fullName: Rise.Shared.Users.AddressDto
+  type: Class
+  source:
+    remote:
+      path: Rise.Shared/Users/AddressDto.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: AddressDto
+    path: Rise.Shared/Users/AddressDto.cs
+    startLine: 5
+  assemblies:
+  - Rise.Shared
+  namespace: Rise.Shared.Users
+  summary: Data Transfer Object (DTO) representing an address.
+  example: []
+  syntax:
+    content: public class AddressDto
+    content.vb: Public Class AddressDto
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Rise.Shared.Users.AddressDto.Street
+  commentId: P:Rise.Shared.Users.AddressDto.Street
+  id: Street
+  parent: Rise.Shared.Users.AddressDto
+  langs:
+  - csharp
+  - vb
+  name: Street
+  nameWithType: AddressDto.Street
+  fullName: Rise.Shared.Users.AddressDto.Street
+  type: Property
+  source:
+    remote:
+      path: Rise.Shared/Users/AddressDto.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: Street
+    path: Rise.Shared/Users/AddressDto.cs
+    startLine: 10
+  assemblies:
+  - Rise.Shared
+  namespace: Rise.Shared.Users
+  summary: Gets or sets the street name of the address.
+  example: []
+  syntax:
+    content: public string Street { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property Street As String
+  overload: Rise.Shared.Users.AddressDto.Street*
+- uid: Rise.Shared.Users.AddressDto.HouseNumber
+  commentId: P:Rise.Shared.Users.AddressDto.HouseNumber
+  id: HouseNumber
+  parent: Rise.Shared.Users.AddressDto
+  langs:
+  - csharp
+  - vb
+  name: HouseNumber
+  nameWithType: AddressDto.HouseNumber
+  fullName: Rise.Shared.Users.AddressDto.HouseNumber
+  type: Property
+  source:
+    remote:
+      path: Rise.Shared/Users/AddressDto.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: HouseNumber
+    path: Rise.Shared/Users/AddressDto.cs
+    startLine: 14
+  assemblies:
+  - Rise.Shared
+  namespace: Rise.Shared.Users
+  summary: Gets or sets the house number of the address.
+  example: []
+  syntax:
+    content: public int HouseNumber { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property HouseNumber As Integer
+  overload: Rise.Shared.Users.AddressDto.HouseNumber*
+- uid: Rise.Shared.Users.AddressDto.Bus
+  commentId: P:Rise.Shared.Users.AddressDto.Bus
+  id: Bus
+  parent: Rise.Shared.Users.AddressDto
+  langs:
+  - csharp
+  - vb
+  name: Bus
+  nameWithType: AddressDto.Bus
+  fullName: Rise.Shared.Users.AddressDto.Bus
+  type: Property
+  source:
+    remote:
+      path: Rise.Shared/Users/AddressDto.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: Bus
+    path: Rise.Shared/Users/AddressDto.cs
+    startLine: 18
+  assemblies:
+  - Rise.Shared
+  namespace: Rise.Shared.Users
+  summary: Gets or sets the optional bus number for the address.
+  example: []
+  syntax:
+    content: public string? Bus { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property Bus As String
+  overload: Rise.Shared.Users.AddressDto.Bus*
+references:
+- uid: Rise.Shared.Users
+  commentId: N:Rise.Shared.Users
+  href: Rise.html
+  name: Rise.Shared.Users
+  nameWithType: Rise.Shared.Users
+  fullName: Rise.Shared.Users
+  spec.csharp:
+  - uid: Rise
+    name: Rise
+    href: Rise.html
+  - name: .
+  - uid: Rise.Shared
+    name: Shared
+    href: Rise.Shared.html
+  - name: .
+  - uid: Rise.Shared.Users
+    name: Users
+    href: Rise.Shared.Users.html
+  spec.vb:
+  - uid: Rise
+    name: Rise
+    href: Rise.html
+  - name: .
+  - uid: Rise.Shared
+    name: Shared
+    href: Rise.Shared.html
+  - name: .
+  - uid: Rise.Shared.Users
+    name: Users
+    href: Rise.Shared.Users.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Rise.Shared.Users.AddressDto.Street*
+  commentId: Overload:Rise.Shared.Users.AddressDto.Street
+  href: Rise.Shared.Users.AddressDto.html#Rise_Shared_Users_AddressDto_Street
+  name: Street
+  nameWithType: AddressDto.Street
+  fullName: Rise.Shared.Users.AddressDto.Street
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: Rise.Shared.Users.AddressDto.HouseNumber*
+  commentId: Overload:Rise.Shared.Users.AddressDto.HouseNumber
+  href: Rise.Shared.Users.AddressDto.html#Rise_Shared_Users_AddressDto_HouseNumber
+  name: HouseNumber
+  nameWithType: AddressDto.HouseNumber
+  fullName: Rise.Shared.Users.AddressDto.HouseNumber
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: Rise.Shared.Users.AddressDto.Bus*
+  commentId: Overload:Rise.Shared.Users.AddressDto.Bus
+  href: Rise.Shared.Users.AddressDto.html#Rise_Shared_Users_AddressDto_Bus
+  name: Bus
+  nameWithType: AddressDto.Bus
+  fullName: Rise.Shared.Users.AddressDto.Bus

@@ -1,0 +1,70 @@
+### YamlMime:ManagedReference
+items:
+- uid: Rise.Domain.Users
+  commentId: N:Rise.Domain.Users
+  id: Rise.Domain.Users
+  children:
+  - Rise.Domain.Users.Address
+  - Rise.Domain.Users.Role
+  - Rise.Domain.Users.User
+  langs:
+  - csharp
+  - vb
+  name: Rise.Domain.Users
+  nameWithType: Rise.Domain.Users
+  fullName: Rise.Domain.Users
+  type: Namespace
+  assemblies:
+  - Rise.Domain
+references:
+- uid: Rise.Domain.Users.Address
+  commentId: T:Rise.Domain.Users.Address
+  parent: Rise.Domain.Users
+  href: Rise.Domain.Users.Address.html
+  name: Address
+  nameWithType: Address
+  fullName: Rise.Domain.Users.Address
+- uid: Rise.Domain.Users.Role
+  commentId: T:Rise.Domain.Users.Role
+  parent: Rise.Domain.Users
+  href: Rise.Domain.Users.Role.html
+  name: Role
+  nameWithType: Role
+  fullName: Rise.Domain.Users.Role
+- uid: Rise.Domain.Users.User
+  commentId: T:Rise.Domain.Users.User
+  parent: Rise.Domain.Users
+  href: Rise.Domain.Users.User.html
+  name: User
+  nameWithType: User
+  fullName: Rise.Domain.Users.User
+- uid: Rise.Domain.Users
+  commentId: N:Rise.Domain.Users
+  href: Rise.html
+  name: Rise.Domain.Users
+  nameWithType: Rise.Domain.Users
+  fullName: Rise.Domain.Users
+  spec.csharp:
+  - uid: Rise
+    name: Rise
+    href: Rise.html
+  - name: .
+  - uid: Rise.Domain
+    name: Domain
+    href: Rise.Domain.html
+  - name: .
+  - uid: Rise.Domain.Users
+    name: Users
+    href: Rise.Domain.Users.html
+  spec.vb:
+  - uid: Rise
+    name: Rise
+    href: Rise.html
+  - name: .
+  - uid: Rise.Domain
+    name: Domain
+    href: Rise.Domain.html
+  - name: .
+  - uid: Rise.Domain.Users
+    name: Users
+    href: Rise.Domain.Users.html

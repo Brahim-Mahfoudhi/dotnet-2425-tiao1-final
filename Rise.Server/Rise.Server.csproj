@@ -17,6 +17,10 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.8.0" />
   </ItemGroup>
 
+  <PropertyGroup>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\Rise.Client\Rise.Client.csproj" />
     <ProjectReference Include="..\Rise.Shared\Rise.Shared.csproj" />

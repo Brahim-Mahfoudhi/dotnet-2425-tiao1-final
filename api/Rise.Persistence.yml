@@ -1,0 +1,53 @@
+### YamlMime:ManagedReference
+items:
+- uid: Rise.Persistence
+  commentId: N:Rise.Persistence
+  id: Rise.Persistence
+  children:
+  - Rise.Persistence.ApplicationDbContext
+  - Rise.Persistence.Seeder
+  langs:
+  - csharp
+  - vb
+  name: Rise.Persistence
+  nameWithType: Rise.Persistence
+  fullName: Rise.Persistence
+  type: Namespace
+  assemblies:
+  - Rise.Persistence
+references:
+- uid: Rise.Persistence.ApplicationDbContext
+  commentId: T:Rise.Persistence.ApplicationDbContext
+  parent: Rise.Persistence
+  href: Rise.Persistence.ApplicationDbContext.html
+  name: ApplicationDbContext
+  nameWithType: ApplicationDbContext
+  fullName: Rise.Persistence.ApplicationDbContext
+- uid: Rise.Persistence.Seeder
+  commentId: T:Rise.Persistence.Seeder
+  href: Rise.Persistence.Seeder.html
+  name: Seeder
+  nameWithType: Seeder
+  fullName: Rise.Persistence.Seeder
+- uid: Rise.Persistence
+  commentId: N:Rise.Persistence
+  href: Rise.html
+  name: Rise.Persistence
+  nameWithType: Rise.Persistence
+  fullName: Rise.Persistence
+  spec.csharp:
+  - uid: Rise
+    name: Rise
+    href: Rise.html
+  - name: .
+  - uid: Rise.Persistence
+    name: Persistence
+    href: Rise.Persistence.html
+  spec.vb:
+  - uid: Rise
+    name: Rise
+    href: Rise.html
+  - name: .
+  - uid: Rise.Persistence
+    name: Persistence
+    href: Rise.Persistence.html

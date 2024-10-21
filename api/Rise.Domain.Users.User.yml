@@ -1,0 +1,1027 @@
+### YamlMime:ManagedReference
+items:
+- uid: Rise.Domain.Users.User
+  commentId: T:Rise.Domain.Users.User
+  id: User
+  parent: Rise.Domain.Users
+  children:
+  - Rise.Domain.Users.User.#ctor(System.String,System.String,System.String,System.String,System.DateTime,Rise.Domain.Users.Address,System.String)
+  - Rise.Domain.Users.User.Activate
+  - Rise.Domain.Users.User.AddRole(Rise.Domain.Users.Role)
+  - Rise.Domain.Users.User.Address
+  - Rise.Domain.Users.User.BirthDate
+  - Rise.Domain.Users.User.Email
+  - Rise.Domain.Users.User.FirstName
+  - Rise.Domain.Users.User.LastName
+  - Rise.Domain.Users.User.Password
+  - Rise.Domain.Users.User.PhoneNumber
+  - Rise.Domain.Users.User.RemoveRole(Rise.Domain.Users.Role)
+  - Rise.Domain.Users.User.Roles
+  - Rise.Domain.Users.User.SoftDelete
+  langs:
+  - csharp
+  - vb
+  name: User
+  nameWithType: User
+  fullName: Rise.Domain.Users.User
+  type: Class
+  source:
+    remote:
+      path: Rise.Domain/Users/User.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: User
+    path: Rise.Domain/Users/User.cs
+    startLine: 5
+  assemblies:
+  - Rise.Domain
+  namespace: Rise.Domain.Users
+  summary: Represents a user entity in the system
+  example: []
+  syntax:
+    content: 'public class User : Entity'
+    content.vb: Public Class User Inherits Entity
+  inheritance:
+  - System.Object
+  - Rise.Domain.Common.Entity
+  inheritedMembers:
+  - Rise.Domain.Common.Entity.Id
+  - Rise.Domain.Common.Entity.CreatedAt
+  - Rise.Domain.Common.Entity.UpdatedAt
+  - Rise.Domain.Common.Entity.IsDeleted
+  - Rise.Domain.Common.Entity.Equals(System.Object)
+  - Rise.Domain.Common.Entity.GetHashCode
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Rise.Domain.Users.User.#ctor(System.String,System.String,System.String,System.String,System.DateTime,Rise.Domain.Users.Address,System.String)
+  commentId: M:Rise.Domain.Users.User.#ctor(System.String,System.String,System.String,System.String,System.DateTime,Rise.Domain.Users.Address,System.String)
+  id: '#ctor(System.String,System.String,System.String,System.String,System.DateTime,Rise.Domain.Users.Address,System.String)'
+  parent: Rise.Domain.Users.User
+  langs:
+  - csharp
+  - vb
+  name: User(string, string, string, string, DateTime, Address, string)
+  nameWithType: User.User(string, string, string, string, DateTime, Address, string)
+  fullName: Rise.Domain.Users.User.User(string, string, string, string, System.DateTime, Rise.Domain.Users.Address, string)
+  type: Constructor
+  source:
+    remote:
+      path: Rise.Domain/Users/User.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: .ctor
+    path: Rise.Domain/Users/User.cs
+    startLine: 35
+  assemblies:
+  - Rise.Domain
+  namespace: Rise.Domain.Users
+  summary: Initializes a new instance of the <xref href="Rise.Domain.Users.User" data-throw-if-not-resolved="false"></xref> class with the specified details.
+  example: []
+  syntax:
+    content: public User(string firstName, string lastName, string email, string password, DateTime birthDate, Address address, string phoneNumber)
+    parameters:
+    - id: firstName
+      type: System.String
+      description: The first name of the user.
+    - id: lastName
+      type: System.String
+      description: The last name of the user.
+    - id: email
+      type: System.String
+      description: The email address of the user.
+    - id: password
+      type: System.String
+      description: The password of the user.
+    - id: birthDate
+      type: System.DateTime
+      description: The birth date of the user.
+    - id: address
+      type: Rise.Domain.Users.Address
+      description: The address of the user.
+    - id: phoneNumber
+      type: System.String
+      description: The phone number of the user.
+    content.vb: Public Sub New(firstName As String, lastName As String, email As String, password As String, birthDate As Date, address As Address, phoneNumber As String)
+  overload: Rise.Domain.Users.User.#ctor*
+  nameWithType.vb: User.New(String, String, String, String, Date, Address, String)
+  fullName.vb: Rise.Domain.Users.User.New(String, String, String, String, Date, Rise.Domain.Users.Address, String)
+  name.vb: New(String, String, String, String, Date, Address, String)
+- uid: Rise.Domain.Users.User.FirstName
+  commentId: P:Rise.Domain.Users.User.FirstName
+  id: FirstName
+  parent: Rise.Domain.Users.User
+  langs:
+  - csharp
+  - vb
+  name: FirstName
+  nameWithType: User.FirstName
+  fullName: Rise.Domain.Users.User.FirstName
+  type: Property
+  source:
+    remote:
+      path: Rise.Domain/Users/User.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: FirstName
+    path: Rise.Domain/Users/User.cs
+    startLine: 52
+  assemblies:
+  - Rise.Domain
+  namespace: Rise.Domain.Users
+  summary: Gets or sets the first name of the user.
+  example: []
+  syntax:
+    content: public string FirstName { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property FirstName As String
+  overload: Rise.Domain.Users.User.FirstName*
+- uid: Rise.Domain.Users.User.LastName
+  commentId: P:Rise.Domain.Users.User.LastName
+  id: LastName
+  parent: Rise.Domain.Users.User
+  langs:
+  - csharp
+  - vb
+  name: LastName
+  nameWithType: User.LastName
+  fullName: Rise.Domain.Users.User.LastName
+  type: Property
+  source:
+    remote:
+      path: Rise.Domain/Users/User.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: LastName
+    path: Rise.Domain/Users/User.cs
+    startLine: 61
+  assemblies:
+  - Rise.Domain
+  namespace: Rise.Domain.Users
+  summary: Gets or sets the last name of the user.
+  example: []
+  syntax:
+    content: public string LastName { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property LastName As String
+  overload: Rise.Domain.Users.User.LastName*
+- uid: Rise.Domain.Users.User.Email
+  commentId: P:Rise.Domain.Users.User.Email
+  id: Email
+  parent: Rise.Domain.Users.User
+  langs:
+  - csharp
+  - vb
+  name: Email
+  nameWithType: User.Email
+  fullName: Rise.Domain.Users.User.Email
+  type: Property
+  source:
+    remote:
+      path: Rise.Domain/Users/User.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: Email
+    path: Rise.Domain/Users/User.cs
+    startLine: 70
+  assemblies:
+  - Rise.Domain
+  namespace: Rise.Domain.Users
+  summary: Gets or sets the email address of the user.
+  example: []
+  syntax:
+    content: public string Email { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property Email As String
+  overload: Rise.Domain.Users.User.Email*
+- uid: Rise.Domain.Users.User.Password
+  commentId: P:Rise.Domain.Users.User.Password
+  id: Password
+  parent: Rise.Domain.Users.User
+  langs:
+  - csharp
+  - vb
+  name: Password
+  nameWithType: User.Password
+  fullName: Rise.Domain.Users.User.Password
+  type: Property
+  source:
+    remote:
+      path: Rise.Domain/Users/User.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: Password
+    path: Rise.Domain/Users/User.cs
+    startLine: 79
+  assemblies:
+  - Rise.Domain
+  namespace: Rise.Domain.Users
+  summary: Gets or sets the password of the user.
+  example: []
+  syntax:
+    content: public string Password { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property Password As String
+  overload: Rise.Domain.Users.User.Password*
+- uid: Rise.Domain.Users.User.BirthDate
+  commentId: P:Rise.Domain.Users.User.BirthDate
+  id: BirthDate
+  parent: Rise.Domain.Users.User
+  langs:
+  - csharp
+  - vb
+  name: BirthDate
+  nameWithType: User.BirthDate
+  fullName: Rise.Domain.Users.User.BirthDate
+  type: Property
+  source:
+    remote:
+      path: Rise.Domain/Users/User.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: BirthDate
+    path: Rise.Domain/Users/User.cs
+    startLine: 88
+  assemblies:
+  - Rise.Domain
+  namespace: Rise.Domain.Users
+  summary: Gets or sets the birth date of the user.
+  example: []
+  syntax:
+    content: public DateTime BirthDate { get; set; }
+    parameters: []
+    return:
+      type: System.DateTime
+    content.vb: Public Property BirthDate As Date
+  overload: Rise.Domain.Users.User.BirthDate*
+- uid: Rise.Domain.Users.User.Address
+  commentId: P:Rise.Domain.Users.User.Address
+  id: Address
+  parent: Rise.Domain.Users.User
+  langs:
+  - csharp
+  - vb
+  name: Address
+  nameWithType: User.Address
+  fullName: Rise.Domain.Users.User.Address
+  type: Property
+  source:
+    remote:
+      path: Rise.Domain/Users/User.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: Address
+    path: Rise.Domain/Users/User.cs
+    startLine: 97
+  assemblies:
+  - Rise.Domain
+  namespace: Rise.Domain.Users
+  summary: Gets or sets the address of the user.
+  example: []
+  syntax:
+    content: public Address Address { get; set; }
+    parameters: []
+    return:
+      type: Rise.Domain.Users.Address
+    content.vb: Public Property Address As Address
+  overload: Rise.Domain.Users.User.Address*
+- uid: Rise.Domain.Users.User.Roles
+  commentId: P:Rise.Domain.Users.User.Roles
+  id: Roles
+  parent: Rise.Domain.Users.User
+  langs:
+  - csharp
+  - vb
+  name: Roles
+  nameWithType: User.Roles
+  fullName: Rise.Domain.Users.User.Roles
+  type: Property
+  source:
+    remote:
+      path: Rise.Domain/Users/User.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: Roles
+    path: Rise.Domain/Users/User.cs
+    startLine: 106
+  assemblies:
+  - Rise.Domain
+  namespace: Rise.Domain.Users
+  summary: Gets the roles associated with the user.
+  example: []
+  syntax:
+    content: public IReadOnlyList<Role> Roles { get; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IReadOnlyList{Rise.Domain.Users.Role}
+    content.vb: Public ReadOnly Property Roles As IReadOnlyList(Of Role)
+  overload: Rise.Domain.Users.User.Roles*
+- uid: Rise.Domain.Users.User.PhoneNumber
+  commentId: P:Rise.Domain.Users.User.PhoneNumber
+  id: PhoneNumber
+  parent: Rise.Domain.Users.User
+  langs:
+  - csharp
+  - vb
+  name: PhoneNumber
+  nameWithType: User.PhoneNumber
+  fullName: Rise.Domain.Users.User.PhoneNumber
+  type: Property
+  source:
+    remote:
+      path: Rise.Domain/Users/User.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: PhoneNumber
+    path: Rise.Domain/Users/User.cs
+    startLine: 111
+  assemblies:
+  - Rise.Domain
+  namespace: Rise.Domain.Users
+  summary: Gets or sets the phone number of the user.
+  example: []
+  syntax:
+    content: public string PhoneNumber { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property PhoneNumber As String
+  overload: Rise.Domain.Users.User.PhoneNumber*
+- uid: Rise.Domain.Users.User.AddRole(Rise.Domain.Users.Role)
+  commentId: M:Rise.Domain.Users.User.AddRole(Rise.Domain.Users.Role)
+  id: AddRole(Rise.Domain.Users.Role)
+  parent: Rise.Domain.Users.User
+  langs:
+  - csharp
+  - vb
+  name: AddRole(Role)
+  nameWithType: User.AddRole(Role)
+  fullName: Rise.Domain.Users.User.AddRole(Rise.Domain.Users.Role)
+  type: Method
+  source:
+    remote:
+      path: Rise.Domain/Users/User.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: AddRole
+    path: Rise.Domain/Users/User.cs
+    startLine: 124
+  assemblies:
+  - Rise.Domain
+  namespace: Rise.Domain.Users
+  summary: Adds a role to the user.
+  example: []
+  syntax:
+    content: public void AddRole(Role role)
+    parameters:
+    - id: role
+      type: Rise.Domain.Users.Role
+      description: The role to add.
+    content.vb: Public Sub AddRole(role As Role)
+  overload: Rise.Domain.Users.User.AddRole*
+- uid: Rise.Domain.Users.User.RemoveRole(Rise.Domain.Users.Role)
+  commentId: M:Rise.Domain.Users.User.RemoveRole(Rise.Domain.Users.Role)
+  id: RemoveRole(Rise.Domain.Users.Role)
+  parent: Rise.Domain.Users.User
+  langs:
+  - csharp
+  - vb
+  name: RemoveRole(Role)
+  nameWithType: User.RemoveRole(Role)
+  fullName: Rise.Domain.Users.User.RemoveRole(Rise.Domain.Users.Role)
+  type: Method
+  source:
+    remote:
+      path: Rise.Domain/Users/User.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: RemoveRole
+    path: Rise.Domain/Users/User.cs
+    startLine: 134
+  assemblies:
+  - Rise.Domain
+  namespace: Rise.Domain.Users
+  summary: Removes a role from the user.
+  example: []
+  syntax:
+    content: public void RemoveRole(Role role)
+    parameters:
+    - id: role
+      type: Rise.Domain.Users.Role
+      description: The role to remove.
+    content.vb: Public Sub RemoveRole(role As Role)
+  overload: Rise.Domain.Users.User.RemoveRole*
+- uid: Rise.Domain.Users.User.SoftDelete
+  commentId: M:Rise.Domain.Users.User.SoftDelete
+  id: SoftDelete
+  parent: Rise.Domain.Users.User
+  langs:
+  - csharp
+  - vb
+  name: SoftDelete()
+  nameWithType: User.SoftDelete()
+  fullName: Rise.Domain.Users.User.SoftDelete()
+  type: Method
+  source:
+    remote:
+      path: Rise.Domain/Users/User.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: SoftDelete
+    path: Rise.Domain/Users/User.cs
+    startLine: 143
+  assemblies:
+  - Rise.Domain
+  namespace: Rise.Domain.Users
+  summary: Marks the user as deleted (soft delete).
+  example: []
+  syntax:
+    content: public void SoftDelete()
+    content.vb: Public Sub SoftDelete()
+  overload: Rise.Domain.Users.User.SoftDelete*
+- uid: Rise.Domain.Users.User.Activate
+  commentId: M:Rise.Domain.Users.User.Activate
+  id: Activate
+  parent: Rise.Domain.Users.User
+  langs:
+  - csharp
+  - vb
+  name: Activate()
+  nameWithType: User.Activate()
+  fullName: Rise.Domain.Users.User.Activate()
+  type: Method
+  source:
+    remote:
+      path: Rise.Domain/Users/User.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: Activate
+    path: Rise.Domain/Users/User.cs
+    startLine: 151
+  assemblies:
+  - Rise.Domain
+  namespace: Rise.Domain.Users
+  summary: Reactivates a previously deleted user.
+  example: []
+  syntax:
+    content: public void Activate()
+    content.vb: Public Sub Activate()
+  overload: Rise.Domain.Users.User.Activate*
+references:
+- uid: Rise.Domain.Users
+  commentId: N:Rise.Domain.Users
+  href: Rise.html
+  name: Rise.Domain.Users
+  nameWithType: Rise.Domain.Users
+  fullName: Rise.Domain.Users
+  spec.csharp:
+  - uid: Rise
+    name: Rise
+    href: Rise.html
+  - name: .
+  - uid: Rise.Domain
+    name: Domain
+    href: Rise.Domain.html
+  - name: .
+  - uid: Rise.Domain.Users
+    name: Users
+    href: Rise.Domain.Users.html
+  spec.vb:
+  - uid: Rise
+    name: Rise
+    href: Rise.html
+  - name: .
+  - uid: Rise.Domain
+    name: Domain
+    href: Rise.Domain.html
+  - name: .
+  - uid: Rise.Domain.Users
+    name: Users
+    href: Rise.Domain.Users.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: Rise.Domain.Common.Entity
+  commentId: T:Rise.Domain.Common.Entity
+  parent: Rise.Domain.Common
+  href: Rise.Domain.Common.Entity.html
+  name: Entity
+  nameWithType: Entity
+  fullName: Rise.Domain.Common.Entity
+- uid: Rise.Domain.Common.Entity.Id
+  commentId: P:Rise.Domain.Common.Entity.Id
+  parent: Rise.Domain.Common.Entity
+  href: Rise.Domain.Common.Entity.html#Rise_Domain_Common_Entity_Id
+  name: Id
+  nameWithType: Entity.Id
+  fullName: Rise.Domain.Common.Entity.Id
+- uid: Rise.Domain.Common.Entity.CreatedAt
+  commentId: P:Rise.Domain.Common.Entity.CreatedAt
+  parent: Rise.Domain.Common.Entity
+  href: Rise.Domain.Common.Entity.html#Rise_Domain_Common_Entity_CreatedAt
+  name: CreatedAt
+  nameWithType: Entity.CreatedAt
+  fullName: Rise.Domain.Common.Entity.CreatedAt
+- uid: Rise.Domain.Common.Entity.UpdatedAt
+  commentId: P:Rise.Domain.Common.Entity.UpdatedAt
+  parent: Rise.Domain.Common.Entity
+  href: Rise.Domain.Common.Entity.html#Rise_Domain_Common_Entity_UpdatedAt
+  name: UpdatedAt
+  nameWithType: Entity.UpdatedAt
+  fullName: Rise.Domain.Common.Entity.UpdatedAt
+- uid: Rise.Domain.Common.Entity.IsDeleted
+  commentId: P:Rise.Domain.Common.Entity.IsDeleted
+  parent: Rise.Domain.Common.Entity
+  href: Rise.Domain.Common.Entity.html#Rise_Domain_Common_Entity_IsDeleted
+  name: IsDeleted
+  nameWithType: Entity.IsDeleted
+  fullName: Rise.Domain.Common.Entity.IsDeleted
+- uid: Rise.Domain.Common.Entity.Equals(System.Object)
+  commentId: M:Rise.Domain.Common.Entity.Equals(System.Object)
+  parent: Rise.Domain.Common.Entity
+  isExternal: true
+  href: Rise.Domain.Common.Entity.html#Rise_Domain_Common_Entity_Equals_System_Object_
+  name: Equals(object)
+  nameWithType: Entity.Equals(object)
+  fullName: Rise.Domain.Common.Entity.Equals(object)
+  nameWithType.vb: Entity.Equals(Object)
+  fullName.vb: Rise.Domain.Common.Entity.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: Rise.Domain.Common.Entity.Equals(System.Object)
+    name: Equals
+    href: Rise.Domain.Common.Entity.html#Rise_Domain_Common_Entity_Equals_System_Object_
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: Rise.Domain.Common.Entity.Equals(System.Object)
+    name: Equals
+    href: Rise.Domain.Common.Entity.html#Rise_Domain_Common_Entity_Equals_System_Object_
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: Rise.Domain.Common.Entity.GetHashCode
+  commentId: M:Rise.Domain.Common.Entity.GetHashCode
+  parent: Rise.Domain.Common.Entity
+  href: Rise.Domain.Common.Entity.html#Rise_Domain_Common_Entity_GetHashCode
+  name: GetHashCode()
+  nameWithType: Entity.GetHashCode()
+  fullName: Rise.Domain.Common.Entity.GetHashCode()
+  spec.csharp:
+  - uid: Rise.Domain.Common.Entity.GetHashCode
+    name: GetHashCode
+    href: Rise.Domain.Common.Entity.html#Rise_Domain_Common_Entity_GetHashCode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Rise.Domain.Common.Entity.GetHashCode
+    name: GetHashCode
+    href: Rise.Domain.Common.Entity.html#Rise_Domain_Common_Entity_GetHashCode
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Rise.Domain.Common
+  commentId: N:Rise.Domain.Common
+  href: Rise.html
+  name: Rise.Domain.Common
+  nameWithType: Rise.Domain.Common
+  fullName: Rise.Domain.Common
+  spec.csharp:
+  - uid: Rise
+    name: Rise
+    href: Rise.html
+  - name: .
+  - uid: Rise.Domain
+    name: Domain
+    href: Rise.Domain.html
+  - name: .
+  - uid: Rise.Domain.Common
+    name: Common
+    href: Rise.Domain.Common.html
+  spec.vb:
+  - uid: Rise
+    name: Rise
+    href: Rise.html
+  - name: .
+  - uid: Rise.Domain
+    name: Domain
+    href: Rise.Domain.html
+  - name: .
+  - uid: Rise.Domain.Common
+    name: Common
+    href: Rise.Domain.Common.html
+- uid: Rise.Domain.Users.User
+  commentId: T:Rise.Domain.Users.User
+  parent: Rise.Domain.Users
+  href: Rise.Domain.Users.User.html
+  name: User
+  nameWithType: User
+  fullName: Rise.Domain.Users.User
+- uid: Rise.Domain.Users.User.#ctor*
+  commentId: Overload:Rise.Domain.Users.User.#ctor
+  href: Rise.Domain.Users.User.html#Rise_Domain_Users_User__ctor_System_String_System_String_System_String_System_String_System_DateTime_Rise_Domain_Users_Address_System_String_
+  name: User
+  nameWithType: User.User
+  fullName: Rise.Domain.Users.User.User
+  nameWithType.vb: User.New
+  fullName.vb: Rise.Domain.Users.User.New
+  name.vb: New
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.DateTime
+  commentId: T:System.DateTime
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.datetime
+  name: DateTime
+  nameWithType: DateTime
+  fullName: System.DateTime
+  nameWithType.vb: Date
+  fullName.vb: Date
+  name.vb: Date
+- uid: Rise.Domain.Users.Address
+  commentId: T:Rise.Domain.Users.Address
+  parent: Rise.Domain.Users
+  href: Rise.Domain.Users.Address.html
+  name: Address
+  nameWithType: Address
+  fullName: Rise.Domain.Users.Address
+- uid: Rise.Domain.Users.User.FirstName*
+  commentId: Overload:Rise.Domain.Users.User.FirstName
+  href: Rise.Domain.Users.User.html#Rise_Domain_Users_User_FirstName
+  name: FirstName
+  nameWithType: User.FirstName
+  fullName: Rise.Domain.Users.User.FirstName
+- uid: Rise.Domain.Users.User.LastName*
+  commentId: Overload:Rise.Domain.Users.User.LastName
+  href: Rise.Domain.Users.User.html#Rise_Domain_Users_User_LastName
+  name: LastName
+  nameWithType: User.LastName
+  fullName: Rise.Domain.Users.User.LastName
+- uid: Rise.Domain.Users.User.Email*
+  commentId: Overload:Rise.Domain.Users.User.Email
+  href: Rise.Domain.Users.User.html#Rise_Domain_Users_User_Email
+  name: Email
+  nameWithType: User.Email
+  fullName: Rise.Domain.Users.User.Email
+- uid: Rise.Domain.Users.User.Password*
+  commentId: Overload:Rise.Domain.Users.User.Password
+  href: Rise.Domain.Users.User.html#Rise_Domain_Users_User_Password
+  name: Password
+  nameWithType: User.Password
+  fullName: Rise.Domain.Users.User.Password
+- uid: Rise.Domain.Users.User.BirthDate*
+  commentId: Overload:Rise.Domain.Users.User.BirthDate
+  href: Rise.Domain.Users.User.html#Rise_Domain_Users_User_BirthDate
+  name: BirthDate
+  nameWithType: User.BirthDate
+  fullName: Rise.Domain.Users.User.BirthDate
+- uid: Rise.Domain.Users.User.Address*
+  commentId: Overload:Rise.Domain.Users.User.Address
+  href: Rise.Domain.Users.User.html#Rise_Domain_Users_User_Address
+  name: Address
+  nameWithType: User.Address
+  fullName: Rise.Domain.Users.User.Address
+- uid: Rise.Domain.Users.User.Roles*
+  commentId: Overload:Rise.Domain.Users.User.Roles
+  href: Rise.Domain.Users.User.html#Rise_Domain_Users_User_Roles
+  name: Roles
+  nameWithType: User.Roles
+  fullName: Rise.Domain.Users.User.Roles
+- uid: System.Collections.Generic.IReadOnlyList{Rise.Domain.Users.Role}
+  commentId: T:System.Collections.Generic.IReadOnlyList{Rise.Domain.Users.Role}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyList`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<Role>
+  nameWithType: IReadOnlyList<Role>
+  fullName: System.Collections.Generic.IReadOnlyList<Rise.Domain.Users.Role>
+  nameWithType.vb: IReadOnlyList(Of Role)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of Rise.Domain.Users.Role)
+  name.vb: IReadOnlyList(Of Role)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - uid: Rise.Domain.Users.Role
+    name: Role
+    href: Rise.Domain.Users.Role.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Rise.Domain.Users.Role
+    name: Role
+    href: Rise.Domain.Users.Role.html
+  - name: )
+- uid: System.Collections.Generic.IReadOnlyList`1
+  commentId: T:System.Collections.Generic.IReadOnlyList`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<T>
+  nameWithType: IReadOnlyList<T>
+  fullName: System.Collections.Generic.IReadOnlyList<T>
+  nameWithType.vb: IReadOnlyList(Of T)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of T)
+  name.vb: IReadOnlyList(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: Rise.Domain.Users.User.PhoneNumber*
+  commentId: Overload:Rise.Domain.Users.User.PhoneNumber
+  href: Rise.Domain.Users.User.html#Rise_Domain_Users_User_PhoneNumber
+  name: PhoneNumber
+  nameWithType: User.PhoneNumber
+  fullName: Rise.Domain.Users.User.PhoneNumber
+- uid: Rise.Domain.Users.User.AddRole*
+  commentId: Overload:Rise.Domain.Users.User.AddRole
+  href: Rise.Domain.Users.User.html#Rise_Domain_Users_User_AddRole_Rise_Domain_Users_Role_
+  name: AddRole
+  nameWithType: User.AddRole
+  fullName: Rise.Domain.Users.User.AddRole
+- uid: Rise.Domain.Users.Role
+  commentId: T:Rise.Domain.Users.Role
+  parent: Rise.Domain.Users
+  href: Rise.Domain.Users.Role.html
+  name: Role
+  nameWithType: Role
+  fullName: Rise.Domain.Users.Role
+- uid: Rise.Domain.Users.User.RemoveRole*
+  commentId: Overload:Rise.Domain.Users.User.RemoveRole
+  href: Rise.Domain.Users.User.html#Rise_Domain_Users_User_RemoveRole_Rise_Domain_Users_Role_
+  name: RemoveRole
+  nameWithType: User.RemoveRole
+  fullName: Rise.Domain.Users.User.RemoveRole
+- uid: Rise.Domain.Users.User.SoftDelete*
+  commentId: Overload:Rise.Domain.Users.User.SoftDelete
+  href: Rise.Domain.Users.User.html#Rise_Domain_Users_User_SoftDelete
+  name: SoftDelete
+  nameWithType: User.SoftDelete
+  fullName: Rise.Domain.Users.User.SoftDelete
+- uid: Rise.Domain.Users.User.Activate*
+  commentId: Overload:Rise.Domain.Users.User.Activate
+  href: Rise.Domain.Users.User.html#Rise_Domain_Users_User_Activate
+  name: Activate
+  nameWithType: User.Activate
+  fullName: Rise.Domain.Users.User.Activate

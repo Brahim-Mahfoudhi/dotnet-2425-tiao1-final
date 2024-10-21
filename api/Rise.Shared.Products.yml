@@ -1,0 +1,61 @@
+### YamlMime:ManagedReference
+items:
+- uid: Rise.Shared.Products
+  commentId: N:Rise.Shared.Products
+  id: Rise.Shared.Products
+  children:
+  - Rise.Shared.Products.IProductService
+  - Rise.Shared.Products.ProductDto
+  langs:
+  - csharp
+  - vb
+  name: Rise.Shared.Products
+  nameWithType: Rise.Shared.Products
+  fullName: Rise.Shared.Products
+  type: Namespace
+  assemblies:
+  - Rise.Shared
+references:
+- uid: Rise.Shared.Products.IProductService
+  commentId: T:Rise.Shared.Products.IProductService
+  parent: Rise.Shared.Products
+  href: Rise.Shared.Products.IProductService.html
+  name: IProductService
+  nameWithType: IProductService
+  fullName: Rise.Shared.Products.IProductService
+- uid: Rise.Shared.Products.ProductDto
+  commentId: T:Rise.Shared.Products.ProductDto
+  href: Rise.Shared.Products.ProductDto.html
+  name: ProductDto
+  nameWithType: ProductDto
+  fullName: Rise.Shared.Products.ProductDto
+- uid: Rise.Shared.Products
+  commentId: N:Rise.Shared.Products
+  href: Rise.html
+  name: Rise.Shared.Products
+  nameWithType: Rise.Shared.Products
+  fullName: Rise.Shared.Products
+  spec.csharp:
+  - uid: Rise
+    name: Rise
+    href: Rise.html
+  - name: .
+  - uid: Rise.Shared
+    name: Shared
+    href: Rise.Shared.html
+  - name: .
+  - uid: Rise.Shared.Products
+    name: Products
+    href: Rise.Shared.Products.html
+  spec.vb:
+  - uid: Rise
+    name: Rise
+    href: Rise.html
+  - name: .
+  - uid: Rise.Shared
+    name: Shared
+    href: Rise.Shared.html
+  - name: .
+  - uid: Rise.Shared.Products
+    name: Products
+    href: Rise.Shared.Products.html

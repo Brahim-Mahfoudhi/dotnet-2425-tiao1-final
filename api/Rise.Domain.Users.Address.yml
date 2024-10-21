@@ -1,0 +1,683 @@
+### YamlMime:ManagedReference
+items:
+- uid: Rise.Domain.Users.Address
+  commentId: T:Rise.Domain.Users.Address
+  id: Address
+  parent: Rise.Domain.Users
+  children:
+  - Rise.Domain.Users.Address.#ctor(System.String,System.Int32)
+  - Rise.Domain.Users.Address.#ctor(System.String,System.Int32,System.String)
+  - Rise.Domain.Users.Address.Bus
+  - Rise.Domain.Users.Address.HouseNumber
+  - Rise.Domain.Users.Address.Street
+  - Rise.Domain.Users.Address.User
+  langs:
+  - csharp
+  - vb
+  name: Address
+  nameWithType: Address
+  fullName: Rise.Domain.Users.Address
+  type: Class
+  source:
+    remote:
+      path: Rise.Domain/Users/Address.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: Address
+    path: Rise.Domain/Users/Address.cs
+    startLine: 5
+  assemblies:
+  - Rise.Domain
+  namespace: Rise.Domain.Users
+  summary: Represents a user's address in the system.
+  example: []
+  syntax:
+    content: 'public class Address : Entity'
+    content.vb: Public Class Address Inherits Entity
+  inheritance:
+  - System.Object
+  - Rise.Domain.Common.Entity
+  inheritedMembers:
+  - Rise.Domain.Common.Entity.Id
+  - Rise.Domain.Common.Entity.CreatedAt
+  - Rise.Domain.Common.Entity.UpdatedAt
+  - Rise.Domain.Common.Entity.IsDeleted
+  - Rise.Domain.Common.Entity.Equals(System.Object)
+  - Rise.Domain.Common.Entity.GetHashCode
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Rise.Domain.Users.Address.#ctor(System.String,System.Int32)
+  commentId: M:Rise.Domain.Users.Address.#ctor(System.String,System.Int32)
+  id: '#ctor(System.String,System.Int32)'
+  parent: Rise.Domain.Users.Address
+  langs:
+  - csharp
+  - vb
+  name: Address(string, int)
+  nameWithType: Address.Address(string, int)
+  fullName: Rise.Domain.Users.Address.Address(string, int)
+  type: Constructor
+  source:
+    remote:
+      path: Rise.Domain/Users/Address.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: .ctor
+    path: Rise.Domain/Users/Address.cs
+    startLine: 24
+  assemblies:
+  - Rise.Domain
+  namespace: Rise.Domain.Users
+  summary: Initializes a new instance of the <xref href="Rise.Domain.Users.Address" data-throw-if-not-resolved="false"></xref> class with the specified street and house number.
+  example: []
+  syntax:
+    content: public Address(string street, int houseNumber)
+    parameters:
+    - id: street
+      type: System.String
+      description: The street of the address.
+    - id: houseNumber
+      type: System.Int32
+      description: The house number of the address.
+    content.vb: Public Sub New(street As String, houseNumber As Integer)
+  overload: Rise.Domain.Users.Address.#ctor*
+  nameWithType.vb: Address.New(String, Integer)
+  fullName.vb: Rise.Domain.Users.Address.New(String, Integer)
+  name.vb: New(String, Integer)
+- uid: Rise.Domain.Users.Address.#ctor(System.String,System.Int32,System.String)
+  commentId: M:Rise.Domain.Users.Address.#ctor(System.String,System.Int32,System.String)
+  id: '#ctor(System.String,System.Int32,System.String)'
+  parent: Rise.Domain.Users.Address
+  langs:
+  - csharp
+  - vb
+  name: Address(string, int, string?)
+  nameWithType: Address.Address(string, int, string?)
+  fullName: Rise.Domain.Users.Address.Address(string, int, string?)
+  type: Constructor
+  source:
+    remote:
+      path: Rise.Domain/Users/Address.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: .ctor
+    path: Rise.Domain/Users/Address.cs
+    startLine: 36
+  assemblies:
+  - Rise.Domain
+  namespace: Rise.Domain.Users
+  summary: Initializes a new instance of the <xref href="Rise.Domain.Users.Address" data-throw-if-not-resolved="false"></xref> class with the specified street, house number, and optional bus number.
+  example: []
+  syntax:
+    content: public Address(string street, int houseNumber, string? bus = null)
+    parameters:
+    - id: street
+      type: System.String
+      description: The street of the address.
+    - id: houseNumber
+      type: System.Int32
+      description: The house number of the address.
+    - id: bus
+      type: System.String
+      description: The optional bus number of the address.
+    content.vb: Public Sub New(street As String, houseNumber As Integer, bus As String = Nothing)
+  overload: Rise.Domain.Users.Address.#ctor*
+  nameWithType.vb: Address.New(String, Integer, String)
+  fullName.vb: Rise.Domain.Users.Address.New(String, Integer, String)
+  name.vb: New(String, Integer, String)
+- uid: Rise.Domain.Users.Address.User
+  commentId: P:Rise.Domain.Users.Address.User
+  id: User
+  parent: Rise.Domain.Users.Address
+  langs:
+  - csharp
+  - vb
+  name: User
+  nameWithType: Address.User
+  fullName: Rise.Domain.Users.Address.User
+  type: Property
+  source:
+    remote:
+      path: Rise.Domain/Users/Address.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: User
+    path: Rise.Domain/Users/Address.cs
+    startLine: 49
+  assemblies:
+  - Rise.Domain
+  namespace: Rise.Domain.Users
+  summary: Gets or sets the user associated with this address.
+  example: []
+  syntax:
+    content: public User User { get; set; }
+    parameters: []
+    return:
+      type: Rise.Domain.Users.User
+    content.vb: Public Property User As User
+  overload: Rise.Domain.Users.Address.User*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: Thrown when the user is <code>null</code>.
+- uid: Rise.Domain.Users.Address.Street
+  commentId: P:Rise.Domain.Users.Address.Street
+  id: Street
+  parent: Rise.Domain.Users.Address
+  langs:
+  - csharp
+  - vb
+  name: Street
+  nameWithType: Address.Street
+  fullName: Rise.Domain.Users.Address.Street
+  type: Property
+  source:
+    remote:
+      path: Rise.Domain/Users/Address.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: Street
+    path: Rise.Domain/Users/Address.cs
+    startLine: 64
+  assemblies:
+  - Rise.Domain
+  namespace: Rise.Domain.Users
+  summary: Gets or sets the street name of the address.
+  remarks: The street name is derived from the <xref href="Rise.Domain.Common.StreetEnum" data-throw-if-not-resolved="false"></xref> enumeration.
+  example: []
+  syntax:
+    content: public string Street { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property Street As String
+  overload: Rise.Domain.Users.Address.Street*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: Thrown when the street is <code>null</code>.
+- uid: Rise.Domain.Users.Address.HouseNumber
+  commentId: P:Rise.Domain.Users.Address.HouseNumber
+  id: HouseNumber
+  parent: Rise.Domain.Users.Address
+  langs:
+  - csharp
+  - vb
+  name: HouseNumber
+  nameWithType: Address.HouseNumber
+  fullName: Rise.Domain.Users.Address.HouseNumber
+  type: Property
+  source:
+    remote:
+      path: Rise.Domain/Users/Address.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: HouseNumber
+    path: Rise.Domain/Users/Address.cs
+    startLine: 76
+  assemblies:
+  - Rise.Domain
+  namespace: Rise.Domain.Users
+  summary: Gets or sets the house number of the address.
+  example: []
+  syntax:
+    content: public int HouseNumber { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property HouseNumber As Integer
+  overload: Rise.Domain.Users.Address.HouseNumber*
+  exceptions:
+  - type: System.ArgumentOutOfRangeException
+    commentId: T:System.ArgumentOutOfRangeException
+    description: Thrown when the house number is less than or equal to zero.
+- uid: Rise.Domain.Users.Address.Bus
+  commentId: P:Rise.Domain.Users.Address.Bus
+  id: Bus
+  parent: Rise.Domain.Users.Address
+  langs:
+  - csharp
+  - vb
+  name: Bus
+  nameWithType: Address.Bus
+  fullName: Rise.Domain.Users.Address.Bus
+  type: Property
+  source:
+    remote:
+      path: Rise.Domain/Users/Address.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: Bus
+    path: Rise.Domain/Users/Address.cs
+    startLine: 85
+  assemblies:
+  - Rise.Domain
+  namespace: Rise.Domain.Users
+  summary: Gets or sets the optional bus number of the address.
+  example: []
+  syntax:
+    content: public string? Bus { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property Bus As String
+  overload: Rise.Domain.Users.Address.Bus*
+references:
+- uid: Rise.Domain.Users
+  commentId: N:Rise.Domain.Users
+  href: Rise.html
+  name: Rise.Domain.Users
+  nameWithType: Rise.Domain.Users
+  fullName: Rise.Domain.Users
+  spec.csharp:
+  - uid: Rise
+    name: Rise
+    href: Rise.html
+  - name: .
+  - uid: Rise.Domain
+    name: Domain
+    href: Rise.Domain.html
+  - name: .
+  - uid: Rise.Domain.Users
+    name: Users
+    href: Rise.Domain.Users.html
+  spec.vb:
+  - uid: Rise
+    name: Rise
+    href: Rise.html
+  - name: .
+  - uid: Rise.Domain
+    name: Domain
+    href: Rise.Domain.html
+  - name: .
+  - uid: Rise.Domain.Users
+    name: Users
+    href: Rise.Domain.Users.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: Rise.Domain.Common.Entity
+  commentId: T:Rise.Domain.Common.Entity
+  parent: Rise.Domain.Common
+  href: Rise.Domain.Common.Entity.html
+  name: Entity
+  nameWithType: Entity
+  fullName: Rise.Domain.Common.Entity
+- uid: Rise.Domain.Common.Entity.Id
+  commentId: P:Rise.Domain.Common.Entity.Id
+  parent: Rise.Domain.Common.Entity
+  href: Rise.Domain.Common.Entity.html#Rise_Domain_Common_Entity_Id
+  name: Id
+  nameWithType: Entity.Id
+  fullName: Rise.Domain.Common.Entity.Id
+- uid: Rise.Domain.Common.Entity.CreatedAt
+  commentId: P:Rise.Domain.Common.Entity.CreatedAt
+  parent: Rise.Domain.Common.Entity
+  href: Rise.Domain.Common.Entity.html#Rise_Domain_Common_Entity_CreatedAt
+  name: CreatedAt
+  nameWithType: Entity.CreatedAt
+  fullName: Rise.Domain.Common.Entity.CreatedAt
+- uid: Rise.Domain.Common.Entity.UpdatedAt
+  commentId: P:Rise.Domain.Common.Entity.UpdatedAt
+  parent: Rise.Domain.Common.Entity
+  href: Rise.Domain.Common.Entity.html#Rise_Domain_Common_Entity_UpdatedAt
+  name: UpdatedAt
+  nameWithType: Entity.UpdatedAt
+  fullName: Rise.Domain.Common.Entity.UpdatedAt
+- uid: Rise.Domain.Common.Entity.IsDeleted
+  commentId: P:Rise.Domain.Common.Entity.IsDeleted
+  parent: Rise.Domain.Common.Entity
+  href: Rise.Domain.Common.Entity.html#Rise_Domain_Common_Entity_IsDeleted
+  name: IsDeleted
+  nameWithType: Entity.IsDeleted
+  fullName: Rise.Domain.Common.Entity.IsDeleted
+- uid: Rise.Domain.Common.Entity.Equals(System.Object)
+  commentId: M:Rise.Domain.Common.Entity.Equals(System.Object)
+  parent: Rise.Domain.Common.Entity
+  isExternal: true
+  href: Rise.Domain.Common.Entity.html#Rise_Domain_Common_Entity_Equals_System_Object_
+  name: Equals(object)
+  nameWithType: Entity.Equals(object)
+  fullName: Rise.Domain.Common.Entity.Equals(object)
+  nameWithType.vb: Entity.Equals(Object)
+  fullName.vb: Rise.Domain.Common.Entity.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: Rise.Domain.Common.Entity.Equals(System.Object)
+    name: Equals
+    href: Rise.Domain.Common.Entity.html#Rise_Domain_Common_Entity_Equals_System_Object_
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: Rise.Domain.Common.Entity.Equals(System.Object)
+    name: Equals
+    href: Rise.Domain.Common.Entity.html#Rise_Domain_Common_Entity_Equals_System_Object_
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: Rise.Domain.Common.Entity.GetHashCode
+  commentId: M:Rise.Domain.Common.Entity.GetHashCode
+  parent: Rise.Domain.Common.Entity
+  href: Rise.Domain.Common.Entity.html#Rise_Domain_Common_Entity_GetHashCode
+  name: GetHashCode()
+  nameWithType: Entity.GetHashCode()
+  fullName: Rise.Domain.Common.Entity.GetHashCode()
+  spec.csharp:
+  - uid: Rise.Domain.Common.Entity.GetHashCode
+    name: GetHashCode
+    href: Rise.Domain.Common.Entity.html#Rise_Domain_Common_Entity_GetHashCode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Rise.Domain.Common.Entity.GetHashCode
+    name: GetHashCode
+    href: Rise.Domain.Common.Entity.html#Rise_Domain_Common_Entity_GetHashCode
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Rise.Domain.Common
+  commentId: N:Rise.Domain.Common
+  href: Rise.html
+  name: Rise.Domain.Common
+  nameWithType: Rise.Domain.Common
+  fullName: Rise.Domain.Common
+  spec.csharp:
+  - uid: Rise
+    name: Rise
+    href: Rise.html
+  - name: .
+  - uid: Rise.Domain
+    name: Domain
+    href: Rise.Domain.html
+  - name: .
+  - uid: Rise.Domain.Common
+    name: Common
+    href: Rise.Domain.Common.html
+  spec.vb:
+  - uid: Rise
+    name: Rise
+    href: Rise.html
+  - name: .
+  - uid: Rise.Domain
+    name: Domain
+    href: Rise.Domain.html
+  - name: .
+  - uid: Rise.Domain.Common
+    name: Common
+    href: Rise.Domain.Common.html
+- uid: Rise.Domain.Users.Address
+  commentId: T:Rise.Domain.Users.Address
+  parent: Rise.Domain.Users
+  href: Rise.Domain.Users.Address.html
+  name: Address
+  nameWithType: Address
+  fullName: Rise.Domain.Users.Address
+- uid: Rise.Domain.Users.Address.#ctor*
+  commentId: Overload:Rise.Domain.Users.Address.#ctor
+  href: Rise.Domain.Users.Address.html#Rise_Domain_Users_Address__ctor_System_String_System_Int32_
+  name: Address
+  nameWithType: Address.Address
+  fullName: Rise.Domain.Users.Address.Address
+  nameWithType.vb: Address.New
+  fullName.vb: Rise.Domain.Users.Address.New
+  name.vb: New
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System.ArgumentNullException
+  commentId: T:System.ArgumentNullException
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.argumentnullexception
+  name: ArgumentNullException
+  nameWithType: ArgumentNullException
+  fullName: System.ArgumentNullException
+- uid: Rise.Domain.Users.Address.User*
+  commentId: Overload:Rise.Domain.Users.Address.User
+  href: Rise.Domain.Users.Address.html#Rise_Domain_Users_Address_User
+  name: User
+  nameWithType: Address.User
+  fullName: Rise.Domain.Users.Address.User
+- uid: Rise.Domain.Users.User
+  commentId: T:Rise.Domain.Users.User
+  parent: Rise.Domain.Users
+  href: Rise.Domain.Users.User.html
+  name: User
+  nameWithType: User
+  fullName: Rise.Domain.Users.User
+- uid: Rise.Domain.Common.StreetEnum
+  commentId: T:Rise.Domain.Common.StreetEnum
+  parent: Rise.Domain.Common
+  href: Rise.Domain.Common.StreetEnum.html
+  name: StreetEnum
+  nameWithType: StreetEnum
+  fullName: Rise.Domain.Common.StreetEnum
+- uid: Rise.Domain.Users.Address.Street*
+  commentId: Overload:Rise.Domain.Users.Address.Street
+  href: Rise.Domain.Users.Address.html#Rise_Domain_Users_Address_Street
+  name: Street
+  nameWithType: Address.Street
+  fullName: Rise.Domain.Users.Address.Street
+- uid: System.ArgumentOutOfRangeException
+  commentId: T:System.ArgumentOutOfRangeException
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.argumentoutofrangeexception
+  name: ArgumentOutOfRangeException
+  nameWithType: ArgumentOutOfRangeException
+  fullName: System.ArgumentOutOfRangeException
+- uid: Rise.Domain.Users.Address.HouseNumber*
+  commentId: Overload:Rise.Domain.Users.Address.HouseNumber
+  href: Rise.Domain.Users.Address.html#Rise_Domain_Users_Address_HouseNumber
+  name: HouseNumber
+  nameWithType: Address.HouseNumber
+  fullName: Rise.Domain.Users.Address.HouseNumber
+- uid: Rise.Domain.Users.Address.Bus*
+  commentId: Overload:Rise.Domain.Users.Address.Bus
+  href: Rise.Domain.Users.Address.html#Rise_Domain_Users_Address_Bus
+  name: Bus
+  nameWithType: Address.Bus
+  fullName: Rise.Domain.Users.Address.Bus
