@@ -1,0 +1,15 @@
+.logo-img {
+
+    -o-object-fit: cover;
+    object-fit: cover;
+}
+
+.rounded-circle {
+    border-radius: 10%!important;
+    background-color: lightgrey;
+}
+
+a > i{
+    color: #a3a3a3;
+    font-size: 1.5rem;
+}

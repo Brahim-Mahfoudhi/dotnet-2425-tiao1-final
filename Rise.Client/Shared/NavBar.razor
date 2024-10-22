@@ -1,0 +1,60 @@
+@using Rise.Client.Utils.Navigation
+
+  <nav class="navbar navbar-expand-lg position-absolute top-0 z-index-3 w-100 shadow-none my-3  navbar-nav mt-4 ">
+    <div class="container">
+      <div class="bg-white z-index-3 p-1 logo-img rounded-circle ">
+        <img src="img/BUUT_logo.png" alt="Logo" class="logo"/>
+      </div>
+      
+      <button class="navbar-toggler shadow-none ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navigation" aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon mt-2">
+          <span class="navbar-toggler-bar bar1"></span>
+          <span class="navbar-toggler-bar bar2"></span>
+          <span class="navbar-toggler-bar bar3"></span>
+        </span>
+      </button>
+      <div class="collapse navbar-collapse w-100 pt-3 pb-2 py-lg-0 " id="navigation">
+        <ul class="navbar-nav navbar-nav-hover d-flex ms-auto align-items-center">
+          @foreach (var link in NavigationLinks.GetNavigationLinks())
+          {
+            <li class="nav-item dropdown dropdown-hover mx-2">
+              <a href="@link.Url" class="nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center" role="button" id="dropdownMenuPages10" data-bs-toggle="dropdown" aria-expanded="false">
+                <h4 class="text-white  ">@link.Name</h4>
+              </a>
+            </li>
+          }
+        </ul>
+        <ul class="navbar-nav navbar-nav-hover d-flex align-items-center">
+            <li class="nav-item">
+              <a href="javascript:;" class="px-1 py-0 nav-link line-height-0" target="_blank">
+                <i class="ni ni-circle-08"></i>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="javascript:;" class="nav-link py-0 px-1 line-height-0">
+               <i class="ni ni-settings-gear-65 "></i>
+              </a>
+            </li>
+            <li class="nav-item dropdown py-0 pe-3">
+              <a href="javascript:;" class="nav-link py-0 px-1 position-relative line-height-0" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="ni ni-bell-55"></i>
+                <span class="position-absolute top-5 start-100 translate-middle badge rounded-pill bg-danger border border-white small py-1 px-2">
+                  <span class="small">11</span>
+                  <span class="visually-hidden">unread notifications</span>
+                </span>
+              </a>
+            </li>
+            <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
+                          <a href="javascript:;" class="nav-link text-body p-0" id="iconNavbarSidenav">
+                            <div class="sidenav-toggler-inner">
+                              <i class="sidenav-toggler-line"></i>
+                              <i class="sidenav-toggler-line"></i>
+                              <i class="sidenav-toggler-line"></i>
+                            </div>
+                          </a>
+                        </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+

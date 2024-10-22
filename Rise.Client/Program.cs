@@ -30,7 +30,7 @@ builder.Services.AddLocalization(Options => Options.ResourcesPath = "Resources.L
 
 builder.Services.AddHttpClient<IProductService, ProductService>(client =>
 {
-    client.BaseAddress = new Uri($"http://127.0.0.1:5001/api/");
+    client.BaseAddress = new Uri($"{builder.HostEnvironment.BaseAddress}api/"); 
 });
 
 builder.Services.AddHttpClient<IUserService, UserService>(client =>
