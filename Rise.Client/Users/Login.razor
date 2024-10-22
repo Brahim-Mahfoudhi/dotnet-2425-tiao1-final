@@ -1,42 +1,40 @@
 @page "/login"
-@inject HttpClient HttpClient
 @inject NavigationManager NavigationManager
 @inject Microsoft.Extensions.Localization.IStringLocalizer<Login> Localizer
-<link href="css/shared-form.css" rel="stylesheet" />
 
-<PageTitle>@Localizer["Login"]</PageTitle>
 
-<h1 class="form-title">@Localizer["Login"]</h1>
+  <main class="main-content mt-0">
+    <div class="page-header align-items-center min-vh-100" >
+      <div class="container my-auto">
+        <div class="row">
+          <div class="col-lg-4 col-md-8 col-12 mx-auto">
+            <div class="card z-index-0 fadeIn3 fadeInBottom">
+              <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                <div class="bg-gradient-dark shadow-dark border-radius-lg py-3 pe-1">
+                  <h4 class="text-white font-weight-bolder text-center mt-2 mb-0">@Localizer["Login"]</h4>
+                </div>
+              </div>
+              <div class="card-body">
+                  <div id="auth0-login-container"></div>
+                  <script src="https://cdn.auth0.com/js/lock/11.30/lock.min.js"></script>
+                  <script type="text/javascript">
+                      var lock = new Auth0Lock('y0zDAiEKlrUMmIJozxcNMMkdJr5YJc7E', 'dev-6yunsksn11owe71c.us.auth0.com', {
+                          container: 'auth0-login-container',
+                          auth: {
+                              redirectUrl: '/',
+                              responseType: 'token id_token',
+                              scope: 'openid profile email'
+                          },
+                          closable: false
+                          
+                      });
 
-<div class="form-card">
-
-    <input class="form-input" type="email" @bind="email" placeholder="@Localizer["Email"]" />
-
-    <input class="form-input" type="password" @bind="password" placeholder="@Localizer["Password"]" />
-
-    <span>@Localizer["NoAccount"] <a class="form-link" href="register">@Localizer["Register"]</a></span>
-
-    <div class="form-buttons">
-        <button class="form-btn btn-primary" type="button" @onclick="Submit">@Localizer["Login"]</button>
-        <button class="form-btn btn-secondary" type="button" @onclick="Cancel">@Localizer["Cancel"]</button>
+                      lock.show();
+                  </script>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-
-</div>
-
-
-@code {
-    private string? email;
-    private string? password;
-    private bool isSubmitted = false;
-
-    private void Submit()
-    {
-        isSubmitted = true;
-        NavigationManager.NavigateTo("/");
-    }
-
-    private void Cancel()
-    {
-        NavigationManager.NavigateTo("/");
-    }
-}
+  </main>
