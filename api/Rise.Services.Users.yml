@@ -1,0 +1,23 @@
+### YamlMime:ManagedReference
+items:
+- uid: Rise.Services.Users
+  commentId: N:Rise.Services.Users
+  id: Rise.Services.Users
+  children:
+  - Rise.Services.Users.UserService
+  langs:
+  - csharp
+  - vb
+  name: Rise.Services.Users
+  nameWithType: Rise.Services.Users
+  fullName: Rise.Services.Users
+  type: Namespace
+  assemblies:
+  - Rise.Services
+references:
+- uid: Rise.Services.Users.UserService
+  commentId: T:Rise.Services.Users.UserService
+  href: Rise.Services.Users.UserService.html
+  name: UserService
+  nameWithType: UserService
+  fullName: Rise.Services.Users.UserService

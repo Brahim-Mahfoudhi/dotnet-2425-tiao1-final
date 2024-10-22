@@ -1,0 +1,30 @@
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@inject NavigationManager Navigation
+@inject Microsoft.Extensions.Localization.IStringLocalizer<NavMenu> Localizer
+@inject IAccessTokenProvider TokenProvider
+
+<AuthorizeView>
+    <Authorized>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" @onclick="BeginLogOut">
+                <span class="oi oi-account-logout" aria-hidden="true"></span> @Localizer["Logout"]
+            </NavLink>
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="authentication/login">
+                <span class="oi oi-account-login" aria-hidden="true"></span> @Localizer["Login"]
+            </NavLink>
+        </div>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+    public async void BeginLogOut()
+    {
+        await TokenProvider.RequestAccessToken();
+        Navigation.NavigateToLogout("authentication/logout");
+    }
+}

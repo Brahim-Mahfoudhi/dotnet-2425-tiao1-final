@@ -1,0 +1,30 @@
+### YamlMime:ManagedReference
+items:
+- uid: Rise.Client
+  commentId: N:Rise.Client
+  id: Rise.Client
+  children:
+  - Rise.Client.App
+  - Rise.Client._Imports
+  langs:
+  - csharp
+  - vb
+  name: Rise.Client
+  nameWithType: Rise.Client
+  fullName: Rise.Client
+  type: Namespace
+  assemblies:
+  - Rise.Client
+references:
+- uid: Rise.Client._Imports
+  commentId: T:Rise.Client._Imports
+  href: Rise.Client._Imports.html
+  name: _Imports
+  nameWithType: _Imports
+  fullName: Rise.Client._Imports
+- uid: Rise.Client.App
+  commentId: T:Rise.Client.App
+  href: Rise.Client.App.html
+  name: App
+  nameWithType: App
+  fullName: Rise.Client.App

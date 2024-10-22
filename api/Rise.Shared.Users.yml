@@ -1,0 +1,77 @@
+### YamlMime:ManagedReference
+items:
+- uid: Rise.Shared.Users
+  commentId: N:Rise.Shared.Users
+  id: Rise.Shared.Users
+  children:
+  - Rise.Shared.Users.AddressDto
+  - Rise.Shared.Users.IUserService
+  - Rise.Shared.Users.RoleDto
+  - Rise.Shared.Users.UserDto
+  langs:
+  - csharp
+  - vb
+  name: Rise.Shared.Users
+  nameWithType: Rise.Shared.Users
+  fullName: Rise.Shared.Users
+  type: Namespace
+  assemblies:
+  - Rise.Shared
+references:
+- uid: Rise.Shared.Users.AddressDto
+  commentId: T:Rise.Shared.Users.AddressDto
+  parent: Rise.Shared.Users
+  href: Rise.Shared.Users.AddressDto.html
+  name: AddressDto
+  nameWithType: AddressDto
+  fullName: Rise.Shared.Users.AddressDto
+- uid: Rise.Shared.Users.IUserService
+  commentId: T:Rise.Shared.Users.IUserService
+  parent: Rise.Shared.Users
+  href: Rise.Shared.Users.IUserService.html
+  name: IUserService
+  nameWithType: IUserService
+  fullName: Rise.Shared.Users.IUserService
+- uid: Rise.Shared.Users.RoleDto
+  commentId: T:Rise.Shared.Users.RoleDto
+  href: Rise.Shared.Users.RoleDto.html
+  name: RoleDto
+  nameWithType: RoleDto
+  fullName: Rise.Shared.Users.RoleDto
+- uid: Rise.Shared.Users.UserDto
+  commentId: T:Rise.Shared.Users.UserDto
+  parent: Rise.Shared.Users
+  href: Rise.Shared.Users.UserDto.html
+  name: UserDto
+  nameWithType: UserDto
+  fullName: Rise.Shared.Users.UserDto
+- uid: Rise.Shared.Users
+  commentId: N:Rise.Shared.Users
+  href: Rise.html
+  name: Rise.Shared.Users
+  nameWithType: Rise.Shared.Users
+  fullName: Rise.Shared.Users
+  spec.csharp:
+  - uid: Rise
+    name: Rise
+    href: Rise.html
+  - name: .
+  - uid: Rise.Shared
+    name: Shared
+    href: Rise.Shared.html
+  - name: .
+  - uid: Rise.Shared.Users
+    name: Users
+    href: Rise.Shared.Users.html
+  spec.vb:
+  - uid: Rise
+    name: Rise
+    href: Rise.html
+  - name: .
+  - uid: Rise.Shared
+    name: Shared
+    href: Rise.Shared.html
+  - name: .
+  - uid: Rise.Shared.Users
+    name: Users
+    href: Rise.Shared.Users.html

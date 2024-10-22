@@ -1,0 +1,451 @@
+### YamlMime:ManagedReference
+items:
+- uid: Rise.Shared.Users.IUserService
+  commentId: T:Rise.Shared.Users.IUserService
+  id: IUserService
+  parent: Rise.Shared.Users
+  children:
+  - Rise.Shared.Users.IUserService.CreateUserAsync(Rise.Shared.Users.UserDto)
+  - Rise.Shared.Users.IUserService.DeleteUserAsync(System.Int32)
+  - Rise.Shared.Users.IUserService.GetUserAsync
+  - Rise.Shared.Users.IUserService.GetUserByIdAsync(System.Int32)
+  - Rise.Shared.Users.IUserService.GetUserDetailsAsync(System.Int32)
+  - Rise.Shared.Users.IUserService.UpdateUserAsync(Rise.Shared.Users.UserDto)
+  langs:
+  - csharp
+  - vb
+  name: IUserService
+  nameWithType: IUserService
+  fullName: Rise.Shared.Users.IUserService
+  type: Interface
+  source:
+    remote:
+      path: Rise.Shared/Users/IUserService.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: IUserService
+    path: Rise.Shared/Users/IUserService.cs
+    startLine: 2
+  assemblies:
+  - Rise.Shared
+  namespace: Rise.Shared.Users
+  syntax:
+    content: public interface IUserService
+    content.vb: Public Interface IUserService
+- uid: Rise.Shared.Users.IUserService.GetUserAsync
+  commentId: M:Rise.Shared.Users.IUserService.GetUserAsync
+  id: GetUserAsync
+  parent: Rise.Shared.Users.IUserService
+  langs:
+  - csharp
+  - vb
+  name: GetUserAsync()
+  nameWithType: IUserService.GetUserAsync()
+  fullName: Rise.Shared.Users.IUserService.GetUserAsync()
+  type: Method
+  source:
+    remote:
+      path: Rise.Shared/Users/IUserService.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: GetUserAsync
+    path: Rise.Shared/Users/IUserService.cs
+    startLine: 4
+  assemblies:
+  - Rise.Shared
+  namespace: Rise.Shared.Users
+  syntax:
+    content: Task<UserDto?> GetUserAsync()
+    return:
+      type: System.Threading.Tasks.Task{Rise.Shared.Users.UserDto}
+    content.vb: Function GetUserAsync() As Task(Of UserDto)
+  overload: Rise.Shared.Users.IUserService.GetUserAsync*
+- uid: Rise.Shared.Users.IUserService.GetUserByIdAsync(System.Int32)
+  commentId: M:Rise.Shared.Users.IUserService.GetUserByIdAsync(System.Int32)
+  id: GetUserByIdAsync(System.Int32)
+  parent: Rise.Shared.Users.IUserService
+  langs:
+  - csharp
+  - vb
+  name: GetUserByIdAsync(int)
+  nameWithType: IUserService.GetUserByIdAsync(int)
+  fullName: Rise.Shared.Users.IUserService.GetUserByIdAsync(int)
+  type: Method
+  source:
+    remote:
+      path: Rise.Shared/Users/IUserService.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: GetUserByIdAsync
+    path: Rise.Shared/Users/IUserService.cs
+    startLine: 6
+  assemblies:
+  - Rise.Shared
+  namespace: Rise.Shared.Users
+  syntax:
+    content: Task<UserDto?> GetUserByIdAsync(int id)
+    parameters:
+    - id: id
+      type: System.Int32
+    return:
+      type: System.Threading.Tasks.Task{Rise.Shared.Users.UserDto}
+    content.vb: Function GetUserByIdAsync(id As Integer) As Task(Of UserDto)
+  overload: Rise.Shared.Users.IUserService.GetUserByIdAsync*
+  nameWithType.vb: IUserService.GetUserByIdAsync(Integer)
+  fullName.vb: Rise.Shared.Users.IUserService.GetUserByIdAsync(Integer)
+  name.vb: GetUserByIdAsync(Integer)
+- uid: Rise.Shared.Users.IUserService.GetUserDetailsAsync(System.Int32)
+  commentId: M:Rise.Shared.Users.IUserService.GetUserDetailsAsync(System.Int32)
+  id: GetUserDetailsAsync(System.Int32)
+  parent: Rise.Shared.Users.IUserService
+  langs:
+  - csharp
+  - vb
+  name: GetUserDetailsAsync(int)
+  nameWithType: IUserService.GetUserDetailsAsync(int)
+  fullName: Rise.Shared.Users.IUserService.GetUserDetailsAsync(int)
+  type: Method
+  source:
+    remote:
+      path: Rise.Shared/Users/IUserService.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: GetUserDetailsAsync
+    path: Rise.Shared/Users/IUserService.cs
+    startLine: 8
+  assemblies:
+  - Rise.Shared
+  namespace: Rise.Shared.Users
+  syntax:
+    content: Task<UserDto?> GetUserDetailsAsync(int id)
+    parameters:
+    - id: id
+      type: System.Int32
+    return:
+      type: System.Threading.Tasks.Task{Rise.Shared.Users.UserDto}
+    content.vb: Function GetUserDetailsAsync(id As Integer) As Task(Of UserDto)
+  overload: Rise.Shared.Users.IUserService.GetUserDetailsAsync*
+  nameWithType.vb: IUserService.GetUserDetailsAsync(Integer)
+  fullName.vb: Rise.Shared.Users.IUserService.GetUserDetailsAsync(Integer)
+  name.vb: GetUserDetailsAsync(Integer)
+- uid: Rise.Shared.Users.IUserService.CreateUserAsync(Rise.Shared.Users.UserDto)
+  commentId: M:Rise.Shared.Users.IUserService.CreateUserAsync(Rise.Shared.Users.UserDto)
+  id: CreateUserAsync(Rise.Shared.Users.UserDto)
+  parent: Rise.Shared.Users.IUserService
+  langs:
+  - csharp
+  - vb
+  name: CreateUserAsync(UserDto)
+  nameWithType: IUserService.CreateUserAsync(UserDto)
+  fullName: Rise.Shared.Users.IUserService.CreateUserAsync(Rise.Shared.Users.UserDto)
+  type: Method
+  source:
+    remote:
+      path: Rise.Shared/Users/IUserService.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: CreateUserAsync
+    path: Rise.Shared/Users/IUserService.cs
+    startLine: 10
+  assemblies:
+  - Rise.Shared
+  namespace: Rise.Shared.Users
+  syntax:
+    content: Task<UserDto?> CreateUserAsync(UserDto user)
+    parameters:
+    - id: user
+      type: Rise.Shared.Users.UserDto
+    return:
+      type: System.Threading.Tasks.Task{Rise.Shared.Users.UserDto}
+    content.vb: Function CreateUserAsync(user As UserDto) As Task(Of UserDto)
+  overload: Rise.Shared.Users.IUserService.CreateUserAsync*
+- uid: Rise.Shared.Users.IUserService.UpdateUserAsync(Rise.Shared.Users.UserDto)
+  commentId: M:Rise.Shared.Users.IUserService.UpdateUserAsync(Rise.Shared.Users.UserDto)
+  id: UpdateUserAsync(Rise.Shared.Users.UserDto)
+  parent: Rise.Shared.Users.IUserService
+  langs:
+  - csharp
+  - vb
+  name: UpdateUserAsync(UserDto)
+  nameWithType: IUserService.UpdateUserAsync(UserDto)
+  fullName: Rise.Shared.Users.IUserService.UpdateUserAsync(Rise.Shared.Users.UserDto)
+  type: Method
+  source:
+    remote:
+      path: Rise.Shared/Users/IUserService.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: UpdateUserAsync
+    path: Rise.Shared/Users/IUserService.cs
+    startLine: 12
+  assemblies:
+  - Rise.Shared
+  namespace: Rise.Shared.Users
+  syntax:
+    content: Task<bool> UpdateUserAsync(UserDto user)
+    parameters:
+    - id: user
+      type: Rise.Shared.Users.UserDto
+    return:
+      type: System.Threading.Tasks.Task{System.Boolean}
+    content.vb: Function UpdateUserAsync(user As UserDto) As Task(Of Boolean)
+  overload: Rise.Shared.Users.IUserService.UpdateUserAsync*
+- uid: Rise.Shared.Users.IUserService.DeleteUserAsync(System.Int32)
+  commentId: M:Rise.Shared.Users.IUserService.DeleteUserAsync(System.Int32)
+  id: DeleteUserAsync(System.Int32)
+  parent: Rise.Shared.Users.IUserService
+  langs:
+  - csharp
+  - vb
+  name: DeleteUserAsync(int)
+  nameWithType: IUserService.DeleteUserAsync(int)
+  fullName: Rise.Shared.Users.IUserService.DeleteUserAsync(int)
+  type: Method
+  source:
+    remote:
+      path: Rise.Shared/Users/IUserService.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: DeleteUserAsync
+    path: Rise.Shared/Users/IUserService.cs
+    startLine: 14
+  assemblies:
+  - Rise.Shared
+  namespace: Rise.Shared.Users
+  syntax:
+    content: Task<bool> DeleteUserAsync(int id)
+    parameters:
+    - id: id
+      type: System.Int32
+    return:
+      type: System.Threading.Tasks.Task{System.Boolean}
+    content.vb: Function DeleteUserAsync(id As Integer) As Task(Of Boolean)
+  overload: Rise.Shared.Users.IUserService.DeleteUserAsync*
+  nameWithType.vb: IUserService.DeleteUserAsync(Integer)
+  fullName.vb: Rise.Shared.Users.IUserService.DeleteUserAsync(Integer)
+  name.vb: DeleteUserAsync(Integer)
+references:
+- uid: Rise.Shared.Users
+  commentId: N:Rise.Shared.Users
+  href: Rise.html
+  name: Rise.Shared.Users
+  nameWithType: Rise.Shared.Users
+  fullName: Rise.Shared.Users
+  spec.csharp:
+  - uid: Rise
+    name: Rise
+    href: Rise.html
+  - name: .
+  - uid: Rise.Shared
+    name: Shared
+    href: Rise.Shared.html
+  - name: .
+  - uid: Rise.Shared.Users
+    name: Users
+    href: Rise.Shared.Users.html
+  spec.vb:
+  - uid: Rise
+    name: Rise
+    href: Rise.html
+  - name: .
+  - uid: Rise.Shared
+    name: Shared
+    href: Rise.Shared.html
+  - name: .
+  - uid: Rise.Shared.Users
+    name: Users
+    href: Rise.Shared.Users.html
+- uid: Rise.Shared.Users.IUserService.GetUserAsync*
+  commentId: Overload:Rise.Shared.Users.IUserService.GetUserAsync
+  href: Rise.Shared.Users.IUserService.html#Rise_Shared_Users_IUserService_GetUserAsync
+  name: GetUserAsync
+  nameWithType: IUserService.GetUserAsync
+  fullName: Rise.Shared.Users.IUserService.GetUserAsync
+- uid: System.Threading.Tasks.Task{Rise.Shared.Users.UserDto}
+  commentId: T:System.Threading.Tasks.Task{Rise.Shared.Users.UserDto}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<UserDto>
+  nameWithType: Task<UserDto>
+  fullName: System.Threading.Tasks.Task<Rise.Shared.Users.UserDto>
+  nameWithType.vb: Task(Of UserDto)
+  fullName.vb: System.Threading.Tasks.Task(Of Rise.Shared.Users.UserDto)
+  name.vb: Task(Of UserDto)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: Rise.Shared.Users.UserDto
+    name: UserDto
+    href: Rise.Shared.Users.UserDto.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Rise.Shared.Users.UserDto
+    name: UserDto
+    href: Rise.Shared.Users.UserDto.html
+  - name: )
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: Rise.Shared.Users.IUserService.GetUserByIdAsync*
+  commentId: Overload:Rise.Shared.Users.IUserService.GetUserByIdAsync
+  href: Rise.Shared.Users.IUserService.html#Rise_Shared_Users_IUserService_GetUserByIdAsync_System_Int32_
+  name: GetUserByIdAsync
+  nameWithType: IUserService.GetUserByIdAsync
+  fullName: Rise.Shared.Users.IUserService.GetUserByIdAsync
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Rise.Shared.Users.IUserService.GetUserDetailsAsync*
+  commentId: Overload:Rise.Shared.Users.IUserService.GetUserDetailsAsync
+  href: Rise.Shared.Users.IUserService.html#Rise_Shared_Users_IUserService_GetUserDetailsAsync_System_Int32_
+  name: GetUserDetailsAsync
+  nameWithType: IUserService.GetUserDetailsAsync
+  fullName: Rise.Shared.Users.IUserService.GetUserDetailsAsync
+- uid: Rise.Shared.Users.IUserService.CreateUserAsync*
+  commentId: Overload:Rise.Shared.Users.IUserService.CreateUserAsync
+  href: Rise.Shared.Users.IUserService.html#Rise_Shared_Users_IUserService_CreateUserAsync_Rise_Shared_Users_UserDto_
+  name: CreateUserAsync
+  nameWithType: IUserService.CreateUserAsync
+  fullName: Rise.Shared.Users.IUserService.CreateUserAsync
+- uid: Rise.Shared.Users.UserDto
+  commentId: T:Rise.Shared.Users.UserDto
+  parent: Rise.Shared.Users
+  href: Rise.Shared.Users.UserDto.html
+  name: UserDto
+  nameWithType: UserDto
+  fullName: Rise.Shared.Users.UserDto
+- uid: Rise.Shared.Users.IUserService.UpdateUserAsync*
+  commentId: Overload:Rise.Shared.Users.IUserService.UpdateUserAsync
+  href: Rise.Shared.Users.IUserService.html#Rise_Shared_Users_IUserService_UpdateUserAsync_Rise_Shared_Users_UserDto_
+  name: UpdateUserAsync
+  nameWithType: IUserService.UpdateUserAsync
+  fullName: Rise.Shared.Users.IUserService.UpdateUserAsync
+- uid: System.Threading.Tasks.Task{System.Boolean}
+  commentId: T:System.Threading.Tasks.Task{System.Boolean}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<bool>
+  nameWithType: Task<bool>
+  fullName: System.Threading.Tasks.Task<bool>
+  nameWithType.vb: Task(Of Boolean)
+  fullName.vb: System.Threading.Tasks.Task(Of Boolean)
+  name.vb: Task(Of Boolean)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: Rise.Shared.Users.IUserService.DeleteUserAsync*
+  commentId: Overload:Rise.Shared.Users.IUserService.DeleteUserAsync
+  href: Rise.Shared.Users.IUserService.html#Rise_Shared_Users_IUserService_DeleteUserAsync_System_Int32_
+  name: DeleteUserAsync
+  nameWithType: IUserService.DeleteUserAsync
+  fullName: Rise.Shared.Users.IUserService.DeleteUserAsync

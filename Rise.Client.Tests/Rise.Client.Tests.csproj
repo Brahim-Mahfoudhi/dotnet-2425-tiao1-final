@@ -7,6 +7,10 @@
 		<RootNamespace>Rise.Client</RootNamespace>
 	</PropertyGroup>
 
+	<PropertyGroup>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+	</PropertyGroup>
+
 	<ItemGroup>
 		<Using Include="Bunit" />
 		<Using Include="Bunit.TestDoubles" />
@@ -24,6 +28,7 @@
 		<PackageReference Include="Serilog" Version="4.0.1" />
 		<PackageReference Include="Serilog.Extensions.Logging" Version="8.0.0" />
 		<PackageReference Include="Serilog.Expressions" Version="5.0.0" />
+		<PackageReference Include="Serilog.Sinks.Console" Version="4.0.1" />
 		<PackageReference Include="Serilog.Sinks.XUnit" Version="3.0.5" />
 		<PackageReference Include="Shouldly" Version="4.2.1" />
 		<PackageReference Include="NSubstitute" Version="5.1.0" />

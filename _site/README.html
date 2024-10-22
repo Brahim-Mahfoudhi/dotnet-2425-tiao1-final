@@ -1,0 +1,146 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Rise - TIAO1 | rise.buut </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Rise - TIAO1 | rise.buut ">
+      
+      
+      <link rel="icon" href="favicon.ico">
+      <link rel="stylesheet" href="public/docfx.min.css">
+      <link rel="stylesheet" href="public/main.css">
+      <meta name="docfx:navrel" content="toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/HOGENT-RISE/dotnet-2425-tiao1/blob/feature/RI24TIAO1-20-loginform/README.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="index.html">
+            <img id="logo" class="svg" src="logo.svg" alt="rise.buut">
+            rise.buut
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled="" placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+
+      <div class="content">
+        <div class="actionbar">
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="rise---tiao1">Rise - TIAO1</h1>
+
+<h2 id="team-members">Team Members</h2>
+<ul>
+<li>Glen Heyvaert - glen.heyvaert@student.hogent.be - glenHeyvaert</li>
+<li>Andreeas Firoiu - andreeas.firoiu@student.hogent.be - AFIRO</li>
+<li>Lorenz De Bie - lorenz.debie@student.hogent.be - Lorenzdebie</li>
+<li>Fedor Danilov - fedor.danilov@student.hogent.be - FedDanPav</li>
+<li>Keoma Plovie - keoma.plovie@student.hogent.be - kpHoGent</li>
+<li>Robin Benoot - robin.benoot@student.hogent.be - BenootRobin</li>
+</ul>
+<h2 id="technologies--packages-used">Technologies &amp; Packages Used</h2>
+<ul>
+<li><a href="https://dotnet.microsoft.com/en-us/apps/aspnet/web-apps/blazor">Blazor</a> - Frontend</li>
+<li><a href="https://dotnet.microsoft.com/en-us/apps/aspnet">ASP.NET 8</a> - Backend</li>
+<li><a href="https://learn.microsoft.com/en-us/ef/">Entity Framework 8</a> - Database Access</li>
+<li><a href="https://github.com/koenbeuk/EntityFrameworkCore.Triggered">EntityFrameworkCore Triggered</a> - Database Triggers</li>
+<li><a href="https://docs.microsoft.com/en-us/aspnet/core/security/app-secrets">User Secrets</a> - Securely store secrets in DEV.</li>
+<li><a href="https://github.com/ardalis/GuardClauses">GuardClauses</a> - Validation Helper</li>
+<li><a href="https://bunit.dev">bUnit</a> - Blazor Component Testing</li>
+<li><a href="https://xunit.net">xUnit</a> - (Unit) Testing</li>
+<li><a href="https://nsubstitute.github.io">nSubstitute</a> - Mocking for testing</li>
+<li><a href="https://docs.shouldly.org">Shouldly</a> - Helper for testing</li>
+</ul>
+<h2 id="installation-instructions">Installation Instructions</h2>
+<ol>
+<li>Clone the repository</li>
+<li>Open the <code>Rise.sln</code> file in Visual Studio or Visual Studio Code</li>
+<li>Run the project using the <code>Rise.Server</code> project as the startup project</li>
+<li>The project should open in your default browser on port 5001.</li>
+<li>Initially the database will not exist, so you will need to run the migrations to create the database.</li>
+</ol>
+<h2 id="creation-of-the-database">Creation of the database</h2>
+<p>To create the database, run the following command in the main folder <code>Rise</code></p>
+<pre><code>dotnet ef database update --startup-project Rise.Server --project Rise.Persistence
+</code></pre>
+<blockquote>
+<p>Make sure your connection string is correct in the <code>Rise/Server/appsettings.json</code> file.</p>
+</blockquote>
+<h2 id="migrations">Migrations</h2>
+<p>Adapting the database schema can be done using migrations. To create a new migration, run the following command:</p>
+<pre><code>dotnet ef migrations add [MIGRATION_NAME] --startup-project Rise.Server --project Rise.Persistence
+</code></pre>
+<p>And then update the database using the following command:</p>
+<pre><code>dotnet ef database update --startup-project Rise.Server --project Rise.Persistence
+</code></pre>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/HOGENT-RISE/dotnet-2425-tiao1/blob/feature/RI24TIAO1-20-loginform/README.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

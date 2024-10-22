@@ -2,13 +2,77 @@ using Microsoft.EntityFrameworkCore;
 using Rise.Persistence;
 using Rise.Persistence.Triggers;
 using Rise.Services.Products;
+using Rise.Services.Users;
 using Rise.Shared.Products;
+using Rise.Shared.Users;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using Auth0Net.DependencyInjection;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        // This ensures enums are serialized as strings
+        options.JsonSerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
+    }); ;
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+// builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
+    {
+        Type = SecuritySchemeType.OAuth2,
+        Flows = new OpenApiOAuthFlows
+        {
+            AuthorizationCode = new OpenApiOAuthFlow
+            {
+                TokenUrl = new Uri($"{builder.Configuration["Auth0:Authority"]}/oauth/token"),
+                AuthorizationUrl = new Uri($"{builder.Configuration["Auth0:Authority"]}/authorize?audience={builder.Configuration["Auth0:Audience"]}"),
+            }
+        }
+    });
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "oauth2"
+                }
+            },
+            new string[] { "openid" }
+        }
+    });
+});
+
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    options.Authority = builder.Configuration["Auth0:Authority"];
+    options.Audience = builder.Configuration["Auth0:Audience"];
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        NameClaimType = ClaimTypes.NameIdentifier
+    };
+});
+
+builder.Services.AddAuth0AuthenticationClient(config =>
+{
+    config.Domain = builder.Configuration["Auth0:Authority"]!;
+    config.ClientId = builder.Configuration["Auth0:M2MClientId"];
+    config.ClientSecret = builder.Configuration["Auth0:M2MClientSecret"];
+});
+builder.Services.AddAuth0ManagementClient().AddManagementAccessToken();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
@@ -19,6 +83,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 });
 
 builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 var app = builder.Build();
 
@@ -26,13 +91,22 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1.0");
+        options.OAuthClientId(builder.Configuration["Auth0:BlazorClientId"]);
+        options.OAuthClientSecret(builder.Configuration["Auth0:BlazorClientSecret"]);
+    });
 }
 
 app.UseHttpsRedirection();
 
 app.UseBlazorFrameworkFiles();
 app.UseStaticFiles();
+
+app.UseRouting();
+app.UseAuthentication();  
+app.UseAuthorization();
 
 app.MapControllers();
 app.MapFallbackToFile("index.html");

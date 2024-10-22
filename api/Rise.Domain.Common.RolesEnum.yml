@@ -1,0 +1,147 @@
+### YamlMime:ManagedReference
+items:
+- uid: Rise.Domain.Common.RolesEnum
+  commentId: T:Rise.Domain.Common.RolesEnum
+  id: RolesEnum
+  parent: Rise.Domain.Common
+  children:
+  - Rise.Domain.Common.RolesEnum.Admin
+  - Rise.Domain.Common.RolesEnum.Godparent
+  - Rise.Domain.Common.RolesEnum.User
+  langs:
+  - csharp
+  - vb
+  name: RolesEnum
+  nameWithType: RolesEnum
+  fullName: Rise.Domain.Common.RolesEnum
+  type: Enum
+  source:
+    remote:
+      path: Rise.Domain/Common/RolesEnum.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: RolesEnum
+    path: Rise.Domain/Common/RolesEnum.cs
+    startLine: 2
+  assemblies:
+  - Rise.Domain
+  namespace: Rise.Domain.Common
+  syntax:
+    content: public enum RolesEnum
+    content.vb: Public Enum RolesEnum
+- uid: Rise.Domain.Common.RolesEnum.Admin
+  commentId: F:Rise.Domain.Common.RolesEnum.Admin
+  id: Admin
+  parent: Rise.Domain.Common.RolesEnum
+  langs:
+  - csharp
+  - vb
+  name: Admin
+  nameWithType: RolesEnum.Admin
+  fullName: Rise.Domain.Common.RolesEnum.Admin
+  type: Field
+  source:
+    remote:
+      path: Rise.Domain/Common/RolesEnum.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: Admin
+    path: Rise.Domain/Common/RolesEnum.cs
+    startLine: 4
+  assemblies:
+  - Rise.Domain
+  namespace: Rise.Domain.Common
+  syntax:
+    content: Admin = 0
+    return:
+      type: Rise.Domain.Common.RolesEnum
+- uid: Rise.Domain.Common.RolesEnum.User
+  commentId: F:Rise.Domain.Common.RolesEnum.User
+  id: User
+  parent: Rise.Domain.Common.RolesEnum
+  langs:
+  - csharp
+  - vb
+  name: User
+  nameWithType: RolesEnum.User
+  fullName: Rise.Domain.Common.RolesEnum.User
+  type: Field
+  source:
+    remote:
+      path: Rise.Domain/Common/RolesEnum.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: User
+    path: Rise.Domain/Common/RolesEnum.cs
+    startLine: 5
+  assemblies:
+  - Rise.Domain
+  namespace: Rise.Domain.Common
+  syntax:
+    content: User = 1
+    return:
+      type: Rise.Domain.Common.RolesEnum
+- uid: Rise.Domain.Common.RolesEnum.Godparent
+  commentId: F:Rise.Domain.Common.RolesEnum.Godparent
+  id: Godparent
+  parent: Rise.Domain.Common.RolesEnum
+  langs:
+  - csharp
+  - vb
+  name: Godparent
+  nameWithType: RolesEnum.Godparent
+  fullName: Rise.Domain.Common.RolesEnum.Godparent
+  type: Field
+  source:
+    remote:
+      path: Rise.Domain/Common/RolesEnum.cs
+      branch: feature/RI24TIAO1-20-loginform
+      repo: https://github.com/HOGENT-RISE/dotnet-2425-tiao1.git
+    id: Godparent
+    path: Rise.Domain/Common/RolesEnum.cs
+    startLine: 6
+  assemblies:
+  - Rise.Domain
+  namespace: Rise.Domain.Common
+  syntax:
+    content: Godparent = 2
+    return:
+      type: Rise.Domain.Common.RolesEnum
+references:
+- uid: Rise.Domain.Common
+  commentId: N:Rise.Domain.Common
+  href: Rise.html
+  name: Rise.Domain.Common
+  nameWithType: Rise.Domain.Common
+  fullName: Rise.Domain.Common
+  spec.csharp:
+  - uid: Rise
+    name: Rise
+    href: Rise.html
+  - name: .
+  - uid: Rise.Domain
+    name: Domain
+    href: Rise.Domain.html
+  - name: .
+  - uid: Rise.Domain.Common
+    name: Common
+    href: Rise.Domain.Common.html
+  spec.vb:
+  - uid: Rise
+    name: Rise
+    href: Rise.html
+  - name: .
+  - uid: Rise.Domain
+    name: Domain
+    href: Rise.Domain.html
+  - name: .
+  - uid: Rise.Domain.Common
+    name: Common
+    href: Rise.Domain.Common.html
+- uid: Rise.Domain.Common.RolesEnum
+  commentId: T:Rise.Domain.Common.RolesEnum
+  parent: Rise.Domain.Common
+  href: Rise.Domain.Common.RolesEnum.html
+  name: RolesEnum
+  nameWithType: RolesEnum
+  fullName: Rise.Domain.Common.RolesEnum

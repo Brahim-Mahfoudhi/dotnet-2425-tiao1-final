@@ -1,0 +1,146 @@
+### YamlMime:TableOfContent
+items:
+- uid: Rise.Client
+  name: Rise.Client
+  items:
+  - uid: Rise.Client.App
+    name: App
+  - uid: Rise.Client._Imports
+    name: _Imports
+- uid: Rise.Client.Layout
+  name: Rise.Client.Layout
+  items:
+  - uid: Rise.Client.Layout.MainLayout
+    name: MainLayout
+  - uid: Rise.Client.Layout.NavMenu
+    name: NavMenu
+- uid: Rise.Client.Pages
+  name: Rise.Client.Pages
+  items:
+  - uid: Rise.Client.Pages.Counter
+    name: Counter
+  - uid: Rise.Client.Pages.CounterShould
+    name: CounterShould
+  - uid: Rise.Client.Pages.Index
+    name: Index
+  - uid: Rise.Client.Pages.IndexShould
+    name: IndexShould
+  - uid: Rise.Client.Pages.Login
+    name: Login
+- uid: Rise.Client.Products
+  name: Rise.Client.Products
+  items:
+  - uid: Rise.Client.Products.FakeProductService
+    name: FakeProductService
+  - uid: Rise.Client.Products.Index
+    name: Index
+  - uid: Rise.Client.Products.IndexShould
+    name: IndexShould
+  - uid: Rise.Client.Products.IndexWithMockExampleShould
+    name: IndexWithMockExampleShould
+  - uid: Rise.Client.Products.ProductService
+    name: ProductService
+- uid: Rise.Domain.Common
+  name: Rise.Domain.Common
+  items:
+  - uid: Rise.Domain.Common.Entity
+    name: Entity
+  - uid: Rise.Domain.Common.RolesEnum
+    name: RolesEnum
+  - uid: Rise.Domain.Common.StreetEnum
+    name: StreetEnum
+  - uid: Rise.Domain.Common.StreetEnumExtensions
+    name: StreetEnumExtensions
+- uid: Rise.Domain.Products
+  name: Rise.Domain.Products
+  items:
+  - uid: Rise.Domain.Products.Product
+    name: Product
+- uid: Rise.Domain.Tests.Products
+  name: Rise.Domain.Tests.Products
+  items:
+  - uid: Rise.Domain.Tests.Products.ProductShould
+    name: ProductShould
+- uid: Rise.Domain.Tests.Users
+  name: Rise.Domain.Tests.Users
+  items:
+  - uid: Rise.Domain.Tests.Users.AddressShould
+    name: AddressShould
+  - uid: Rise.Domain.Tests.Users.RoleShould
+    name: RoleShould
+  - uid: Rise.Domain.Tests.Users.UserShould
+    name: UserShould
+- uid: Rise.Domain.Users
+  name: Rise.Domain.Users
+  items:
+  - uid: Rise.Domain.Users.Address
+    name: Address
+  - uid: Rise.Domain.Users.Role
+    name: Role
+  - uid: Rise.Domain.Users.User
+    name: User
+- uid: Rise.Persistence
+  name: Rise.Persistence
+  items:
+  - uid: Rise.Persistence.ApplicationDbContext
+    name: ApplicationDbContext
+  - uid: Rise.Persistence.Seeder
+    name: Seeder
+- uid: Rise.Persistence.Migrations
+  name: Rise.Persistence.Migrations
+  items:
+  - uid: Rise.Persistence.Migrations.Initial
+    name: Initial
+  - uid: Rise.Persistence.Migrations.addedUserTables
+    name: addedUserTables
+- uid: Rise.Persistence.Triggers
+  name: Rise.Persistence.Triggers
+  items:
+  - uid: Rise.Persistence.Triggers.EntityBeforeSaveTrigger
+    name: EntityBeforeSaveTrigger
+- uid: Rise.Server.Controllers
+  name: Rise.Server.Controllers
+  items:
+  - uid: Rise.Server.Controllers.ProductController
+    name: ProductController
+  - uid: Rise.Server.Controllers.UserController
+    name: UserController
+- uid: Rise.Services.Products
+  name: Rise.Services.Products
+  items:
+  - uid: Rise.Services.Products.ProductService
+    name: ProductService
+- uid: Rise.Services.Users
+  name: Rise.Services.Users
+  items:
+  - uid: Rise.Services.Users.UserService
+    name: UserService
+- uid: Rise.Shared.Enums
+  name: Rise.Shared.Enums
+  items:
+  - uid: Rise.Shared.Enums.RolesEnum
+    name: RolesEnum
+- uid: Rise.Shared.Products
+  name: Rise.Shared.Products
+  items:
+  - uid: Rise.Shared.Products.IProductService
+    name: IProductService
+  - uid: Rise.Shared.Products.ProductDto
+    name: ProductDto
+- uid: Rise.Shared.Users
+  name: Rise.Shared.Users
+  items:
+  - uid: Rise.Shared.Users.AddressDto
+    name: AddressDto
+  - uid: Rise.Shared.Users.IUserService
+    name: IUserService
+  - uid: Rise.Shared.Users.RoleDto
+    name: RoleDto
+  - uid: Rise.Shared.Users.UserDto
+    name: UserDto
+- uid: Xunit
+  name: Xunit
+  items:
+  - uid: Xunit.ServiceCollectionLoggingExtensions
+    name: ServiceCollectionLoggingExtensions
+memberLayout: SamePage

@@ -1,0 +1,30 @@
+### YamlMime:ManagedReference
+items:
+- uid: Rise.Client.Layout
+  commentId: N:Rise.Client.Layout
+  id: Rise.Client.Layout
+  children:
+  - Rise.Client.Layout.MainLayout
+  - Rise.Client.Layout.NavMenu
+  langs:
+  - csharp
+  - vb
+  name: Rise.Client.Layout
+  nameWithType: Rise.Client.Layout
+  fullName: Rise.Client.Layout
+  type: Namespace
+  assemblies:
+  - Rise.Client
+references:
+- uid: Rise.Client.Layout.MainLayout
+  commentId: T:Rise.Client.Layout.MainLayout
+  href: Rise.Client.Layout.MainLayout.html
+  name: MainLayout
+  nameWithType: MainLayout
+  fullName: Rise.Client.Layout.MainLayout
+- uid: Rise.Client.Layout.NavMenu
+  commentId: T:Rise.Client.Layout.NavMenu
+  href: Rise.Client.Layout.NavMenu.html
+  name: NavMenu
+  nameWithType: NavMenu
+  fullName: Rise.Client.Layout.NavMenu

@@ -1,0 +1,37 @@
+### YamlMime:ManagedReference
+items:
+- uid: Rise.Domain.Tests.Users
+  commentId: N:Rise.Domain.Tests.Users
+  id: Rise.Domain.Tests.Users
+  children:
+  - Rise.Domain.Tests.Users.AddressShould
+  - Rise.Domain.Tests.Users.RoleShould
+  - Rise.Domain.Tests.Users.UserShould
+  langs:
+  - csharp
+  - vb
+  name: Rise.Domain.Tests.Users
+  nameWithType: Rise.Domain.Tests.Users
+  fullName: Rise.Domain.Tests.Users
+  type: Namespace
+  assemblies:
+  - Rise.Domain.Tests
+references:
+- uid: Rise.Domain.Tests.Users.AddressShould
+  commentId: T:Rise.Domain.Tests.Users.AddressShould
+  href: Rise.Domain.Tests.Users.AddressShould.html
+  name: AddressShould
+  nameWithType: AddressShould
+  fullName: Rise.Domain.Tests.Users.AddressShould
+- uid: Rise.Domain.Tests.Users.RoleShould
+  commentId: T:Rise.Domain.Tests.Users.RoleShould
+  href: Rise.Domain.Tests.Users.RoleShould.html
+  name: RoleShould
+  nameWithType: RoleShould
+  fullName: Rise.Domain.Tests.Users.RoleShould
+- uid: Rise.Domain.Tests.Users.UserShould
+  commentId: T:Rise.Domain.Tests.Users.UserShould
+  href: Rise.Domain.Tests.Users.UserShould.html
+  name: UserShould
+  nameWithType: UserShould
+  fullName: Rise.Domain.Tests.Users.UserShould

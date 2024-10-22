@@ -15,4 +15,3 @@ public class FakeProductService : IProductService
         return Task.FromResult(products);
     }
 }
-
