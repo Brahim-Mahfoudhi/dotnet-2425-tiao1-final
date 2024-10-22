@@ -1,4 +1,5 @@
 @using Rise.Client.Utils.Navigation
+@inject Microsoft.Extensions.Localization.IStringLocalizer<NavBar> Localizer
 
   <nav class="navbar navbar-expand-lg position-absolute top-0 z-index-3 w-100 shadow-none my-3  navbar-nav mt-4 ">
     <div class="container">
@@ -18,8 +19,8 @@
           @foreach (var link in NavigationLinks.GetNavigationLinks())
           {
             <li class="nav-item dropdown dropdown-hover mx-2">
-              <a href="@link.Url" class="nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center" role="button" id="dropdownMenuPages10" data-bs-toggle="dropdown" aria-expanded="false">
-                <h4 class="text-white  ">@link.Name</h4>
+              <a href="@link.Url" class="nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-end" role="button"  aria-expanded="false">
+                <h4 class="text-white">@Localizer[@link.Name]</h4>
               </a>
             </li>
           }

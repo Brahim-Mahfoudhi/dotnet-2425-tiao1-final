@@ -24,10 +24,10 @@ public class NavigationLinks
     {
         return new List<NavigationLink>
         {
-            new (INFORMATION, "Informatie"),
+            new (INFORMATION, "Information"),
             new (ACTUA, "Actua"),
-            new (GOD_PARENT, "Meter en Peter"),
-            new (DOCUMENTS, "Documenten")
+            new (GOD_PARENT, "GodParents"),
+            new (DOCUMENTS, "Documents")
         };
     }
 }
