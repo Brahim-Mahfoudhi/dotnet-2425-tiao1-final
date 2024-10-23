@@ -9,7 +9,8 @@
     background-color: lightgrey;
 }
 
-a > i{
+a > i, .auth {
     color: #a3a3a3;
     font-size: 1.5rem;
 }
+

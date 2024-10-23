@@ -2,12 +2,6 @@
 @using Rise.Client.Users
 <Router AppAssembly="@typeof(App).Assembly">
     <Found Context="routeData">
-        @if (routeData.PageType == typeof(Login) || routeData.PageType == typeof(Register))
-        {
-            <RouteView RouteData="@routeData" DefaultLayout="@typeof(AuthLayout)" />
-        }
-        else
-        {
             <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
                 <NotAuthorized>
                     @if (context.User.Identity?.IsAuthenticated != true)
@@ -20,13 +14,10 @@
                     }
                 </NotAuthorized>
             </AuthorizeRouteView>
-        }
-
         <FocusOnNavigate RouteData="@routeData" Selector="h1" />
     </Found>
     <NotFound>
         <PageTitle>Not found</PageTitle>
             <Error404/>
-
     </NotFound>
 </Router>

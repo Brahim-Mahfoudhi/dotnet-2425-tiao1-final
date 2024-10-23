@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RazorLangVersion>8.0</RazorLangVersion>
+    <UserSecretsId>8c55ed9a-600d-4241-895b-f85b2b6a67fe</UserSecretsId>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'https' ">

@@ -15,22 +15,10 @@
                 </div>
               </div>
               <div class="card-body">
-                  <div id="auth0-login-container"></div>
-                  <script src="https://cdn.auth0.com/js/lock/11.30/lock.min.js"></script>
-                  <script type="text/javascript">
-                      var lock = new Auth0Lock('y0zDAiEKlrUMmIJozxcNMMkdJr5YJc7E', 'dev-6yunsksn11owe71c.us.auth0.com', {
-                          container: 'auth0-login-container',
-                          auth: {
-                              redirectUrl: '/',
-                              responseType: 'token id_token',
-                              scope: 'openid profile email'
-                          },
-                          closable: false
-                          
-                      });
-
-                      lock.show();
-                  </script>
+                <a href="authentication/login" class="w-100" target="_blank">
+                  <i class="ni ni-circle-08"></i>
+                  <h4 class="text-primary">Sign in</h4>
+                </a>
               </div>
             </div>
           </div>
