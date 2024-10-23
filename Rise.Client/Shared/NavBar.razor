@@ -3,8 +3,10 @@
 @inject Microsoft.Extensions.Localization.IStringLocalizer<NavBar> Localizer
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 @inject NavigationManager Navigation
+@using System.Globalization
 
-  <nav class="navbar navbar-expand-lg position-absolute top-0 z-index-3 w-100 shadow-none my-3  navbar-nav mt-4 ">
+
+<nav class="navbar navbar-expand-lg position-absolute top-0 z-index-3 w-100 shadow-none my-3  navbar-nav mt-4 ">
     <div class="container">
       <div class="bg-white z-index-3 p-1 logo-img rounded-circle ">
         <img src="img/BUUT_logo.png" alt="Logo" class="logo"/>
@@ -46,17 +48,74 @@
         <ul class="navbar-nav navbar-nav-hover d-flex align-items-center">
          <AuthorizeView>
              <Authorized>
-
                <li class="nav-item">
                  <a href="profile" class="px-1 py-0 nav-link line-height-0" target="_blank">
                    <i class="ni ni-circle-08"></i>
                  </a>
                </li>
-               <li class="nav-item">
-                 <a href="language" class="nav-link py-0 px-1 line-height-0">
-                   <i class="ni ni-settings-gear-65 "></i>
-                 </a>
-               </li>
+
+               <li class="nav-item dropdown dropdown-hover mx-2">
+                           <a class="nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center" role="button" id="dropdownMenuDocs" data-bs-toggle="dropdown" aria-expanded="false">
+                             <i class="ni ni-settings-gear-65 "></i>
+                             <img src="img/down-arrow-white.svg" alt="down-arrow" class="arrow ms-1 d-lg-block d-none">
+                           </a>
+                           <div class="dropdown-menu dropdown-menu-animation dropdown-lg mt-0 mt-lg-3 p-3 border-radius-lg">
+                             <div class="d-none d-lg-block">
+                               <ul class="list-group">
+                                 <li class="nav-item list-group-item border-0 p-0">
+                                   <a class="dropdown-item py-2 ps-3 border-radius-md" @onclick='() => ChangeLanguage("en-US")'>
+                                     <div class="d-flex">
+                                       <div class="icon h-10 me-3 d-flex mt-1">
+                                         <i class="ni ni-bold-right"></i>
+                                       </div>
+                                       <div>
+                                         <h6 class="dropdown-header text-dark font-weight-bold d-flex justify-content-centre align-items-center p-0">English</h6>
+                                       </div>
+                                     </div>
+                                   </a>
+                                 </li>
+                                 <li class="nav-item list-group-item border-0 p-0">
+                                   <a class="dropdown-item py-2 ps-3 border-radius-md" @onclick='() => ChangeLanguage("nl-BE")'>
+                                     <div class="d-flex">
+                                       <div class="icon h-10 me-3 d-flex mt-1">
+                                         <i class="ni ni-bold-right"></i>
+                                       </div>
+                                       <div>
+                                         <h6 class="dropdown-header text-dark font-weight-bold d-flex justify-content-centre align-items-center p-0">Nederlands</h6>
+                                       </div>
+                                     </div>
+                                   </a>
+                                 </li>
+                               </ul>
+                             </div>
+                             <div class="row d-lg-none">
+                               <div class="col-md-12 g-0">
+                                 <a class="dropdown-item py-2 ps-3 border-radius-md" @onclick='() => ChangeLanguage("en-US")'>
+                                   <div class="d-flex">
+                                     <div class="icon h-10 me-3 d-flex mt-1">
+                                       <i class="ni ni-bold-right"></i>
+                                     </div>
+                                     <div>
+                                       <h6 class="dropdown-header text-dark font-weight-bold d-flex justify-content-centre align-items-center p-0">English</h6>
+                                     </div>
+                                   </div>
+                                 </a>
+                                 <a class="dropdown-item py-2 ps-3 border-radius-md" @onclick='() => ChangeLanguage("nl-BE")'>
+                                   <div class="d-flex">
+                                     <div class="icon h-10 me-3 d-flex mt-1">
+                                       <i class="ni ni-bold-right"></i>
+                                     </div>
+                                     <div>
+                                       <h6 class="dropdown-header text-dark font-weight-bold d-flex justify-content-centre align-items-center p-0">Nederlands</h6>
+                                     </div>
+                                   </div>
+                                 </a>
+                               </div>
+                             </div>
+                           </div>
+                         </li>
+               
+               
                <li class="nav-item dropdown py-0 pe-3">
                  <a href="alerts" class="nav-link py-0 px-1 position-relative line-height-0" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                    <i class="ni ni-bell-55"></i>
@@ -91,8 +150,37 @@
   </nav>
 
 @code {
-  public async void BeginLogOut()
+  
+  [Inject] IJSRuntime js { get; set; }
+  [Inject] NavigationManager NavigationManager { get; set; }
+  
+  private string selectedCulture = "en-US";
+  
+  private async void BeginLogOut()
   {
     Navigation.NavigateToLogout("authentication/logout");
   }
+  
+  protected override async Task OnInitializedAsync()
+  {
+    // Get the culture from localStorage using JavaScript interop
+    var storedCulture = await js.InvokeAsync<string>("blazorCulture.get");
+
+    if (!string.IsNullOrEmpty(storedCulture))
+    {
+      selectedCulture = storedCulture;
+    }
+  }
+
+  private async Task ChangeLanguage(string cultureName)
+  {
+    var culture = new CultureInfo(cultureName);
+
+    // Store the selected culture in localStorage
+    await js.InvokeVoidAsync("blazorCulture.set", culture.Name);
+
+    // Reload the page to apply the new culture
+    NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true); ;
+  }
+  
 }
