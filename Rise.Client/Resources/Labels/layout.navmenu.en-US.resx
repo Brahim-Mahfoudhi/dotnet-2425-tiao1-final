@@ -37,4 +37,7 @@
 <data name="Logout" xml:space="preserve">
   <value>Logout</value>
 </data>
+  <data name="MakeBooking" xml:space="preserve">
+    <value>Make a booking</value>
+  </data>
 </root>
