@@ -1,23 +1,24 @@
 @page "/MakeBookingView"
 @using Microsoft.IdentityModel.Tokens
 @inject HttpClient HttpClient
+@inject Microsoft.Extensions.Localization.IStringLocalizer<MakeBookingView> Localizer
 
-<PageTitle>Make a booking</PageTitle>
+<PageTitle>@Localizer["Title"]</PageTitle>
 
-<h1>Make a booking</h1>
-<h2>Please select the preferred time</h2>
+<h1>@Localizer["Title"]</h1>
+<h2>@Localizer["PrefTime"]</h2>
 
 <link href="css/shared-form.css" rel="stylesheet" />
 
 <div class="form-card">
-    <button type="button" @onclick='() => _timeOfDay = "forenoon"'>Forenoon</button>
-    <button type="button" @onclick='() => _timeOfDay = "noon"'>Noon</button>
-    <button type="button" @onclick='() => _timeOfDay = "afternoon"'>Afternoon</button>
+    <button type="button" @onclick='() => _timeOfDay = "forenoon"'>@Localizer["Forenoon"]</button>
+    <button type="button" @onclick='() => _timeOfDay = "noon"'>@Localizer["Noon"]</button>
+    <button type="button" @onclick='() => _timeOfDay = "afternoon"'>@Localizer["Afternoon"]</button>
 </div>
 
 @if (!_timeOfDay.IsNullOrEmpty())
 {
-    <h2>Please select the preferred day</h2>
+    <h2>@Localizer["PrefDay"]</h2>
     <button type="button" @onclick='RegisterBooking'>Random Day</button>
 }
 
