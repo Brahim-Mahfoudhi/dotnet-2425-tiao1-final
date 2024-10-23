@@ -1,6 +1,6 @@
 @page "/MakeBookingView"
+@using Microsoft.IdentityModel.Tokens
 @inject HttpClient HttpClient
-@inject NavigationManager NavigationManager
 
 <PageTitle>Make a booking</PageTitle>
 
@@ -10,7 +10,22 @@
 <link href="css/shared-form.css" rel="stylesheet" />
 
 <div class="form-card">
-    <button type="button">Fornoon</button>
-    <button type="button">Noon</button>
-    <button type="button">Afternoon</button>
+    <button type="button" @onclick='() => _timeOfDay = "forenoon"'>Forenoon</button>
+    <button type="button" @onclick='() => _timeOfDay = "noon"'>Noon</button>
+    <button type="button" @onclick='() => _timeOfDay = "afternoon"'>Afternoon</button>
 </div>
+
+@if (!_timeOfDay.IsNullOrEmpty())
+{
+    <h2>Please select the preferred day</h2>
+    <button type="button" @onclick='RegisterBooking'>Random Day</button>
+}
+
+@code {
+    private string _timeOfDay;
+
+    private void RegisterBooking()
+    {
+        Console.WriteLine(_timeOfDay);
+    }
+}
