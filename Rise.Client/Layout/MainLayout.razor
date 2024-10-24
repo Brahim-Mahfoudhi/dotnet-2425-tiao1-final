@@ -1,28 +1,20 @@
 
 @inherits LayoutComponentBase
-@using Rise.Client.Auth
 @using System.Globalization
 @inject Microsoft.Extensions.Localization.IStringLocalizer<MainLayout> Localizer
 
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
+<div class="main-content background-overlay">
+    <NavBar/>
 
-    <main>
-        <div class="top-row px-4">
-            <select value="@selectedCulture" @onchange="ChangeLanguage">
-                <option value="en-US">English</option>
-                <option value="nl-BE">Nederlands</option>
-            </select>
-            <a href="https://docs.microsoft.com/aspnet/" target="_blank">@Localizer["About"]</a>
-        </div>
-
-        <article class="content px-4">
+    <section class="min-vh-100 d-flex align-items-center z-index-3">
+        <div class="container">
             @Body
-        </article>
-    </main>
+        </div>
+    </section>
+
+    <Footer/>
 </div>
+
 
 @code {
     [Inject] IJSRuntime js { get; set; }
@@ -51,5 +43,4 @@
         // Reload the page to apply the new culture
         NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true); ;
     }
-}
 }

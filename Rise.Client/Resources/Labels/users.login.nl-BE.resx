@@ -37,4 +37,7 @@
 <data name="Cancel" xml:space="preserve">
   <value>Annuleer</value>
 </data>
+<data name="Welcome" xml:space="preserve">
+  <value>Welkom!</value>
+</data>
 </root>
