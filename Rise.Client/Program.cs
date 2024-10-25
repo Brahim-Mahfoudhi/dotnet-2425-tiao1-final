@@ -9,7 +9,7 @@ using Rise.Shared.Users;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Client.Auth;
 using UserService = Rise.Client.Users.UserService;
-
+using MudBlazor.Services;
 
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
@@ -17,6 +17,7 @@ builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
 
+builder.Services.AddMudServices();
 builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddOidcAuthentication(options =>
 {

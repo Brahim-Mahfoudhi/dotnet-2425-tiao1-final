@@ -4,6 +4,16 @@
 @inject Microsoft.Extensions.Localization.IStringLocalizer<MainLayout> Localizer
 
 <div class="main-content background-overlay">
+    @* Required *@
+    <MudPopoverProvider />
+    <MudThemeProvider />
+    
+    @* Needed for dialogs *@
+    <MudDialogProvider />
+    
+    @* Needed for snackbars *@
+    <MudSnackbarProvider />
+    
     <NavBar/>
 
     <section class="min-vh-100 d-flex align-items-center z-index-3">
