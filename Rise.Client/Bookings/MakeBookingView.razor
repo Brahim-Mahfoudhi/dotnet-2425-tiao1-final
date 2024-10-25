@@ -3,24 +3,37 @@
 @inject HttpClient HttpClient
 @inject Microsoft.Extensions.Localization.IStringLocalizer<MakeBookingView> Localizer
 
-<PageTitle>@Localizer["Title"]</PageTitle>
+<main class="main-content mt-0">
+    <div class="page-header align-items-center min-vh-100" >
+        <div class="container my-auto">
+            <div class="row">
+                <div class="col-lg-4 col-md-8 col-12 mx-auto">
+                    <div class="card z-index-0 fadeIn3 fadeInBottom">
+                        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                            <div class="bg-gradient-dark shadow-dark border-radius-lg py-3 pe-1">
+                                <PageTitle>@Localizer["Title"]</PageTitle>
 
-<h1>@Localizer["Title"]</h1>
-<h2>@Localizer["PrefTime"]</h2>
+                                <h1 class="card-title text-white">@Localizer["Title"]</h1>
+                                <h2 class="card-subtitle text-primary">@Localizer["PrefTime"]</h2>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <button type="button" @onclick='() => _timeOfDay = "forenoon"'>@Localizer["Forenoon"]</button>
+                            <button type="button" @onclick='() => _timeOfDay = "noon"'>@Localizer["Noon"]</button>
+                            <button type="button" @onclick='() => _timeOfDay = "afternoon"'>@Localizer["Afternoon"]</button>
 
-<link href="css/shared-form.css" rel="stylesheet" />
-
-<div class="form-card">
-    <button type="button" @onclick='() => _timeOfDay = "forenoon"'>@Localizer["Forenoon"]</button>
-    <button type="button" @onclick='() => _timeOfDay = "noon"'>@Localizer["Noon"]</button>
-    <button type="button" @onclick='() => _timeOfDay = "afternoon"'>@Localizer["Afternoon"]</button>
-</div>
-
-@if (!_timeOfDay.IsNullOrEmpty())
-{
-    <h2>@Localizer["PrefDay"]</h2>
-    <button type="button" @onclick='RegisterBooking'>Random Day</button>
-}
+                            @if (!_timeOfDay.IsNullOrEmpty())
+                            {
+                                <h2>@Localizer["PrefDay"]</h2>
+                                <button type="button" @onclick='RegisterBooking'>Random Day</button>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
 
 @code {
     private string _timeOfDay;

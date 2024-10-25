@@ -44,6 +44,13 @@
               </a>
             </li>
           }
+          <AuthorizeView Roles="User, Admin, Godparent">
+              <li class="nav-item dropdown dropdown-hover mx-2">
+                  <a href="/MakeBookingView" class="nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-end" role="button" aria-expanded="false">
+                      <h4 class="text-white">@Localizer["MakeBooking"]</h4>
+                  </a>
+              </li>
+          </AuthorizeView>
         </ul>
         <ul class="navbar-nav navbar-nav-hover d-flex align-items-center">
          <AuthorizeView>
