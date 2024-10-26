@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Rise.Client.Auth;
 using UserService = Rise.Client.Users.UserService;
 using Microsoft.AspNetCore.Components.Authorization;
-
+using MudBlazor.Services;
 
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
@@ -26,7 +26,7 @@ builder.Services.AddSingleton(config);
 // Register the custom AuthenticationStateProvider
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
 
-
+builder.Services.AddMudServices();
 
 builder.Services.AddLocalization(Options => Options.ResourcesPath = "Resources.Labels");
 
