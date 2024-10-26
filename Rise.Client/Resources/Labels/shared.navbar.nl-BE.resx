@@ -32,4 +32,7 @@
 <data name="Documents" xml:space="preserve">
   <value>Documenten</value>
 </data>
+  <data name="MakeBooking" xml:space="preserve">
+    <value>Maak een boeking</value>
+  </data>
 </root>

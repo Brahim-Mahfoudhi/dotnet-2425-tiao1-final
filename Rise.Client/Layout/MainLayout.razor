@@ -1,18 +1,27 @@
-
 @inherits LayoutComponentBase
 @using System.Globalization
 @inject Microsoft.Extensions.Localization.IStringLocalizer<MainLayout> Localizer
 
 <div class="main-content background-overlay">
-    <NavBar/>
+    @* Required *@
+    <MudPopoverProvider />
+    <MudThemeProvider />
+
+    @* Needed for dialogs *@
+    <MudDialogProvider />
+
+    @* Needed for snackbars *@
+    <MudSnackbarProvider />
+
+    <NavBar />
 
     <section class="min-vh-100 d-flex align-items-center z-index-3">
-        <div class="container">
+        <div class="container screen">
             @Body
         </div>
     </section>
 
-    <Footer/>
+    <Footer />
 </div>
 
 
