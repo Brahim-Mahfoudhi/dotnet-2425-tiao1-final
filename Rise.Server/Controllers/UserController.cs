@@ -14,7 +14,6 @@ namespace Rise.Server.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 // [Authorize(Roles = "Admin")]
-[Authorize]
 public class UserController : ControllerBase
 {
     private readonly IUserService _userService;
@@ -36,7 +35,8 @@ public class UserController : ControllerBase
     /// </summary>
     /// <returns>The current <see cref="UserDto"/> object or <c>null</c> if no user is found.</returns>
     [HttpGet]
-    public async Task<UserDto.UserBase?> Get()
+    [Authorize]
+        public async Task<UserDto.UserBase?> Get()
     {
         var user = await _userService.GetUserAsync();
         return user;
@@ -47,6 +47,7 @@ public class UserController : ControllerBase
     /// </summary>
     /// <returns>List of <see cref="UserDto"/> objects or <c>null</c> if no users are found.</returns>
     [HttpGet("all")]
+    [Authorize]
     public async Task<IEnumerable<UserDto.UserBase>?> GetAllUsers()
     {
         
@@ -62,6 +63,7 @@ public class UserController : ControllerBase
     /// <param name="id">The ID of the user to retrieve.</param>
     /// <returns>The <see cref="UserDto"/> object or <c>null</c> if no user with the specified ID is found.</returns>
     [HttpGet("{id}")]
+    [Authorize]
     public async Task<UserDto.UserBase?> Get(string id)
     {
         var user = await _userService.GetUserByIdAsync(id);
@@ -74,6 +76,7 @@ public class UserController : ControllerBase
     /// <param name="id">The ID of the user to retrieve details for.</param>
     /// <returns>The detailed <see cref="UserDto.UserDetails"/> object or <c>null</c> if no user with the specified ID is found.</returns>
     [HttpGet("details/{id}")]
+    [Authorize]
     public async Task<UserDto.UserDetails?> GetDetails(string id)
     {
         var user = await _userService.GetUserDetailsByIdAsync(id);
@@ -100,6 +103,7 @@ public class UserController : ControllerBase
     /// <param name="userDetails">The <see cref="UserDto.UpdateUser"/> object containing updated user details.</param>
     /// <returns><c>true</c> if the update is successful; otherwise, <c>false</c>.</returns>
     [HttpPut("{id}")]
+    [Authorize]
     public async Task<bool> Put(UserDto.UpdateUser userDetails)
     {
         var updated = await _userService.UpdateUserAsync(userDetails);
@@ -112,6 +116,7 @@ public class UserController : ControllerBase
     /// <param name="id">The ID of the user to delete.</param>
     /// <returns><c>true</c> if the deletion is successful; otherwise, <c>false</c>.</returns>
     [HttpDelete("{id}")]
+    [Authorize]
     public async Task<bool> Delete(string id)
     {
         var deleted = await _userService.DeleteUserAsync(id);
@@ -119,6 +124,7 @@ public class UserController : ControllerBase
     }
     
     [HttpGet("auth/users")]
+    [Authorize]
     public async Task<IEnumerable<UserDto.Auth0User>> GetUsers()
     {
         var users = await _managementApiClient.Users.GetAllAsync(new GetUsersRequest(), new PaginationInfo());
@@ -132,6 +138,7 @@ public class UserController : ControllerBase
     }
 
     [HttpGet("auth/user/{id}")]
+    [Authorize]
     public async Task<UserDto.Auth0User> GetUser(string id)
     {
         var test = await _managementApiClient.Users.GetAsync(id);

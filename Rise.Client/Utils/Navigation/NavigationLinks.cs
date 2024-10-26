@@ -24,6 +24,7 @@ public class NavigationLinks
     private const string USERS = "Users";
     private const string AUTH_USERS = "authusers";
 
+
     public static List<NavigationLink> GetNavigationLinks()
     {
         return new List<NavigationLink>
@@ -33,7 +34,7 @@ public class NavigationLinks
             new (INFORMATION, "Information", false),
             new (ACTUA, "Actua", false),
             new (GOD_PARENT, "GodParents", false),
-            new (DOCUMENTS, "Documents", false)
+            new (DOCUMENTS, "Documents", false),
         };
     }
 }

@@ -7,8 +7,9 @@ using Rise.Client.Products;
 using Rise.Shared.Products;
 using Rise.Shared.Users;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
-using Client.Auth;
+using Rise.Client.Auth;
 using UserService = Rise.Client.Users.UserService;
+using Microsoft.AspNetCore.Components.Authorization;
 
 
 
@@ -16,19 +17,23 @@ var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
-
-builder.Services.AddCascadingAuthenticationState();
-builder.Services.AddOidcAuthentication(options =>
-{
-    builder.Configuration.Bind("Auth0", options.ProviderOptions);
-    options.ProviderOptions.ResponseType = "code";
-    options.ProviderOptions.PostLogoutRedirectUri = builder.HostEnvironment.BaseAddress;
-    options.ProviderOptions.AdditionalProviderParameters.Add("audience", builder.Configuration["Auth0:Audience"]!);
-}).AddAccountClaimsPrincipalFactory<ArrayClaimsPrincipalFactory<RemoteUserAccount>>();
+builder.Services.AddAuthorizationCore(); 
+// Register the custom AuthenticationStateProvider
+builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
+// builder.Services.AddCascadingAuthenticationState();
+// builder.Services.AddOidcAuthentication(options =>
+// {
+//     builder.Configuration.Bind("Auth0", options.ProviderOptions);
+//     options.ProviderOptions.ResponseType = "code";
+//     options.ProviderOptions.PostLogoutRedirectUri = builder.HostEnvironment.BaseAddress;
+//     options.ProviderOptions.AdditionalProviderParameters.Add("audience", builder.Configuration["Auth0:Audience"]!);
+// }).AddAccountClaimsPrincipalFactory<ArrayClaimsPrincipalFactory<RemoteUserAccount>>();
 
 
 builder.Services.AddLocalization(Options => Options.ResourcesPath = "Resources.Labels");
 
+// Register CustomAuthorizationMessageHandler for requests that need authorization
+builder.Services.AddScoped<CustomAuthorizationMessageHandler>();
 
 builder.Services.AddHttpClient<IProductService, ProductService>(client =>
 {
@@ -38,7 +43,7 @@ builder.Services.AddHttpClient<IProductService, ProductService>(client =>
 builder.Services.AddHttpClient<IUserService, UserService>(client =>
 {
     client.BaseAddress = new Uri($"{builder.HostEnvironment.BaseAddress}api/");
-}).AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
+}).AddHttpMessageHandler<CustomAuthorizationMessageHandler>();
 
 var host = builder.Build();
 

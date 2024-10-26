@@ -1,0 +1,130 @@
+@page "/embedded-login"
+@inject HttpClient HttpClient
+@using System.Text.Json
+@using System.Text
+@using Microsoft.Extensions.Localization
+@inject IJSRuntime js
+@inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider AuthStateProvider
+@inject IStringLocalizer<Login> Localizer;
+
+
+<main class="main-content mt-0">
+    <div class="page-header align-items-center min-vh-100">
+        <div class="container my-auto">
+            <div class="row">
+                <div class="col-lg-4 col-md-8 col-12 mx-auto">
+                    <div class="card z-index-0 fadeIn3 fadeInBottom">
+                        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                            <div class="bg-gradient-dark shadow-dark border-radius-lg py-3 pe-1">
+                                <h1 class="text-white">@Localizer["Login"]</h1>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-card">
+                                <EditForm Model="loginModel" OnValidSubmit="HandleLogin">
+                                    <DataAnnotationsValidator />
+                                    <ValidationSummary />
+                                    <div>
+                                        <label>Email:</label>
+                                        <InputText @bind-Value="loginModel.Email" />
+                                    </div>
+                                    <div>
+                                        <label>Password:</label>
+                                        <InputText @bind-Value="loginModel.Password" type="password" />
+                                    </div>
+                                    <button type="submit">Login</button>
+                                </EditForm>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+
+@code {
+    private LoginModel loginModel = new LoginModel();
+    private string? loginError;
+
+    private async Task HandleLogin()
+    {
+        try
+        {
+            // Prepare the request payload for Auth0's token endpoint
+            var loginRequest = new
+            {
+                grant_type = "password",
+                client_id = "y0zDAiEKlrUMmIJozxcNMMkdJr5YJc7E",
+                client_secret = "vt1-o3EtlEXH0KeIeXEbg_kcRoS36Ric4mf8BnzchTEJ1zEFjOxXOgBMjcWeNlb_",
+                username = loginModel.Email,
+                password = loginModel.Password,
+                audience = "https://api.rise.buut.com", // If using a custom API
+                scope = "openid profile email"
+            };
+
+            var jsonRequest = JsonSerializer.Serialize(loginRequest);
+            var content = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
+
+            // Send the login request
+            var response = await HttpClient.PostAsync("https://dev-6yunsksn11owe71c.us.auth0.com/oauth/token", content);
+            if (response.IsSuccessStatusCode)
+            {
+                var jsonResponse = await response.Content.ReadAsStringAsync();
+                var authResult = JsonSerializer.Deserialize<AuthResponse>(jsonResponse);
+
+                var accessToken = authResult?.access_token;
+
+                if (accessToken != null)
+                {
+                    // Store access token (in session storage or any preferred storage)
+                    await js.InvokeVoidAsync("sessionStorage.setItem", "access_token", accessToken);
+
+                    // Notify the authentication state provider
+                    if (AuthStateProvider is CustomAuthStateProvider customAuthStateProvider)
+                    {
+                        customAuthStateProvider.NotifyUserAuthentication(accessToken);
+                    }
+                    @* var request = new HttpRequestMessage(HttpMethod.Get, "https://dev-6yunsksn11owe71c.us.auth0.com/userinfo");
+                    request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", accessToken);
+
+                    // Send the request
+                    var userResponse = await HttpClient.SendAsync(request);
+                    if (userResponse.IsSuccessStatusCode)
+                    {
+                        var userProfileJson = await userResponse.Content.ReadAsStringAsync();
+                        await js.InvokeVoidAsync("sessionStorage.setItem", "user", userProfileJson);
+                    } *@
+
+                    // Redirect or update authentication state
+                    NavigationManager.NavigateTo("/");
+                }
+
+            }
+            else
+            {
+                loginError = "Invalid login attempt.";
+            }
+        }
+        catch (Exception ex)
+        {
+            loginError = $"An error occurred: {ex.Message}";
+        }
+    }
+
+    public class LoginModel
+    {
+        public string Email { get; set; } = string.Empty;
+        public string Password { get; set; } = string.Empty;
+    }
+
+    public class AuthResponse
+    {
+        public string access_token { get; set; }
+        public string id_token { get; set; }
+        public int expires_in { get; set; }
+        public string token_type { get; set; }
+    }
+}
