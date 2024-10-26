@@ -23,6 +23,7 @@ public class NavigationLinks
     private const string DOCUMENTS = "/documenten";
     private const string USERS = "Users";
     private const string AUTH_USERS = "authusers";
+    private const string MAKEBOOKING = "MakeBookingView";
 
 
     public static List<NavigationLink> GetNavigationLinks()
@@ -35,6 +36,7 @@ public class NavigationLinks
             new (ACTUA, "Actua", false),
             new (GOD_PARENT, "GodParents", false),
             new (DOCUMENTS, "Documents", false),
+            new (MAKEBOOKING, "MakeBooking", true)
         };
     }
 }
