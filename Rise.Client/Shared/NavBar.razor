@@ -3,171 +3,187 @@
 @inject Microsoft.Extensions.Localization.IStringLocalizer<NavBar> Localizer
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 @inject NavigationManager Navigation
+@inject AuthenticationStateProvider AuthStateProvider
 @using System.Globalization
 
 
 <nav class="navbar navbar-expand-lg position-absolute top-0 z-index-3 w-100 shadow-none my-3  navbar-nav mt-4 ">
-    <div class="container">
-      <div class="bg-white z-index-3 p-1 logo-img rounded-circle ">
-        <img src="img/BUUT_logo.png" alt="Logo" class="logo"/>
-      </div>
-      
-      <button class="navbar-toggler shadow-none ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navigation" aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon mt-2">
-          <span class="navbar-toggler-bar bar1"></span>
-          <span class="navbar-toggler-bar bar2"></span>
-          <span class="navbar-toggler-bar bar3"></span>
-        </span>
-      </button>
-      <div class="collapse navbar-collapse w-100 pt-3 pb-2 py-lg-0 " id="navigation">
-        <ul class="navbar-nav navbar-nav-hover d-flex ms-auto align-items-center">
-          <li class="nav-item dropdown dropdown-hover mx-2">
-            <a href="/" class="nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-end" role="button" aria-expanded="false">
-              <h4 class="text-white">@Localizer["Home"]</h4>
-            </a>
-            </li>
-          @foreach (var link in NavigationLinks.GetNavigationLinks().Where(link => link.Authenticated))
-          {
-            <AuthorizeView Roles="Admin">
-              <li class="nav-item dropdown dropdown-hover mx-2">
-                <a href="@link.Url" class="nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-end" role="button" aria-expanded="false">
-                  <h4 class="text-white">@Localizer[@link.Name]</h4>
-                </a>
-              </li>
-            </AuthorizeView>
-          }
-          @foreach (var link in NavigationLinks.GetNavigationLinks().Where(link => !link.Authenticated))
-          {
+  <div class="container">
+    <div class="bg-white z-index-3 p-1 logo-img rounded-circle ">
+      <img src="img/BUUT_logo.png" alt="Logo" class="logo" />
+    </div>
+
+    <button class="navbar-toggler shadow-none ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navigation"
+      aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon mt-2">
+        <span class="navbar-toggler-bar bar1"></span>
+        <span class="navbar-toggler-bar bar2"></span>
+        <span class="navbar-toggler-bar bar3"></span>
+      </span>
+    </button>
+    <div class="collapse navbar-collapse w-100 pt-3 pb-2 py-lg-0 " id="navigation">
+      <ul class="navbar-nav navbar-nav-hover d-flex ms-auto align-items-center">
+        <li class="nav-item dropdown dropdown-hover mx-2">
+          <a href="/" class="nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-end" role="button"
+            aria-expanded="false">
+            <h4 class="text-white">@Localizer["Home"]</h4>
+          </a>
+        </li>
+        @foreach (var link in NavigationLinks.GetNavigationLinks().Where(link => link.Authenticated))
+        {
+          <AuthorizeView Roles="Admin">
             <li class="nav-item dropdown dropdown-hover mx-2">
-              <a href="@link.Url" class="nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-end" role="button" aria-expanded="false">
+              <a href="@link.Url" class="nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-end"
+                role="button" aria-expanded="false">
                 <h4 class="text-white">@Localizer[@link.Name]</h4>
               </a>
             </li>
-          }
-          <AuthorizeView Roles="User, Admin, Godparent">
-              <li class="nav-item dropdown dropdown-hover mx-2">
-                  <a href="/MakeBookingView" class="nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-end" role="button" aria-expanded="false">
-                      <h4 class="text-white">@Localizer["MakeBooking"]</h4>
-                  </a>
-              </li>
           </AuthorizeView>
-        </ul>
-        <ul class="navbar-nav navbar-nav-hover d-flex align-items-center">
-         <AuthorizeView>
-             <Authorized>
-               <li class="nav-item">
-                 <a href="profile" class="px-1 py-0 nav-link line-height-0" target="_blank">
-                   <i class="ni ni-circle-08"></i>
-                 </a>
-               </li>
+        }
+        @foreach (var link in NavigationLinks.GetNavigationLinks().Where(link => !link.Authenticated))
+        {
+          <li class="nav-item dropdown dropdown-hover mx-2">
+            <a href="@link.Url" class="nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-end"
+              role="button" aria-expanded="false">
+              <h4 class="text-white">@Localizer[@link.Name]</h4>
+            </a>
+          </li>
+        }
+      </ul>
+      <ul class="navbar-nav navbar-nav-hover d-flex align-items-center">
+        <AuthorizeView>
+          <Authorized>
+            <li class="nav-item">
+              <a href="profile" class="px-1 py-0 nav-link line-height-0" target="_blank">
+                <i class="ni ni-circle-08"></i>
+              </a>
+            </li>
+          </Authorized>
+        </AuthorizeView>
 
-               <li class="nav-item dropdown dropdown-hover mx-2">
-                           <a class="nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center" role="button" id="dropdownMenuDocs" data-bs-toggle="dropdown" aria-expanded="false">
-                             <i class="ni ni-settings-gear-65 "></i>
-                             <img src="img/down-arrow-white.svg" alt="down-arrow" class="arrow ms-1 d-lg-block d-none">
-                           </a>
-                           <div class="dropdown-menu dropdown-menu-animation dropdown-lg mt-0 mt-lg-3 p-3 border-radius-lg">
-                             <div class="d-none d-lg-block">
-                               <ul class="list-group">
-                                 <li class="nav-item list-group-item border-0 p-0">
-                                   <a class="dropdown-item py-2 ps-3 border-radius-md" @onclick='() => ChangeLanguage("en-US")'>
-                                     <div class="d-flex">
-                                       <div class="icon h-10 me-3 d-flex mt-1">
-                                         <i class="ni ni-bold-right"></i>
-                                       </div>
-                                       <div>
-                                         <h6 class="dropdown-header text-dark font-weight-bold d-flex justify-content-centre align-items-center p-0">English</h6>
-                                       </div>
-                                     </div>
-                                   </a>
-                                 </li>
-                                 <li class="nav-item list-group-item border-0 p-0">
-                                   <a class="dropdown-item py-2 ps-3 border-radius-md" @onclick='() => ChangeLanguage("nl-BE")'>
-                                     <div class="d-flex">
-                                       <div class="icon h-10 me-3 d-flex mt-1">
-                                         <i class="ni ni-bold-right"></i>
-                                       </div>
-                                       <div>
-                                         <h6 class="dropdown-header text-dark font-weight-bold d-flex justify-content-centre align-items-center p-0">Nederlands</h6>
-                                       </div>
-                                     </div>
-                                   </a>
-                                 </li>
-                               </ul>
-                             </div>
-                             <div class="row d-lg-none">
-                               <div class="col-md-12 g-0">
-                                 <a class="dropdown-item py-2 ps-3 border-radius-md" @onclick='() => ChangeLanguage("en-US")'>
-                                   <div class="d-flex">
-                                     <div class="icon h-10 me-3 d-flex mt-1">
-                                       <i class="ni ni-bold-right"></i>
-                                     </div>
-                                     <div>
-                                       <h6 class="dropdown-header text-dark font-weight-bold d-flex justify-content-centre align-items-center p-0">English</h6>
-                                     </div>
-                                   </div>
-                                 </a>
-                                 <a class="dropdown-item py-2 ps-3 border-radius-md" @onclick='() => ChangeLanguage("nl-BE")'>
-                                   <div class="d-flex">
-                                     <div class="icon h-10 me-3 d-flex mt-1">
-                                       <i class="ni ni-bold-right"></i>
-                                     </div>
-                                     <div>
-                                       <h6 class="dropdown-header text-dark font-weight-bold d-flex justify-content-centre align-items-center p-0">Nederlands</h6>
-                                     </div>
-                                   </div>
-                                 </a>
-                               </div>
-                             </div>
-                           </div>
-                         </li>
-               
-               
-               <li class="nav-item dropdown py-0 pe-3">
-                 <a href="alerts" class="nav-link py-0 px-1 position-relative line-height-0" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                   <i class="ni ni-bell-55"></i>
-                   <span class="position-absolute top-5 start-100 translate-middle badge rounded-pill bg-danger border border-white small py-1 px-2">
-                     <span class="small">11</span>
-                     <span class="visually-hidden">unread notifications</span>
-                   </span>
-                 </a>
-               </li>
-               <li class="nav-item">
-                 <a class="px-1 py-0 nav-link line-height-0 auth" @onclick="BeginLogOut">
-                   <span class="oi oi-account-logout auth" aria-hidden="true"></span>
-                 </a>
-               </li>
-             </Authorized>
-             <NotAuthorized>
-               <li class="nav-item px-3">
-                 <NavLink class="px-1 py-0 nav-link line-height-0 auth" href="authentication/login">
-                   <span class="oi oi-account-login auth" aria-hidden="true"></span> 
-                 </NavLink>
-               </li>
-               <li class="nav-item">
-                 <a href="register" class="px-1 py-0 nav-link line-height-0" target="_blank">
-                   <i class="ni ni-badge "></i>
-                 </a>
-               </li>
-             </NotAuthorized>
-         </AuthorizeView>
-        </ul>
-      </div>
+        <li class="nav-item dropdown dropdown-hover mx-2">
+          <a class="nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center" role="button"
+            id="dropdownMenuDocs" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="ni ni-settings-gear-65 "></i>
+            <img src="img/down-arrow-white.svg" alt="down-arrow" class="arrow ms-1 d-lg-block d-none">
+          </a>
+          <div class="dropdown-menu dropdown-menu-animation dropdown-lg mt-0 mt-lg-3 p-3 border-radius-lg">
+            <div class="d-none d-lg-block">
+              <ul class="list-group">
+                <li class="nav-item list-group-item border-0 p-0">
+                  <a class="dropdown-item py-2 ps-3 border-radius-md" @onclick='() => ChangeLanguage("en-US")'>
+                    <div class="d-flex">
+                      <div class="icon h-10 me-3 d-flex mt-1">
+                        <i class="ni ni-bold-right"></i>
+                      </div>
+                      <div>
+                        <h6
+                          class="dropdown-header text-dark font-weight-bold d-flex justify-content-centre align-items-center p-0">
+                          English</h6>
+                      </div>
+                    </div>
+                  </a>
+                </li>
+                <li class="nav-item list-group-item border-0 p-0">
+                  <a class="dropdown-item py-2 ps-3 border-radius-md" @onclick='() => ChangeLanguage("nl-BE")'>
+                    <div class="d-flex">
+                      <div class="icon h-10 me-3 d-flex mt-1">
+                        <i class="ni ni-bold-right"></i>
+                      </div>
+                      <div>
+                        <h6
+                          class="dropdown-header text-dark font-weight-bold d-flex justify-content-centre align-items-center p-0">
+                          Nederlands</h6>
+                      </div>
+                    </div>
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div class="row d-lg-none">
+              <div class="col-md-12 g-0">
+                <a class="dropdown-item py-2 ps-3 border-radius-md" @onclick='() => ChangeLanguage("en-US")'>
+                  <div class="d-flex">
+                    <div class="icon h-10 me-3 d-flex mt-1">
+                      <i class="ni ni-bold-right"></i>
+                    </div>
+                    <div>
+                      <h6
+                        class="dropdown-header text-dark font-weight-bold d-flex justify-content-centre align-items-center p-0">
+                        English</h6>
+                    </div>
+                  </div>
+                </a>
+                <a class="dropdown-item py-2 ps-3 border-radius-md" @onclick='() => ChangeLanguage("nl-BE")'>
+                  <div class="d-flex">
+                    <div class="icon h-10 me-3 d-flex mt-1">
+                      <i class="ni ni-bold-right"></i>
+                    </div>
+                    <div>
+                      <h6
+                        class="dropdown-header text-dark font-weight-bold d-flex justify-content-centre align-items-center p-0">
+                        Nederlands</h6>
+                    </div>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </div>
+        </li>
+        <AuthorizeView>
+          <Authorized>
+            <li class="nav-item dropdown py-0 pe-3">
+              <a href="alerts" class="nav-link py-0 px-1 position-relative line-height-0" id="dropdownMenuButton"
+                data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="ni ni-bell-55"></i>
+                <span
+                  class="position-absolute top-5 start-100 translate-middle badge rounded-pill bg-danger border border-white small py-1 px-2">
+                  <span class="small">11</span>
+                  <span class="visually-hidden">unread notifications</span>
+                </span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="px-1 py-0 nav-link line-height-0 auth" @onclick="BeginLogOut">
+                <span class="oi oi-account-logout auth" aria-hidden="true"></span>
+              </a>
+            </li>
+          </Authorized>
+          <NotAuthorized>
+            <li class="nav-item px-3">
+              <NavLink class="px-1 py-0 nav-link line-height-0 auth" href="embedded-login">
+                <span class="oi oi-account-login auth" aria-hidden="true"></span>
+              </NavLink>
+            </li>
+            <li class="nav-item">
+              <a href="register" class="px-1 py-0 nav-link line-height-0" target="_blank">
+                <i class="ni ni-badge "></i>
+              </a>
+            </li>
+          </NotAuthorized>
+        </AuthorizeView>
+      </ul>
     </div>
-  </nav>
+  </div>
+</nav>
 
 @code {
-  
+
   [Inject] IJSRuntime js { get; set; }
   [Inject] NavigationManager NavigationManager { get; set; }
-  
+
   private string selectedCulture = "en-US";
-  
+
   private async void BeginLogOut()
   {
-    Navigation.NavigateToLogout("authentication/logout");
+    js.InvokeAsync<string>("sessionStorage.removeItem", "authToken");
+    if (AuthStateProvider is CustomAuthStateProvider customAuthStateProvider)
+    {
+      customAuthStateProvider.NotifyUserLogout();
+    }
+    Navigation.NavigateTo("/");
   }
-  
+
   protected override async Task OnInitializedAsync()
   {
     // Get the culture from localStorage using JavaScript interop
@@ -189,5 +205,5 @@
     // Reload the page to apply the new culture
     NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true); ;
   }
-  
+
 }

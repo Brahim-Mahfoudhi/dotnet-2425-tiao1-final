@@ -40,4 +40,7 @@
 <data name="Welcome" xml:space="preserve">
   <value>Welcome!</value>
 </data>
+<data name="WrongCreds" xml:space="preserve">
+  <value>Email or password is wrong.</value>
+</data>
 </root>

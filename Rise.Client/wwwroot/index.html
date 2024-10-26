@@ -30,14 +30,20 @@
             }
         }
     };
-    window.sessionStorageHelper = {
-        removeItem: function (key) {
+    window.sessionStorage = {
+      removeItem: function (key) {
             sessionStorage.removeItem(key);
+        },
+        setItem: function (key, value) {
+            sessionStorage.setItem(key, value);
+        },
+        getItem: function (key) {
+            return sessionStorage.getItem(key);
         },
         clearAll: function () {
             sessionStorage.clear();
         }
-    };
+    }
 </script>
 </head>
 
