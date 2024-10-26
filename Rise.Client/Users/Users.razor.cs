@@ -14,17 +14,26 @@ public partial class Users
     private string? userIdAuth0;
 
     [Inject] public required IUserService UserService { get; set; }
-    // [Inject] AuthenticationStateProvider AuthenticationStateProvider { get; set; }
+    // [Inject] public required CustomAuthStateProvider AuthenticationStateProvider { get; set; }
+    [Inject] public required AuthenticationStateProvider AuthenticationStateProvider { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
 
-// Get the current user's authentication state
-        // var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-        // userIdAuth0 = authState.User.Claims.FirstOrDefault(c => c.Type == "sub").Value;
-        userIdAuth0 = "test";
+        // Get the current user's authentication state
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        userIdAuth0 = authState.User.Claims.FirstOrDefault(c => c.Type == "sub").Value;
+        foreach (var claim in authState.User.Claims)
+        {
+            Console.WriteLine(claim.Type + " - " + claim.Value);
+            // Console.WriteLine(claim.Value);
+        }
+Console.WriteLine(authState.User.Claims);
 
-        user = await UserService.GetUserByIdAsync(userIdAuth0);
+        if (!string.IsNullOrEmpty(userIdAuth0))
+        {
+            user = await UserService.GetUserByIdAsync(userIdAuth0);
+        }
         users = await UserService.GetAllAsync();
     }
 }

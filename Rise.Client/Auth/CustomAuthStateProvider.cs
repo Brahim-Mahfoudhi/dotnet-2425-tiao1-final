@@ -60,6 +60,7 @@ public class CustomAuthStateProvider : AuthenticationStateProvider
 
     public void NotifyUserLogout()
     {
+        ClearSessionStorage();
         var user = new ClaimsPrincipal(_anonymous);
         NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(user)));
     }
@@ -128,6 +129,10 @@ public class CustomAuthStateProvider : AuthenticationStateProvider
         return claims;
     }
 
+    private async void ClearSessionStorage()
+    {
+        await _js.InvokeVoidAsync("sessionStorage.removeItem", "access_token");
+    }
     private static string AddPadding(string base64)
     {
         return base64.PadRight(base64.Length + (4 - base64.Length % 4) % 4, '=');

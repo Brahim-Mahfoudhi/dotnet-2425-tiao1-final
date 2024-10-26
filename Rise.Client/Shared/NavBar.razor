@@ -176,6 +176,7 @@
 
   private async void BeginLogOut()
   {
+    js.InvokeAsync<string>("sessionStorage.removeItem", "authToken");
     if (AuthStateProvider is CustomAuthStateProvider customAuthStateProvider)
     {
       customAuthStateProvider.NotifyUserLogout();
