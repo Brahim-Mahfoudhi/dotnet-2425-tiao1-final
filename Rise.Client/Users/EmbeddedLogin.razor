@@ -7,6 +7,7 @@
 @inject NavigationManager NavigationManager
 @inject AuthenticationStateProvider AuthStateProvider
 @inject IStringLocalizer<Login> Localizer;
+@inject IConfiguration Config;
 
 
 <main class="main-content mt-0">
@@ -53,15 +54,21 @@
     {
         try
         {
+               // Retrieve configuration values from the Auth0Settings section
+            var authority = Config["Auth0Settings:Authority"];
+            var clientId = Config["Auth0Settings:ClientId"];
+            var clientSecret = Config["Auth0Settings:ClientSecret"];
+            var audience = Config["Auth0Settings:Audience"];
+            var tokenUri = Config["Auth0Settings:TokenUri"];
             // Prepare the request payload for Auth0's token endpoint
             var loginRequest = new
             {
                 grant_type = "password",
-                client_id = "y0zDAiEKlrUMmIJozxcNMMkdJr5YJc7E",
-                client_secret = "vt1-o3EtlEXH0KeIeXEbg_kcRoS36Ric4mf8BnzchTEJ1zEFjOxXOgBMjcWeNlb_",
+                client_id = clientId,
+                client_secret = clientSecret,
                 username = loginModel.Email,
                 password = loginModel.Password,
-                audience = "https://api.rise.buut.com", // If using a custom API
+                audience = audience, // If using a custom API
                 scope = "openid profile email"
             };
 
@@ -69,7 +76,7 @@
             var content = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
 
             // Send the login request
-            var response = await HttpClient.PostAsync("https://dev-6yunsksn11owe71c.us.auth0.com/oauth/token", content);
+            var response = await HttpClient.PostAsync(tokenUri, content);
             if (response.IsSuccessStatusCode)
             {
                 var jsonResponse = await response.Content.ReadAsStringAsync();
@@ -87,16 +94,6 @@
                     {
                         customAuthStateProvider.NotifyUserAuthentication(accessToken);
                     }
-                    @* var request = new HttpRequestMessage(HttpMethod.Get, "https://dev-6yunsksn11owe71c.us.auth0.com/userinfo");
-                    request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", accessToken);
-
-                    // Send the request
-                    var userResponse = await HttpClient.SendAsync(request);
-                    if (userResponse.IsSuccessStatusCode)
-                    {
-                        var userProfileJson = await userResponse.Content.ReadAsStringAsync();
-                        await js.InvokeVoidAsync("sessionStorage.setItem", "user", userProfileJson);
-                    } *@
 
                     // Redirect or update authentication state
                     NavigationManager.NavigateTo("/");

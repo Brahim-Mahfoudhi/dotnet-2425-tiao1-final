@@ -9,12 +9,15 @@ public class CustomAuthStateProvider : AuthenticationStateProvider
 {
     private readonly IJSRuntime _js;
     private readonly HttpClient _httpClient;
+
+    private readonly IConfiguration _config;
     private ClaimsPrincipal _anonymous = new ClaimsPrincipal(new ClaimsIdentity());
 
-    public CustomAuthStateProvider(IJSRuntime js, HttpClient httpClient)
+    public CustomAuthStateProvider(IJSRuntime js, HttpClient httpClient, IConfiguration config)
     {
         _js = js;
         _httpClient = httpClient;
+        _config = config;
     }
 
     public override async Task<AuthenticationState> GetAuthenticationStateAsync()
@@ -63,8 +66,9 @@ public class CustomAuthStateProvider : AuthenticationStateProvider
 
     private async Task<Dictionary<string, object>?> GetUserDetailsAsync(string token)
     {
+        var userInfoUri = _config["Auth0Settings:UserInfoUri"];
         // Fetch user profile from /userinfo endpoint
-        var request = new HttpRequestMessage(HttpMethod.Get, "https://dev-6yunsksn11owe71c.us.auth0.com/userinfo");
+        var request = new HttpRequestMessage(HttpMethod.Get, userInfoUri);
         request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
         var response = await _httpClient.SendAsync(request);

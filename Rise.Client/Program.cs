@@ -18,16 +18,14 @@ builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
 builder.Services.AddAuthorizationCore(); 
+
+// Load configuration settings
+var config = builder.Configuration.GetSection("Auth0Settings");
+// Register HttpClient with BaseAddress or settings from config
+builder.Services.AddSingleton(config);
 // Register the custom AuthenticationStateProvider
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
-// builder.Services.AddCascadingAuthenticationState();
-// builder.Services.AddOidcAuthentication(options =>
-// {
-//     builder.Configuration.Bind("Auth0", options.ProviderOptions);
-//     options.ProviderOptions.ResponseType = "code";
-//     options.ProviderOptions.PostLogoutRedirectUri = builder.HostEnvironment.BaseAddress;
-//     options.ProviderOptions.AdditionalProviderParameters.Add("audience", builder.Configuration["Auth0:Audience"]!);
-// }).AddAccountClaimsPrincipalFactory<ArrayClaimsPrincipalFactory<RemoteUserAccount>>();
+
 
 
 builder.Services.AddLocalization(Options => Options.ResourcesPath = "Resources.Labels");
