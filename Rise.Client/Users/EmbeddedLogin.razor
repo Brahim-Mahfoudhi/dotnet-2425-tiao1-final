@@ -26,15 +26,21 @@
                                 <EditForm Model="loginModel" OnValidSubmit="HandleLogin">
                                     <DataAnnotationsValidator />
                                     <ValidationSummary />
-                                    <div>
-                                        <label>Email:</label>
-                                        <InputText @bind-Value="loginModel.Email" />
+                                    <div class="d-flex flex-column justify-content-center">
+                                        <div>
+                                            <label style="min-width: 80px;">@Localizer["Email"]: </label>
+                                            <InputText @bind-Value="loginModel.Email" />
+                                        </div>
+                                        <div>
+                                            <label style="min-width: 80px;">@Localizer["Password"]: </label>
+                                            <InputText @bind-Value="loginModel.Password" type="password" />
+                                        </div>
                                     </div>
-                                    <div>
-                                        <label>Password:</label>
-                                        <InputText @bind-Value="loginModel.Password" type="password" />
+                                    <div class="d-flex justify-content-center gap-3">
+                                        <button type="submit" class="btn btn-primary">@Localizer["Login"]</button>
+                                        <button type="button" class="btn btn-secondary"
+                                            @onclick="HandleCancelClick">@Localizer["Cancel"]</button>
                                     </div>
-                                    <button type="submit">Login</button>
                                 </EditForm>
                             </div>
                         </div>
@@ -50,11 +56,15 @@
     private LoginModel loginModel = new LoginModel();
     private string? loginError;
 
+    private void HandleCancelClick()
+    {
+        NavigationManager.NavigateTo("/");
+    }
     private async Task HandleLogin()
     {
         try
         {
-               // Retrieve configuration values from the Auth0Settings section
+            // Retrieve configuration values from the Auth0Settings section
             var authority = Config["Auth0Settings:Authority"];
             var clientId = Config["Auth0Settings:ClientId"];
             var clientSecret = Config["Auth0Settings:ClientSecret"];
