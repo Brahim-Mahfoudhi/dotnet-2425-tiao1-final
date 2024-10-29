@@ -22,6 +22,146 @@ namespace Rise.Persistence.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("Rise.Domain.Bookings.Battery", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasMaxLength(4000)
+                        .HasColumnType("nvarchar(4000)");
+
+                    b.Property<int>("CountBookings")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<string>("ListComments")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(4000)
+                        .HasColumnType("nvarchar(4000)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Id")
+                        .IsUnique();
+
+                    b.ToTable("Battery", (string)null);
+                });
+
+            modelBuilder.Entity("Rise.Domain.Bookings.Boat", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasMaxLength(4000)
+                        .HasColumnType("nvarchar(4000)");
+
+                    b.Property<int>("CountBookings")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<string>("ListComments")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(4000)
+                        .HasColumnType("nvarchar(4000)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Id")
+                        .IsUnique();
+
+                    b.ToTable("Boat", (string)null);
+                });
+
+            modelBuilder.Entity("Rise.Domain.Bookings.Booking", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasMaxLength(4000)
+                        .HasColumnType("nvarchar(4000)");
+
+                    b.Property<string>("BatteryId")
+                        .HasMaxLength(4000)
+                        .HasColumnType("nvarchar(4000)");
+
+                    b.Property<string>("BoatId")
+                        .HasMaxLength(4000)
+                        .HasColumnType("nvarchar(4000)");
+
+                    b.Property<DateTime>("BookingDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("CountAdults")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CountChildren")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasMaxLength(4000)
+                        .HasColumnType("nvarchar(4000)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BatteryId")
+                        .IsUnique()
+                        .HasFilter("[BatteryId] IS NOT NULL");
+
+                    b.HasIndex("BoatId")
+                        .IsUnique()
+                        .HasFilter("[BoatId] IS NOT NULL");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Booking", (string)null);
+                });
+
             modelBuilder.Entity("Rise.Domain.Products.Product", b =>
                 {
                     b.Property<int>("Id")
@@ -202,6 +342,27 @@ namespace Rise.Persistence.Migrations
                     b.ToTable("User", (string)null);
                 });
 
+            modelBuilder.Entity("Rise.Domain.Bookings.Booking", b =>
+                {
+                    b.HasOne("Rise.Domain.Bookings.Battery", "Battery")
+                        .WithOne()
+                        .HasForeignKey("Rise.Domain.Bookings.Booking", "BatteryId");
+
+                    b.HasOne("Rise.Domain.Bookings.Boat", "Boat")
+                        .WithOne()
+                        .HasForeignKey("Rise.Domain.Bookings.Booking", "BoatId");
+
+                    b.HasOne("Rise.Domain.Users.User", null)
+                        .WithMany("Bookings")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Battery");
+
+                    b.Navigation("Boat");
+                });
+
             modelBuilder.Entity("Rise.Domain.Users.Address", b =>
                 {
                     b.HasOne("Rise.Domain.Users.User", "User")
@@ -226,6 +387,8 @@ namespace Rise.Persistence.Migrations
                 {
                     b.Navigation("Address")
                         .IsRequired();
+
+                    b.Navigation("Bookings");
 
                     b.Navigation("Roles");
                 });

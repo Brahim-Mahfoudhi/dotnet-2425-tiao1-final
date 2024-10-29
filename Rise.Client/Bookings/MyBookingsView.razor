@@ -1,0 +1,70 @@
+@page "/mybookings"
+@attribute [Authorize(Roles = "User")]
+
+<PageTitle>My Bookings</PageTitle>
+
+<div class="bg-white">
+    <h1>Bookings</h1>
+
+
+    @if (bookings == null)
+    {
+        <p>
+            <em>Loading...</em>
+        </p>
+    }
+    else
+    {
+        <p>All bookings</p>
+        <table class="table">
+        <thead>
+            <tr>
+                <th>Booking date</th>
+                <th>Number of adults</th>
+                <th>Number of children</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var booking in bookings)
+                {
+                    <tr>
+                        <td>@booking.bookingDate</td>
+                        <td>@booking.countAdults</td>
+                        <td>@booking.countChildren</td>
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+    @if (futureBooking == null)
+    {
+        <p>
+            <em>Loading...</em>
+        </p>
+    }
+    else
+    {
+        <p>Future booking</p>
+        <table class="table">
+        <thead>
+            <tr>
+                <th>Booking date</th>
+                <th>Number of adults</th>
+                <th>Number of children</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr>
+                <td>@futureBooking.bookingDate</td>
+                <td>@futureBooking.countAdults</td>
+                <td>@futureBooking.countChildren</td>
+
+            </tr>
+
+        </tbody>
+    </table>
+    }
+</div>

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Rise.Shared.Users;
+using Serilog;
 
 namespace Rise.Client.Users;
 
@@ -27,6 +28,7 @@ public partial class Users
         {
             user = await UserService.GetUserByIdAsync(userIdAuth0);
         }
+
         users = await UserService.GetAllAsync();
     }
 }

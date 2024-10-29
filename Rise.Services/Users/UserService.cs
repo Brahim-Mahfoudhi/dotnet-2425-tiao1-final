@@ -100,7 +100,6 @@ public class UserService : IUserService
 
     public async Task<bool> CreateUserAsync(UserDto.RegistrationUser userDetails)
     {
-        Console.WriteLine("Creating new user" + userDetails);
         var entity = new User(
             id: userDetails.Id,
             firstName: userDetails.FirstName,

@@ -36,5 +36,10 @@ internal class UserConfiguration : EntityConfiguration<User>
             .HasMany(x => x.Roles)
             .WithOne()
             .HasForeignKey(x => x.UserId);
+        
+        builder
+            .HasMany(x => x.Bookings)
+            .WithOne()
+            .HasForeignKey(x => x.UserId);
     }
 }

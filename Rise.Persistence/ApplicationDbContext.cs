@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Rise.Domain.Bookings;
 using Rise.Domain.Products;
 using Rise.Domain.Users;
 
@@ -11,6 +12,9 @@ public class ApplicationDbContext : DbContext
     public DbSet<User> Users => Set<User>();
     public DbSet<Role> Roles => Set<Role>();
     public DbSet<Address> Addresses => Set<Address>();
+    public DbSet<Booking> Bookings => Set<Booking>();
+    public DbSet<Boat> Boats => Set<Boat>();
+    public DbSet<Battery> Batteries => Set<Battery>();
 
     public ApplicationDbContext(DbContextOptions options) : base(options)
     {

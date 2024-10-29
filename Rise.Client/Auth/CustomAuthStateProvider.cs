@@ -60,9 +60,9 @@ public class CustomAuthStateProvider : AuthenticationStateProvider
 
     public void NotifyUserLogout()
     {
-        ClearSessionStorage();
         var user = new ClaimsPrincipal(_anonymous);
         NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(user)));
+        ClearSessionStorage();
     }
 
     private async Task<Dictionary<string, object>?> GetUserDetailsAsync(string token)

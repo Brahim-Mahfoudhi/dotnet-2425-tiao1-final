@@ -18,7 +18,7 @@ public class UserController : ControllerBase
 {
     private readonly IUserService _userService;
     private readonly IManagementApiClient _managementApiClient;
-    
+
     /// <summary>
     /// Initializes a new instance of the <see cref="UserController"/> class with the specified user service.
     /// </summary>
@@ -36,7 +36,7 @@ public class UserController : ControllerBase
     /// <returns>The current <see cref="UserDto"/> object or <c>null</c> if no user is found.</returns>
     [HttpGet]
     [Authorize]
-        public async Task<UserDto.UserBase?> Get()
+    public async Task<UserDto.UserBase?> Get()
     {
         var user = await _userService.GetUserAsync();
         return user;
@@ -50,7 +50,7 @@ public class UserController : ControllerBase
     [Authorize]
     public async Task<IEnumerable<UserDto.UserBase>?> GetAllUsers()
     {
-        
+
         // var users2 = await _managementApiClient.Users.GetAllAsync(new GetUsersRequest(), new PaginationInfo());
         var users = await _userService.GetAllAsync();
         // return users2.Select(x => new UserDto.UserBase(x.UserId, x.FirstName, x.LastName, x.Email));
@@ -122,7 +122,7 @@ public class UserController : ControllerBase
         var deleted = await _userService.DeleteUserAsync(id);
         return deleted;
     }
-    
+
     [HttpGet("auth/users")]
     [Authorize]
     public async Task<IEnumerable<UserDto.Auth0User>> GetUsers()
@@ -144,7 +144,7 @@ public class UserController : ControllerBase
         var test = await _managementApiClient.Users.GetAsync(id);
         Console.Write(test);
         return new UserDto.Auth0User
-            (test.Email, 
+            (test.Email,
             test.FirstName,
             test.LastName,
             test.Blocked ?? false);
@@ -160,10 +160,10 @@ public class UserController : ControllerBase
             FirstName = user.FirstName,
             LastName = user.LastName,
         };
-        
+
         var response = await _managementApiClient.Users.CreateAsync(userCreateRequest);
         Console.WriteLine(response);
-        var userDb = new UserDto.RegistrationUser(response.FirstName, response.LastName, response.Email, user.PhoneNumber, null, response.UserId, user.Address, user.BirthDate );
+        var userDb = new UserDto.RegistrationUser(response.FirstName, response.LastName, response.Email, user.PhoneNumber, null, response.UserId, user.Address, user.BirthDate);
         Console.WriteLine("Created user" + userDb);
         return userDb;
     }

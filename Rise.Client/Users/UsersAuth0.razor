@@ -4,35 +4,37 @@
 @attribute [Authorize(Roles = "Admin")]
 
 <PageTitle>Users</PageTitle>
-@if (users is null)
-{
-    <p>Loading...</p>
-}
-else
-{
-    <table class="table">
-        <thead>
-        <tr>
-            <th scope="col">Email</th>
-            <th scope="col">Firstname</th>
-            <th scope="col">Lastname</th>
-            <th scope="col">Blocked</th>
-            <th scope="col">Role</th>
-        </tr>
-        </thead>
-        <tbody>
-        @foreach (var user in users)
-        {
-            <tr>
-                <th scope="row">@user.Email</th>
-                <td>@user.FirstName</td>
-                <td>@user.LastName</td>
-                <td>@user.Blocked</td>
-            </tr>
-        }
-        </tbody>
-    </table>
-}
+<div class="bg-white">
+    @if (users is null)
+    {
+                <p>Loading...</p>
+    }
+    else
+    {
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Email</th>
+                            <th scope="col">Firstname</th>
+                            <th scope="col">Lastname</th>
+                            <th scope="col">Blocked</th>
+                            <th scope="col">Role</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                @foreach (var user in users)
+                {
+                                    <tr>
+                                        <th scope="row">@user.Email</th>
+                                        <td>@user.FirstName</td>
+                                        <td>@user.LastName</td>
+                                        <td>@user.Blocked</td>
+                                    </tr>
+                }
+                    </tbody>
+                </table>
+    }
+</div>
 @code {
     private IEnumerable<UserDto.Auth0User>? users;
     protected override async Task OnInitializedAsync()

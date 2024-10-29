@@ -37,7 +37,7 @@ public class UserService : IUserService
     public async Task<IEnumerable<UserDto.UserBase>?> GetAllAsync()
     {
         var jsonResponse = await httpClient.GetStringAsync("user/all");
-        return JsonSerializer.Deserialize<IEnumerable<UserDto.UserBase>>(jsonResponse, jsonSerializerOptions); ;
+        return JsonSerializer.Deserialize<IEnumerable<UserDto.UserBase>>(jsonResponse, jsonSerializerOptions);
     }
 
     public Task<UserDto.UserBase?> GetUserAsync()
@@ -62,9 +62,9 @@ public class UserService : IUserService
         var response = await httpClient.PutAsJsonAsync($"user/{userDetails.Id}", userDetails);
         return response.IsSuccessStatusCode;
     }
-    
+
     public async Task<IEnumerable<UserDto.Auth0User>> GetAuth0Users()
-    { 
+    {
         var users = await httpClient.GetFromJsonAsync<IEnumerable<UserDto.Auth0User>>("user/auth/users");
         return users!;
     }

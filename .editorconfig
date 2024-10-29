@@ -1,0 +1,16 @@
+# Root editorconfig file
+root = true
+
+# All C# files
+[*.cs]
+# Indentation
+indent_style = space
+indent_size = 4
+
+# Use explicit types instead of var
+dotnet_style_require_accessibility_modifiers = always:warning
+dotnet_style_predefined_type_for_locals_parameters_members = false:suggestion
+
+# Naming conventions
+dotnet_naming_rule.interface_should_be_prefixed_with_i.symbols = interface
+dotnet_naming_rule.interface_should_be_prefixed_with_i.style = prefix_with_i

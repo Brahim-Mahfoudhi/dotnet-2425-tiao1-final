@@ -1,17 +1,31 @@
 @inject Microsoft.Extensions.Localization.IStringLocalizer<Error404> Localizer
 
-<section class="min-vh-100 d-flex align-items-center">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-6 my-auto">
-                <h1 class="display-1 font-weight-bold">Error 404</h1>
-                <h2>@Localizer["PageNotFound"]</h2>
-                <p class="lead">@Localizer["BackToHome"]</p>
-                <a href="/" class="btn bg-gradient-dark mt-4">@Localizer["Home"]</a>
-            </div>
-            <div class="col-lg-6 my-auto position-relative">
-                <img class="w-100 position-relative" src="img/error-404.png" alt="404-error">
+<main class="main-content mt-0">
+    <div class="page-header align-items-center min-vh-100">
+        <div class="container my-auto">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-12 mx-auto">
+                    <div class="card z-index-0 fadeIn3 fadeInBottom">
+                        <div class="card-body">
+                            <section class=" d-flex align-items-center">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-lg-6 my-auto">
+                                            <h1 class="display-1 font-weight-bold">Error 404</h1>
+                                            <h2>@Localizer["PageNotFound"]</h2>
+                                            <p class="lead">@Localizer["BackToHome"]</p>
+                                            <a href="/" class="btn bg-gradient-dark mt-4">@Localizer["Home"]</a>
+                                        </div>
+                                        <div class="col-lg-6 my-auto position-relative">
+                                            <img class="w-100 position-relative" src="img/error-404.png" alt="404-error">
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</section>
+</main>

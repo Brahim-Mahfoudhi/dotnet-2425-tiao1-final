@@ -29,6 +29,13 @@ namespace Rise.Client.Users
             NavigationManager.NavigateTo("/");
         }
 
+        private async void LoginAsAdmin()
+        {
+            loginModel.Email = "admin@hogent.be";
+            loginModel.Password = "test";
+            await HandleLogin();
+        }
+
         private async Task HandleLogin()
         {
             try

@@ -7,6 +7,8 @@ using Rise.Client.Products;
 using Rise.Shared.Products;
 using Rise.Shared.Users;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
+using Rise.Client.Bookings;
+using Rise.Shared.Bookings;
 using Rise.Client.Auth;
 using UserService = Rise.Client.Users.UserService;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -39,6 +41,11 @@ builder.Services.AddHttpClient<IProductService, ProductService>(client =>
 });
 
 builder.Services.AddHttpClient<IUserService, UserService>(client =>
+{
+    client.BaseAddress = new Uri($"{builder.HostEnvironment.BaseAddress}api/");
+}).AddHttpMessageHandler<CustomAuthorizationMessageHandler>();
+
+builder.Services.AddHttpClient<IBookingService, BookingService>(client =>
 {
     client.BaseAddress = new Uri($"{builder.HostEnvironment.BaseAddress}api/");
 }).AddHttpMessageHandler<CustomAuthorizationMessageHandler>();

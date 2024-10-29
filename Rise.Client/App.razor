@@ -1,8 +1,7 @@
 ﻿<CascadingAuthenticationState>
-﻿<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
-<link href="_content/MudBlazor/MudBlazor.min.css" rel="stylesheet" />
-<Router AppAssembly="@typeof(App).Assembly">
-    <Found Context="routeData">
+    <link href="_content/MudBlazor/MudBlazor.min.css" rel="stylesheet" />
+    <Router AppAssembly="@typeof(App).Assembly">
+        <Found Context="routeData">
             <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
                 <NotAuthorized>
                     @if (context.User.Identity?.IsAuthenticated != true)
@@ -15,13 +14,15 @@
                     }
                 </NotAuthorized>
             </AuthorizeRouteView>
-        <FocusOnNavigate RouteData="@routeData" Selector="h1" />
-    </Found>
-    <NotFound>
-        <PageTitle>Not found</PageTitle>
-            <Error404/>
-    </NotFound>
-</Router>
+            <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+        </Found>
+        <NotFound>
+            <LayoutView Layout="@typeof(MainLayout)">
+                <PageTitle>Not found</PageTitle>
+                <Error404 />
+            </LayoutView>
+        </NotFound>
+    </Router>
 </CascadingAuthenticationState>
-<script src="_content/MudBlazor/MudBlazor.min.js"></script>
 
+<script src="_content/MudBlazor/MudBlazor.min.js"></script>

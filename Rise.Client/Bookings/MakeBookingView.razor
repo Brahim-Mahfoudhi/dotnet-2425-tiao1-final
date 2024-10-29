@@ -9,9 +9,10 @@
             
             <PageTitle>@Localizer["Title"]</PageTitle>
 
-            <div class="bg-gradient-dark shadow-dark">
-                <MudCalendar Items="_events" CellClicked="CellClicked" ItemClicked="ItemClicked" DayTimeInterval="CalendarTimeInterval.Minutes15" />
+            <div class="bg-gradient-dark shadow-dark calendar">
+                <MudCalendar Class="calendar" Items="_events" CellClicked="CellClicked" ItemClicked="ItemClicked" DayTimeInterval="CalendarTimeInterval.Minutes15" />
             </div>
+            
         </div>
     </div>
 </main>

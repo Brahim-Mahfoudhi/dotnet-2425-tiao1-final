@@ -1,3 +1,6 @@
+using Rise.Domain.Bookings;
+using Rise.Shared.Bookings;
+
 namespace Rise.Domain.Users;
 using System.ComponentModel.DataAnnotations;
 
@@ -17,6 +20,7 @@ public class User : Entity
     private Address _address = default!;
     private List<Role> _roles = [];
     private string _phoneNumber = default!;
+    private List<Booking> _bookings = [];
 
     #endregion
 
@@ -106,6 +110,11 @@ public class User : Entity
     /// Gets the roles associated with the user.
     /// </summary>
     public IReadOnlyList<Role> Roles => _roles;
+    
+    /// <summary>
+    /// Gets the bookings associated with the user.
+    /// </summary>
+    public IReadOnlyList<Booking> Bookings => _bookings;
 
     /// <summary>
     /// Gets or sets the phone number of the user.
@@ -137,6 +146,26 @@ public class User : Entity
     {
         Guard.Against.Null(role, nameof(role));
         _roles.Remove(role);
+    }
+    
+    /// <summary>
+    /// Adds a booking to the user.
+    /// </summary>
+    /// <param name="booking">The booking to add.</param>
+    public void AddBooking(Booking booking)
+    {
+        Guard.Against.Null(booking, nameof(booking));
+        _bookings.Add(booking);
+    }
+    
+    /// <summary>
+    /// Removes a booking from the user.
+    /// </summary>
+    /// <param name="booking">The booking to remove.</param>
+    public void RemoveBooking(Booking booking)
+    {
+        Guard.Against.Null(booking, nameof(booking));
+        _bookings.Remove(booking);
     }
     
     /// <summary>

@@ -28,11 +28,19 @@
 <data name="GodParents" xml:space="preserve">
   <value>God parents</value>
 </data>
-
+<data name="Users" xml:space="preserve">
+  <value>Users</value>
+</data>
+<data name="Auth users" xml:space="preserve">
+  <value>Auth users</value>
+</data>
 <data name="Documents" xml:space="preserve">
   <value>Documents</value>
 </data>
   <data name="MakeBooking" xml:space="preserve">
     <value>Make a booking</value>
+  </data>
+  <data name="MyBookings" xml:space="preserve">
+    <value>My bookings</value>
   </data>
 </root>

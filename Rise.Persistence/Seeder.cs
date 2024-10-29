@@ -1,3 +1,4 @@
+using Rise.Domain.Bookings;
 using Rise.Shared.Enums;
 using Rise.Domain.Products;
 using Rise.Domain.Users;
@@ -25,10 +26,23 @@ public class Seeder
     /// </summary>
     public void Seed()
     {
+        if (!BoatsHasAlreadyBeenSeeded())
+        {
+            DropBookings();
+            SeedBoats(); 
+        }
+
+        if (!BatteriesHasAlreadyBeenSeeded())
+        {
+            DropBookings();
+            SeedBatteries();
+        }
         if (!ProductsHasAlreadyBeenSeeded())
             SeedProducts();
         if (!UsersHasAlreadyBeenSeeded())
             SeedUsers();
+        if (!BookingsHasAlreadyBeenSeeded())
+            SeedBookings();
     }
 
     /// <summary>
@@ -53,14 +67,41 @@ public class Seeder
         return dbContext.Users.Any();
     }
 
+    private bool BookingsHasAlreadyBeenSeeded()
+    {
+        return dbContext.Bookings.Any();
+    }
+
+    private bool BoatsHasAlreadyBeenSeeded()
+    {
+        return dbContext.Boats.Any();
+    }
+
+    private bool BatteriesHasAlreadyBeenSeeded()
+    {
+        return dbContext.Batteries.Any();
+    }
+
+    private bool DropUsers()
+    {
+        dbContext.Users.RemoveRange(dbContext.Users.AsEnumerable());
+        return true;
+    }
+
+    private bool DropBookings()
+    {
+        dbContext.Bookings.RemoveRange(dbContext.Bookings.AsEnumerable());
+        return true;
+    }
+
     /// <summary>
     /// Seeds the database with a range of product entities.
     /// </summary>
     private void SeedProducts()
     {
         var products = Enumerable.Range(1, 20)
-                                 .Select(i => new Product { Name = $"Product {i}" })
-                                 .ToList();
+            .Select(i => new Product { Name = $"Product {i}" })
+            .ToList();
 
         dbContext.Products.AddRange(products);
         dbContext.SaveChanges();
@@ -71,19 +112,57 @@ public class Seeder
     /// </summary>
     private void SeedUsers()
     {
-        var userAdmin = new User("auth0|6713ad524e8a8907fbf0d57f","Admin", "Gebruiker", "admin@gmail.com",  new DateTime(1980, 01, 01), new Address("Afrikalaan", "5"), "+32478457845");
+        var userAdmin = new User("auth0|6713ad524e8a8907fbf0d57f", "Admin", "Gebruiker", "admin@hogent.be",
+            new DateTime(1980, 01, 01), new Address("Afrikalaan", "5"), "+32478457845");
         userAdmin.AddRole(new Role(RolesEnum.Admin));
         dbContext.Users.Add(userAdmin);
-        var userUser = new User("auth0|6713ad784fda04f4b9ae2165","GodParent", "Gebruiker", "godparent@gmail.com", new DateTime(1986, 09, 27), new Address("Bataviabrug", "35"), "+32478471869");
+        var userUser = new User("auth0|6713ad784fda04f4b9ae2165", "GodParent", "Gebruiker", "godparent@hogent.be",
+            new DateTime(1986, 09, 27), new Address("Bataviabrug", "35"), "+32478471869");
         userUser.AddRole(new Role());
         dbContext.Users.Add(userUser);
-        var userGodparent = new User("auth0|6713ad614fda04f4b9ae2156","User", "Gebruiker", "user@gmail.com", new DateTime(1990, 05, 16), new Address("Deckerstraat", "4"), "+32474771836");
+        var userGodparent = new User("auth0|6713ad614fda04f4b9ae2156", "User", "Gebruiker", "user@hogent.be",
+            new DateTime(1990, 05, 16), new Address("Deckerstraat", "4"), "+32474771836");
         userGodparent.AddRole(new Role(RolesEnum.Godparent));
         dbContext.Users.Add(userGodparent);
-        var userPending = new User("auth0|6713adbf2d2a7c11375ac64c","Pending", "Gebruiker", "pending@gmail.com", new DateTime(1990, 05, 16), new Address("Deckerstraat", "4"), "+32474771836");
+        var userPending = new User("auth0|6713adbf2d2a7c11375ac64c", "Pending", "Gebruiker", "pending@hogent.be",
+            new DateTime(1990, 05, 16), new Address("Deckerstraat", "4"), "+32474771836");
         userPending.AddRole(new Role(RolesEnum.Pending));
         dbContext.Users.Add(userPending);
         dbContext.SaveChanges();
     }
-}
 
+    private void SeedBookings()
+    {
+        var booking1 = new Booking(1, 1, new DateTime(2025, 01, 01), "auth0|6713ad614fda04f4b9ae2156");
+        dbContext.Bookings.Add(booking1);
+        var bookingBattery = new Booking(2,1, new DateTime(2023, 01, 01), "auth0|6713ad614fda04f4b9ae2156");
+        bookingBattery.AddBattery(dbContext.Batteries.First());
+        dbContext.Bookings.Add(bookingBattery);
+        var bookingBoat = new Booking(3,1, new DateTime(2022, 01, 01), "auth0|6713ad614fda04f4b9ae2156");
+        bookingBoat.AddBoat(dbContext.Boats.First());
+        dbContext.Bookings.Add(bookingBoat);
+        var bookingAll = new Booking(4,1, new DateTime(2021, 01, 01), "auth0|6713ad614fda04f4b9ae2156");
+        bookingAll.AddBattery(dbContext.Batteries.OrderBy(battery => battery.Name).Last());
+        bookingAll.AddBoat(dbContext.Boats.OrderBy(boat => boat.Name).Last());
+        dbContext.Bookings.Add(bookingAll);
+        dbContext.SaveChanges();
+    }
+
+    private void SeedBoats()
+    {
+        for (int i = 1; i <= 3; i++)
+        {
+            dbContext.Boats.Add(new Boat("Boat" + i));
+        }
+        dbContext.SaveChanges();
+    }
+
+    private void SeedBatteries()
+    {
+        for (int i = 1; i <= 10; i++)
+        {
+            dbContext.Batteries.Add(new Battery("Battery" + i));
+        }
+        dbContext.SaveChanges();
+    }
+}
