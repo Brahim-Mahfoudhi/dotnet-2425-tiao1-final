@@ -11,8 +11,6 @@ public class Booking : Entity
 
     private string _id = Guid.NewGuid().ToString();
 
-    private int _countAdults = default!;
-    private int _countChildren = default!;
     private DateTime _bookingDate;
     private Boat? _boat;
     private Battery? _battery;
@@ -35,10 +33,8 @@ public class Booking : Entity
     /// <param name="countAdults">The amount of adults on the booking.</param>
     /// <param name="countChildren">The amount of children on the booking.</param>
     /// <param name="bookingDate">The date of the booking.</param>
-    public Booking(int countAdults, int countChildren, DateTime bookingDate, string userId)
+    public Booking(DateTime bookingDate, string userId)
     {
-        CountAdults = countAdults;
-        CountChildren = countChildren;
         BookingDate = bookingDate;
         UserId = userId;
     }
@@ -60,23 +56,6 @@ public class Booking : Entity
         set => _userId = Guard.Against.Null(value);
     }
     
-    /// <summary>
-    /// Gets or sets the amount of adults that are included in the booking.
-    /// </summary>
-    public int CountAdults
-    {
-        get => _countAdults;
-        set => _countAdults = Guard.Against.Negative(value, nameof(CountAdults));
-    }
-
-    /// <summary>
-    /// Gets or sets the amount of children that are included in the booking.
-    /// </summary>
-    public int CountChildren
-    {
-        get => _countChildren;
-        set => _countChildren = Guard.Against.Negative(value, nameof(CountChildren));
-    }
 
     /// <summary>
     /// Gets or sets the booking date.

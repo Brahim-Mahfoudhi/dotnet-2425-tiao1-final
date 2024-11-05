@@ -26,6 +26,7 @@ public class BookingService : IBookingService
         // You need to avoid using methods with optional parameters directly
         // in the LINQ query that EF is trying to translate
         var query = await _dbContext.Bookings
+        .Include(b => b.Id)
             .Include(b => b.Battery)
             .Include(b => b.Boat)
             .Where(x => x.IsDeleted == false)
@@ -60,8 +61,6 @@ public class BookingService : IBookingService
     public async Task<bool> CreateBookingAsync(BookingDto.NewBooking booking)
     {
         var entity = new Booking(
-            countAdults: booking.countAdults,
-            countChildren: booking.countChildren,
             bookingDate: booking.bookingDate,
             userId: booking.userId
         );
@@ -73,10 +72,8 @@ public class BookingService : IBookingService
 
     public async Task<bool> UpdateBookingAsync(BookingDto.UpdateBooking booking)
     {
-        var entity = await _dbContext.Bookings.FindAsync(booking.id) ?? throw new Exception("Booking not found");
+        var entity = await _dbContext.Bookings.FindAsync(booking.bookingId) ?? throw new Exception("Booking not found");
 
-        entity.CountAdults = booking.countAdults ?? entity.CountAdults;
-        entity.CountChildren = booking.countChildren ?? entity.CountChildren;
         entity.BookingDate = booking.bookingDate ?? entity.BookingDate;
         /*entity.Boat = booking.boat ?? entity.Boat;
         entity.Battery = booking.battery ?? entity.Battery;
@@ -117,7 +114,7 @@ public class BookingService : IBookingService
         // You need to avoid using methods with optional parameters directly
         // in the LINQ query that EF is trying to translate
         Console.WriteLine(userId);
-        
+
         var query = await _dbContext.Bookings
             .Include(x => x.Battery)
             .Include(x => x.Boat)
@@ -157,8 +154,7 @@ public class BookingService : IBookingService
 
         return new BookingDto.ViewBooking()
         {
-            countChildren = booking.CountChildren,
-            countAdults = booking.CountAdults,
+            bookingId = booking.Id,
             bookingDate = booking.BookingDate,
             battery = battery,
             boat = boat

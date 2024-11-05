@@ -133,15 +133,15 @@ public class Seeder
 
     private void SeedBookings()
     {
-        var booking1 = new Booking(1, 1, new DateTime(2025, 01, 01), "auth0|6713ad614fda04f4b9ae2156");
+        var booking1 = new Booking(new DateTime(2025, 01, 01), "auth0|6713ad614fda04f4b9ae2156");
         dbContext.Bookings.Add(booking1);
-        var bookingBattery = new Booking(2,1, new DateTime(2023, 01, 01), "auth0|6713ad614fda04f4b9ae2156");
+        var bookingBattery = new Booking(new DateTime(2023, 01, 01), "auth0|6713ad614fda04f4b9ae2156");
         bookingBattery.AddBattery(dbContext.Batteries.First());
         dbContext.Bookings.Add(bookingBattery);
-        var bookingBoat = new Booking(3,1, new DateTime(2022, 01, 01), "auth0|6713ad614fda04f4b9ae2156");
+        var bookingBoat = new Booking(new DateTime(2022, 01, 01), "auth0|6713ad614fda04f4b9ae2156");
         bookingBoat.AddBoat(dbContext.Boats.First());
         dbContext.Bookings.Add(bookingBoat);
-        var bookingAll = new Booking(4,1, new DateTime(2021, 01, 01), "auth0|6713ad614fda04f4b9ae2156");
+        var bookingAll = new Booking(new DateTime(2021, 01, 01), "auth0|6713ad614fda04f4b9ae2156");
         bookingAll.AddBattery(dbContext.Batteries.OrderBy(battery => battery.Name).Last());
         bookingAll.AddBoat(dbContext.Boats.OrderBy(boat => boat.Name).Last());
         dbContext.Bookings.Add(bookingAll);

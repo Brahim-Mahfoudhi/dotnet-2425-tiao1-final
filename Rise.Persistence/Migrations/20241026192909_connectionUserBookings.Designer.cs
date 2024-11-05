@@ -124,12 +124,6 @@ namespace Rise.Persistence.Migrations
                     b.Property<DateTime>("BookingDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("CountAdults")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CountChildren")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
