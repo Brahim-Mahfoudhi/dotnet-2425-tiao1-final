@@ -122,28 +122,4 @@ public class BookingService : IBookingService
         
          return convertedTimeSlots;
     }
-
-    public async Task<IEnumerable<BookingDto.ViewBookingCalender>?> GetTakenTimeslotsInDateRange(DateTime? startDate, DateTime? endDate)
-    {
-        var timeslots = await httpClient.GetStringAsync("GetBookingsByDateRange");
-        return JsonSerializer.Deserialize<IEnumerable<BookingDto.ViewBookingCalender>>(timeslots, jsonSerializerOptions);
-    }
-
-    public async Task<IEnumerable<BookingDto.ViewBookingCalender>?> GetFreeTimeslotsInDateRange(DateTime? startDate, DateTime? endDate)
-    {
-        var timeslots = await httpClient
-            .GetStringAsync($"/api/Booking/GetFreeTimeslotsByDateRange?startDate={startDate.ToIsoDateString()}&endDate={endDate.ToIsoDateString()}");
-
-        
-        // to make the json serializer work correctly
-        var options = new JsonSerializerOptions
-            {
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-                Converters = { new JsonStringEnumConverter() }
-            };
-
-        var convertedTimeSlots = JsonSerializer.Deserialize<IEnumerable<BookingDto.ViewBookingCalender>>(timeslots, options);  
-        
-         return convertedTimeSlots;
-    }
 }
