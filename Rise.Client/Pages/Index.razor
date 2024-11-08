@@ -1,38 +1,4 @@
 ﻿@page "/"
 
-<main class="main-content mt-0">
-    <div class="page-header align-items-center min-vh-100">
-        <div class="container my-auto">
-            <div class="row">
-                <div class="col-lg-4 col-md-8 col-12 mx-auto">
-                    <div class="card z-index-0 fadeIn3 fadeInBottom">
-                        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-                            <div class="bg-gradient-dark shadow-dark border-radius-lg py-3 pe-1">
-                                <PageTitle>Index</PageTitle>
-                                <h1 class="card-title text-white">Hello, world!</h1>
-                                <div class="card-subtitle text-primary">Welcome to your new app .</div>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <AuthorizeView>
-                                <Authorized>
-                                    @foreach (var claim in context.User.Claims)
-                                    {
-                                        <p>@claim.Type - @claim.Value</p>
-                                    }
-                                </Authorized>
-                                <NotAuthorized>
-                                    Please login to see all the claims, <a href="/embedded-login">Log in</a>
-                                </NotAuthorized>
-                            </AuthorizeView>
-
-                            <AuthorizeView Roles="Admin">
-                                Only Administrators can see this.
-                            </AuthorizeView>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</main>
+<HomePageHeader/>
+<BoatInfo/>

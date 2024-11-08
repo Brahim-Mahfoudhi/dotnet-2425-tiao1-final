@@ -95,12 +95,27 @@ public static class StreetEnumExtensions
         return StreetNames.TryGetValue(streetType, out var streetName) ? streetName : string.Empty;
     }
 
+    // public static StreetEnum GetStreetEnum(this string streetName)
+    // {
+    //     return StreetNames
+    //             .FirstOrDefault(x => x.Value.Equals(streetName, StringComparison.OrdinalIgnoreCase))
+    //             .Key;
+    // }
+
     public static StreetEnum GetStreetEnum(this string streetName)
+{
+    // Normalize by removing spaces and ignoring case
+    var normalizedStreetName = streetName.Replace(" ", "", StringComparison.OrdinalIgnoreCase);
+
+    var match = StreetNames.FirstOrDefault(x => 
+        x.Value.Replace(" ", "", StringComparison.OrdinalIgnoreCase)
+        .Equals(normalizedStreetName, StringComparison.OrdinalIgnoreCase)).Key;
+
+    if (match == default)
     {
-        return Guard
-            .Against
-            .Default(StreetNames
-                .FirstOrDefault(x => x.Value.Equals(streetName, StringComparison.OrdinalIgnoreCase))
-                .Key);
+        throw new ArgumentException($"Street name '{streetName}' does not correspond to any defined StreetEnum value.");
     }
+
+    return match;
+}
 }

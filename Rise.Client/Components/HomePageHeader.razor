@@ -1,0 +1,15 @@
+@inject Microsoft.Extensions.Localization.IStringLocalizer<HomePageHeader> Localizer
+
+<header class="header-2">
+  <div class="page-header mb-0 min-vh-75 background-overlay">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6">
+          <h1 class="text-white pt-3 mt-n6 display-2 font-weight-bolder">BUUT</h1>
+          <p class="lead text-white mt-3 font-weight-normal">@Localizer["HeaderText"]</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+

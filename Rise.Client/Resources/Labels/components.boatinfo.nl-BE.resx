@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
+              <xsd:attribute name="xml:space" type="xsd:string" fixed="preserve"/>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+
+  <data name="Boats" xml:space="preserve">
+    <value>De boten</value>
+  </data>
+    <data name="GeneralInfo" xml:space="preserve">
+    <value>Via het Wijkbudget van Stad Gent kocht VZW Buut drie bootjes aan (type Whaly 450 classic), aangedreven met een elektrische motor.</value>
+  </data>
+    <data name="Tribute" xml:space="preserve">
+    <value>Tribute</value>
+  </data>
+    <data name="TributeInfo" xml:space="preserve">
+    <value>Deze 3 bootjes,  Lubeck, Limba en Leith werden vernoemd naar straten in de buurt Muide-Meulestee-Afrikalaan. Deze straten verwijzen naar havens. Er werd gekozen voor namen beginnend met de letter L, als eerbetoon aan de overleden buurtwerker Lucien De Ridder.</value>
+  </data>
+    <data name="RegisterNow" xml:space="preserve">
+    <value>Register now</value>
+  </data>
+    <data name="RegisterNowInfo" xml:space="preserve">
+    <value>De bootjes kunnen door wijkbewoners online gereserveerd worden. Meer uitleg vind je op de pagina "HOE LID WORDEN"</value>
+  </data>
+    <data name="Dock" xml:space="preserve">
+    <value>Dock</value>
+  </data>
+    <data name="DockInfo" xml:space="preserve">
+    <value>Geniet van op het water van de rust en pracht van onze buurt, van aan de Meulestedebrug tot aan het Keizerspark. De bootjes hebben als vaste ligplaats de verlaagde kade in de Terneuzenlaan.</value>
+  </data>
+  
+</root>

@@ -3,14 +3,31 @@ using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
 
 
-public class DateInThePastAttribute : ValidationAttribute
+public class MinimumAgeAttribute : ValidationAttribute
 {
+    private readonly int _minimumAge;
+
+    public MinimumAgeAttribute(int minimumAge)
+    {
+        _minimumAge = minimumAge;
+    }
+
     public override bool IsValid(object? value)
     {
         if (value is DateTime dateTime)
         {
-            // Check if the date is less than or equal to today
-            return dateTime <= DateTime.Today;
+            // Calculate the age based on the provided date
+            var today = DateTime.Today;
+            var age = today.Year - dateTime.Year;
+
+            // Adjust if the birthday hasn't occurred yet this year
+            if (dateTime.Date > today.AddYears(-age))
+            {
+                age--;
+            }
+
+            // Check if the age meets the minimum requirement
+            return age >= _minimumAge;
         }
 
         return false;
@@ -55,6 +72,34 @@ public class NotNullOrEmptyAttribute : ValidationAttribute
         else if (value == null)
         {
             return new ValidationResult(ErrorMessage ?? "The field is required.");
+        }
+
+        return ValidationResult.Success;
+    }
+}
+
+public class ComparePasswordAttribute : ValidationAttribute
+{
+    private readonly string _comparisonProperty;
+
+    public ComparePasswordAttribute(string comparisonProperty)
+    {
+        _comparisonProperty = comparisonProperty;
+    }
+
+    protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+    {
+        var currentValue = value?.ToString();
+        var comparisonProperty = validationContext.ObjectType.GetProperty(_comparisonProperty);
+
+        if (comparisonProperty == null)
+            throw new ArgumentException("Property with this name not found");
+
+        var comparisonValue = comparisonProperty.GetValue(validationContext.ObjectInstance)?.ToString();
+
+        if (currentValue != comparisonValue)
+        {
+            return new ValidationResult(ErrorMessage ?? "The passwords do not match.");
         }
 
         return ValidationResult.Success;

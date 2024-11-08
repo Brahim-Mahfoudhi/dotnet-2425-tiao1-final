@@ -19,8 +19,9 @@
     </xsd:element>
   </xsd:schema>
 
+// Buttons
 <data name="Register" xml:space="preserve">
-  <value>Registeer</value>
+  <value>Registreer</value>
 </data>
 <data name="Login" xml:space="preserve">
   <value>Aanmelden</value>
@@ -29,6 +30,7 @@
   <value>Annuleer</value>
 </data>
 
+// Form fields
 <data name="FirstName" xml:space="preserve">
   <value>Voornaam</value>
 </data>
@@ -50,6 +52,9 @@
 <data name="BirthDate" xml:space="preserve">
   <value>Geboorte datum</value>
 </data>
+<data name="TypeStreet" xml:space="preserve">
+  <value>Typ om een straat te zoeken...</value>
+</data>
 <data name="SelectAddress" xml:space="preserve">
   <value>Selecteer uw adres</value>
 </data>
@@ -62,7 +67,123 @@
 <data name="Bus" xml:space="preserve">
   <value>Bus</value>
 </data>
+
+// Messages
 <data name="AlreadyAnAccount" xml:space="preserve">
   <value>Al een account?</value>
+</data>
+<data name="PleaseWait" xml:space="preserve">
+  <value>Even geduld...</value>
+</data>
+<data name="ThankForRegistering" xml:space="preserve">
+  <value>Bedankt voor het registreren</value>
+</data>
+<data name="RegistrationFailed" xml:space="preserve">
+  <value>Registratie mislukt!</value>
+</data>
+
+// Errors messages
+<data name="UserCreatedSuccess" xml:space="preserve">
+  <value>Gebruiker succesvol aangemaakt!</value>
+</data>
+<data name="UserCreationFailed" xml:space="preserve">
+  <value>Aanmaken van gebruiker mislukt. Probeer het opnieuw.</value>
+</data>
+<data name="UserAlreadyExists" xml:space="preserve">
+  <value>Er bestaat al een gebruiker met dit e-mailadres.</value>
+</data>
+<data name="ExternalServiceUnavailable" xml:space="preserve">
+  <value>De externe service is momenteel niet beschikbaar. Probeer het later opnieuw.</value>
+</data>
+<data name="UnexpectedErrorOccurred" xml:space="preserve">
+  <value>Er is een onverwachte fout opgetreden. Probeer het opnieuw.</value>
+</data>
+<data name="PasswordsDoNotMatch" xml:space="preserve">
+  <value>Wachtwoorden komen niet overeen.</value>
+</data>
+
+// Error Fields messages
+<data name="FirstNameRequired" xml:space="preserve">
+  <value>Voornaam is verplicht.</value>
+</data>
+<data name="LastNameRequired" xml:space="preserve">
+  <value>Achternaam is verplicht.</value>
+</data>
+<data name="EmailRequired" xml:space="preserve">
+  <value>E-mailadres is verplicht.</value>
+</data>
+<data name="EmailInvalid" xml:space="preserve">
+  <value>Ongeldig e-mailadres.</value>
+</data>
+<data name="PhoneNumberRequired" xml:space="preserve">
+  <value>Telefoonnummer is verplicht.</value>
+</data>
+<data name="PasswordRequired" xml:space="preserve">
+  <value>Wachtwoord is verplicht.</value>
+</data>
+<data name="PasswordMinLength" xml:space="preserve">
+  <value>Wachtwoord moet minstens 8 tekens lang zijn.</value>
+</data>
+<data name="ConfirmPasswordRequired" xml:space="preserve">
+  <value>Bevestig wachtwoord is verplicht.</value>
+</data>
+<data name="PasswordNotMatch" xml:space="preserve">
+  <value>Wachtwoorden komen niet overeen.</value>
+</data>
+<data name="Min18YearsOld" xml:space="preserve">
+  <value>De minimum leeftijd is 18 jaar of ouder.</value>
+</data>
+<data name="AddressRequired" xml:space="preserve">
+  <value>Adres is verplicht.</value>
+</data>
+<data name="HouseNumberRequired" xml:space="preserve">
+  <value>Huisnummer is verplicht.</value>
+</data>
+<data name="StreetRequired" xml:space="preserve">
+  <value>Straatnaam is verplicht.</value>
+</data>
+<data name="EmailAlreadyTaken" xml:space="preserve">
+  <value>Dit e-mailadres is al in gebruik.</value>
+</data>
+
+
+//info
+<data name="Age" xml:space="preserve">
+  <value>Leeftijd</value>
+</data>
+<data name="AgeInfo" xml:space="preserve">
+  <value>De minimum leeftijd is 18 jaar</value>
+</data>
+<data name="Location" xml:space="preserve">
+  <value>Adres</value>
+</data>
+<data name="LocationInfo" xml:space="preserve">
+  <value>Adres moet in de buurt Muide - Meulestede - Afrikalaan liggen</value>
+</data>
+<data name="Deposit" xml:space="preserve">
+  <value>Kosten</value>
+</data>
+<data name="DepositInfo" xml:space="preserve">
+  <value>€20 lidgeld en €150 waarborg</value>
+</data>
+<data name="Training" xml:space="preserve">
+  <value>Training</value>
+</data>
+<data name="TrainingInfo" xml:space="preserve">
+  <value>Er is een verplicht bij te wonen training sessie</value>
+</data>
+<data name="RegisterInfo" xml:space="preserve">
+  <value>Word nu lid van ons netwerk van bootliefhebbers!
+</value>
+</data>
+<data name="IAgreeThe" xml:space="preserve">
+  <value>Ik ga akkoord met de </value>
+</data>
+
+<data name="TermsAndConditions" xml:space="preserve">
+  <value>voorwaarden</value>
+</data>
+<data name="AdminValidationText" xml:space="preserve">
+  <value>Uw registratie is momenteel in behandeling. U ontvangt een melding zodra een beheerder uw account heeft geverifieerd. Bedankt voor uw geduld!</value>
 </data>
 </root>

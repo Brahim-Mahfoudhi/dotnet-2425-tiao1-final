@@ -8,8 +8,9 @@
 @using Rise.Shared.Enums
 
 
-<nav class="navbar navbar-expand-lg navbar-transparent shadow-sm bg-transparent z-index-3">
-  <div class="container">
+<nav class="navbar navbar-expand-lg navbar-transparent position-fixed w-100 top-0 z-index-3 shadow-none start-0 end-0"
+  id="navbar">
+  <div class="container pt-1">
     <a class="navbar-brand font-weight-bold" href="/">
       <div class="bg-white z-index-3 p-1 logo-img rounded-circle ">
         <img src="img/BUUT_logo.png" alt="Logo" class="logo" />
@@ -21,7 +22,7 @@
         <li class="nav-item dropdown dropdown-hover mx-2">
           <a href="/" class="nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-end" role="button"
             aria-expanded="false">
-            <h4 class="text-white">@Localizer["Home"]</h4>
+            <h6 class="text-white">@Localizer["Home"]</h6>
           </a>
         </li>
         @foreach (var link in NavigationLinks.GetNavigationLinks().Where(link => link.Authenticated))
@@ -32,7 +33,7 @@
               <li class="nav-item dropdown dropdown-hover mx-2">
                 <a href="@link.Url" class="nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-end"
                   role="button" aria-expanded="false">
-                  <h5 class="text-white">@Localizer[@link.Name]</h5>
+                  <h6 class="text-white">@Localizer[@link.Name]</h6>
                 </a>
               </li>
             </AuthorizeView>
@@ -43,7 +44,7 @@
               <li class="nav-item dropdown dropdown-hover mx-2">
                 <a href="@link.Url" class="nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-end"
                   role="button" aria-expanded="false">
-                  <h5 class="text-white">@Localizer[@link.Name]</h5>
+                  <h6 class="text-white">@Localizer[@link.Name]</h6>
                 </a>
               </li>
             </AuthorizeView>
@@ -54,14 +55,14 @@
           <li class="nav-item dropdown dropdown-hover mx-2">
             <a href="@link.Url" class="nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-end"
               role="button" aria-expanded="false">
-              <h4 class="text-white">@Localizer[@link.Name]</h4>
+              <h6 class="text-white">@Localizer[@link.Name]</h6>
             </a>
           </li>
         }
       </ul>
 
     </div>
-    <ul class="navbar-nav navbar-nav-hover d-flex flex-row align-items-end justify-content-end ml-auto">
+    <ul class="navbar-nav navbar-nav-hover d-flex flex-row align-items-center justify-content-end ml-auto">
       <AuthorizeView>
         <Authorized>
           <li class="nav-item dropdown dropdown-hover mx-2">
@@ -81,34 +82,30 @@
           <i class="ni ni-settings-gear-65 text-muted"></i>
           <img src="img/down-arrow-white.svg" alt="down-arrow" class="arrow ms-1 d-lg-block d-none">
         </a>
-        <div class="dropdown-menu dropdown-menu-animation dropdown-lg mt-0 mt-lg-3 p-3 border-radius-lg"
+        <div class="dropdown-menu dropdown-menu-animation dropdown-lg mt-0 mt-lg-3 p-1 border-radius-lg"
           aria-labelledby="dropdownMenuDocs">
           <div class="d-none d-lg-block">
             <ul class="list-group">
               <li class="nav-item list-group-item border-0 p-0">
                 <a class="dropdown-item py-2 ps-3 border-radius-md" @onclick='() => ChangeLanguage("en-US")'>
-                  <div class="d-flex">
-                    <div class="icon h-10 me-3 d-flex mt-1">
+                  <div class="d-flex align-items-center">
+                    <div class="icon me-3 d-flex align-items-center">
                       <i class="ni ni-bold-right"></i>
                     </div>
                     <div>
-                      <h6
-                        class="dropdown-header text-dark font-weight-bold d-flex justify-content-centre align-items-center p-0">
-                        English</h6>
+                      <h6 class="dropdown-header text-dark font-weight-bold m-0">English</h6>
                     </div>
                   </div>
                 </a>
               </li>
               <li class="nav-item list-group-item border-0 p-0">
                 <a class="dropdown-item py-2 ps-3 border-radius-md" @onclick='() => ChangeLanguage("nl-BE")'>
-                  <div class="d-flex">
-                    <div class="icon h-10 me-3 d-flex mt-1">
+                  <div class="d-flex align-items-center">
+                    <div class="icon me-3 d-flex align-items-center">
                       <i class="ni ni-bold-right"></i>
                     </div>
                     <div>
-                      <h6
-                        class="dropdown-header text-dark font-weight-bold d-flex justify-content-centre align-items-center p-0">
-                        Nederlands</h6>
+                      <h6 class="dropdown-header text-dark font-weight-bold m-0">Nederlands</h6>
                     </div>
                   </div>
                 </a>
@@ -118,26 +115,22 @@
           <div class="row d-lg-none">
             <div class="col-md-12 g-0">
               <a class="dropdown-item py-2 ps-3 border-radius-md" @onclick='() => ChangeLanguage("en-US")'>
-                <div class="d-flex">
-                  <div class="icon h-10 me-3 d-flex mt-1">
+                <div class="d-flex align-items-center">
+                  <div class="icon me-3 d-flex align-items-center">
                     <i class="ni ni-bold-right"></i>
                   </div>
                   <div>
-                    <h6
-                      class="dropdown-header text-dark font-weight-bold d-flex justify-content-centre align-items-center p-0">
-                      English</h6>
+                    <h6 class="dropdown-header text-dark font-weight-bold m-0">English</h6>
                   </div>
                 </div>
               </a>
               <a class="dropdown-item py-2 ps-3 border-radius-md" @onclick='() => ChangeLanguage("nl-BE")'>
-                <div class="d-flex">
-                  <div class="icon h-10 me-3 d-flex mt-1">
+                <div class="d-flex align-items-center">
+                  <div class="icon me-3 d-flex align-items-center">
                     <i class="ni ni-bold-right"></i>
                   </div>
                   <div>
-                    <h6
-                      class="dropdown-header text-dark font-weight-bold d-flex justify-content-centre align-items-center p-0">
-                      Nederlands</h6>
+                    <h6 class="dropdown-header text-dark font-weight-bold m-0">Nederlands</h6>
                   </div>
                 </div>
               </a>
@@ -145,6 +138,7 @@
           </div>
         </div>
       </li>
+
 
       <AuthorizeView>
         <Authorized>

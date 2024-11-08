@@ -19,28 +19,9 @@
     </xsd:element>
   </xsd:schema>
 
-<data name="Information" xml:space="preserve">
-  <value>Informatie</value>
-</data>
-<data name="Actua" xml:space="preserve">
-  <value>Actua</value>
-</data>
-<data name="Sponsors" xml:space="preserve">
-  <value>Meter/Peter</value>
-</data>
-<data name="Users" xml:space="preserve">
-  <value>Gebruikers</value>
-</data>
-<data name="Auth users" xml:space="preserve">
-  <value>Auth gebruikers</value>
-</data>
-<data name="Documents" xml:space="preserve">
-  <value>Documenten</value>
-</data>
-  <data name="MakeBooking" xml:space="preserve">
-    <value>Boek nu</value>
+  <data name="HeaderText" xml:space="preserve">
+    <value>Share boats for Muide - Meulestede -  Afrikalaan</value>
   </data>
-  <data name="MyBookings" xml:space="preserve">
-    <value>Mijn boekingen</value>
-  </data>
+  
+
 </root>

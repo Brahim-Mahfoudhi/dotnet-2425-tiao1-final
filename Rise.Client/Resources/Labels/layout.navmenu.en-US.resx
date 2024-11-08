@@ -38,6 +38,6 @@
   <value>Logout</value>
 </data>
   <data name="MakeBooking" xml:space="preserve">
-    <value>Make a booking</value>
+    <value>Book now</value>
   </data>
 </root>

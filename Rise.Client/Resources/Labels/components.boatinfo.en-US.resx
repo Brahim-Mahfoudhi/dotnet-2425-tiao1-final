@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
+              <xsd:attribute name="xml:space" type="xsd:string" fixed="preserve"/>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+
+  <data name="Boats" xml:space="preserve">
+    <value>The boats</value>
+  </data>
+    <data name="GeneralInfo" xml:space="preserve">
+    <value>Using the neighborhood budget of the City of Ghent, VZW Buut purchased three boats (type Whaly 450 classic), powered by an electric motor.</value>
+  </data>
+    <data name="Tribute" xml:space="preserve">
+    <value>Tribute</value>
+  </data>
+    <data name="TributeInfo" xml:space="preserve">
+    <value>These three boats, Lubeck, Limba, and Leith, were named after streets in the Muide-Meulestee-Afrikalaan neighborhood. These streets are named after ports. Names beginning with the letter L were chosen as a tribute to the late community worker Lucien De Ridder.</value>
+  </data>
+    <data name="RegisterNow" xml:space="preserve">
+    <value>Register now</value>
+  </data>
+    <data name="RegisterNowInfo" xml:space="preserve">
+    <value>Neighborhood residents can reserve the boats online. For more information, visit the 'HOW TO BECOME A MEMBER' page.</value>
+  </data>
+    <data name="Dock" xml:space="preserve">
+    <value>Dock</value>
+  </data>
+    <data name="DockInfo" xml:space="preserve">
+    <value>Enjoy the tranquility and beauty of our neighborhood from the water, from the Meulestedebrug to Keizerspark. The boats are permanently docked at the lower quay on Terneuzenlaan.</value>
+  </data>
+  
+</root>

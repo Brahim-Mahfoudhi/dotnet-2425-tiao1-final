@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Authorization;
 using Auth0.ManagementApi;
 using Auth0.ManagementApi.Models;
 using Auth0.ManagementApi.Paging;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Auth0.Core.Exceptions;
 
 namespace Rise.Server.Controllers;
 
@@ -47,7 +49,7 @@ public class UserController : ControllerBase
     /// </summary>
     /// <returns>List of <see cref="UserDto"/> objects or <c>null</c> if no users are found.</returns>
     [HttpGet("all")]
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public async Task<IEnumerable<UserDto.UserBase>?> GetAllUsers()
     {
 
@@ -89,12 +91,40 @@ public class UserController : ControllerBase
     /// <param name="userDetails">The <see cref="UserDto.RegistrationUser"/> object containing user details to create.</param>
     /// <returns>The created <see cref="UserDto.RegistrationUser"/> object or <c>null</c> if the user creation fails.</returns>
     [HttpPost]
-    public async Task<bool> Post(UserDto.RegistrationUser userDetails)
+    public async Task<IActionResult> Post(UserDto.RegistrationUser userDetails)
     {
-        var userDb = await RegisterUserAuth0(userDetails);
-        var created = await _userService.CreateUserAsync(userDb);
-        return created;
+        try
+        {
+            var userDb = await RegisterUserAuth0(userDetails);
+            var (success, message) = await _userService.CreateUserAsync(userDb);
+
+            if (success)
+            {
+                return Ok(new { message }); // Localization key
+            }
+            else
+            {
+                return BadRequest(new { message }); // Localization key
+            }
+        }
+        catch (UserAlreadyExistsException)
+        {
+            return Conflict(new { message = "UserAlreadyExists" }); // Localization key
+        }
+        catch (DatabaseOperationException)
+        {
+            return StatusCode(500, new { message = "UserCreationFailed" }); // Localization key
+        }
+        catch (ExternalServiceException)
+        {
+            return StatusCode(503, new { message = "ExternalServiceUnavailable" }); // Localization key
+        }
+        catch (Exception)
+        {
+            return StatusCode(500, new { message = "UnexpectedErrorOccurred" }); // Localization key
+        }
     }
+
 
     /// <summary>
     /// Updates an existing user asynchronously.
@@ -123,32 +153,102 @@ public class UserController : ControllerBase
         return deleted;
     }
 
+    // [HttpGet("auth/users")]
+    // [Authorize]
+    // public async Task<IEnumerable<UserDto.Auth0User>> GetUsers()
+    // {
+    //     var users = await _managementApiClient.Users.GetAllAsync(new GetUsersRequest(), new PaginationInfo());
+    //     Console.WriteLine(users);
+    //     return users.Select(x => new UserDto.Auth0User(
+    //         x.Email,
+    //         x.FirstName,
+    //         x.LastName,
+    //         x.Blocked ?? false
+    //     ));
+    // }
+
     [HttpGet("auth/users")]
     [Authorize]
-    public async Task<IEnumerable<UserDto.Auth0User>> GetUsers()
+    public async Task<IActionResult> GetUsers()
     {
-        var users = await _managementApiClient.Users.GetAllAsync(new GetUsersRequest(), new PaginationInfo());
-        Console.WriteLine(users);
-        return users.Select(x => new UserDto.Auth0User(
-            x.Email,
-            x.FirstName,
-            x.LastName,
-            x.Blocked ?? false
-        ));
+        try
+        {
+            // Fetch users from Auth0
+            var users = await _managementApiClient.Users.GetAllAsync(new GetUsersRequest(), new PaginationInfo());
+
+            // Transform and return the user list if successful
+            var auth0Users = users.Select(x => new UserDto.Auth0User(
+                x.Email,
+                x.FirstName,
+                x.LastName,
+                x.Blocked ?? false
+            ));
+
+            return Ok(auth0Users);
+        }
+        catch (ApiException ex)
+        {
+            // Handle specific Auth0 API exceptions, like network or request issues
+            return StatusCode(503, new { message = "Auth0 service is unavailable. Please try again later.", detail = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            // Handle any unexpected errors and return a 500 Internal Server Error
+            return StatusCode(500, new { message = "An unexpected error occurred while fetching users.", detail = ex.Message });
+        }
     }
+
+    // [HttpGet("auth/user/{id}")]
+    // [Authorize]
+    // public async Task<UserDto.Auth0User> GetUser(string id)
+    // {
+    //     var test = await _managementApiClient.Users.GetAsync(id);
+    //     Console.Write(test);
+    //     return new UserDto.Auth0User
+    //         (test.Email,
+    //         test.FirstName,
+    //         test.LastName,
+    //         test.Blocked ?? false);
+    // }
 
     [HttpGet("auth/user/{id}")]
     [Authorize]
-    public async Task<UserDto.Auth0User> GetUser(string id)
+    public async Task<IActionResult> GetUser(string id)
     {
-        var test = await _managementApiClient.Users.GetAsync(id);
-        Console.Write(test);
-        return new UserDto.Auth0User
-            (test.Email,
-            test.FirstName,
-            test.LastName,
-            test.Blocked ?? false);
+        try
+        {
+            // Attempt to retrieve the user by ID
+            var user = await _managementApiClient.Users.GetAsync(id);
+
+            if (user == null)
+            {
+                // Return 404 Not Found if the user does not exist
+                return NotFound(new { message = $"User with ID {id} was not found." });
+            }
+
+            // Transform and return the user data if found
+            var auth0User = new UserDto.Auth0User
+            (
+                user.Email,
+                user.FirstName,
+                user.LastName,
+                user.Blocked ?? false
+            );
+
+            return Ok(auth0User);
+        }
+        catch (ApiException ex)
+        {
+            // Handle specific Auth0 API exceptions
+            return StatusCode(503, new { message = "Auth0 service is unavailable. Please try again later.", detail = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            // Handle any other unexpected errors
+            return StatusCode(500, new { message = "An unexpected error occurred while fetching the user.", detail = ex.Message });
+        }
     }
+
 
     private async Task<UserDto.RegistrationUser> RegisterUserAuth0(UserDto.RegistrationUser user)
     {
@@ -160,12 +260,61 @@ public class UserController : ControllerBase
             FirstName = user.FirstName,
             LastName = user.LastName,
         };
+        try
+        {
+            // Check if the user already exists in Auth0
+            var usersWithEmail = await _managementApiClient.Users.GetAllAsync(new GetUsersRequest { Query = $"email:\"{user.Email}\"" });
+            if (usersWithEmail.Any())
+            {
+                throw new UserAlreadyExistsException("UserAlreadyExists"); // Localization key
+            }
 
-        var response = await _managementApiClient.Users.CreateAsync(userCreateRequest);
-        Console.WriteLine(response);
-        var userDb = new UserDto.RegistrationUser(response.FirstName, response.LastName, response.Email, user.PhoneNumber, null, response.UserId, user.Address, user.BirthDate);
-        Console.WriteLine("Created user" + userDb);
-        return userDb;
+            var response = await _managementApiClient.Users.CreateAsync(userCreateRequest);
+            Console.WriteLine("Created user: " + response.UserId);
+            return new UserDto.RegistrationUser(response.FirstName, response.LastName, response.Email, user.PhoneNumber, null, response.UserId, user.Address, user.BirthDate);
+
+        }
+        catch (UserAlreadyExistsException)
+        {
+            throw;
+        }
+        catch (ApiException ex)
+        {
+            throw new ExternalServiceException("ExternalServiceUnavailable", ex);
+        }
+        catch (Exception ex)
+        {
+            throw new ExternalServiceException("UnexpectedErrorOccurred", ex);
+        }
     }
 
+    /// <summary>
+    /// Checks if an email is already taken asynchronously.
+    /// </summary>
+    /// <param name="email">The email to check.</param>
+    /// <returns><c>true</c> if the email exists; otherwise, <c>false</c>.</returns>
+    [HttpGet("exists")]
+    [AllowAnonymous] // Allows anyone to call this method
+    public async Task<IActionResult> IsEmailTaken([FromQuery] string email)
+    {
+        try
+        {
+            // Check if any user exists with this email in Auth0
+            var usersWithEmail = await _managementApiClient.Users.GetAllAsync(new GetUsersRequest { Query = $"email:\"{email}\"" });
+            bool isTaken = usersWithEmail.Any();
+            Console.WriteLine("Email taken: " + isTaken);
+
+            return Ok(isTaken);
+        }
+        catch (ApiException ex)
+        {
+            // Handle specific Auth0 API exceptions
+            return StatusCode(503, new { message = "Auth0 service is unavailable. Please try again later.", detail = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            // Handle any other unexpected errors
+            return StatusCode(500, new { message = "An unexpected error occurred while checking the email.", detail = ex.Message });
+        }
+    }
 }

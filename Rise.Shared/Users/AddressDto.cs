@@ -26,7 +26,27 @@ public class AddressDto
         /// </summary>
         public string? Bus { get; set; }
     }
-    public class CreateAddress : AddressDto.GetAdress;
+
+    public class CreateAddress : AddressDto.GetAdress
+    {
+        // Default constructor
+        public CreateAddress()
+        {
+        }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CreateAddress"/> class.
+        /// </summary>
+        /// <param name="street">The street name for the address.</param>
+        /// <param name="houseNumber">The house number for the address.</param>
+        /// <param name="bus">The optional bus number for the address.</param>
+        public CreateAddress(StreetEnum street, string houseNumber, string? bus = null)
+        {
+            Street = street;
+            HouseNumber = houseNumber;
+            Bus = bus;
+        }
+
+    }
 
     public class UpdateAddress
     {

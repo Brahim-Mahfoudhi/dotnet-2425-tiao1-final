@@ -19,6 +19,7 @@
     </xsd:element>
   </xsd:schema>
 
+// Buttons
 <data name="Register" xml:space="preserve">
   <value>Register</value>
 </data>
@@ -29,6 +30,7 @@
   <value>Cancel</value>
 </data>
 
+// Form fields
 <data name="FirstName" xml:space="preserve">
   <value>First Name</value>
 </data>
@@ -50,6 +52,9 @@
 <data name="BirthDate" xml:space="preserve">
   <value>Birth date</value>
 </data>
+<data name="TypeStreet" xml:space="preserve">
+  <value>Type to search for a street...</value>
+</data>
 <data name="SelectAddress" xml:space="preserve">
   <value>Select your address</value>
 </data>
@@ -62,8 +67,119 @@
 <data name="Bus" xml:space="preserve">
   <value>Bus</value>
 </data>
+
+// Messages
 <data name="AlreadyAnAccount" xml:space="preserve">
   <value>Already have an account?</value>
 </data>
+<data name="PleaseWait" xml:space="preserve">
+  <value>Please wait...</value>
+</data>
+<data name="ThankForRegistering" xml:space="preserve">
+  <value>Thank you for registering!</value>
+</data>
+<data name="RegistrationFailed" xml:space="preserve">
+  <value>Registration failed!</value>
+</data>
+
+// Error messages
+<data name="UserCreatedSuccess" xml:space="preserve">
+  <value>User created successfully!</value>
+</data>
+<data name="UserCreationFailed" xml:space="preserve">
+  <value>Failed to create user. Please try again.</value>
+</data>
+<data name="UserAlreadyExists" xml:space="preserve">
+  <value>A user with this email already exists.</value>
+</data>
+<data name="ExternalServiceUnavailable" xml:space="preserve">
+  <value>The external service is currently unavailable. Please try again later.</value>
+</data>
+<data name="UnexpectedErrorOccurred" xml:space="preserve">
+  <value>An unexpected error occurred. Please try again.</value>
+</data>
+
+// Error Field messages
+<data name="FirstNameRequired" xml:space="preserve">
+  <value>First name is required.</value>
+</data>
+<data name="LastNameRequired" xml:space="preserve">
+  <value>Last name is required.</value>
+</data>
+<data name="EmailRequired" xml:space="preserve">
+  <value>Email is required.</value>
+</data>
+<data name="EmailInvalid" xml:space="preserve">
+  <value>Email is invalid.</value>
+</data>
+<data name="PhoneNumberRequired" xml:space="preserve">
+  <value>Phone number is required.</value>
+</data>
+<data name="PasswordRequired" xml:space="preserve">
+  <value>Password is required.</value>
+</data>
+<data name="PasswordMinLength" xml:space="preserve">
+  <value>Password must be at least 8 characters long.</value>
+</data>
+<data name="ConfirmPasswordRequired" xml:space="preserve">
+  <value>Confirm password is required.</value>
+</data>
+<data name="PasswordNotMatch" xml:space="preserve">
+  <value>Passwords do not match.</value>
+</data>
+<data name="Min18YearsOld" xml:space="preserve">
+  <value>The minimum age must me 18 years or older.</value>
+</data>
+<data name="AddressRequired" xml:space="preserve">
+  <value>Address is required.</value>
+</data>
+<data name="HouseNumberRequired" xml:space="preserve">
+  <value>House number is required.</value>
+</data>
+<data name="StreetRequired" xml:space="preserve">
+  <value>Streetname is required.</value>
+</data>
+<data name="EmailAlreadyTaken" xml:space="preserve">
+  <value>This email is already taken.</value>
+</data>
+
+//info
+<data name="Age" xml:space="preserve">
+  <value>Age</value>
+</data>
+<data name="AgeInfo" xml:space="preserve">
+  <value>The minimum age requirement is 18 years old</value>
+</data>
+<data name="Location" xml:space="preserve">
+  <value>Address</value>
+</data>
+<data name="LocationInfo" xml:space="preserve">
+  <value>Home address must be in the neighborhood Muide - Meulestede - Afrikalaan</value>
+</data>
+<data name="Deposit" xml:space="preserve">
+  <value>Fees</value>
+</data>
+<data name="DepositInfo" xml:space="preserve">
+  <value>€20 memmbership fee and €150 deposit</value>
+</data>
+<data name="Training" xml:space="preserve">
+  <value>Training</value>
+</data>
+<data name="TrainingInfo" xml:space="preserve">
+  <value>There will be a mandatory training session</value>
+</data>
+<data name="RegisterInfo" xml:space="preserve">
+  <value>Join our network of boat enthousiasts now!</value>
+</data>
+<data name="IAgreeThe" xml:space="preserve">
+  <value>I agree to the </value>
+</data>
+<data name="TermsAndConditions" xml:space="preserve">
+  <value>terms and conditions</value>
+</data>
+<data name="AdminValidationText" xml:space="preserve">
+  <value>Your registration is currently pending approval. You’ll receive a notification once an administrator has verified your account. We appreciate your patience!</value>
+</data>
+
 
 </root>

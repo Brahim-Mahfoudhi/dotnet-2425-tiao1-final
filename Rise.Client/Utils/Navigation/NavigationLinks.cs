@@ -22,7 +22,7 @@ public class NavigationLinks
 {
     private const string INFORMATION = "/informatie";
     private const string ACTUA = "/actua";
-    private const string GOD_PARENT = "/meter-peter";
+    private const string SPONSORS = "/meter-peter";
     private const string DOCUMENTS = "/documenten";
     private const string USERS = "Users";
     private const string AUTH_USERS = "authusers";
@@ -41,7 +41,7 @@ public class NavigationLinks
             new (AUTH_USERS, "Auth users", true, ADMIN),
             new (INFORMATION, "Information", false),
             new (ACTUA, "Actua", false),
-            new (GOD_PARENT, "GodParents", false),
+            new (SPONSORS, "Sponsors", false),
             new (DOCUMENTS, "Documents", false),
             new (MAKEBOOKING, "MakeBooking", true, USER),
             new (MYBOOKINGS, "MyBookings", true, USER)

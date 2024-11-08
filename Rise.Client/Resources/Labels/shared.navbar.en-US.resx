@@ -25,8 +25,8 @@
 <data name="Actua" xml:space="preserve">
   <value>Actua</value>
 </data>
-<data name="GodParents" xml:space="preserve">
-  <value>God parents</value>
+<data name="Sponsors" xml:space="preserve">
+  <value>Sponsors</value>
 </data>
 <data name="Users" xml:space="preserve">
   <value>Users</value>
@@ -38,7 +38,7 @@
   <value>Documents</value>
 </data>
   <data name="MakeBooking" xml:space="preserve">
-    <value>Make a booking</value>
+    <value>Book now</value>
   </data>
   <data name="MyBookings" xml:space="preserve">
     <value>My bookings</value>

@@ -1,0 +1,48 @@
+@using System.ComponentModel.DataAnnotations
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<Register> Localizer;
+
+<EditContext EditContext="EditContext" />
+
+@code {
+    [Parameter] public EditContext EditContext { get; set; }
+
+    private ValidationMessageStore _messageStore;
+
+    protected override void OnInitialized()
+    {
+        if (EditContext == null)
+        {
+            throw new InvalidOperationException($"{nameof(CustomDataAnnotationsValidator)} requires a cascading " +
+                                                $"parameter of type {nameof(EditContext)}. For example, you can use " +
+                                                $"{nameof(CustomDataAnnotationsValidator)} inside an {nameof(EditForm)}.");
+        }
+
+        _messageStore = new ValidationMessageStore(EditContext);
+        EditContext.OnValidationRequested += (sender, args) => TranslateValidationMessages();
+        EditContext.OnFieldChanged += (sender, args) => TranslateValidationMessages();
+    }
+
+    private void TranslateValidationMessages()
+    {
+        _messageStore.Clear();
+
+        var validationResults = new List<ValidationResult>();
+        var validationContext = new ValidationContext(EditContext.Model);
+
+        Validator.TryValidateObject(EditContext.Model, validationContext, validationResults, true);
+
+        foreach (var validationResult in validationResults)
+        {
+            foreach (var memberName in validationResult.MemberNames)
+            {
+                var fieldIdentifier = new FieldIdentifier(EditContext.Model, memberName);
+                var localizedMessage = Localizer[validationResult.ErrorMessage ?? memberName];
+                _messageStore.Add(fieldIdentifier, localizedMessage);
+            }
+        }
+
+        EditContext.NotifyValidationStateChanged();
+    }
+}

@@ -1,5 +1,6 @@
 using System.Collections.Immutable;
 using System.ComponentModel.DataAnnotations;
+using Rise.Shared.Enums;
 
 namespace Rise.Shared.Users;
 /// <summary>
@@ -11,23 +12,41 @@ public class UserDto
 {
     public class TempUser
     {
-        [Required(ErrorMessage = "First name is required.")]
+        [Required(ErrorMessage = "FirstNameRequired")]
         public string FirstName { get; set; }
-        [Required(ErrorMessage = "Last name is required.")]
+        [Required(ErrorMessage = "LastNameRequired")]
         public string LastName { get; set; }
-        [Required(ErrorMessage = "Email is required.")]
-        [EmailAddress(ErrorMessage = "Invalid email address format.")]
+        [Required(ErrorMessage = "EmailRequired")]
+        [EmailAddress(ErrorMessage = "EmailInvalid")]
         public string Email { get; set; }
-        [Required(ErrorMessage = "Password is required.")]
-        [MinLength(8, ErrorMessage = "Password must be at least 8 characters long.")]
+        [Required(ErrorMessage = "PasswordRequired")]
+        [MinLength(8, ErrorMessage = "PasswordMinLength")]
         public string Password { get; set; }
-        [Required(ErrorMessage = "Phone number is required.")]
+        [Required(ErrorMessage = "ConfirmPasswordRequired")]
+        [Compare("Password", ErrorMessage = "PasswordNotMatch")]
+        public string ConfirmPassword { get; set; }  // Add this field to your model
+
+        [Required(ErrorMessage = "PhoneNumberRequired")]
         // [BelgianPhoneNumber]
         public string PhoneNumber { get; set; }
         public string Id { get; set; }
-        public AddressDto.CreateAddress Address { get; set; } = new();
-        [DateInThePast(ErrorMessage = "Birthdate must be a date in the past or today.")]
+        // public AddressDto.CreateAddress Address { get; set; } = new();
+        [MinimumAge(18, ErrorMessage = "Min18YearsOld")]
         public DateTime BirthDate { get; set; } = DateTime.Now;
+
+        [Required(ErrorMessage = "StreetRequired")]
+        public StreetEnum? Street { get; set; } = null;
+        /// <summary>
+        /// Gets or sets the house number of the address.
+        /// </summary>
+        [NotNullOrEmpty]
+        [RegularExpression(@"^\d+\s?[A-Za-z]?$", ErrorMessage = "House number must be a number or a number followed by a letter.")]
+        [Required(ErrorMessage = "HouseNumberRequired")]
+        public string? HouseNumber { get; set; } = null;
+        /// <summary>
+        /// Gets or sets the optional bus number for the address.
+        /// </summary>
+        public string? Bus { get; set; }
     }
     public sealed record UserBase
     {
@@ -38,7 +57,7 @@ public class UserDto
         public string Email { get; init; }
         public bool IsDeleted { get; init; }
         public ImmutableList<RoleDto> Roles { get; init; } = ImmutableList<RoleDto>.Empty;
- 
+
 
         // Constructor to initialize everything
         public UserBase(string id, string firstName, string lastName, string email,

@@ -1,0 +1,38 @@
+@inject Microsoft.Extensions.Localization.IStringLocalizer<BoatInfo> Localizer
+
+<section class="py-7">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-6 mx-auto text-center pb-4">
+        <h2>@Localizer["Boats"]</h2>
+        <p class="lead">@Localizer["GeneralInfo"]</p>
+      </div>
+    </div>
+    <div class="row mt-4">
+      <div class="col-lg-4 col-md-6">
+        <div class="p-3 text-center">
+          <div class="icon icon-shape bg-warning text-center">
+          </div>
+          <h5 class="mt-4">@Localizer["Tribute"]</h5>
+          <p class="mb-0">@Localizer["TributeInfo"]</p>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6">
+        <div class="p-3 text-center">
+          <div class="icon icon-shape bg-warning text-center">
+          </div>
+          <h5 class="mt-4">@Localizer["RegisterNow"]</h5>
+          <p class="mb-0">@Localizer["RegisterNowInfo"]</p>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6 mx-md-auto">
+        <div class="p-3 text-center">
+          <div class="icon icon-shape bg-warning text-center">
+          </div>
+          <h5 class="mt-4">@Localizer["Dock"]</h5>
+          <p class="mb-0">@Localizer["DockInfo"]</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

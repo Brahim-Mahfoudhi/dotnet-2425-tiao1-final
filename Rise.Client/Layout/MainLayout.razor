@@ -2,25 +2,20 @@
 @using System.Globalization
 @inject Microsoft.Extensions.Localization.IStringLocalizer<MainLayout> Localizer
 
-<div class="main-content background-overlay">
+<div>
+
     @* Required *@
-    <MudPopoverProvider />
-    <MudThemeProvider />
-
-    @* Needed for dialogs *@
-    <MudDialogProvider />
-
-    @* Needed for snackbars *@
-    <MudSnackbarProvider />
+        <MudPopoverProvider />
+        <MudThemeProvider />
+        
+        @* Needed for dialogs *@
+        <MudDialogProvider />
+        
+        @* Needed for snackbars *@
+        <MudSnackbarProvider />
 
     <NavBar />
-
-    <section class="d-flex align-items-center justify-content-center">
-        <div class="container z-index-1">
-            @Body
-        </div>
-    </section>
-
+    @Body
     <Footer />
 </div>
 

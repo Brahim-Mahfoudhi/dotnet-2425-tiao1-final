@@ -98,26 +98,42 @@ public class UserService : IUserService
         return MapToUserDetails(query);
     }
 
-    public async Task<bool> CreateUserAsync(UserDto.RegistrationUser userDetails)
+    public async Task<(bool Success, string? Message)> CreateUserAsync(UserDto.RegistrationUser userDetails)
     {
-        var entity = new User(
-            id: userDetails.Id,
-            firstName: userDetails.FirstName,
-            lastName: userDetails.LastName,
-            email: userDetails.Email,
-            birthDate: userDetails.BirthDate ?? DateTime.UtcNow,
-            address: new Address(
-                street: userDetails.Address.Street.ToString() ?? "",
-                houseNumber: userDetails.Address.HouseNumber ?? "",
-                bus: userDetails.Address.Bus),
-            phoneNumber: userDetails.PhoneNumber
-        );
-        entity.AddRole(new Role(RolesEnum.Pending));
+        try
+        {
+            if (_dbContext.Users.Any(x => x.Email == userDetails.Email))
+            {
+                return (false, "UserAlreadyExists"); // Localization key
+            }
 
-        _dbContext.Users.Add(entity);
-        int response = await _dbContext.SaveChangesAsync();
+            var entity = new User(
+                id: userDetails.Id,
+                firstName: userDetails.FirstName,
+                lastName: userDetails.LastName,
+                email: userDetails.Email,
+                birthDate: userDetails.BirthDate ?? DateTime.UtcNow,
+                address: new Address(
+                    street: userDetails.Address.Street.ToString() ?? "",
+                    houseNumber: userDetails.Address.HouseNumber ?? "",
+                    bus: userDetails.Address.Bus),
+                phoneNumber: userDetails.PhoneNumber
+            );
+            entity.AddRole(new Role(RolesEnum.Pending));
 
-        return response > 0;
+            _dbContext.Users.Add(entity);
+            Int32 response = await _dbContext.SaveChangesAsync();
+
+            return (response > 0, "UserCreatedSuccess"); // Localization key
+        }
+        catch (DbUpdateException ex)
+        {
+            throw new DatabaseOperationException("UserCreationFailed", ex); // Localization key
+        }
+        catch (Exception ex)
+        {
+            throw new ExternalServiceException("UnexpectedErrorOccurred", ex); // Localization key
+        }
     }
 
     public async Task<bool> UpdateUserAsync(UserDto.UpdateUser userDetails)
@@ -224,5 +240,10 @@ public class UserService : IUserService
              adress.HouseNumber ?? "",
              adress.Bus
          );
+    }
+
+    public Task<Boolean> IsEmailTakenAsync(String email)
+    {
+        throw new NotImplementedException();
     }
 }
