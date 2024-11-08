@@ -29,7 +29,7 @@ public class BookingController : ControllerBase
     /// Retrieves all bookings asynchronously.
     /// </summary>
     /// <returns>List of <see cref="BookingDto"/> objects or <c>null</c> if no bookings are found.</returns>
-    [HttpGet("all")]
+    [HttpGet]
     public async Task<IEnumerable<BookingDto.ViewBooking>?> GetAllBookings()
     {
 
@@ -83,19 +83,31 @@ public class BookingController : ControllerBase
         return deleted;
     }
     /// <summary>
-    /// Retrieves all bookings asynchronously for specific user.
+    /// Retrieves all bookings within a specified date range.
     /// </summary>
-    /// <returns>List of <see cref="BookingDto"/> objects or <c>null</c> if no bookings are found.</returns>
-    [HttpGet("all/{userid}")]
-    public async Task<IEnumerable<BookingDto.ViewBooking>?> GetAllUserBookings(string userid)
-    {
+    /// <param name="startDate" example="2024-10-01">The start date of the range (inclusive).</param>
+    /// <param name="endDate">The end date of the range (inclusive).</param>
+    /// <returns>An <see cref="IActionResult"/> containing the list of bookings or an error message if the input is invalid.</returns>
+    /// <response code="200">Returns the list of bookings within the date range.</response>
+    /// <response code="400">If the date range is invalid or any other argument exception occurs.</response>
 
-        var bookings = await _bookingService.GetAllUserBookings(userid);
-        return bookings;
+    [HttpGet("byDateRange")]
+    public async Task<IActionResult> GetBookingsByDateRange([FromQuery] DateTime? startDate, [FromQuery] DateTime? endDate)
+    {   
+
+        try
+        {
+            var bookings = await _bookingService.GetTakenTimeslotsInDateRange(startDate, endDate);
+            return Ok(bookings);
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 
     /// <summary>
-    /// Retrieves future booking asynchronously for specific user.
+    /// Retrieves all free timeslots within a specified date range. Replaces GetBookingsByDateRange -> the server decides which extra timeslots are not available
     /// </summary>
     /// <returns><see cref="BookingDto"/> object or <c>null</c> if no booking is found.</returns>
     [HttpGet("future/{userid}")]
@@ -136,12 +148,11 @@ public class BookingController : ControllerBase
     /// <param name="endDate">The end date of the range (inclusive).</param>
     /// <returns>An <see cref="IActionResult"/> containing the list of bookings or an error message if the input is invalid.</returns>
     /// <response code="200">Returns the list of free timeslots within the date range.</response>
-    /// <response code="400">If the date range is invalid or any other argument exception occurs.</response>
-
-    [HttpGet("GetFreeTimeslotsByDateRange")]
+    /// <response code="400">If the date range is invalid or any other argument exception occurs.</response> 
+    
+    [HttpGet("free/byDateRange")]
     public async Task<IActionResult> GetFreeTimeslotsByDateRange(DateTime? startDate, DateTime? endDate)
-    {   
-
+    { 
         try
         {
             var bookings = await _bookingService.GetFreeTimeslotsInDateRange(startDate, endDate);

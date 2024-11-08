@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Auth0.ManagementApi;
 using Auth0.ManagementApi.Models;
 using Auth0.ManagementApi.Paging;
+using Rise.Shared.Bookings;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Auth0.Core.Exceptions;
 
@@ -20,35 +21,27 @@ public class UserController : ControllerBase
 {
     private readonly IUserService _userService;
     private readonly IManagementApiClient _managementApiClient;
+    private readonly IBookingService _bookingService;
+
 
     /// <summary>
     /// Initializes a new instance of the <see cref="UserController"/> class with the specified user service.
     /// </summary>
     /// <param name="userService">The user service that handles user operations.</param>
     /// <param name="managementApiClient">The management API for Auth0</param>
-    public UserController(IUserService userService, IManagementApiClient managementApiClient)
+    /// <param name="bookingService">The booking service that handles booking operations</param>
+    public UserController(IUserService userService, IManagementApiClient managementApiClient, IBookingService bookingService)
     {
         _userService = userService;
         _managementApiClient = managementApiClient;
+        _bookingService = bookingService;
     }
-
-    /// <summary>
-    /// Retrieves the current user asynchronously.
-    /// </summary>
-    /// <returns>The current <see cref="UserDto"/> object or <c>null</c> if no user is found.</returns>
-    [HttpGet]
-    [Authorize]
-    public async Task<UserDto.UserBase?> Get()
-    {
-        var user = await _userService.GetUserAsync();
-        return user;
-    }
-
+    
     /// <summary>
     /// Retrieves all users asynchronously.
     /// </summary>
     /// <returns>List of <see cref="UserDto"/> objects or <c>null</c> if no users are found.</returns>
-    [HttpGet("all")]
+    [HttpGet]
     [Authorize(Roles = "Admin")]
     public async Task<IEnumerable<UserDto.UserBase>?> GetAllUsers()
     {
@@ -64,11 +57,11 @@ public class UserController : ControllerBase
     /// </summary>
     /// <param name="id">The ID of the user to retrieve.</param>
     /// <returns>The <see cref="UserDto"/> object or <c>null</c> if no user with the specified ID is found.</returns>
-    [HttpGet("{id}")]
+    [HttpGet("{userid}")]
     [Authorize]
-    public async Task<UserDto.UserBase?> Get(string id)
+    public async Task<UserDto.UserBase?> Get(string userid)
     {
-        var user = await _userService.GetUserByIdAsync(id);
+        var user = await _userService.GetUserByIdAsync(userid);
         return user;
     }
 
@@ -77,11 +70,11 @@ public class UserController : ControllerBase
     /// </summary>
     /// <param name="id">The ID of the user to retrieve details for.</param>
     /// <returns>The detailed <see cref="UserDto.UserDetails"/> object or <c>null</c> if no user with the specified ID is found.</returns>
-    [HttpGet("details/{id}")]
+    [HttpGet("{userid}/details")]
     [Authorize]
-    public async Task<UserDto.UserDetails?> GetDetails(string id)
+    public async Task<UserDto.UserDetails?> GetDetails(string userid)
     {
-        var user = await _userService.GetUserDetailsByIdAsync(id);
+        var user = await _userService.GetUserDetailsByIdAsync(userid);
         return user;
     }
 
@@ -132,7 +125,7 @@ public class UserController : ControllerBase
     /// <param name="id">The id of an existing <see cref="User"/></param>
     /// <param name="userDetails">The <see cref="UserDto.UpdateUser"/> object containing updated user details.</param>
     /// <returns><c>true</c> if the update is successful; otherwise, <c>false</c>.</returns>
-    [HttpPut("{id}")]
+    [HttpPut("{userid}")]
     [Authorize]
     public async Task<bool> Put(UserDto.UpdateUser userDetails)
     {
@@ -145,29 +138,15 @@ public class UserController : ControllerBase
     /// </summary>
     /// <param name="id">The ID of the user to delete.</param>
     /// <returns><c>true</c> if the deletion is successful; otherwise, <c>false</c>.</returns>
-    [HttpDelete("{id}")]
+    [HttpDelete("{userid}")]
     [Authorize]
-    public async Task<bool> Delete(string id)
+    public async Task<bool> Delete(string userid)
     {
-        var deleted = await _userService.DeleteUserAsync(id);
+        var deleted = await _userService.DeleteUserAsync(userid);
         return deleted;
     }
 
-    // [HttpGet("auth/users")]
-    // [Authorize]
-    // public async Task<IEnumerable<UserDto.Auth0User>> GetUsers()
-    // {
-    //     var users = await _managementApiClient.Users.GetAllAsync(new GetUsersRequest(), new PaginationInfo());
-    //     Console.WriteLine(users);
-    //     return users.Select(x => new UserDto.Auth0User(
-    //         x.Email,
-    //         x.FirstName,
-    //         x.LastName,
-    //         x.Blocked ?? false
-    //     ));
-    // }
-
-    [HttpGet("auth/users")]
+    [HttpGet("authUsers")]
     [Authorize]
     public async Task<IActionResult> GetUsers()
     {
@@ -198,20 +177,7 @@ public class UserController : ControllerBase
         }
     }
 
-    // [HttpGet("auth/user/{id}")]
-    // [Authorize]
-    // public async Task<UserDto.Auth0User> GetUser(string id)
-    // {
-    //     var test = await _managementApiClient.Users.GetAsync(id);
-    //     Console.Write(test);
-    //     return new UserDto.Auth0User
-    //         (test.Email,
-    //         test.FirstName,
-    //         test.LastName,
-    //         test.Blocked ?? false);
-    // }
-
-    [HttpGet("auth/user/{id}")]
+    [HttpGet("auth/{userid}")]
     [Authorize]
     public async Task<IActionResult> GetUser(string id)
     {
@@ -286,6 +252,29 @@ public class UserController : ControllerBase
         {
             throw new ExternalServiceException("UnexpectedErrorOccurred", ex);
         }
+    }
+    
+    /// <summary>
+    /// Retrieves all bookings asynchronously for specific user.
+    /// </summary>
+    /// <returns>List of <see cref="BookingDto"/> objects or <c>null</c> if no bookings are found.</returns>
+    [HttpGet("{userid}/bookings")]
+    public async Task<IEnumerable<BookingDto.ViewBooking>?> GetAllUserBookings(string userid)
+    {
+
+        var bookings = await _bookingService.GetAllUserBookings(userid);
+        return bookings;
+    }
+    
+    /// <summary>
+    /// Retrieves future booking asynchronously for specific user.
+    /// </summary>
+    /// <returns><see cref="BookingDto"/> object or <c>null</c> if no booking is found.</returns>
+    [HttpGet("{userid}/bookings/future")]
+    public async Task<BookingDto.ViewBooking>? GetFutureUserBooking(string userid)
+    {
+        var booking = await _bookingService.GetFutureUserBooking(userid);
+        return booking;
     }
 
     /// <summary>

@@ -1,6 +1,5 @@
 using Rise.Domain.Bookings;
 using Rise.Shared.Enums;
-using Rise.Domain.Products;
 using Rise.Domain.Users;
 
 namespace Rise.Persistence;
@@ -37,25 +36,12 @@ public class Seeder
             DropBookings();
             SeedBatteries();
         }
-        if (!ProductsHasAlreadyBeenSeeded())
-            SeedProducts();
         if (!UsersHasAlreadyBeenSeeded())
             SeedUsers();
         if (!BookingsHasAlreadyBeenSeeded())
             SeedBookings();
     }
-
-    /// <summary>
-    /// Checks if the database has already been seeded with products.
-    /// </summary>
-    /// <returns>
-    /// <c>true</c> if the database already contains product entries; otherwise, <c>false</c>.
-    /// </returns>
-    private bool ProductsHasAlreadyBeenSeeded()
-    {
-        return dbContext.Products.Any();
-    }
-
+    
     /// <summary>
     /// Checks if the database has already been seeded with users.
     /// </summary>
@@ -92,19 +78,6 @@ public class Seeder
     {
         dbContext.Bookings.RemoveRange(dbContext.Bookings.AsEnumerable());
         return true;
-    }
-
-    /// <summary>
-    /// Seeds the database with a range of product entities.
-    /// </summary>
-    private void SeedProducts()
-    {
-        var products = Enumerable.Range(1, 20)
-            .Select(i => new Product { Name = $"Product {i}" })
-            .ToList();
-
-        dbContext.Products.AddRange(products);
-        dbContext.SaveChanges();
     }
 
     /// <summary>

@@ -45,15 +45,15 @@ public class UserService : IUserService
 
         return query.Select(MapToUserBase);
     }
-
-    public async Task<UserDto.UserBase?> GetUserAsync()
+    
+    public async Task<UserDto.UserBase?> GetUserByIdAsync(string userid)
     {
         // Changed method so that DTO creation is out of the LINQ Query
         // You need to avoid using methods with optional parameters directly
         // in the LINQ query that EF is trying to translate
         var query = await _dbContext.Users
             .Include(x => x.Roles) // Ensure Roles are loaded (Eagerly loading)
-            .FirstOrDefaultAsync(x => x.IsDeleted == false);
+            .FirstOrDefaultAsync(x => x.Id.Equals(userid) && x.IsDeleted == false);
 
         if (query == null)
         {
@@ -63,24 +63,7 @@ public class UserService : IUserService
         return MapToUserBase(query);
     }
 
-    public async Task<UserDto.UserBase?> GetUserByIdAsync(string id)
-    {
-        // Changed method so that DTO creation is out of the LINQ Query
-        // You need to avoid using methods with optional parameters directly
-        // in the LINQ query that EF is trying to translate
-        var query = await _dbContext.Users
-            .Include(x => x.Roles) // Ensure Roles are loaded (Eagerly loading)
-            .FirstOrDefaultAsync(x => x.Id.Equals(id) && x.IsDeleted == false);
-
-        if (query == null)
-        {
-            return null;
-        }
-
-        return MapToUserBase(query);
-    }
-
-    public async Task<UserDto.UserDetails?> GetUserDetailsByIdAsync(string id)
+    public async Task<UserDto.UserDetails?> GetUserDetailsByIdAsync(string userid)
     {
         // Changed method so that DTO creation is out of the LINQ Query
         // You need to avoid using methods with optional parameters directly
@@ -88,7 +71,7 @@ public class UserService : IUserService
         var query = await _dbContext.Users
             .Include(x => x.Address)
             .Include(x => x.Roles) // Ensure Address is loaded (Eagerly loading)
-            .FirstOrDefaultAsync(x => x.Id.Equals(id) && x.IsDeleted == false);
+            .FirstOrDefaultAsync(x => x.Id.Equals(userid) && x.IsDeleted == false);
 
         if (query == null)
         {
@@ -152,9 +135,9 @@ public class UserService : IUserService
         return response > 0;
     }
 
-    public async Task<bool> DeleteUserAsync(string id)
+    public async Task<bool> DeleteUserAsync(string userid)
     {
-        var entity = await _dbContext.Users.FindAsync(id) ?? throw new Exception("User not found");
+        var entity = await _dbContext.Users.FindAsync(userid) ?? throw new Exception("User not found");
 
         entity.SoftDelete();
         _dbContext.Users.Update(entity);

@@ -178,7 +178,7 @@ public class BookingService : IBookingService
         }
 
         // Validate the date range
-        if (startDate >= endDate)
+        if (startDate > endDate)
         {
             throw new ArgumentException("Start date must be before the end date.", nameof(startDate));
         }
@@ -206,9 +206,9 @@ public class BookingService : IBookingService
         {
             throw new ArgumentNullException(nameof(endDate));
         }
-
+       
         // Validate the date range
-        if (startDate >= endDate)
+        if (startDate > endDate)
         {
             throw new ArgumentException("Start date must be before the end date.", nameof(startDate));
         }

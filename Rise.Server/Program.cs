@@ -1,9 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Rise.Persistence;
 using Rise.Persistence.Triggers;
-using Rise.Services.Products;
 using Rise.Services.Users;
-using Rise.Shared.Products;
 using Rise.Shared.Users;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -20,7 +18,8 @@ builder.Services.AddControllers()
     {
         // This ensures enums are serialized as strings
         options.JsonSerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
-    }); ;
+    });
+;
 builder.Services.AddEndpointsApiExplorer();
 // builder.Services.AddSwaggerGen();
 builder.Services.AddSwaggerGen(options =>
@@ -33,7 +32,9 @@ builder.Services.AddSwaggerGen(options =>
             AuthorizationCode = new OpenApiOAuthFlow
             {
                 TokenUrl = new Uri($"{builder.Configuration["Auth0:Authority"]}/oauth/token"),
-                AuthorizationUrl = new Uri($"{builder.Configuration["Auth0:Authority"]}/authorize?audience={builder.Configuration["Auth0:Audience"]}"),
+                AuthorizationUrl =
+                    new Uri(
+                        $"{builder.Configuration["Auth0:Authority"]}/authorize?audience={builder.Configuration["Auth0:Audience"]}"),
             }
         }
     });
@@ -84,7 +85,6 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseTriggers(options => options.AddTrigger<EntityBeforeSaveTrigger>());
 });
 
-builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IBookingService, BookingService>();
 
@@ -115,7 +115,8 @@ app.MapControllers();
 app.MapFallbackToFile("index.html");
 
 using (var scope = app.Services.CreateScope())
-{ // Require a DbContext from the service provider and seed the database.
+{
+    // Require a DbContext from the service provider and seed the database.
     var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
     Seeder seeder = new(dbContext);
     seeder.Seed();

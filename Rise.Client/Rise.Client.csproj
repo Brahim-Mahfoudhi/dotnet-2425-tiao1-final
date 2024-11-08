@@ -42,4 +42,8 @@
     <ProjectReference Include="..\Rise.Shared\Rise.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Products\Index.razor" />
+  </ItemGroup>
+
 </Project>

@@ -23,7 +23,7 @@ public class BookingService : IBookingService
 
     public async Task<IEnumerable<BookingDto.ViewBooking>?> GetAllAsync()
     {
-        var jsonResponse = await httpClient.GetStringAsync("booking/all");
+        var jsonResponse = await httpClient.GetStringAsync("booking");
         return JsonSerializer.Deserialize<IEnumerable<BookingDto.ViewBooking>>(jsonResponse, jsonSerializerOptions);
     }
 
@@ -54,17 +54,73 @@ public class BookingService : IBookingService
     }
     
 
+
     public async Task<IEnumerable<BookingDto.ViewBooking>?> GetAllUserBookings(string userid)
     {
-        var bookings = await httpClient.GetStringAsync($"booking/all/{userid}");
+        var bookings = await httpClient.GetStringAsync($"user/{userid}/bookings");
         return JsonSerializer.Deserialize<IEnumerable<BookingDto.ViewBooking>>(bookings, jsonSerializerOptions);
     }
 
     public async Task<BookingDto.ViewBooking?> GetFutureUserBooking(string userid)
     {
-        var booking = await httpClient.GetStringAsync($"booking/future/{userid}");
+        var booking = await httpClient.GetStringAsync($"user/{userid}/bookings/future");
         return JsonSerializer.Deserialize<BookingDto.ViewBooking>(booking, jsonSerializerOptions);
+    }
 
+    public async Task<IEnumerable<BookingDto.ViewBookingCalender>?> GetTakenTimeslotsInDateRange(DateTime? startDate,
+        DateTime? endDate)
+    {
+        var query = $"/api/Booking/byDateRange";
+        if (startDate.HasValue || endDate.HasValue)
+        {
+            query += "?";
+            if (startDate.HasValue)
+            {
+                query += $"startDate={startDate.ToIsoDateString()}";
+            }
+
+            if (endDate.HasValue)
+            {
+                query += $"{(startDate.HasValue ? "&" : "")}endDate={endDate.ToIsoDateString()}";
+            }
+        }
+
+        var timeslots = await httpClient.GetStringAsync(query);
+        return JsonSerializer.Deserialize<IEnumerable<BookingDto.ViewBookingCalender>>(timeslots,
+            jsonSerializerOptions);
+    }
+
+    public async Task<IEnumerable<BookingDto.ViewBookingCalender>?> GetFreeTimeslotsInDateRange(DateTime? startDate,
+        DateTime? endDate)
+    {
+        var query = $"/api/Booking/free/byDateRange";
+        if (startDate.HasValue || endDate.HasValue)
+        {
+            query += "?";
+            if (startDate.HasValue)
+            {
+                query += $"startDate={startDate.ToIsoDateString()}";
+            }
+
+            if (endDate.HasValue)
+            {
+                query += $"{(startDate.HasValue ? "&" : "")}endDate={endDate.ToIsoDateString()}";
+            }
+        }
+        
+        var timeslots = await httpClient
+            .GetStringAsync(query);
+        
+        // to make the json serializer work correctly
+        var options = new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                Converters = { new JsonStringEnumConverter() }
+            };
+
+        var convertedTimeSlots = JsonSerializer.Deserialize<IEnumerable<BookingDto.ViewBookingCalender>>(timeslots, options);  
+        
+         return convertedTimeSlots;
     }
 
     public async Task<IEnumerable<BookingDto.ViewBookingCalender>?> GetTakenTimeslotsInDateRange(DateTime? startDate, DateTime? endDate)

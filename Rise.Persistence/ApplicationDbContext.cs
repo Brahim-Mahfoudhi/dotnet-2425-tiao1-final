@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Rise.Domain.Bookings;
-using Rise.Domain.Products;
 using Rise.Domain.Users;
 
 namespace Rise.Persistence;
@@ -8,7 +7,6 @@ namespace Rise.Persistence;
 /// <inheritdoc />
 public class ApplicationDbContext : DbContext
 {
-    public DbSet<Product> Products => Set<Product>();
     public DbSet<User> Users => Set<User>();
     public DbSet<Role> Roles => Set<Role>();
     public DbSet<Address> Addresses => Set<Address>();
