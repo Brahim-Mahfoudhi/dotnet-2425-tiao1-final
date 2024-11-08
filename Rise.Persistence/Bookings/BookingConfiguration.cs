@@ -14,6 +14,10 @@ internal class BookingConfiguration : EntityConfiguration<Booking>
     {
         base.Configure(builder);
         builder.ToTable(nameof(Booking));
+        
+
+        builder.Property(x => x.BookingDate).IsRequired();
+        builder.Property(x => x.TimeSlot).IsRequired();
         builder.Property(x => x.BookingDate).IsRequired();
 
         // Optional properties - no need to set as required

@@ -24,7 +24,7 @@ public class BookingController : ControllerBase
     {
         _bookingService = bookingService;
     }
-
+    
     /// <summary>
     /// Retrieves all bookings asynchronously.
     /// </summary>
@@ -48,7 +48,6 @@ public class BookingController : ControllerBase
         var booking = await _bookingService.GetBookingById(id);
         return booking;
     }
-
     /// <summary>
     /// Creates a new booking asynchronously.
     /// </summary>
@@ -60,7 +59,6 @@ public class BookingController : ControllerBase
         var created = await _bookingService.CreateBookingAsync(booking);
         return created;
     }
-
     /// <summary>
     /// Updates an existing booking asynchronously.
     /// </summary>
@@ -73,7 +71,6 @@ public class BookingController : ControllerBase
         var updatedBooking = await _bookingService.UpdateBookingAsync(booking);
         return updatedBooking;
     }
-
     /// <summary>
     /// Deletes a booking by their ID asynchronously.
     /// </summary>
@@ -85,7 +82,6 @@ public class BookingController : ControllerBase
         var deleted = await _bookingService.DeleteBookingAsync(id);
         return deleted;
     }
-
     /// <summary>
     /// Retrieves all bookings asynchronously for specific user.
     /// </summary>
@@ -105,9 +101,56 @@ public class BookingController : ControllerBase
     [HttpGet("future/{userid}")]
     public async Task<BookingDto.ViewBooking>? GetFutureUserBooking(string userid)
     {
-
         var booking = await _bookingService.GetFutureUserBooking(userid);
         return booking;
     }
 
+    /// <summary>
+    /// Retrieves all bookings within a specified date range.
+    /// </summary>
+    /// <param name="startDate" example="2024-10-01">The start date of the range (inclusive).</param>
+    /// <param name="endDate">The end date of the range (inclusive).</param>
+    /// <returns>An <see cref="IActionResult"/> containing the list of bookings or an error message if the input is invalid.</returns>
+    /// <response code="200">Returns the list of bookings within the date range.</response>
+    /// <response code="400">If the date range is invalid or any other argument exception occurs.</response>
+
+    [HttpGet("GetBookingsByDateRange")]
+    public async Task<IActionResult> GetBookingsByDateRange(DateTime? startDate, DateTime? endDate)
+    {   
+
+        try
+        {
+            var bookings = await _bookingService.GetTakenTimeslotsInDateRange(startDate, endDate);
+            return Ok(bookings);
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+
+    /// <summary>
+    /// Retrieves all free timeslots within a specified date range. Replaces GetBookingsByDateRange -> the server decides which extra timeslots are not available
+    /// </summary>
+    /// <param name="startDate" example="2024-10-01">The start date of the range (inclusive).</param>
+    /// <param name="endDate">The end date of the range (inclusive).</param>
+    /// <returns>An <see cref="IActionResult"/> containing the list of bookings or an error message if the input is invalid.</returns>
+    /// <response code="200">Returns the list of free timeslots within the date range.</response>
+    /// <response code="400">If the date range is invalid or any other argument exception occurs.</response>
+
+    [HttpGet("GetFreeTimeslotsByDateRange")]
+    public async Task<IActionResult> GetFreeTimeslotsByDateRange(DateTime? startDate, DateTime? endDate)
+    {   
+
+        try
+        {
+            var bookings = await _bookingService.GetFreeTimeslotsInDateRange(startDate, endDate);
+            return Ok(bookings);
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+    
 }

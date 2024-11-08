@@ -36,4 +36,19 @@
     <data name="PrefDay" xml:space="preserve">
         <value>Kies aub de gewenste dag</value>
     </data>
+    <data name="MakeBookingNo" xml:space="preserve">
+        <value>Neen</value>
+    </data>
+    <data name="MakeBookingYes" xml:space="preserve">
+        <value>Ja</value>
+    </data>
+    <data name="MakeBookingTitle" xml:space="preserve">
+        <value>Een tijdslot reserveren</value>
+    </data>
+    <data name="MakeBookingMessage" xml:space="preserve">
+        <value>Reserveer de volgende tijdslot:</value>
+    </data>
+    <data name="DateLanguage" xml:space="preserve">
+        <value>nl-BE</value>
+    </data>
 </root>

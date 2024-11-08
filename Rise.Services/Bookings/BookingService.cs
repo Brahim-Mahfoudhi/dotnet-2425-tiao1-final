@@ -1,8 +1,10 @@
 using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Rise.Domain.Bookings;
 using Rise.Persistence;
 using Rise.Shared.Bookings;
+using Rise.Shared.Enums;
 
 namespace Rise.Services.Bookings;
 
@@ -26,7 +28,7 @@ public class BookingService : IBookingService
         // You need to avoid using methods with optional parameters directly
         // in the LINQ query that EF is trying to translate
         var query = await _dbContext.Bookings
-        .Include(b => b.Id)
+            .Include(b => b.Id)
             .Include(b => b.Battery)
             .Include(b => b.Boat)
             .Where(x => x.IsDeleted == false)
@@ -61,6 +63,7 @@ public class BookingService : IBookingService
     public async Task<bool> CreateBookingAsync(BookingDto.NewBooking booking)
     {
         var entity = new Booking(
+            timeSlot: booking.timeSlot,
             bookingDate: booking.bookingDate,
             userId: booking.userId
         );
@@ -113,7 +116,6 @@ public class BookingService : IBookingService
         // Changed method so that DTO creation is out of the LINQ Query
         // You need to avoid using methods with optional parameters directly
         // in the LINQ query that EF is trying to translate
-        Console.WriteLine(userId);
 
         var query = await _dbContext.Bookings
             .Include(x => x.Battery)
@@ -158,6 +160,111 @@ public class BookingService : IBookingService
             bookingDate = booking.BookingDate,
             battery = battery,
             boat = boat
+        };
+    }
+
+    public async Task<IEnumerable<BookingDto.ViewBookingCalender>?> GetTakenTimeslotsInDateRange(DateTime? startDate,
+        DateTime? endDate)
+    {
+        // Check validity of parameters
+        if (startDate == null)
+        {
+            throw new ArgumentNullException(nameof(startDate));
+        }
+
+        if (endDate == null)
+        {
+            throw new ArgumentNullException(nameof(endDate));
+        }
+
+        // Validate the date range
+        if (startDate >= endDate)
+        {
+            throw new ArgumentException("Start date must be before the end date.", nameof(startDate));
+        }
+
+        // Get all bookings from the db that are between start and enddate (limits included)
+        List<Booking> bookings = await _dbContext.Bookings
+            .Where(booking => booking.BookingDate.Date >= startDate && booking.BookingDate.Date <= endDate)
+            .ToListAsync();
+
+        return bookings.Select(booking => ViewBookingCalenderFromBooking(booking, true)).ToList();
+    }
+
+    public async Task<IEnumerable<BookingDto.ViewBookingCalender>?> GetFreeTimeslotsInDateRange(DateTime? startDate,
+        DateTime? endDate)
+    {
+        int NON_BOOKABLE_DAYS_AFTER_TODAY = 2;
+
+        // Check validity of parameters
+        if (startDate == null)
+        {
+            throw new ArgumentNullException(nameof(startDate));
+        }
+
+        if (endDate == null)
+        {
+            throw new ArgumentNullException(nameof(endDate));
+        }
+
+        // Validate the date range
+        if (startDate >= endDate)
+        {
+            throw new ArgumentException("Start date must be before the end date.", nameof(startDate));
+        }
+
+        // if there is no possible free timeslot. (cannot book before or on the enddate) return empty list (shortcut)
+        if (endDate <= DateTime.Now.AddDays(NON_BOOKABLE_DAYS_AFTER_TODAY))
+        {
+            return new List<BookingDto.ViewBookingCalender>();
+        }
+
+        // Get all bookings from the db that are between startdate and enddate (limits included)
+        List<Booking> bookings = await _dbContext.Bookings
+            .Where(booking => booking.BookingDate.Date >= startDate && booking.BookingDate.Date <= endDate)
+            .ToListAsync();
+
+        //generate all possible timeslots
+        List<BookingDto.ViewBookingCalender> allPossibleTimeslotsInRange = new List<BookingDto.ViewBookingCalender>();
+        for (DateTime date = startDate.Value; date <= endDate; date = date.AddDays(1))
+        {
+            if (date <= DateTime.Now.AddDays(NON_BOOKABLE_DAYS_AFTER_TODAY))
+            {
+                continue;
+            }
+
+            foreach (TimeSlot timeSlot in Enum.GetValues(typeof(TimeSlot)))
+            {
+                if (timeSlot == TimeSlot.None)
+                {
+                    continue;
+                }
+
+                allPossibleTimeslotsInRange.Add(
+                    new BookingDto.ViewBookingCalender
+                    {
+                        BookingDate = date,
+                        TimeSlot = timeSlot,
+                        Available = true
+                    }
+                );
+            }
+        }
+
+        // return all possible timeslots without the occupied ones
+        return allPossibleTimeslotsInRange
+            .Where(slot => !bookings.Exists(booking =>
+                booking.BookingDate.Date == slot.BookingDate.Date && booking.TimeSlot == slot.TimeSlot))
+            .ToList();
+    }
+
+    private static BookingDto.ViewBookingCalender ViewBookingCalenderFromBooking(Booking booking, bool Available)
+    {
+        return new BookingDto.ViewBookingCalender
+        {
+            BookingDate = booking.BookingDate,
+            TimeSlot = booking.TimeSlot,
+            Available = Available
         };
     }
 }

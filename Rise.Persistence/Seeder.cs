@@ -133,15 +133,35 @@ public class Seeder
 
     private void SeedBookings()
     {
-        var booking1 = new Booking(new DateTime(2025, 01, 01), "auth0|6713ad614fda04f4b9ae2156");
+        // // temp seed bookings (Andries)
+        var bookings = new List<Booking>
+        {
+            new Booking(new DateTime(2025, 01, 01), "auth0|6713ad614fda04f4b9ae2156", TimeSlot.Morning),
+            new Booking(new DateTime(2025, 01, 02), "auth0|6713ad614fda04f4b9ae2156", TimeSlot.Evening),
+            new Booking(new DateTime(2025, 01, 03), "auth0|6713ad614fda04f4b9ae2156", TimeSlot.Afternoon),
+            new Booking(new DateTime(2025, 01, 04), "auth0|6713ad614fda04f4b9ae2156", TimeSlot.Afternoon),
+            new Booking(new DateTime(2025, 01, 05), "auth0|6713ad614fda04f4b9ae2156", TimeSlot.Evening),
+            new Booking(new DateTime(2025, 01, 06), "auth0|6713ad614fda04f4b9ae2156", TimeSlot.Evening),
+            new Booking(new DateTime(2025, 01, 07), "auth0|6713ad614fda04f4b9ae2156", TimeSlot.Morning),
+            new Booking(new DateTime(2025, 01, 08), "auth0|6713ad614fda04f4b9ae2156", TimeSlot.Afternoon),
+            new Booking(new DateTime(2025, 01, 09), "auth0|6713ad614fda04f4b9ae2156", TimeSlot.Evening),
+            new Booking(new DateTime(2025, 01, 10), "auth0|6713ad614fda04f4b9ae2156", TimeSlot.Morning)
+        };
+
+        foreach(var booking in bookings){
+            dbContext.Bookings.Add(booking);
+        }
+        dbContext.SaveChanges();
+        
+        var booking1 = new Booking(new DateTime(2025, 01, 01), "auth0|6713ad614fda04f4b9ae2156", TimeSlot.Morning);
         dbContext.Bookings.Add(booking1);
-        var bookingBattery = new Booking(new DateTime(2023, 01, 01), "auth0|6713ad614fda04f4b9ae2156");
+        var bookingBattery = new Booking(new DateTime(2023, 01, 01), "auth0|6713ad614fda04f4b9ae2156", TimeSlot.Morning);
         bookingBattery.AddBattery(dbContext.Batteries.First());
         dbContext.Bookings.Add(bookingBattery);
-        var bookingBoat = new Booking(new DateTime(2022, 01, 01), "auth0|6713ad614fda04f4b9ae2156");
+        var bookingBoat = new Booking(new DateTime(2022, 01, 01), "auth0|6713ad614fda04f4b9ae2156", TimeSlot.Morning);
         bookingBoat.AddBoat(dbContext.Boats.First());
         dbContext.Bookings.Add(bookingBoat);
-        var bookingAll = new Booking(new DateTime(2021, 01, 01), "auth0|6713ad614fda04f4b9ae2156");
+        var bookingAll = new Booking(new DateTime(2021, 01, 01), "auth0|6713ad614fda04f4b9ae2156", TimeSlot.Morning);
         bookingAll.AddBattery(dbContext.Batteries.OrderBy(battery => battery.Name).Last());
         bookingAll.AddBoat(dbContext.Boats.OrderBy(boat => boat.Name).Last());
         dbContext.Bookings.Add(bookingAll);

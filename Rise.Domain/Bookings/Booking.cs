@@ -1,6 +1,7 @@
 namespace Rise.Domain.Bookings;
 
 using System.ComponentModel.DataAnnotations;
+using Rise.Shared.Enums;
 
 /// <summary>
 /// Represents a booking entity in the system
@@ -15,6 +16,7 @@ public class Booking : Entity
     private Boat? _boat;
     private Battery? _battery;
     private string _userId; // Foreign key referencing User
+    private TimeSlot _timeSlot = TimeSlot.None;
 
     #endregion
 
@@ -33,10 +35,11 @@ public class Booking : Entity
     /// <param name="countAdults">The amount of adults on the booking.</param>
     /// <param name="countChildren">The amount of children on the booking.</param>
     /// <param name="bookingDate">The date of the booking.</param>
-    public Booking(DateTime bookingDate, string userId)
+    public Booking(DateTime bookingDate, string userId, TimeSlot timeSlot)
     {
         BookingDate = bookingDate;
         UserId = userId;
+        _timeSlot = timeSlot;
     }
 
     #endregion
@@ -86,6 +89,12 @@ public class Booking : Entity
     {
         get => _battery;
         set => _battery = Guard.Against.Default(value, nameof(Battery));
+    }
+
+    public TimeSlot TimeSlot
+    {
+        get => _timeSlot;
+        set => _timeSlot = Guard.Against.Default(value, nameof(TimeSlot));
     }
 
     #endregion
