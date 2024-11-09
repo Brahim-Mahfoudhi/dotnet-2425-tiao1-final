@@ -20990,7 +20990,7 @@ fieldset:disabled .btn {
     font-family: "FontAwesome";
     content: "\f0d8";
     position: absolute;
-    top: -20px;
+ 
     left: 28px;
     right: auto;
     font-size: 22px;
@@ -21092,7 +21092,7 @@ fieldset:disabled .btn {
   }
 
   .dropdown .dropdown-menu.show:before {
-    top: -20px;
+   
   }
 
   .dropdown.nav-item .dropdown-menu {

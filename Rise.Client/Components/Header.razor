@@ -1,0 +1,31 @@
+<div class="@PageClass">
+  <header class="header-2">
+    <div class="page-header mb-0 min-vh-75 background-overlay " style="background-image:url(@Image) ">
+      <div class="container">
+        <div class="row">
+          @ChildContent
+        </div>
+      </div>
+    </div>
+  </header>
+</div>
+@code {
+  [Parameter]
+  public RenderFragment? ChildContent { get; set; }
+  
+  [Parameter]
+  public string? Image { get ; set; }  
+  
+  [Parameter]
+  public string? PageClass { get ; set; }
+  
+  protected override void OnParametersSet()
+  {
+    if (string.IsNullOrEmpty(Image))
+    {
+      Image = "img/default_BG.png";
+    }
+  }
+  
+}
+

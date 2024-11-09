@@ -6,290 +6,239 @@
 @inject IUserService UserService
 @inject IStringLocalizer<Register> Localizer;
 
+        <div class="col-md-3 mt-5 ml-auto mr-auto content-height">
+            <div class="d-flex flex-column justify-content-around gap-5">
+                <div>
+                    <RegistrationInfo Title="@Localizer["Age"]" Description="@Localizer["AgeInfo"]"/>
+                    <RegistrationInfo Title="@Localizer["Location"]" Description="@Localizer["LocationInfo"]"/>
+                    <RegistrationInfo Title="@Localizer["Deposit"]" Description="@Localizer["DepositInfo"]"/>
+                    <RegistrationInfo Title="@Localizer["Training"]" Description="@Localizer["TrainingInfo"]"/>
+                </div>
+
+                <div
+                    class="shadow border-radius-lg d-flex flex-column align-items-start justify-content-around gap-3">
+                    <ContactInfo IconClass="ni ni-pin-3" Text="Terneuzenlaan 55, 9000 Gent"/>
+                    <ContactInfo IconClass="ni ni-headphones" Text="(+32) 9 123 45 67"/>
+                    <ContactInfo IconClass="ni ni-single-02" Text="buut.deelbootjes@gmail.com" IsMail="true"/>
+                </div>
+
+            </div>
+            <div class="ml-auto mr-auto">
 
 
-<div class="signup-page sidebar-collapse">
-    <div class="page-header header-filter" filter-color="black">
-        <div class="page-header-image background-overlay"></div>
-        <div class="content">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-3 mt-5 ml-auto mr-auto">
-                        <div class="d-flex flex-column justify-content-around gap-5">
-                            <div>
-                                <div class="info info-horizontal">
-                                    <div class="description">
-                                        <h5 class="info-title">@Localizer["Age"]</h5>
-                                        <p class="description">
-                                            @Localizer["AgeInfo"]
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="info info-horizontal">
-                                    <div class="description">
-                                        <h5 class="info-title">@Localizer["Location"]</h5>
-                                        <p class="description">
-                                            @Localizer["LocationInfo"]
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="info info-horizontal">
-                                    <div class="description">
-                                        <h5 class="info-title">@Localizer["Deposit"]</h5>
-                                        <p class="description">
-                                            @Localizer["DepositInfo"]
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="info info-horizontal">
-                                    <div class="description">
-                                        <h5 class="info-title">@Localizer["Training"]</h5>
-                                        <p class="description">
-                                            @Localizer["TrainingInfo"]
-                                        </p>
-                                    </div>
-                                </div>
+            </div>
+        </div>
+        <div class="col-md-8 mr-auto">
+            <div class="card card-plain">
 
+                <div class="card-header pb-0 d-flex flex-column align-items-start justify-content-start">
+                    <h3 class="text-white ">@Localizer["Register"]</h3>
+                    <p class="description mb-0">@Localizer["RegisterInfo"]</p>
+                </div>
+
+
+                <div class="card-body">
+
+                    @if (_isLoading)
+                    {
+                        <!-- Show loading spinner when registration is in progress -->
+                        <div class="form-card">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
                             </div>
-
-                            <div
-                                class="shadow border-radius-lg d-flex flex-column align-items-start justify-content-around gap-3">
-                                <div class="d-flex flex-row justify-content-around text-center gap-4">
-                                    <i class="ni ni-pin-3 text-info h4 "></i>
-                                    <p class="text-info mb-0">Terneuzenlaan 55, 9000 Gent</p>
-                                </div>
-                                <div class="d-flex flex-row justify-content-around text-center gap-4">
-                                    <i class="ni ni-headphones text-info h4 "></i>
-                                    <p class="text-info mb-0">(+32) 9 123 45 67</p>
-                                </div>
-                                <div class="d-flex flex-row justify-content-around text-center gap-4">
-                                    <i class="ni ni-single-02 text-info h4 "></i>
-
-                                    <p class="text-info mb-0"><a href="mailto:buut.deelbootjes@gmail.com"
-                                            class="text-info mb-0">buut.deelbootjes@gmail.com</a></p>
-                                </div>
-                            </div>
-
                         </div>
-                        <div class="ml-auto mr-auto">
+                    }
 
-
+                    else if (_userCreated == true)
+                    {
+                        <!-- Display success message and user details when registration is successful -->
+                        <div class="form-card">
+                            <h2>@Localizer["ThankForRegistering"]</h2>
+                            <p>@_statusMessage</p>
+                            <p>@Localizer["AdminValidationText"]</p>
                         </div>
-                    </div>
+                    }
+                    else
+                    {
+                        <!-- Show EditForm and error message if registration fails or has not been attempted -->
+                        @if (_userCreated == false)
+                        {
+                            <h2>@Localizer["RegistrationFailed"]</h2>
+                            <p>@_statusMessage</p>
+                        }
 
-                    <div class="col-md-8 mr-auto">
-                        <div class="card card-plain">
-
-                            <div class="card-header pb-0 d-flex flex-column align-items-start justify-content-start">
-                                <h3 class="text-white ">@Localizer["Register"]</h3>
-                                <p class="description mb-0">@Localizer["RegisterInfo"]</p>
-                            </div>
-
-
-                            <div class="card-body">
-
-                                @if (_isLoading)
-                                {
-                                    <!-- Show loading spinner when registration is in progress -->
-                                    <div class="form-card">
-                                    <div class="spinner-border text-primary" role="status">
-                                        <span class="visually-hidden">Loading...</span>
+                        <EditForm EditContext="_editContext" OnValidSubmit="Submit">
+                            <CustomDataAnnotationsValidator EditContext="_editContext"/>
+                            <div class="d-flex align-items-start justify-content-around">
+                                <div class="col-5">
+                                    <div class="input-form-spacing">
+                                        <label for="FirstName">@Localizer["FirstName"]</label>
+                                        <InputText class="form-control" id="FirstName"
+                                                   @bind-Value="tempUser.FirstName"
+                                                   placeholder="@Localizer["FirstName"]"/>
+                                        @if (showValidationErrors)
+                                        {
+                                            <ValidationMessage For="@(() => tempUser.FirstName)"/>
+                                        }
+                                    </div>
+                                    <div class="input-form-spacing">
+                                        <label class="form-label" for="Email">@Localizer["Email"]: </label>
+                                        <InputText class="form-input form-control mt-0" type="email" id="Email"
+                                                   @bind-Value="tempUser.Email" placeholder="@Localizer["Email"]"
+                                                   @oninput="OnEmailInput"/>
+                                        @if (showValidationErrors)
+                                        {
+                                            <ValidationMessage For="@(() => tempUser.Email)"/>
+                                        }
+                                        @if (isEmailTaken)
+                                        {
+                                            <p style="color: #FF0100; font-size: 0.875rem; margin:0;">
+                                                @Localizer["EmailAlreadyTaken"]</p>
+                                        }
+                                    </div>
+                                    <div class="input-form-spacing">
+                                        <label class="form-label" for="BirthDate">@Localizer["BirthDate"]:
+                                        </label>
+                                        <InputDate class="form-input form-control mt-0" style="height: 38px;"
+                                                   id="BirthDate" @bind-Value="tempUser.BirthDate"/>
+                                        @if (showValidationErrors)
+                                        {
+                                            <ValidationMessage For="@(() => tempUser.BirthDate)"/>
+                                        }
+                                    </div>
+                                    <div class="input-form-spacing">
+                                        <label class="form-label" for="Password">@Localizer["Password"]:
+                                        </label>
+                                        <InputText class="form-input form-control mt-0" type="password"
+                                                   id="Password" @bind-Value="tempUser.Password"
+                                                   placeholder="@Localizer["Password"]"/>
+                                        @if (showValidationErrors)
+                                        {
+                                            <ValidationMessage For="@(() => tempUser.Password)"/>
+                                        }
+                                    </div>
+                                    <div class="input-form-spacing">
+                                        <label class="form-label"
+                                               for="ConfirmPassword">@Localizer["ConfirmPassword"]:</label>
+                                        <InputText class="form-input form-control mt-0" type="password"
+                                                   id="ConfirmPassword" @bind-Value="tempUser.ConfirmPassword"
+                                                   placeholder="@Localizer["ConfirmPassword"]"/>
+                                        @if (showValidationErrors)
+                                        {
+                                            <ValidationMessage For="@(() => tempUser.ConfirmPassword)"/>
+                                        }
                                     </div>
                                 </div>
-                                }
 
-                                else if (_userCreated == true)
-                                {
-                                    <!-- Display success message and user details when registration is successful -->
-                                    <div class="form-card">
-                                    <h2>@Localizer["ThankForRegistering"]</h2>
-                                    <p>@_statusMessage</p>
-                                    <p>@Localizer["AdminValidationText"]</p>
-                                </div>
-                                }
-                                else
-                                {
-                                    <!-- Show EditForm and error message if registration fails or has not been attempted -->
-                                    @if (_userCreated == false)
-                                    {
-                                        <h2>@Localizer["RegistrationFailed"]</h2>
-                                        <p>@_statusMessage</p>
-                                    }
+                                <div class="col-5">
+                                    <div class="input-form-spacing">
+                                        <label class="form-label" for="LastName">@Localizer["LastName"]:
+                                        </label>
+                                        <InputText class="form-input form-control mt-0" id="LastName"
+                                                   @bind-Value="tempUser.LastName"
+                                                   placeholder="@Localizer["LastName"]"/>
+                                        @if (showValidationErrors)
+                                        {
+                                            <ValidationMessage For="@(() => tempUser.LastName)"/>
+                                        }
+                                    </div>
+                                    <div class="input-form-spacing">
+                                        <label class="form-label" for="PhoneNumber">@Localizer["PhoneNumber"]:
+                                        </label>
+                                        <InputText class="form-input form-control mt-0" type="tel"
+                                                   id="PhoneNumber" @bind-Value="tempUser.PhoneNumber"
+                                                   placeholder="@Localizer["PhoneNumber"]"/>
+                                        @if (showValidationErrors)
+                                        {
+                                            <ValidationMessage For="@(() => tempUser.PhoneNumber)"/>
+                                        }
+                                    </div>
+                                    <div class="input-form-spacing position-relative">
+                                        <label class="form-label"
+                                               for="Street">@Localizer["SelectAddress"]:</label>
+                                        <InputText id="Street" class="form-input form-control mt-0"
+                                                   @bind-Value="searchQuery" @oninput="OnSearchQueryChanged"
+                                                   placeholder="@Localizer["TypeStreet"]"/>
 
-                                    <EditForm EditContext="_editContext" OnValidSubmit="Submit">
-                                        <CustomDataAnnotationsValidator EditContext="_editContext" />
-                                        <div class="d-flex align-items-start justify-content-around">
-                                            <div class="col-5">
-                                                <div class="input-form-spacing">
-                                                    <label for="FirstName">@Localizer["FirstName"]</label>
-                                                    <InputText class="form-control" id="FirstName"
-                                                        @bind-Value="tempUser.FirstName"
-                                                        placeholder="@Localizer["FirstName"]" />
-                                                    @if (showValidationErrors)
-                                                    {
-                                                        <ValidationMessage For="@(() => tempUser.FirstName)" />
-                                                    }
-                                                </div>
-                                                <div class="input-form-spacing">
-                                                    <label class="form-label" for="Email">@Localizer["Email"]: </label>
-                                                    <InputText class="form-input form-control mt-0" type="email" id="Email"
-                                                        @bind-Value="tempUser.Email" placeholder="@Localizer["Email"]"
-                                                        @oninput="OnEmailInput" />
-                                                    @if (showValidationErrors)
-                                                    {
-                                                        <ValidationMessage For="@(() => tempUser.Email)" />
-                                                    }
-                                                    @if (isEmailTaken)
-                                                    {
-                                                        <p style="color: #FF0100; font-size: 0.875rem; margin:0;">
-                                                            @Localizer["EmailAlreadyTaken"]</p>
-                                                    }
-                                                </div>
-                                                <div class="input-form-spacing">
-                                                    <label class="form-label" for="BirthDate">@Localizer["BirthDate"]:
-                                                    </label>
-                                                    <InputDate class="form-input form-control mt-0" style="height: 38px;"
-                                                        id="BirthDate" @bind-Value="tempUser.BirthDate" />
-                                                    @if (showValidationErrors)
-                                                    {
-                                                        <ValidationMessage For="@(() => tempUser.BirthDate)" />
-                                                    }
-                                                </div>
-                                                <div class="input-form-spacing">
-                                                    <label class="form-label" for="Password">@Localizer["Password"]:
-                                                    </label>
-                                                    <InputText class="form-input form-control mt-0" type="password"
-                                                        id="Password" @bind-Value="tempUser.Password"
-                                                        placeholder="@Localizer["Password"]" />
-                                                    @if (showValidationErrors)
-                                                    {
-                                                        <ValidationMessage For="@(() => tempUser.Password)" />
-                                                    }
-                                                </div>
-                                                <div class="input-form-spacing">
-                                                    <label class="form-label"
-                                                        for="ConfirmPassword">@Localizer["ConfirmPassword"]:</label>
-                                                    <InputText class="form-input form-control mt-0" type="password"
-                                                        id="ConfirmPassword" @bind-Value="tempUser.ConfirmPassword"
-                                                        placeholder="@Localizer["ConfirmPassword"]" />
-                                                    @if (showValidationErrors)
-                                                    {
-                                                        <ValidationMessage For="@(() => tempUser.ConfirmPassword)" />
-                                                    }
-                                                </div>
+                                        <!-- Display filtered street suggestions -->
+                                        @if (filteredStreets.Any())
+                                        {
+                                            <ul class="list-group mt-1 street-list">
+                                                @foreach (var street in filteredStreets)
+                                                {
+                                                    <li class="list-group-item" style="cursor: pointer;"
+                                                        @onclick="() => SelectStreet(street)">
+                                                        @street
+                                                    </li>
+                                                }
+                                            </ul>
+                                        }
+                                        @if (showValidationErrors)
+                                        {
+                                            <ValidationMessage For="@(() => tempUser.Street)"/>
+                                        }
+                                    </div>
+                                    <div class="d-flex flex-row gap-4 input-form-spacing">
+                                        <div class="d-flex flex-column">
+                                            <div>
+                                                <label class="form-label-small"
+                                                       for="Address.HouseNumber">@Localizer["HouseNumber"]:
+                                                </label>
+                                                <InputText class="form-input-small form-control mt-0"
+                                                           id="HouseNumber" @bind-Value="tempUser.HouseNumber"
+                                                           placeholder="@Localizer["Nr"]"/>
                                             </div>
-
-                                            <div class="col-5">
-                                                <div class="input-form-spacing">
-                                                    <label class="form-label" for="LastName">@Localizer["LastName"]:
-                                                    </label>
-                                                    <InputText class="form-input form-control mt-0" id="LastName"
-                                                        @bind-Value="tempUser.LastName"
-                                                        placeholder="@Localizer["LastName"]" />
-                                                    @if (showValidationErrors)
-                                                    {
-                                                        <ValidationMessage For="@(() => tempUser.LastName)" />
-                                                    }
-                                                </div>
-                                                <div class="input-form-spacing">
-                                                    <label class="form-label" for="PhoneNumber">@Localizer["PhoneNumber"]:
-                                                    </label>
-                                                    <InputText class="form-input form-control mt-0" type="tel"
-                                                        id="PhoneNumber" @bind-Value="tempUser.PhoneNumber"
-                                                        placeholder="@Localizer["PhoneNumber"]" />
-                                                    @if (showValidationErrors)
-                                                    {
-                                                        <ValidationMessage For="@(() => tempUser.PhoneNumber)" />
-                                                    }
-                                                </div>
-                                                <div class="input-form-spacing position-relative">
-                                                    <label class="form-label"
-                                                        for="Street">@Localizer["SelectAddress"]:</label>
-                                                    <InputText id="Street" class="form-input form-control mt-0"
-                                                        @bind-Value="searchQuery" @oninput="OnSearchQueryChanged"
-                                                        placeholder="@Localizer["TypeStreet"]" />
-
-                                                    <!-- Display filtered street suggestions -->
-                                                    @if (filteredStreets.Any())
-                                                    {
-                                                        <ul class="list-group mt-1 street-list">
-                                                            @foreach (var street in filteredStreets)
-                                                            {
-                                                                <li class="list-group-item" style="cursor: pointer;"
-                                                                    @onclick="() => SelectStreet(street)">
-                                                                    @street
-                                                                </li>
-                                                            }
-                                                        </ul>
-                                                    }
-                                                    @if (showValidationErrors)
-                                                    {
-                                                        <ValidationMessage For="@(() => tempUser.Street)" />
-                                                    }
-                                                </div>
-                                                <div class="d-flex flex-row gap-4 input-form-spacing">
-                                                    <div class="d-flex flex-column">
-                                                        <div>
-                                                            <label class="form-label-small"
-                                                                for="Address.HouseNumber">@Localizer["HouseNumber"]:
-                                                            </label>
-                                                            <InputText class="form-input-small form-control mt-0"
-                                                                id="HouseNumber" @bind-Value="tempUser.HouseNumber"
-                                                                placeholder="@Localizer["Nr"]" />
-                                                        </div>
-                                                        @if (showValidationErrors)
-                                                        {
-                                                            <ValidationMessage For="@(() => tempUser.HouseNumber)"
-                                                                style="white-space: nowrap;" />
-                                                        }
-                                                    </div>
-                                                    <div>
-                                                        <label class="form-label-small" for="Address.Bus">@Localizer["Bus"]:
-                                                        </label>
-                                                        <InputText class="form-input-small form-control mt-0" id="Bus"
-                                                            @bind-Value="tempUser.Bus" placeholder="@Localizer["Bus"]" />
-                                                        @if (showValidationErrors)
-                                                        {
-                                                            <ValidationMessage For="@(() => tempUser.Bus)" />
-                                                        }
-                                                    </div>
-                                                </div>
-                                                <div
-                                                    class="d-flex align-items-center gap-4 form-check form-check-info text-left text-5xl input-form-spacing">
-                                                    <input class="form-check-input" type="checkbox" value=""
-                                                        id="flexCheckDefault" @onchange="OnCheckboxChanged">
-                                                    <label class="form-check-label text-xl my-auto" for="flexCheckDefault">
-                                                        @Localizer["IAgreeThe"] <a
-                                                            href="https://www.buut.be/_files/ugd/617ca3_a416710b66824442a0f1d87137086b9a.pdf"
-                                                            class="text-white-50 font-weight-bold text-decoration-underline-hover">@Localizer["TermsAndConditions"]</a>
-                                                    </label>
-                                                </div>
-                                            </div>
+                                            @if (showValidationErrors)
+                                            {
+                                                <ValidationMessage For="@(() => tempUser.HouseNumber)"
+                                                                   style="white-space: nowrap;"/>
+                                            }
                                         </div>
-
-                                        <div class="d-flex flex-column gap-3 pt-5">
-                                            <div class="d-flex flex-row justify-content-around gap-3">
-                                                <button class="btn bg-gradient-primary w-50 mt-4 mb-0"
-                                                    disabled="@(isTermsAccepted && !isEmailTaken ? false : true)"
-                                                    type="submit">@Localizer["Register"]</button>
-                                                <button class="btn bg-gradient-dark w-50 mt-4 mb-0" type="button"
-                                                    @onclick="Cancel">@Localizer["Cancel"]</button>
-                                            </div>
-                                            <span
-                                                class="text-white d-flex align-items-start justify-content-start">@Localizer["AlreadyAnAccount"]
-                                                <a class="info-title pl-2 text-decoration-underline text-opacity-25"
-                                                    href="/embedded-login"> @Localizer["Login"]</a></span>
+                                        <div>
+                                            <label class="form-label-small" for="Address.Bus">@Localizer["Bus"]:
+                                            </label>
+                                            <InputText class="form-input-small form-control mt-0" id="Bus"
+                                                       @bind-Value="tempUser.Bus" placeholder="@Localizer["Bus"]"/>
+                                            @if (showValidationErrors)
+                                            {
+                                                <ValidationMessage For="@(() => tempUser.Bus)"/>
+                                            }
                                         </div>
-                                    </EditForm>
-                                }
+                                    </div>
+                                    <div
+                                        class="d-flex align-items-center gap-4 form-check form-check-info text-left text-5xl input-form-spacing">
+                                        <input class="form-check-input" type="checkbox" value=""
+                                               id="flexCheckDefault" @onchange="OnCheckboxChanged">
+                                        <label class="form-check-label text-xl my-auto" for="flexCheckDefault">
+                                            @Localizer["IAgreeThe"]
+                                            <a
+                                                href="https://www.buut.be/_files/ugd/617ca3_a416710b66824442a0f1d87137086b9a.pdf"
+                                                class="text-white-50 font-weight-bold text-decoration-underline-hover">@Localizer["TermsAndConditions"]</a>
+                                        </label>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
+
+                            <div class="d-flex flex-column gap-3 pt-5">
+                                <div class="d-flex flex-row justify-content-around gap-3">
+                                    <button class="btn bg-gradient-primary w-50 mt-4 mb-0"
+                                            disabled="@(isTermsAccepted && !isEmailTaken ? false : true)"
+                                            type="submit">@Localizer["Register"]</button>
+                                    <button class="btn bg-gradient-dark w-50 mt-4 mb-0" type="button"
+                                            @onclick="Cancel">@Localizer["Cancel"]</button>
+                                </div>
+                                <span
+                                    class="text-white d-flex align-items-start justify-content-start">@Localizer["AlreadyAnAccount"]
+                                    <a class="info-title pl-2 text-decoration-underline text-opacity-25"
+                                       href="/embedded-login"> @Localizer["Login"]</a></span>
+                            </div>
+                        </EditForm>
+                    }
                 </div>
             </div>
         </div>
-    </div>
-</div>
+
+
 
 
 @code {

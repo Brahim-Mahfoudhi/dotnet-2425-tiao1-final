@@ -1,21 +1,3 @@
-
-.background-overlay {
-    background: url("img/Buut_BG.png") no-repeat center center fixed;
-    background-size: cover;
-}
-
-.background-overlay::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
-    z-index: 0;
-}
-
-
 .signup-page{
     .section{
         padding-top: 180px;
@@ -252,4 +234,11 @@ label {
     z-index: 1050; /* Ensure it appears above other elements */
     background-color: white; /* Set background to overlay other fields */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional shadow for visibility */
+}
+
+@media (width < 450px) and ( height < 1100) {
+    .content-height {
+        padding-top: 150px; !important
+
+    }
 }

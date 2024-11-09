@@ -1,4 +1,11 @@
 ﻿@page "/"
+@inject Microsoft.Extensions.Localization.IStringLocalizer<Index> Localizer
 
-<HomePageHeader/>
+
+<Header Image="img/Buut_BG.png">
+    <div class="col-lg-6">
+        <h1 class="text-white pt-3 mt-n6 display-2 font-weight-bolder">BUUT</h1>
+        <p class="lead text-white mt-3 font-weight-normal">@Localizer["HeaderText"]</p>
+    </div>
+</Header>
 <BoatInfo/>

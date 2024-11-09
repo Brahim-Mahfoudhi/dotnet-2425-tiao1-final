@@ -4,6 +4,8 @@ namespace Rise.Shared.Enums;
 
 public enum RolesEnum
 {
+    [EnumMember(Value = "Visitor")]
+    Visitor,
     [EnumMember(Value = "Admin")]
     Admin,
     [EnumMember(Value = "User")]

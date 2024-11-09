@@ -18,24 +18,26 @@ namespace Rise.Client.Users
         [Inject] private IJSRuntime Js { get; set; } = default!;
         [Inject] private NavigationManager NavigationManager { get; set; } = default!;
         [Inject] private AuthenticationStateProvider AuthStateProvider { get; set; } = default!;
-        [Inject] private IStringLocalizer<Login> Localizer { get; set; } = default!;
+        [Inject] private IStringLocalizer<EmbeddedLogin> Localizer { get; set; } = default!;
         [Inject] private IConfiguration Config { get; set; } = default!;
 
         private LoginModel loginModel = new LoginModel();
         private string? loginError;
-
+        
+        [CascadingParameter]
+        public string HeaderImage { get; set; } = "img/Buut_BG3.png";
         private void HandleCancelClick()
         {
             NavigationManager.NavigateTo("/");
         }
 
-        private async void LoginAsAdmin()
+        private async Task LoginAs(string role)
         {
-            loginModel.Email = "admin@hogent.be";
+            loginModel.Email = role +  "@hogent.be";
             loginModel.Password = "test";
             await HandleLogin();
-        }
-
+        }        
+        
         private async Task HandleLogin()
         {
             try

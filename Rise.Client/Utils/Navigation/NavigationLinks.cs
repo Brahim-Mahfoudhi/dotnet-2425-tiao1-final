@@ -1,13 +1,13 @@
 using Rise.Shared.Enums;
-namespace Rise.Client.Utils.Navigation;
 
+namespace Rise.Client.Utils.Navigation;
 
 public class NavigationLink
 {
-    public string Url { get; set; }
-    public string Name { get; set; }
-    public bool Authenticated { get; set; }
-    public RolesEnum? Role { get; set; }
+    public string Url { get; }
+    public string Name { get; }
+    public bool Authenticated { get; }
+    public RolesEnum? Role { get; }
 
     public NavigationLink(string url, string name, bool authenticated, RolesEnum? role = null)
     {
@@ -18,33 +18,18 @@ public class NavigationLink
     }
 }
 
-public class NavigationLinks
+public class PageInfo
 {
-    private const string INFORMATION = "/informatie";
-    private const string ACTUA = "/actua";
-    private const string SPONSORS = "/meter-peter";
-    private const string DOCUMENTS = "/documenten";
-    private const string USERS = "Users";
-    private const string AUTH_USERS = "authusers";
-    private const string MAKEBOOKING = "MakeBookingView";
-    private const string MYBOOKINGS = "mybookings";
+    public string Url { get; }
+    public string BackgroundImage { get; }
+    public string PageClass { get; }
+    public bool RenderHeader { get; }
 
-    private const RolesEnum USER = RolesEnum.User;
-    private const RolesEnum ADMIN = RolesEnum.Admin;
-    private const RolesEnum GODPARENT = RolesEnum.Godparent;
-
-    public static List<NavigationLink> GetNavigationLinks()
+    public PageInfo(string url, string backgroundImage = "img/buut_bg.png", string pageClass = "", bool renderHeader = true)
     {
-        return new List<NavigationLink>
-        {
-            new (USERS, "Users", true, ADMIN),
-            new (AUTH_USERS, "Auth users", true, ADMIN),
-            new (INFORMATION, "Information", false),
-            new (ACTUA, "Actua", false),
-            new (SPONSORS, "Sponsors", false),
-            new (DOCUMENTS, "Documents", false),
-            new (MAKEBOOKING, "MakeBooking", true, USER),
-            new (MYBOOKINGS, "MyBookings", true, USER)
-        };
+        Url = url;
+        BackgroundImage = backgroundImage;
+        PageClass = pageClass;
+        RenderHeader = renderHeader;
     }
 }

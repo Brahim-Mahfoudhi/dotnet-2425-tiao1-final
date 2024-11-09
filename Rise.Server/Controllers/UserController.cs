@@ -36,7 +36,7 @@ public class UserController : ControllerBase
         _managementApiClient = managementApiClient;
         _bookingService = bookingService;
     }
-    
+
     /// <summary>
     /// Retrieves all users asynchronously.
     /// </summary>
@@ -253,7 +253,7 @@ public class UserController : ControllerBase
             throw new ExternalServiceException("UnexpectedErrorOccurred", ex);
         }
     }
-    
+
     /// <summary>
     /// Retrieves all bookings asynchronously for specific user.
     /// </summary>
@@ -265,7 +265,7 @@ public class UserController : ControllerBase
         var bookings = await _bookingService.GetAllUserBookings(userid);
         return bookings;
     }
-    
+
     /// <summary>
     /// Retrieves future booking asynchronously for specific user.
     /// </summary>

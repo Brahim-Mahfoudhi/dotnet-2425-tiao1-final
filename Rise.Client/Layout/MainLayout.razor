@@ -1,21 +1,33 @@
 @inherits LayoutComponentBase
 @using System.Globalization
+@using Rise.Client.Utils.Navigation
 @inject Microsoft.Extensions.Localization.IStringLocalizer<MainLayout> Localizer
 
-<div>
+<div xmlns="http://www.w3.org/1999/html">
 
     @* Required *@
         <MudPopoverProvider />
         <MudThemeProvider />
-        
+
         @* Needed for dialogs *@
         <MudDialogProvider />
-        
+
         @* Needed for snackbars *@
         <MudSnackbarProvider />
 
     <NavBar />
-    @Body
+    @if (currentLink == null || currentLink.RenderHeader)
+    {
+        <Header Image="@currentLink?.BackgroundImage" PageClass="@currentLink?.PageClass">
+            @Body
+        </Header>
+    }
+    else
+    {
+        @Body
+    }
+
+
     <Footer />
 </div>
 
@@ -24,7 +36,12 @@
     [Inject] IJSRuntime js { get; set; }
     [Inject] NavigationManager NavigationManager { get; set; }
 
+    private string _headerImage = "img/buut_BG.png";
+
     private string selectedCulture = "en-US";
+
+    private PageInfo? currentLink;
+
 
     protected override async Task OnInitializedAsync()
     {
@@ -35,6 +52,9 @@
         {
             selectedCulture = storedCulture;
         }
+
+        NavigationManager.LocationChanged += OnLocationChanged;
+        SetCurrentLink();
     }
 
     private async void ChangeLanguage(ChangeEventArgs e)
@@ -46,5 +66,25 @@
 
         // Reload the page to apply the new culture
         NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true); ;
+    }
+
+    private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
+    {
+        // Update the current link whenever the URL changes
+        SetCurrentLink();
+        StateHasChanged(); // Trigger re-render
+    }
+
+    private void SetCurrentLink()
+    {
+        // Logic to set the current link based on the URL
+        currentLink = NavigationService.GetPageInfos()
+            .Find(link => link.Url.Equals(NavigationManager.ToBaseRelativePath(NavigationManager.Uri)));
+    }
+
+    public void Dispose()
+    {
+        // Unsubscribe from the event when the component is disposed to avoid memory leaks
+        NavigationManager.LocationChanged -= OnLocationChanged;
     }
 }

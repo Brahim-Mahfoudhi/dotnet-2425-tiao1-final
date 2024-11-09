@@ -1,0 +1,16 @@
+<div class="info info-horizontal">
+    <div class="description">
+        <h5 class="info-title">@Title</h5>
+        <p class="description">
+            @Description
+        </p>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string Title { get; set; } = string.Empty;
+
+    [Parameter]
+    public string Description { get; set; } = string.Empty;
+}
