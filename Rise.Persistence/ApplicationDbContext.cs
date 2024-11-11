@@ -34,6 +34,24 @@ public class ApplicationDbContext : DbContext
         base.OnModelCreating(modelBuilder);
         // Applying all types of IEntityTypeConfiguration in the Persistence project.
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
+
+          // Configure many-to-many relationship between User and Role
+        modelBuilder.Entity<User>()
+            .HasMany(u => u.Roles)
+            .WithMany(r => r.Users)
+            .UsingEntity<Dictionary<string, object>>(
+                "UserRole", // Name of the join table
+                userRole => userRole
+                    .HasOne<Role>()
+                    .WithMany()
+                    .HasForeignKey("RoleId")
+                    .OnDelete(DeleteBehavior.Cascade),
+                userRole => userRole
+                    .HasOne<User>()
+                    .WithMany()
+                    .HasForeignKey("UserId")
+                    .OnDelete(DeleteBehavior.Cascade)
+            );
     }
 
 }

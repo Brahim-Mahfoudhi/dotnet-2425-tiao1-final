@@ -32,10 +32,10 @@ internal class UserConfiguration : EntityConfiguration<User>
             .HasForeignKey<Address>(x => x.UserId)
             .IsRequired();
         
-        builder
-            .HasMany(x => x.Roles)
-            .WithOne()
-            .HasForeignKey(x => x.UserId);
+        // builder
+        //     .HasMany(x => x.Roles)
+        //     .WithOne()
+        //     .HasForeignKey(x => x.UserId);
         
         builder
             .HasMany(x => x.Bookings)

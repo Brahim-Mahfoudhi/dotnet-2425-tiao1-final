@@ -84,6 +84,9 @@ public class UserDto
         public ImmutableList<RoleDto> Roles { get; init; } = ImmutableList<RoleDto>.Empty;
         public DateTime BirthDate { get; init; } = DateTime.Now;
 
+        // Parameterless constructor for deserialization
+        public UserDetails() { }
+
         public UserDetails(string id, string firstName, string lastName, string email,
             AddressDto.GetAdress address, ImmutableList<RoleDto>? roles = null, DateTime? birthDate = null)
         {
@@ -119,29 +122,28 @@ public class UserDto
     /// </summary>
     public sealed record UpdateUser
     {
-        public int Id { get; init; }
-        public string FirstName { get; init; }
-        public string LastName { get; init; }
-        public string Email { get; init; }
-        public string Password { get; init; }
-        public DateTime? BirthDate { get; init; } = DateTime.Now;
-        public AddressDto.CreateAddress Address { get; init; } = new AddressDto.CreateAddress();
-        public ImmutableList<RoleDto>? Roles { get; init; } = ImmutableList<RoleDto>.Empty;
-        public string PhoneNumber { get; init; }
+        public string Id { get; init; }
+        public string? FirstName { get; init; }
+        public string? LastName { get; init; }
+        public string? Email { get; init; }
+        public string? Password { get; init; }
+        public DateTime? BirthDate { get; init; }
+        public AddressDto.UpdateAddress? Address { get; init; }
+        public ImmutableList<RoleDto>? Roles { get; init; }
+        public string? PhoneNumber { get; init; }
 
-        public UpdateUser(int id, string firstName, string lastName, string email, string passsword, string phoneNumber,
-            AddressDto.CreateAddress address, ImmutableList<RoleDto>? roles = null, DateTime? birthDate = null)
-        {
-            Id = id;
-            FirstName = firstName;
-            LastName = lastName;
-            Email = email;
-            Password = passsword;
-            PhoneNumber = phoneNumber;
-            Address = address;
-            Roles = roles ?? ImmutableList<RoleDto>.Empty;
-            BirthDate = birthDate ?? DateTime.Now;
-        }
+        // public UpdateUser(string id, string firstName, string lastName, string email, string phoneNumber,
+        //     AddressDto.UpdateAddress address, ImmutableList<RoleDto>? roles = null, DateTime? birthDate = null)
+        // {
+        //     Id = id;
+        //     FirstName = firstName;
+        //     LastName = lastName;
+        //     Email = email;
+        //     PhoneNumber = phoneNumber;
+        //     Address = address;
+        //     Roles = roles ?? ImmutableList<RoleDto>.Empty;
+        //     BirthDate = birthDate ?? DateTime.Now;
+        // }
     }
 
     /// <summary>

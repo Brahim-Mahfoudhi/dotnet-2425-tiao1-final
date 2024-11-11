@@ -20,6 +20,8 @@ namespace Rise.Server.Controllers;
 public class UserController : ControllerBase
 {
     private readonly IUserService _userService;
+
+    private readonly IAuth0UserService _auth0UserService;
     private readonly IManagementApiClient _managementApiClient;
     private readonly IBookingService _bookingService;
 
@@ -30,10 +32,11 @@ public class UserController : ControllerBase
     /// <param name="userService">The user service that handles user operations.</param>
     /// <param name="managementApiClient">The management API for Auth0</param>
     /// <param name="bookingService">The booking service that handles booking operations</param>
-    public UserController(IUserService userService, IManagementApiClient managementApiClient, IBookingService bookingService)
+    public UserController(IUserService userService, IAuth0UserService auth0UserService, IBookingService bookingService)
     {
         _userService = userService;
-        _managementApiClient = managementApiClient;
+        _auth0UserService = auth0UserService;
+
         _bookingService = bookingService;
     }
 
@@ -88,7 +91,8 @@ public class UserController : ControllerBase
     {
         try
         {
-            var userDb = await RegisterUserAuth0(userDetails);
+            // var userDb = await RegisterUserAuth0(userDetails);
+            var userDb = await _auth0UserService.RegisterUserAuth0(userDetails);
             var (success, message) = await _userService.CreateUserAsync(userDb);
 
             if (success)
@@ -125,12 +129,66 @@ public class UserController : ControllerBase
     /// <param name="id">The id of an existing <see cref="User"/></param>
     /// <param name="userDetails">The <see cref="UserDto.UpdateUser"/> object containing updated user details.</param>
     /// <returns><c>true</c> if the update is successful; otherwise, <c>false</c>.</returns>
-    [HttpPut("{userid}")]
+    [HttpPut]
     [Authorize]
-    public async Task<bool> Put(UserDto.UpdateUser userDetails)
+    public async Task<IActionResult> Put(UserDto.UpdateUser userDetails)
     {
-        var updated = await _userService.UpdateUserAsync(userDetails);
-        return updated;
+        try
+        {
+            // Update the user in Auth0
+            var userUpdatedInAuth0 = await _auth0UserService.UpdateUserAuth0(userDetails);
+            if (!userUpdatedInAuth0)
+            {
+                return StatusCode(500, new { message = "Failed to update user in Auth0." });
+            }
+
+            // Assign new roles to the user in Auth0
+            var rolesAssigned = await _auth0UserService.AssignRoleToUser(userDetails);
+            if (!rolesAssigned)
+            {
+                return StatusCode(500, new { message = "Failed to assign roles to user in Auth0." });
+            }
+
+            // Update the user in the local database
+            var userUpdatedInDb = await _userService.UpdateUserAsync(userDetails);
+            if (!userUpdatedInDb)
+            {
+                return StatusCode(500, new { message = "Failed to update user in the local database." });
+            }
+
+            return Ok(new { message = "User updated successfully." });
+        }
+        catch (ApiException ex)
+        {
+            // Handle specific Auth0 API exceptions
+            return StatusCode(503, new { message = "Auth0 service is unavailable. Please try again later.", detail = ex.Message });
+        }
+        catch (DatabaseOperationException ex)
+        {
+            // Handle specific exceptions related to the local database
+            return StatusCode(500, new { message = "An error occurred while updating the user in the local database.", detail = ex.Message });
+        }
+        catch (ExternalServiceException ex)
+        {
+            // Handle custom exceptions from external services
+            return StatusCode(503, new { message = ex.Message, detail = ex.InnerException?.Message });
+        }
+        catch (ArgumentException ex)
+        {
+            // Handle cases where the input arguments might be invalid
+            return BadRequest(new { message = ex.Message });
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            // Handle unauthorized access exceptions
+            return StatusCode(403, new { message = $"Access denied: {ex.Message}" });
+
+        }
+        catch (Exception ex)
+        {
+            // Handle any other unexpected errors
+            return StatusCode(500, new { message = "An unexpected error occurred while updating the user.", detail = ex.Message });
+        }
     }
 
     /// <summary>
@@ -146,22 +204,13 @@ public class UserController : ControllerBase
         return deleted;
     }
 
-    [HttpGet("authUsers")]
+    [HttpGet("auth/users")]
     [Authorize]
     public async Task<IActionResult> GetUsers()
     {
         try
         {
-            // Fetch users from Auth0
-            var users = await _managementApiClient.Users.GetAllAsync(new GetUsersRequest(), new PaginationInfo());
-
-            // Transform and return the user list if successful
-            var auth0Users = users.Select(x => new UserDto.Auth0User(
-                x.Email,
-                x.FirstName,
-                x.LastName,
-                x.Blocked ?? false
-            ));
+            var auth0Users = await _auth0UserService.GetAllUsersAsync();
 
             return Ok(auth0Users);
         }
@@ -179,27 +228,17 @@ public class UserController : ControllerBase
 
     [HttpGet("auth/{userid}")]
     [Authorize]
-    public async Task<IActionResult> GetUser(string id)
+    public async Task<IActionResult> GetUser(String userid)
     {
         try
         {
-            // Attempt to retrieve the user by ID
-            var user = await _managementApiClient.Users.GetAsync(id);
+            var auth0User = await _auth0UserService.GetUserByIdAsync(userid);
 
-            if (user == null)
+            if (auth0User == null)
             {
                 // Return 404 Not Found if the user does not exist
-                return NotFound(new { message = $"User with ID {id} was not found." });
+                return NotFound(new { message = $"User with ID {userid} was not found." });
             }
-
-            // Transform and return the user data if found
-            var auth0User = new UserDto.Auth0User
-            (
-                user.Email,
-                user.FirstName,
-                user.LastName,
-                user.Blocked ?? false
-            );
 
             return Ok(auth0User);
         }
@@ -216,43 +255,6 @@ public class UserController : ControllerBase
     }
 
 
-    private async Task<UserDto.RegistrationUser> RegisterUserAuth0(UserDto.RegistrationUser user)
-    {
-        var userCreateRequest = new UserCreateRequest
-        {
-            Email = user.Email,
-            Password = user.Password,
-            Connection = "Username-Password-Authentication",
-            FirstName = user.FirstName,
-            LastName = user.LastName,
-        };
-        try
-        {
-            // Check if the user already exists in Auth0
-            var usersWithEmail = await _managementApiClient.Users.GetAllAsync(new GetUsersRequest { Query = $"email:\"{user.Email}\"" });
-            if (usersWithEmail.Any())
-            {
-                throw new UserAlreadyExistsException("UserAlreadyExists"); // Localization key
-            }
-
-            var response = await _managementApiClient.Users.CreateAsync(userCreateRequest);
-            Console.WriteLine("Created user: " + response.UserId);
-            return new UserDto.RegistrationUser(response.FirstName, response.LastName, response.Email, user.PhoneNumber, null, response.UserId, user.Address, user.BirthDate);
-
-        }
-        catch (UserAlreadyExistsException)
-        {
-            throw;
-        }
-        catch (ApiException ex)
-        {
-            throw new ExternalServiceException("ExternalServiceUnavailable", ex);
-        }
-        catch (Exception ex)
-        {
-            throw new ExternalServiceException("UnexpectedErrorOccurred", ex);
-        }
-    }
 
     /// <summary>
     /// Retrieves all bookings asynchronously for specific user.
@@ -288,22 +290,59 @@ public class UserController : ControllerBase
     {
         try
         {
-            // Check if any user exists with this email in Auth0
-            var usersWithEmail = await _managementApiClient.Users.GetAllAsync(new GetUsersRequest { Query = $"email:\"{email}\"" });
-            bool isTaken = usersWithEmail.Any();
+            // Use the Auth0UserService to check if the email is taken
+            bool isTaken = await _auth0UserService.IsEmailTakenAsync(email);
             Console.WriteLine("Email taken: " + isTaken);
 
             return Ok(isTaken);
         }
-        catch (ApiException ex)
+        catch (ExternalServiceException ex)
         {
-            // Handle specific Auth0 API exceptions
-            return StatusCode(503, new { message = "Auth0 service is unavailable. Please try again later.", detail = ex.Message });
+            // Handle custom exceptions from Auth0UserService
+            return StatusCode(503, new { message = ex.Message, detail = ex.InnerException?.Message });
         }
         catch (Exception ex)
         {
             // Handle any other unexpected errors
             return StatusCode(500, new { message = "An unexpected error occurred while checking the email.", detail = ex.Message });
+        }
+    }
+
+    [HttpGet("filtered")]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> GetFilteredUsers([FromQuery] UserFilter filter)
+    {
+        try
+        {
+            // Attempt to get filtered users from the service
+            var users = await _userService.GetFilteredUsersAsync(filter);
+
+            // Check if users are found; return a suitable response
+            if (users == null || !users.Any())
+            {
+                return NotFound("No users found matching the given filters.");
+            }
+
+
+            return Ok(users);
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            // Handle specific unauthorized access exceptions if needed
+            return Forbid($"Access denied: {ex.Message}");
+        }
+        catch (ArgumentException ex)
+        {
+            // Handle cases where the filter might have invalid arguments
+            return BadRequest($"Invalid filter argument: {ex.Message}");
+        }
+        catch (Exception ex)
+        {
+            // Log the exception (if you have a logging system)
+            // _logger.LogError(ex, "An error occurred while getting filtered users.");
+
+            // Return a generic error response
+            return StatusCode(500, $"An unexpected error occurred: {ex.Message}");
         }
     }
 }

@@ -25,7 +25,7 @@ public class PageInfo
     public string PageClass { get; }
     public bool RenderHeader { get; }
 
-    public PageInfo(string url, string backgroundImage = "img/buut_bg.png", string pageClass = "", bool renderHeader = true)
+    public PageInfo(string url, string backgroundImage = "img/Buut_BG.png", string pageClass = "", bool renderHeader = true)
     {
         Url = url;
         BackgroundImage = backgroundImage;

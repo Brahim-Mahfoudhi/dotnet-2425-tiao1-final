@@ -9,7 +9,7 @@ public class RoleDto
     /// <summary>
     /// Gets or sets the unique identifier of the role.
     /// </summary>
-    public int Id { get; set; }
+    // public int Id { get; set; }
     /// <summary>
     /// Gets or sets the name of the role.
     /// </summary>

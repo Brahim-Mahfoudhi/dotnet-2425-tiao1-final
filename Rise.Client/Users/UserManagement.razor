@@ -1,0 +1,67 @@
+@page "/userspage"
+@using Microsoft.Extensions.Localization
+@attribute [Authorize(Roles = "Admin")]
+@inject IStringLocalizer<UserManagement> Localizer
+
+<PageTitle>@Localizer["UsersManagement"]</PageTitle>
+
+<div class="container-fluid mt-5" style="height: 70vh;">
+    <div class="row mt-5" style="height: 100%;">
+        <!-- Sidebar Navigation -->
+        <div class="col-2 p-3" style="height: 100%; color: white;">
+            <h4>@Localizer["Navigation"]</h4>
+            <nav class="nav flex-column">
+                <button class="btn btn-link text-start" style="color: white; text-transform: none;" @onclick="() => ShowView(USERS)">@Localizer["Users"]</button>
+                <button class="btn btn-link text-start" style="color: white; text-transform: none;" @onclick="() => ShowView(AUTH0USERS)">@Localizer["Auth0Users"]</button>
+                <button class="btn btn-link text-start" style="color: white; text-transform: none;" @onclick="() => ShowView(USERVALIDATION)">@Localizer["NewlyRegistered"]</button>
+            </nav>
+        </div>
+        <div class="col-1"></div>
+
+        <!-- Main Content -->
+        <div class="col-9" style="height: 100%;">
+            @if (isUserDetailsVisible)
+            {
+                <UserDetails UserId="@selectedUserId" OnBackClick="HideUserDetails" />
+            }
+            else if (currentView == "Users")
+            {
+                <Users OnUserSelected="ShowUserDetails" />
+            }
+            else if (currentView == "Auth0Users")
+            {
+                <UsersAuth0 OnUserSelected="ShowUserDetails" />
+            }
+            else if (currentView == "UserValidation")
+            {
+                <UserValidation OnUserSelected="ShowUserDetails" />
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    private const string USERS = "Users";
+    private const string AUTH0USERS = "Auth0Users";
+    private const string USERVALIDATION = "UserValidation";
+    private string currentView = USERS;
+    private bool isUserDetailsVisible = false;
+    private string selectedUserId;
+
+    private void ShowView(string viewName)
+    {
+        isUserDetailsVisible = false;
+        currentView = viewName;
+    }
+
+    private void ShowUserDetails(string userId)
+    {
+        selectedUserId = userId;
+        isUserDetailsVisible = true;
+    }
+
+    private void HideUserDetails()
+    {
+        isUserDetailsVisible = false;
+    }
+}

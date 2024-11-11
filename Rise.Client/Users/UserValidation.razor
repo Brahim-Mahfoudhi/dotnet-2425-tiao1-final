@@ -1,0 +1,82 @@
+@page "/UserValidation";
+@using Rise.Shared;
+
+@attribute [Authorize(Roles = "Admin")]
+
+<PageTitle>User Validation</PageTitle>
+
+<div class="text-white">
+    @if (_isLoading)
+    {
+        <div class="loading-container" style="background-color: transparent;">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div>
+            <h1>User Validation</h1>
+            <p>New Users</p>
+            <table class="table text-white">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Firstname</th>
+                        <th>Lastname</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var user in _newlyRegisteredUsers)
+                    {
+                        <tr @onclick="() => HandleUserClick(user.Id)" style="cursor: pointer;">
+                            <td>@user.Id</td>
+                            <td>@user.FirstName</td>
+                            <td>@user.LastName</td>
+                            <td>@user.Email</td>
+                            <td>
+                                @foreach (var role in user.Roles)
+                                {
+                                    @role.Name
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <p></p>
+            <p>Users</p>
+            <table class="table text-white">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Firstname</th>
+                        <th>Lastname</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var user in _usersWithUserRole)
+                    {
+                        <tr @onclick="() => HandleUserClick(user.Id)" style="cursor: pointer;">
+                            <td>@user.Id</td>
+                            <td>@user.FirstName</td>
+                            <td>@user.LastName</td>
+                            <td>@user.Email</td>
+                            <td>
+                                @foreach (var role in user.Roles)
+                                {
+                                    @role.Name
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

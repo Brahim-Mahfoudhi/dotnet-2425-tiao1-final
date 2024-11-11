@@ -31,8 +31,11 @@
 <data name="Users" xml:space="preserve">
   <value>Gebruikers</value>
 </data>
-<data name="Auth users" xml:space="preserve">
+<data name="AutUsers" xml:space="preserve">
   <value>Auth gebruikers</value>
+</data>
+<data name="ManageUsers" xml:space="preserve">
+  <value>Beheer gebruikers</value>
 </data>
 <data name="Documents" xml:space="preserve">
   <value>Documenten</value>

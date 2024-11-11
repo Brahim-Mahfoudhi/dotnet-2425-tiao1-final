@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
+              <xsd:attribute name="xml:space" type="xsd:string" fixed="preserve"/>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+
+<data name="UserDetails" xml:space="preserve">
+  <value>User Details</value>
+</data>
+<data name="UserId" xml:space="preserve">
+  <value>User Id</value>
+</data>
+<data name="FirstName" xml:space="preserve">
+  <value>First Name</value>
+</data>
+<data name="LastName" xml:space="preserve">
+  <value>Last Name</value>
+</data>
+<data name="Email" xml:space="preserve">
+  <value>Email</value>
+</data>
+<data name="Roles" xml:space="preserve">
+  <value>Roles</value>
+</data>
+<data name="Role" xml:space="preserve">
+  <value>Role</value>
+</data>
+<data name="BirthDate" xml:space="preserve">
+  <value>Date Of Birth</value>
+</data>
+<data name="Address" xml:space="preserve">
+  <value>Adress</value>
+</data>
+<data name="Bus" xml:space="preserve">
+  <value>Bus</value>
+</data>
+
+  //buttons
+<data name="ApproveBTN" xml:space="preserve">
+    <value>APPROVE</value>
+</data>
+  <data name="RejectBTN" xml:space="preserve">
+    <value>REJECT</value>
+</data>
+  <data name="Back" xml:space="preserve">
+    <value>Back</value>
+</data>
+  <data name="approve" xml:space="preserve">
+    <value>approve</value>
+  </data>
+  <data name="reject" xml:space="preserve">
+    <value>reject</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="Confirmation" xml:space="preserve">
+    <value>Confirmation</value>
+  </data>
+
+<data name="ConfirmUserAction" xml:space="preserve">
+  <value>Are you sure you want to {0} {1} {2}?</value>
+</data>
+</root>

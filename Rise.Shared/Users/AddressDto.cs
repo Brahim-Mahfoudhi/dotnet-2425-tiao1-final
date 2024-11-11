@@ -57,7 +57,7 @@ public class AddressDto
         /// <summary>
         /// Gets or sets the house number of the address.
         /// </summary>
-        public int? HouseNumber { get; set; } = null;
+        public string? HouseNumber { get; set; } = null;
         /// <summary>
         /// Gets or sets the optional bus number for the address.
         /// </summary>

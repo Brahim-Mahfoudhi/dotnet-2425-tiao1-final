@@ -1,0 +1,27 @@
+@using Microsoft.Extensions.Localization
+@using MudBlazor
+@inject IDialogService DialogService
+@inject IStringLocalizer<UserDetails> Localizer
+
+<MudDialog>
+    <DialogContent>
+        <MudText Typo="Typo.h6">@ContentText</MudText>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="Color.Primary" OnClick="OnConfirm">@ButtonApproveText</MudButton>
+        <MudButton Color="Color.Secondary" OnClick="() => MudDialog.Cancel()">@ButtonRejectText</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+    [Parameter] public string ContentText { get; set; }
+    [Parameter] public string ButtonApproveText { get; set; }
+    [Parameter] public string ButtonRejectText { get; set; }
+    [Parameter] public Color Color { get; set; }
+
+    private void OnConfirm()
+    {
+        MudDialog.Close(DialogResult.Ok(true));
+    }
+}

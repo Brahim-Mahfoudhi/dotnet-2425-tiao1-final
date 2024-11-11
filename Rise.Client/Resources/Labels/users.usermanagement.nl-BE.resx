@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
+              <xsd:attribute name="xml:space" type="xsd:string" fixed="preserve"/>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+
+//Global labels
+<data name="DemoFetch" xml:space="preserve">
+<value>Deze component demonstreert het ophalen van gegevens van de server.</value>
+</data>
+
+//UserManagement labels
+<data name="Navigation" xml:space="preserve">
+  <value>Navigatie</value>
+</data>
+<data name="Users" xml:space="preserve">
+  <value>Gebruikers</value>
+</data>
+<data name="UsersManagement" xml:space="preserve">
+  <value>Gebruikersbeheer</value>
+</data>
+<data name="Auth0Users" xml:space="preserve">
+  <value>Auth0 Gebruikers</value>
+</data>
+<data name="NewlyRegistered" xml:space="preserve">
+  <value>Nieuw Geregistreerd</value>
+</data>
+
+//Users labels
+<data name="AllUsers" xml:space="preserve">
+<value>Alle Gebruikers</value>
+</data>
+<data name="UserWithId" xml:space="preserve">
+<value>Gebruiker met ID </value>
+</data>
+
+//Table headers
+<data name="Id" xml:space="preserve">
+<value>ID</value>
+</data>
+<data name="Firstname" xml:space="preserve">
+<value>Voornaam</value>
+</data>
+<data name="Lastname" xml:space="preserve">
+<value>Achternaam</value>
+</data>
+<data name="Email" xml:space="preserve">
+<value>Email</value>
+</data>
+<data name="Role" xml:space="preserve">
+<value>Rol</value>
+</data>
+
+  </root>

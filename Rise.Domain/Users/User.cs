@@ -109,7 +109,7 @@ public class User : Entity
     /// <summary>
     /// Gets the roles associated with the user.
     /// </summary>
-    public IReadOnlyList<Role> Roles => _roles;
+    public List<Role> Roles => _roles;
     
     /// <summary>
     /// Gets the bookings associated with the user.

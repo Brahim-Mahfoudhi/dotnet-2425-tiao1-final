@@ -28,7 +28,7 @@ public class Seeder
         if (!BoatsHasAlreadyBeenSeeded())
         {
             DropBookings();
-            SeedBoats(); 
+            SeedBoats();
         }
 
         if (!BatteriesHasAlreadyBeenSeeded())
@@ -41,7 +41,7 @@ public class Seeder
         if (!BookingsHasAlreadyBeenSeeded())
             SeedBookings();
     }
-    
+
     /// <summary>
     /// Checks if the database has already been seeded with users.
     /// </summary>
@@ -85,22 +85,32 @@ public class Seeder
     /// </summary>
     private void SeedUsers()
     {
+        var roleAdmin = new Role(RolesEnum.Admin);
+        var roleUser = new Role(RolesEnum.User);
+        var roleGodparent = new Role(RolesEnum.Godparent);
+        var rolePending = new Role(RolesEnum.Pending);
         var userAdmin = new User("auth0|6713ad524e8a8907fbf0d57f", "Admin", "Gebruiker", "admin@hogent.be",
             new DateTime(1980, 01, 01), new Address("Afrikalaan", "5"), "+32478457845");
-        userAdmin.AddRole(new Role(RolesEnum.Admin));
-        dbContext.Users.Add(userAdmin);
-        var userUser = new User("auth0|6713ad784fda04f4b9ae2165", "GodParent", "Gebruiker", "godparent@hogent.be",
+        // userAdmin.AddRole(new Role(RolesEnum.Admin));
+        // dbContext.Users.Add(userAdmin);
+        var userGodparent = new User("auth0|6713ad784fda04f4b9ae2165", "GodParent", "Gebruiker", "godparent@hogent.be",
             new DateTime(1986, 09, 27), new Address("Bataviabrug", "35"), "+32478471869");
-        userUser.AddRole(new Role());
-        dbContext.Users.Add(userUser);
-        var userGodparent = new User("auth0|6713ad614fda04f4b9ae2156", "User", "Gebruiker", "user@hogent.be",
+        // userUser.AddRole(new Role());
+        // dbContext.Users.Add(userUser);
+        var userUser = new User("auth0|6713ad614fda04f4b9ae2156", "User", "Gebruiker", "user@hogent.be",
             new DateTime(1990, 05, 16), new Address("Deckerstraat", "4"), "+32474771836");
-        userGodparent.AddRole(new Role(RolesEnum.Godparent));
-        dbContext.Users.Add(userGodparent);
+        // userGodparent.AddRole(new Role(RolesEnum.Godparent));
+        // dbContext.Users.Add(userGodparent);
         var userPending = new User("auth0|6713adbf2d2a7c11375ac64c", "Pending", "Gebruiker", "pending@hogent.be",
             new DateTime(1990, 05, 16), new Address("Deckerstraat", "4"), "+32474771836");
-        userPending.AddRole(new Role(RolesEnum.Pending));
-        dbContext.Users.Add(userPending);
+        // userPending.AddRole(new Role(RolesEnum.Pending));
+
+        userAdmin.Roles.Add(roleAdmin);
+        userUser.Roles.Add(roleUser);
+        userGodparent.Roles.Add(roleGodparent);
+        userPending.Roles.Add(rolePending);
+        dbContext.Users.AddRange(userAdmin, userUser, userGodparent, userPending);
+        dbContext.Roles.AddRange(roleAdmin, roleUser, roleGodparent, rolePending);
         dbContext.SaveChanges();
     }
 
@@ -121,11 +131,12 @@ public class Seeder
             new Booking(new DateTime(2025, 01, 10), "auth0|6713ad614fda04f4b9ae2156", TimeSlot.Morning)
         };
 
-        foreach(var booking in bookings){
+        foreach (var booking in bookings)
+        {
             dbContext.Bookings.Add(booking);
         }
         dbContext.SaveChanges();
-        
+
         var booking1 = new Booking(new DateTime(2025, 01, 01), "auth0|6713ad614fda04f4b9ae2156", TimeSlot.Morning);
         dbContext.Bookings.Add(booking1);
         var bookingBattery = new Booking(new DateTime(2023, 01, 01), "auth0|6713ad614fda04f4b9ae2156", TimeSlot.Morning);

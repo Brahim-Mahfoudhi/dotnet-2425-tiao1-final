@@ -6,14 +6,14 @@
 <div xmlns="http://www.w3.org/1999/html">
 
     @* Required *@
-        <MudPopoverProvider />
-        <MudThemeProvider />
+    <MudPopoverProvider />
+    <MudThemeProvider />
 
-        @* Needed for dialogs *@
-        <MudDialogProvider />
+    @* Needed for dialogs *@
+    <MudDialogProvider />
 
-        @* Needed for snackbars *@
-        <MudSnackbarProvider />
+    @* Needed for snackbars *@
+    <MudSnackbarProvider />
 
     <NavBar />
     @if (currentLink == null || currentLink.RenderHeader)
@@ -77,9 +77,25 @@
 
     private void SetCurrentLink()
     {
-        // Logic to set the current link based on the URL
+        // Get the base path of the current URL
+        var relativePath = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
+
+        // Find the matching PageInfo, ignoring parameters
         currentLink = NavigationService.GetPageInfos()
-            .Find(link => link.Url.Equals(NavigationManager.ToBaseRelativePath(NavigationManager.Uri)));
+        .Find(link =>
+        {
+            if (link.Url.Contains("/"))
+            {
+                // If the URL has parameters, use StartsWith to match the base route
+                var baseRoute = link.Url.Split('/')[0];
+                return relativePath.StartsWith(baseRoute, StringComparison.OrdinalIgnoreCase);
+            }
+            else
+            {
+                // For routes without parameters, use Equals
+                return link.Url.Equals(relativePath, StringComparison.OrdinalIgnoreCase);
+            }
+        });
     }
 
     public void Dispose()

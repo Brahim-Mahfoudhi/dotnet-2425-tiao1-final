@@ -1,4 +1,5 @@
 using Rise.Shared.Users;
+using System.ComponentModel.DataAnnotations;
 using System.Net.Http.Json;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -7,24 +8,24 @@ namespace Rise.Client.Users;
 
 public class UserService : IUserService
 {
-    private readonly HttpClient httpClient;
-    private readonly JsonSerializerOptions jsonSerializerOptions;
+    private readonly HttpClient _httpClient;
+    private readonly JsonSerializerOptions _jsonSerializerOptions;
 
-    public UserService(HttpClient httpClient)
+    public UserService(HttpClient _httpClient)
     {
-        this.httpClient = httpClient;
-        this.jsonSerializerOptions = new JsonSerializerOptions
+        this._httpClient = _httpClient;
+        this._jsonSerializerOptions = new JsonSerializerOptions
         {
             PropertyNameCaseInsensitive = true
         };
-        this.jsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+        this._jsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
     }
 
     public async Task<(bool Success, string? Message)> CreateUserAsync(UserDto.RegistrationUser userDetails)
     {
         try
         {
-            var response = await httpClient.PostAsJsonAsync("user", userDetails);
+            var response = await _httpClient.PostAsJsonAsync("user", userDetails);
             if (response.IsSuccessStatusCode)
             {
                 return (true, "User created successfully");
@@ -46,37 +47,43 @@ public class UserService : IUserService
 
     public async Task<bool> DeleteUserAsync(string userid)
     {
-        var response = await httpClient.DeleteAsync($"user/{userid}");
+        var response = await _httpClient.DeleteAsync($"user/{userid}");
         return response.IsSuccessStatusCode;
     }
 
     public async Task<IEnumerable<UserDto.UserBase>?> GetAllAsync()
     {
-        var jsonResponse = await httpClient.GetStringAsync("user");
-        return JsonSerializer.Deserialize<IEnumerable<UserDto.UserBase>>(jsonResponse, jsonSerializerOptions);
+        var jsonResponse = await _httpClient.GetStringAsync("user");
+        return JsonSerializer.Deserialize<IEnumerable<UserDto.UserBase>>(jsonResponse, _jsonSerializerOptions);
     }
 
     public async Task<UserDto.UserBase?> GetUserByIdAsync(string userid)
     {
-        var jsonResponse = await httpClient.GetStringAsync($"user/{userid}");
-        return JsonSerializer.Deserialize<UserDto.UserBase>(jsonResponse, jsonSerializerOptions);
+        var jsonResponse = await _httpClient.GetStringAsync($"user/{userid}");
+        return JsonSerializer.Deserialize<UserDto.UserBase>(jsonResponse, _jsonSerializerOptions);
     }
 
     public async Task<UserDto.UserDetails?> GetUserDetailsByIdAsync(string userid)
     {
-        var jsonResponse = await httpClient.GetStringAsync($"user/{userid}/details");
-        return JsonSerializer.Deserialize<UserDto.UserDetails>(jsonResponse, jsonSerializerOptions);
+        var jsonResponse = await _httpClient.GetStringAsync($"user/{userid}/details");
+        return JsonSerializer.Deserialize<UserDto.UserDetails>(jsonResponse, _jsonSerializerOptions);
     }
 
     public async Task<bool> UpdateUserAsync(UserDto.UpdateUser userDetails)
     {
-        var response = await httpClient.PutAsJsonAsync($"user/{userDetails.Id}", userDetails);
+        // Convert the object to a JSON string
+        String jsonString = JsonSerializer.Serialize(userDetails, _jsonSerializerOptions);
+
+        // Print the JSON string
+        Console.WriteLine(jsonString);
+
+        var response = await _httpClient.PutAsJsonAsync<UserDto.UpdateUser>($"user", userDetails);
         return response.IsSuccessStatusCode;
     }
 
     // public async Task<IEnumerable<UserDto.Auth0User>> GetAuth0Users()
     // {
-    //     var users = await httpClient.GetFromJsonAsync<IEnumerable<UserDto.Auth0User>>("user/auth/users");
+    //     var users = await _httpClient.GetFromJsonAsync<IEnumerable<UserDto.Auth0User>>("user/auth/users");
     //     return users!;
     // }
     public async Task<IEnumerable<UserDto.Auth0User>> GetAuth0Users()
@@ -84,7 +91,7 @@ public class UserService : IUserService
         try
         {
             // Make the HTTP request and get the response
-            var response = await httpClient.GetAsync("user/auth/users");
+            var response = await _httpClient.GetAsync("user/auth/users");
 
             // Check if the response indicates success
             if (response.IsSuccessStatusCode)
@@ -139,12 +146,12 @@ public class UserService : IUserService
         try
         {
             // Send a GET request to the backend with the email parameter
-            var response = await httpClient.GetAsync($"user/exists?email={Uri.EscapeDataString(email)}");
+            var response = await _httpClient.GetAsync($"user/exists?email={Uri.EscapeDataString(email)}");
 
             // If the response is successful, parse the result as a boolean
             if (response.IsSuccessStatusCode)
             {
-                var result =  await response.Content.ReadFromJsonAsync<bool>();
+                var result = await response.Content.ReadFromJsonAsync<bool>();
                 return result;
             }
 
@@ -156,6 +163,53 @@ public class UserService : IUserService
         {
             Console.WriteLine($"An error occurred: {ex.Message}");
             return false;
+        }
+    }
+
+    public async Task<IEnumerable<UserDto.UserBase>> GetFilteredUsersAsync(UserFilter filter)
+    {
+        try
+        {
+            List<string> queryParams = new();
+            var properties = typeof(UserFilter).GetProperties();
+            foreach (var property in properties)
+            {
+                var value = property.GetValue(filter);
+                if (value != null)
+                {
+                    string stringValue = value is DateTime dateTime
+                    ? dateTime.ToString("O") // Format DateTime as ISO 8601
+                    : value.ToString();
+
+                    queryParams.Add($"{property.Name.ToLower()}={Uri.EscapeDataString(stringValue)}");
+                }
+            }
+
+            var queryString = string.Join("&", queryParams);
+            var url = string.IsNullOrEmpty(queryString) ? "user/filtered" : $"user/filtered?{queryString}";
+
+            var response = await _httpClient.GetAsync(url);
+
+            // Read the content as a string
+            var jsonResponse = await response.Content.ReadAsStringAsync();
+
+            if (response.IsSuccessStatusCode)
+            {
+                // Deserialize using JsonSerializer and your custom options
+                var users = JsonSerializer.Deserialize<IEnumerable<UserDto.UserBase>>(jsonResponse, _jsonSerializerOptions);
+                return users ?? Enumerable.Empty<UserDto.UserBase>();
+            }
+            else
+            {
+                Console.WriteLine($"Failed to get filtered users. Status code: {response.StatusCode}");
+                return Enumerable.Empty<UserDto.UserBase>();
+            }
+
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"An error occurred: {ex.Message}");
+            return Enumerable.Empty<UserDto.UserBase>();
         }
     }
 }

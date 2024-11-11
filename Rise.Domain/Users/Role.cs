@@ -6,7 +6,7 @@ using Rise.Shared.Enums;
 /// </summary>
 public class Role : Entity
 {
-    private string _userId; // Foreign key referencing User
+   
     private RolesEnum _name;
 
     /// <summary>
@@ -31,11 +31,11 @@ public class Role : Entity
     {
     }
     
-    public string UserId
-    {
-        get => _userId;
-        set => _userId = Guard.Against.Null(value);
-    }
+    // public string UserId
+    // {
+    //     get => _userId;
+    //     set => _userId = Guard.Against.Null(value);
+    // }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Role"/> class with a specified role name.
@@ -45,4 +45,6 @@ public class Role : Entity
     {
         Name = name;
     }
+
+    public List<User> Users { get; set; } = [];
 }

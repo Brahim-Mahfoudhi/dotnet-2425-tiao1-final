@@ -17,6 +17,8 @@ public enum RolesEnum
 }
 public static class RolesEnumExtensions
 {
+
+
     /// <summary>
     /// Converts a string to a RolesEnum.
     /// </summary>

@@ -9,6 +9,7 @@ namespace Rise.Client.Users;
 
 public partial class Users
 {
+    [Parameter] public EventCallback<string> OnUserSelected { get; set; }
     private IEnumerable<UserDto.UserBase>? users;
     private UserDto.UserBase? user;
 
@@ -30,5 +31,10 @@ public partial class Users
         }
 
         users = await UserService.GetAllAsync();
+    }
+
+    private void HandleUserClick(string userId)
+    {
+        OnUserSelected.InvokeAsync(userId);
     }
 }
