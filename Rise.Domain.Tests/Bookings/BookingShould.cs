@@ -14,9 +14,9 @@ public class BookingShould
     {
         Booking booking = new Booking(new DateTime(1999, 12, 12), "1", TimeSlot.Morning);
 
-        booking.BookingDate.ShouldBe(new DateTime(1999, 12, 12));
-        booking.TimeSlot.ShouldBe(TimeSlot.Morning);
-        booking.TimeSlot.GetStartHour().ShouldBe(TimeSlot.Morning.GetStartHour());
+        booking.BookingDate.ShouldBe(new DateTime(1999, 12, 12, 10, 0, 0));
+        booking.GetTimeSlot().ShouldBe(TimeSlot.Morning);
+        booking.GetTimeSlot().GetStartHour().ShouldBe(TimeSlot.Morning.GetStartHour());
     }
     
     [Fact]

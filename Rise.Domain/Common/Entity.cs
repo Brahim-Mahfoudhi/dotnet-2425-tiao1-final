@@ -66,5 +66,13 @@ public abstract class Entity
     {
         return (GetType().ToString() + Id).GetHashCode();
     }
+    
+    /// <summary>
+    /// Marks the user as deleted (soft delete).
+    /// </summary>
+    public void SoftDelete()
+    {
+        IsDeleted = true;
+    }
 }
 

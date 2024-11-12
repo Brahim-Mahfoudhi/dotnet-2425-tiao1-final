@@ -110,9 +110,8 @@
             ReserveTimeslot(item);
     }
 
-    private void ReserveTimeslot(CustomCalenderItem item)
+    private async void ReserveTimeslot(CustomCalenderItem item)
     {
-        item.Available = false;
         var _booking = new BookingDto.NewBooking
         {
             bookingDate = item.Start,
@@ -120,7 +119,16 @@
             userId = userId!
         };
 
-        BookingService.CreateBookingAsync(_booking);
+        try
+        {
+            await BookingService.CreateBookingAsync(_booking);
+            item.Available = false;
+        }
+        catch (Exception e)
+        {
+            ShowErrorDialog(Localizer["DlgBookingErrorTtl"], Localizer["DlgBookingErrorMsg"]);
+        }
+
         StateHasChanged();
     }
 
@@ -222,6 +230,18 @@
         }
 
         return DateTime.MinValue;
+    }
+
+    private void ShowErrorDialog(string title, string message)
+    {
+        var options = new DialogOptions { CloseOnEscapeKey = true };
+
+        DialogService.ShowMessageBox(
+            $"{title}",
+            $"{message}",
+            "ok",
+            options: options
+        );
     }
 
 }

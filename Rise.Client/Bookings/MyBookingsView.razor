@@ -1,60 +1,68 @@
 @page "/mybookings"
+@using Microsoft.IdentityModel.Tokens
+@using Rise.Shared.Enums
 @attribute [Authorize(Roles = "User")]
+@inject Microsoft.Extensions.Localization.IStringLocalizer<MyBookingsView> Localizer
 
-<PageTitle>My Bookings</PageTitle>
+<main class="main-content mt-0 background-overlay">
+    <div class="page-header align-items-center min-vh-95">
+        <div class="container my-auto">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-12 mx-auto">
+                    <div class="card z-index-0 fadeIn3 fadeInBottom">
+                        <div class="card-body">
+                            <PageTitle>@Localizer["Title"]</PageTitle>
 
-<div class="bg-white">
-    <h1>Bookings</h1>
+                            <h1>@Localizer["BookingsTitle"]</h1>
 
-
-    @if (bookings == null)
-    {
-        <p>
-            <em>Loading...</em>
-        </p>
-    }
-    else
-    {
-        <p>All bookings</p>
-        <table class="table">
-        <thead>
-            <tr>
-                <th>Booking date</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var booking in bookings)
-                {
-                    <tr>
-                        <td>@booking.bookingDate</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    }
-
-    @if (futureBooking == null)
-    {
-        <p>
-            <em>Loading...</em>
-        </p>
-    }
-    else
-    {
-        <p>Future booking</p>
-        <table class="table">
-        <thead>
-            <tr>
-                <th>Booking date</th>
-            </tr>
-        </thead>
-        <tbody>
-
-            <tr>
-                <td>@futureBooking.bookingDate</td>
-            </tr>
-
-        </tbody>
-    </table>
-    }
-</div>
+                            <MudExpansionPanels>
+                                <MudExpansionPanel MaxHeight="150" Expanded="true">
+                                    <TitleContent>
+                                        <MudText class="PanelTitle">@Localizer["FutureBookingTitle"]</MudText>
+                                    </TitleContent>
+                                    <ChildContent>
+                                        <MudTable Items="@_futureElement" Hover="true" Breakpoint="Breakpoint.Sm" Loading="@_loadingFutureBookings" LoadingProgressColor="Color.Info">
+                                            <HeaderContent >
+                                                <MudTh class="header-style">@Localizer["FutureBookingTblDate"]</MudTh>
+                                                <MudTh class="header-style">@Localizer["FutureBookingTblTimeSlot"]</MudTh>
+                                                <MudTh class="header-style">@Localizer["FutureBookingTblBoat"]</MudTh>
+                                                <MudTh class="header-style">@Localizer["FutureBookingTblBattery"]</MudTh>
+                                                <MudTh class="header-style">@Localizer["FutureBookingTblCancel"]</MudTh>
+                                            </HeaderContent>
+                                            <RowTemplate>
+                                                <MudTd DataLabel="Date" class="datarow-style">@context.bookingDate.ToString("d")</MudTd>
+                                                <MudTd DataLabel="TimeSlot" class="datarow-style">@(TimeSlotEnumExtensions.GetStartHour(context.timeSlot))@Localizer["TimeNotation"] - @(TimeSlotEnumExtensions.GetEndHour(context.timeSlot))@Localizer["TimeNotation"]</MudTd>
+                                                <MudTd DataLabel="Boat" class="datarow-style">@(!string.IsNullOrEmpty(context.boat.name) ? context.boat.name : "Still needs to be defined")</MudTd>
+                                                <MudTd DataLabel="Battery" class="datarow-style">@(!string.IsNullOrEmpty(context.battery.name) ? context.boat.name : "Still needs to be defined")</MudTd>
+                                                <MudTd class="datarow-style">
+                                                    <MudButton Variant="Variant.Outlined " Size="Size.Small" OnClick="() => DeleteBooking(context.bookingId)" Disabled="@(context.bookingDate.Date <= DateTime.Today.AddDays(2))">@Localizer["FutureBookingTblCancel"]</MudButton>
+                                                </MudTd>
+                                            </RowTemplate>
+                                        </MudTable>
+                                    </ChildContent>
+                                </MudExpansionPanel>
+                                <MudExpansionPanel MaxHeight="1000">
+                                    <TitleContent>
+                                        <MudText class="PanelTitle">@Localizer["PreviousBookingsTblTitle"]</MudText>
+                                    </TitleContent>
+                                    <ChildContent>
+                                        <MudTable Items="@_bookings" Hover="true" Breakpoint="Breakpoint.Sm" Loading="@_loadingFutureBookings" LoadingProgressColor="Color.Info">
+                                            <HeaderContent>
+                                                <MudTh class="header-style">@Localizer["PreviousBookingsTblDate"]</MudTh>
+                                                <MudTh Class="header-style">@Localizer["PreviousBookingsTblTimeSlot"]</MudTh>
+                                            </HeaderContent>
+                                            <RowTemplate>
+                                                <MudTd DataLabel="Date" class="datarow-style">@context.bookingDate.ToString("d")</MudTd>
+                                                <MudTd DataLabel="TimeSlot" class="datarow-style">@(TimeSlotEnumExtensions.GetStartHour(context.timeSlot))@Localizer["TimeNotation"] - @(TimeSlotEnumExtensions.GetEndHour(context.timeSlot))@Localizer["TimeNotation"]</MudTd>
+                                            </RowTemplate>
+                                        </MudTable>
+                                    </ChildContent>
+                                </MudExpansionPanel>
+                            </MudExpansionPanels>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

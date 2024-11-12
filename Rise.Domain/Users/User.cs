@@ -168,13 +168,13 @@ public class User : Entity
         _bookings.Remove(booking);
     }
     
-    /// <summary>
-    /// Marks the user as deleted (soft delete).
-    /// </summary>
-    public void SoftDelete()
-    {
-        IsDeleted = true;
-    }
+    // /// <summary>
+    // /// Marks the user as deleted (soft delete).
+    // /// </summary>
+    // public void SoftDelete()
+    // {
+    //     IsDeleted = true;
+    // }
 
     /// <summary>
     /// Reactivates a previously deleted user.

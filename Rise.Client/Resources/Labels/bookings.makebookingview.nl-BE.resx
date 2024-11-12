@@ -51,4 +51,10 @@
     <data name="DateLanguage" xml:space="preserve">
         <value>nl-BE</value>
     </data>
+    <data name="DlgBookingErrorTtl" xml:space="preserve">
+        <value>Boekingerror</value>
+    </data>
+    <data name="DlgBookingErrorMsg" xml:space="preserve">
+        <value>Boeking kon niet worden gecreeërd. Probeer aub opnieuw.</value>
+    </data>
 </root>

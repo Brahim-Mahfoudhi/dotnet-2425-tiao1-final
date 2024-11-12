@@ -33,12 +33,20 @@ public class BookingService : IBookingService
         return JsonSerializer.Deserialize<BookingDto.ViewBooking>(jsonResponse, jsonSerializerOptions);
     }
 
-    public async Task<bool> CreateBookingAsync(BookingDto.NewBooking booking)
+    public async Task<BookingDto.ViewBooking> CreateBookingAsync(BookingDto.NewBooking booking)
     {
-        Console.WriteLine(JsonSerializer.Serialize(booking, jsonSerializerOptions));
         var response = await httpClient.PostAsJsonAsync("booking", booking);
-        Console.WriteLine($"response: {response}");
-        return true;
+
+        if (!response.IsSuccessStatusCode)
+        {
+            var errorMessage = await response.Content.ReadAsStringAsync();
+            throw new HttpRequestException(
+                $"Failed to create booking. Status Code: {response.StatusCode}, Message: {errorMessage}");
+        }
+
+        var bookingAsync = await response.Content.ReadFromJsonAsync<BookingDto.ViewBooking>(jsonSerializerOptions);
+
+        return bookingAsync;
     }
 
     public async Task<bool> UpdateBookingAsync(BookingDto.UpdateBooking booking)
@@ -52,8 +60,6 @@ public class BookingService : IBookingService
         var response = await httpClient.DeleteAsync($"booking/{id}");
         return response.IsSuccessStatusCode;
     }
-    
-
 
     public async Task<IEnumerable<BookingDto.ViewBooking>?> GetAllUserBookings(string userid)
     {
@@ -107,19 +113,20 @@ public class BookingService : IBookingService
                 query += $"{(startDate.HasValue ? "&" : "")}endDate={endDate.ToIsoDateString()}";
             }
         }
-        
+
         var timeslots = await httpClient
             .GetStringAsync(query);
-        
+
         // to make the json serializer work correctly
         var options = new JsonSerializerOptions
-            {
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-                Converters = { new JsonStringEnumConverter() }
-            };
+        {
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            Converters = { new JsonStringEnumConverter() }
+        };
 
-        var convertedTimeSlots = JsonSerializer.Deserialize<IEnumerable<BookingDto.ViewBookingCalender>>(timeslots, options);  
-        
-         return convertedTimeSlots;
+        var convertedTimeSlots =
+            JsonSerializer.Deserialize<IEnumerable<BookingDto.ViewBookingCalender>>(timeslots, options);
+
+        return convertedTimeSlots;
     }
 }

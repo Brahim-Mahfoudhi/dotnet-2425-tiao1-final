@@ -204,7 +204,7 @@ public class UserController : ControllerBase
         return deleted;
     }
 
-    [HttpGet("auth/users")]
+    [HttpGet("authUsers")]
     [Authorize]
     public async Task<IActionResult> GetUsers()
     {
@@ -307,6 +307,7 @@ public class UserController : ControllerBase
             return StatusCode(500, new { message = "An unexpected error occurred while checking the email.", detail = ex.Message });
         }
     }
+
 
     [HttpGet("filtered")]
     [Authorize(Roles = "Admin")]

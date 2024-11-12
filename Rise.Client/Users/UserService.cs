@@ -91,7 +91,7 @@ public class UserService : IUserService
         try
         {
             // Make the HTTP request and get the response
-            var response = await _httpClient.GetAsync("user/auth/users");
+            var response = await _httpClient.GetAsync("user/authUsers");
 
             // Check if the response indicates success
             if (response.IsSuccessStatusCode)

@@ -1,9 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Rise.Domain.Bookings;
 using Rise.Persistence;
+using Rise.Server.Settings;
 using Rise.Services.Bookings;
 using Rise.Shared.Enums;
+using Rise.Shared.Services;
 
 public class BookingServiceTests
 {
@@ -18,7 +21,16 @@ public class BookingServiceTests
             .Options;
 
         _dbContext = new ApplicationDbContext(options);
-        _bookingService = new BookingService(_dbContext);
+        
+        var tOptions = Options.Create(new BookingSettings
+        {
+            MaxBookingLimit = 1,
+            MinReservationDays = 3,
+            MaxReservationDays = 30
+        });
+        var validationService = new ValidationService(_dbContext);
+        
+        _bookingService = new BookingService(_dbContext, tOptions, validationService);
     }
 
     [Fact]

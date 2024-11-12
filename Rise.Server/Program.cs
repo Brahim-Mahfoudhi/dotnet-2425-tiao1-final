@@ -8,8 +8,10 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Auth0Net.DependencyInjection;
 using Microsoft.OpenApi.Models;
+using Rise.Server.Settings;
 using Rise.Services.Bookings;
 using Rise.Shared.Bookings;
+using Rise.Shared.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -54,6 +56,7 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
+builder.Services.Configure<BookingSettings>(builder.Configuration.GetSection("BookingSettings"));
 
 builder.Services.AddAuthentication(options =>
 {
@@ -88,6 +91,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IBookingService, BookingService>();
 builder.Services.AddScoped<IAuth0UserService, Auth0UserService>();
+builder.Services.AddScoped<ValidationService>();
 
 var app = builder.Build();
 

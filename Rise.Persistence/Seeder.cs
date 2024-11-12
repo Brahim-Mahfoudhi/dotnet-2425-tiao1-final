@@ -41,7 +41,7 @@ public class Seeder
         if (!BookingsHasAlreadyBeenSeeded())
             SeedBookings();
     }
-
+    
     /// <summary>
     /// Checks if the database has already been seeded with users.
     /// </summary>
@@ -131,12 +131,11 @@ public class Seeder
             new Booking(new DateTime(2025, 01, 10), "auth0|6713ad614fda04f4b9ae2156", TimeSlot.Morning)
         };
 
-        foreach (var booking in bookings)
-        {
+        foreach(var booking in bookings){
             dbContext.Bookings.Add(booking);
         }
         dbContext.SaveChanges();
-
+        
         var booking1 = new Booking(new DateTime(2025, 01, 01), "auth0|6713ad614fda04f4b9ae2156", TimeSlot.Morning);
         dbContext.Bookings.Add(booking1);
         var bookingBattery = new Booking(new DateTime(2023, 01, 01), "auth0|6713ad614fda04f4b9ae2156", TimeSlot.Morning);

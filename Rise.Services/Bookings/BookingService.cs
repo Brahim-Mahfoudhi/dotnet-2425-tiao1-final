@@ -1,10 +1,14 @@
 using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Rise.Domain.Bookings;
 using Rise.Persistence;
+using Rise.Server.Settings;
 using Rise.Shared.Bookings;
 using Rise.Shared.Enums;
+using Rise.Services.Users;
+using Rise.Shared.Services;
 
 namespace Rise.Services.Bookings;
 
@@ -12,9 +16,19 @@ public class BookingService : IBookingService
 {
     private readonly ApplicationDbContext _dbContext;
     private readonly JsonSerializerOptions _jsonSerializerOptions;
+    private readonly int _maxBookingLimit;
+    private readonly int _minReservationDays;
+    private readonly int _maxReservationDays;
+    private readonly ValidationService _validationService;
 
-    public BookingService(ApplicationDbContext dbContext)
+
+    public BookingService(ApplicationDbContext dbContext, IOptions<BookingSettings> options, ValidationService validationService)
     {
+        _maxBookingLimit = options.Value.MaxBookingLimit;
+        _minReservationDays = options.Value.MinReservationDays;
+        _maxReservationDays = options.Value.MaxReservationDays;
+        _validationService = validationService;
+
         this._dbContext = dbContext;
         this._jsonSerializerOptions = new JsonSerializerOptions
         {
@@ -60,24 +74,59 @@ public class BookingService : IBookingService
         return MapToDto(query);
     }
 
-    public async Task<bool> CreateBookingAsync(BookingDto.NewBooking booking)
+    public async Task<BookingDto.ViewBooking> CreateBookingAsync(BookingDto.NewBooking booking)
     {
+        if (!await _validationService.CheckUserExistsAsync(booking.userId))
+        {
+            throw new UserNotFoundException("Invalid user");
+        }
+
+        //Check if user has not reached the maximum allowed bookings
+        var userBookings = await GetAllUserBookings(booking.userId);
+
+        if ((userBookings?.Count() ?? 0) >= _maxBookingLimit)
+        {
+            throw new InvalidOperationException("You have reached the maximum number of bookings allowed.");
+        }
+        
+        //Check if the requested booking is still available
+        if (await _validationService.BookingExists(booking.bookingDate))
+        {
+            throw new InvalidDataException("Booking already exists on this date");
+        }
+        
+        //Check if requested booking is within the set timerange
+        if (!CheckWithinDateRange(booking.bookingDate))
+        {
+            throw new InvalidDataException(
+                $"Invalid date selection. Please choose a date that is at least {_minReservationDays} days from " +
+                $"today and no more than {_maxReservationDays} days ahead.");
+        }
+
         var entity = new Booking(
             timeSlot: booking.timeSlot,
             bookingDate: booking.bookingDate,
             userId: booking.userId
         );
-        _dbContext.Bookings.Add(entity);
+        var created = _dbContext.Bookings.Add(entity);
         int response = await _dbContext.SaveChangesAsync();
 
-        return response > 0;
+        return MapToDto(created.Entity);
     }
 
     public async Task<bool> UpdateBookingAsync(BookingDto.UpdateBooking booking)
     {
         var entity = await _dbContext.Bookings.FindAsync(booking.bookingId) ?? throw new Exception("Booking not found");
 
-        entity.BookingDate = booking.bookingDate ?? entity.BookingDate;
+        if (booking.bookingDate != null && booking.bookingDate !=entity.BookingDate)
+        {
+            if (await _validationService.BookingExists(booking.bookingDate.Value))
+            {
+                throw new InvalidOperationException("Booking already exists on this date");
+            }
+            entity.BookingDate = booking.bookingDate.Value;
+        }
+        
         /*entity.Boat = booking.boat ?? entity.Boat;
         entity.Battery = booking.battery ?? entity.Battery;
 
@@ -87,9 +136,14 @@ public class BookingService : IBookingService
         return response > 0;
     }
 
-    public Task<bool> DeleteBookingAsync(string id)
+    public async Task<bool> DeleteBookingAsync(string bookingId)
     {
-        throw new NotImplementedException();
+        var entity = await _dbContext.Bookings.FindAsync(bookingId) ?? throw new Exception("Booking not found");
+
+        entity.SoftDelete();
+        _dbContext.Bookings.Update(entity);
+        await _dbContext.SaveChangesAsync();
+        return true;
     }
 
     public async Task<IEnumerable<BookingDto.ViewBooking>?> GetAllUserBookings(string userId)
@@ -101,6 +155,7 @@ public class BookingService : IBookingService
             .Include(b => b.Battery)
             .Include(b => b.Boat)
             .Where(x => x.UserId.Equals(userId) && x.IsDeleted == false)
+            .OrderByDescending(x => x.BookingDate)
             .ToListAsync();
 
         if (query == null)
@@ -159,7 +214,8 @@ public class BookingService : IBookingService
             bookingId = booking.Id,
             bookingDate = booking.BookingDate,
             battery = battery,
-            boat = boat
+            boat = boat,
+            timeSlot = TimeSlotEnumExtensions.ToTimeSlot(booking.BookingDate.Hour),
         };
     }
 
@@ -185,7 +241,8 @@ public class BookingService : IBookingService
 
         // Get all bookings from the db that are between start and enddate (limits included)
         List<Booking> bookings = await _dbContext.Bookings
-            .Where(booking => booking.BookingDate.Date >= startDate && booking.BookingDate.Date <= endDate)
+            .Where(booking => booking.BookingDate.Date >= startDate && booking.BookingDate.Date <= endDate &&
+                              booking.IsDeleted == false)
             .ToListAsync();
 
         return bookings.Select(booking => ViewBookingCalenderFromBooking(booking, true)).ToList();
@@ -206,7 +263,7 @@ public class BookingService : IBookingService
         {
             throw new ArgumentNullException(nameof(endDate));
         }
-       
+
         // Validate the date range
         if (startDate > endDate)
         {
@@ -221,7 +278,8 @@ public class BookingService : IBookingService
 
         // Get all bookings from the db that are between startdate and enddate (limits included)
         List<Booking> bookings = await _dbContext.Bookings
-            .Where(booking => booking.BookingDate.Date >= startDate && booking.BookingDate.Date <= endDate)
+            .Where(booking => booking.BookingDate.Date >= startDate && booking.BookingDate.Date <= endDate &&
+                              booking.IsDeleted == false)
             .ToListAsync();
 
         //generate all possible timeslots
@@ -254,7 +312,7 @@ public class BookingService : IBookingService
         // return all possible timeslots without the occupied ones
         return allPossibleTimeslotsInRange
             .Where(slot => !bookings.Exists(booking =>
-                booking.BookingDate.Date == slot.BookingDate.Date && booking.TimeSlot == slot.TimeSlot))
+                booking.BookingDate.Date == slot.BookingDate.Date && booking.GetTimeSlot() == slot.TimeSlot))
             .ToList();
     }
 
@@ -263,8 +321,13 @@ public class BookingService : IBookingService
         return new BookingDto.ViewBookingCalender
         {
             BookingDate = booking.BookingDate,
-            TimeSlot = booking.TimeSlot,
+            TimeSlot = booking.GetTimeSlot(),
             Available = Available
         };
+    }
+
+    private bool CheckWithinDateRange(DateTime bookingDate)
+    {
+        return DateTime.Now.AddDays(_minReservationDays) <= bookingDate && bookingDate <= DateTime.Now.AddDays(_maxReservationDays);
     }
 }
