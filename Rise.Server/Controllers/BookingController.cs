@@ -13,8 +13,7 @@ namespace Rise.Server.Controllers;
 /// </summary>
 [ApiController]
 [Route("api/[controller]")]
-// [Authorize(Roles = "Admin")]
-[Authorize]
+[Authorize(Roles = "User")]
 public class BookingController : ControllerBase
 {
     private readonly IBookingService _bookingService;

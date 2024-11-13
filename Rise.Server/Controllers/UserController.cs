@@ -8,6 +8,7 @@ using Auth0.ManagementApi.Paging;
 using Rise.Shared.Bookings;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Auth0.Core.Exceptions;
+using Rise.Shared.Services;
 
 namespace Rise.Server.Controllers;
 
@@ -24,7 +25,6 @@ public class UserController : ControllerBase
     private readonly IAuth0UserService _auth0UserService;
     private readonly IManagementApiClient _managementApiClient;
     private readonly IBookingService _bookingService;
-
 
     /// <summary>
     /// Initializes a new instance of the <see cref="UserController"/> class with the specified user service.
@@ -261,22 +261,75 @@ public class UserController : ControllerBase
     /// </summary>
     /// <returns>List of <see cref="BookingDto"/> objects or <c>null</c> if no bookings are found.</returns>
     [HttpGet("{userid}/bookings")]
-    public async Task<IEnumerable<BookingDto.ViewBooking>?> GetAllUserBookings(string userid)
+    public async Task<IActionResult> GetAllUserBookings(string userid)
     {
+        try
+        {
+            var bookings = await _bookingService.GetAllUserBookings(userid);
+            return Ok(bookings);
+        }
+        catch (UserNotFoundException)
+        {
+            return NotFound(new { message = $"User with ID {userid} was not found." });
 
-        var bookings = await _bookingService.GetAllUserBookings(userid);
-        return bookings;
+        }
+        catch (Exception ex)
+        {
+            // Handle any other unexpected errors
+            return StatusCode(500, new { message = "An unexpected error occurred while fetching all bookings.", detail = ex.Message });
+        }
     }
 
     /// <summary>
-    /// Retrieves future booking asynchronously for specific user.
+    /// Retrieves future bookings asynchronously for specific user.
     /// </summary>
     /// <returns><see cref="BookingDto"/> object or <c>null</c> if no booking is found.</returns>
     [HttpGet("{userid}/bookings/future")]
-    public async Task<BookingDto.ViewBooking>? GetFutureUserBooking(string userid)
+    public async Task<IActionResult> GetFutureUserBookings(string userid)
     {
-        var booking = await _bookingService.GetFutureUserBooking(userid);
-        return booking;
+        try
+        {
+            var bookings = await _bookingService.GetFutureUserBookings(userid);
+            return Ok(bookings);
+        }
+        catch (UserNotFoundException)
+        {
+            return NotFound(new { message = $"User with ID {userid} was not found." });
+
+        }
+        catch (Exception ex)
+        {
+            // Handle any other unexpected errors
+            return StatusCode(500, new { message = "An unexpected error occurred while fetching the future bookings.", detail = ex.Message });
+        }
+    }
+    
+    /// <summary>
+    /// Retrieves past bookings asynchronously for specific user.
+    /// </summary>
+    /// <returns><see cref="BookingDto"/> object or <c>null</c> if no booking is found.</returns>
+    [HttpGet("{userid}/bookings/past")]
+    public async Task<IActionResult> GetPastUserBookings(string userid)
+    {
+        try
+        {
+            var bookings = await _bookingService.GetPastUserBookings(userid);
+            return Ok(bookings);
+        }
+        catch (UserNotFoundException)
+        {
+            return NotFound(new { message = $"User with ID {userid} was not found." });
+
+        }
+        catch (Exception ex)
+        {
+            // Handle any other unexpected errors
+            return StatusCode(500,
+                new
+                {
+                    message = "An unexpected error occurred while fetching the past bookings.", detail = ex.Message
+                });
+        }
     }
 
     /// <summary>

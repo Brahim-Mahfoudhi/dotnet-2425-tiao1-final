@@ -18,27 +18,34 @@
                             <MudExpansionPanels>
                                 <MudExpansionPanel MaxHeight="150" Expanded="true">
                                     <TitleContent>
-                                        <MudText class="PanelTitle">@Localizer["FutureBookingTitle"]</MudText>
+                                        <MudText class="PanelTitle">@Localizer["FutureBookingsTitle"]</MudText>
                                     </TitleContent>
                                     <ChildContent>
-                                        <MudTable Items="@_futureElement" Hover="true" Breakpoint="Breakpoint.Sm" Loading="@_loadingFutureBookings" LoadingProgressColor="Color.Info">
-                                            <HeaderContent >
-                                                <MudTh class="header-style">@Localizer["FutureBookingTblDate"]</MudTh>
-                                                <MudTh class="header-style">@Localizer["FutureBookingTblTimeSlot"]</MudTh>
-                                                <MudTh class="header-style">@Localizer["FutureBookingTblBoat"]</MudTh>
-                                                <MudTh class="header-style">@Localizer["FutureBookingTblBattery"]</MudTh>
-                                                <MudTh class="header-style">@Localizer["FutureBookingTblCancel"]</MudTh>
-                                            </HeaderContent>
-                                            <RowTemplate>
-                                                <MudTd DataLabel="Date" class="datarow-style">@context.bookingDate.ToString("d")</MudTd>
-                                                <MudTd DataLabel="TimeSlot" class="datarow-style">@(TimeSlotEnumExtensions.GetStartHour(context.timeSlot))@Localizer["TimeNotation"] - @(TimeSlotEnumExtensions.GetEndHour(context.timeSlot))@Localizer["TimeNotation"]</MudTd>
-                                                <MudTd DataLabel="Boat" class="datarow-style">@(!string.IsNullOrEmpty(context.boat.name) ? context.boat.name : "Still needs to be defined")</MudTd>
-                                                <MudTd DataLabel="Battery" class="datarow-style">@(!string.IsNullOrEmpty(context.battery.name) ? context.boat.name : "Still needs to be defined")</MudTd>
-                                                <MudTd class="datarow-style">
-                                                    <MudButton Variant="Variant.Outlined " Size="Size.Small" OnClick="() => DeleteBooking(context.bookingId)" Disabled="@(context.bookingDate.Date <= DateTime.Today.AddDays(2))">@Localizer["FutureBookingTblCancel"]</MudButton>
-                                                </MudTd>
-                                            </RowTemplate>
-                                        </MudTable>
+                                        @if (_futureBookings == null || !_futureBookings.Any())
+                                        {
+                                            <p>@Localizer["NoFutureBookings"]</p>
+                                        }
+                                        else
+                                        {
+                                            <MudTable Items="@_futureBookings" Hover="true" Breakpoint="Breakpoint.Sm" Loading="@_loadingFutureBookings" LoadingProgressColor="Color.Info">
+                                                <HeaderContent >
+                                                    <MudTh class="header-style">@Localizer["FutureBookingTblDate"]</MudTh>
+                                                    <MudTh class="header-style">@Localizer["FutureBookingTblTimeSlot"]</MudTh>
+                                                    <MudTh class="header-style">@Localizer["FutureBookingTblBoat"]</MudTh>
+                                                    <MudTh class="header-style">@Localizer["FutureBookingTblBattery"]</MudTh>
+                                                    <MudTh class="header-style">@Localizer["FutureBookingTblCancel"]</MudTh>
+                                                </HeaderContent>
+                                                <RowTemplate>
+                                                    <MudTd DataLabel="Date" class="datarow-style">@context.bookingDate.ToString("d")</MudTd>
+                                                    <MudTd DataLabel="TimeSlot" class="datarow-style">@(TimeSlotEnumExtensions.GetStartHour(context.timeSlot))@Localizer["TimeNotation"] - @(TimeSlotEnumExtensions.GetEndHour(context.timeSlot))@Localizer["TimeNotation"]</MudTd>
+                                                    <MudTd DataLabel="Boat" class="datarow-style">@(!string.IsNullOrEmpty(context.boat.name) ? context.boat.name : "Still needs to be defined")</MudTd>
+                                                    <MudTd DataLabel="Battery" class="datarow-style">@(!string.IsNullOrEmpty(context.battery.name) ? context.boat.name : "Still needs to be defined")</MudTd>
+                                                    <MudTd class="datarow-style">
+                                                        <MudButton Variant="Variant.Outlined" Size="Size.Small" OnClick="() => DeleteBooking(context.bookingId)" Disabled="@(context.bookingDate.Date <= DateTime.Today.AddDays(2))">@Localizer["FutureBookingTblCancel"]</MudButton>
+                                                    </MudTd>
+                                                </RowTemplate>
+                                            </MudTable>
+                                        }
                                     </ChildContent>
                                 </MudExpansionPanel>
                                 <MudExpansionPanel MaxHeight="1000">
@@ -46,16 +53,23 @@
                                         <MudText class="PanelTitle">@Localizer["PreviousBookingsTblTitle"]</MudText>
                                     </TitleContent>
                                     <ChildContent>
-                                        <MudTable Items="@_bookings" Hover="true" Breakpoint="Breakpoint.Sm" Loading="@_loadingFutureBookings" LoadingProgressColor="Color.Info">
-                                            <HeaderContent>
-                                                <MudTh class="header-style">@Localizer["PreviousBookingsTblDate"]</MudTh>
-                                                <MudTh Class="header-style">@Localizer["PreviousBookingsTblTimeSlot"]</MudTh>
-                                            </HeaderContent>
-                                            <RowTemplate>
-                                                <MudTd DataLabel="Date" class="datarow-style">@context.bookingDate.ToString("d")</MudTd>
-                                                <MudTd DataLabel="TimeSlot" class="datarow-style">@(TimeSlotEnumExtensions.GetStartHour(context.timeSlot))@Localizer["TimeNotation"] - @(TimeSlotEnumExtensions.GetEndHour(context.timeSlot))@Localizer["TimeNotation"]</MudTd>
-                                            </RowTemplate>
-                                        </MudTable>
+                                        @if (_pastBookings == null || !_pastBookings!.Any())
+                                        {
+                                            <p>@Localizer["NoPastBookings"]</p>
+                                        }
+                                        else
+                                        {
+                                            <MudTable Items="@_pastBookings" Hover="true" Breakpoint="Breakpoint.Sm" Loading="@_loadingFutureBookings" LoadingProgressColor="Color.Info">
+                                                <HeaderContent>
+                                                    <MudTh class="header-style">@Localizer["PreviousBookingsTblDate"]</MudTh>
+                                                    <MudTh Class="header-style">@Localizer["PreviousBookingsTblTimeSlot"]</MudTh>
+                                                </HeaderContent>
+                                                <RowTemplate>
+                                                    <MudTd DataLabel="Date" class="datarow-style">@context.bookingDate.ToString("d")</MudTd>
+                                                    <MudTd DataLabel="TimeSlot" class="datarow-style">@(TimeSlotEnumExtensions.GetStartHour(context.timeSlot))@Localizer["TimeNotation"] - @(TimeSlotEnumExtensions.GetEndHour(context.timeSlot))@Localizer["TimeNotation"]</MudTd>
+                                                </RowTemplate>
+                                            </MudTable>
+                                        }
                                     </ChildContent>
                                 </MudExpansionPanel>
                             </MudExpansionPanels>

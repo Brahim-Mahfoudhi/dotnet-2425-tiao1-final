@@ -57,4 +57,10 @@
     <data name="DlgBookingErrorMsg" xml:space="preserve">
         <value>Boeking kon niet worden gecreeërd. Probeer aub opnieuw.</value>
     </data>
+    <data name="DlgBookingCompleteTtl" xml:space="preserve">
+        <value>Boeking geslaagd!</value>
+    </data>
+    <data name="DlgBookingCompletePt1" xml:space="preserve">
+        <value>Uw boeking op {0} om {1} is geslaagd&lt;br&gt;&lt;br&gt;Twee dagen voor uw boeking zult u een e-mail en een notificatie ontvangen met alle informatie over de boot en de batterij.</value>
+    </data>
 </root>

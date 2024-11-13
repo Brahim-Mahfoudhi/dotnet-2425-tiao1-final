@@ -10,7 +10,9 @@ public interface IBookingService
     
     Task<IEnumerable<BookingDto.ViewBooking>?> GetAllUserBookings(string userId);
     
-    Task<BookingDto.ViewBooking?> GetFutureUserBooking(string userId);
+    Task<IEnumerable<BookingDto.ViewBooking>?> GetFutureUserBookings(string userId);
+    Task<IEnumerable<BookingDto.ViewBooking>?> GetPastUserBookings(string userId);
+
     Task<IEnumerable<BookingDto.ViewBookingCalender>?> GetTakenTimeslotsInDateRange(DateTime? startDate, DateTime? endDate);
     Task<IEnumerable<BookingDto.ViewBookingCalender>?> GetFreeTimeslotsInDateRange(DateTime? startDate, DateTime? endDate);
 }

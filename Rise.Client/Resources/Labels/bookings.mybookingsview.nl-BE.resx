@@ -34,7 +34,7 @@
         <value>Nee</value>
     </data>
     <data name="FutureBookingTitle" xml:space="preserve">
-        <value>Volgende boeking</value>
+        <value>Volgende boekingen</value>
     </data>
     <data name="PreviousBookingsTblTitle" xml:space="preserve">
         <value>Afgelopen boekingen</value>
@@ -65,5 +65,14 @@
     </data>
     <data name="TimeNotation" xml:space="preserve">
         <value>u</value>
+    </data>
+    <data name="NoPastBookings" xml:space="preserve">
+        <value>Je hebt nog geen eerdere boekingen. Begin met ontdekken en creëer onvergetelijke herinneringen!</value>
+    </data>
+    <data name="FutureBookingsTitle" xml:space="preserve">
+        <value>Volgende boekingen</value>
+    </data>
+    <data name="NoFutureBookings" xml:space="preserve">
+        <value>Je hebt op dit moment geen toekomstige reserveringen. Klaar om je volgende reservering te maken?</value>
     </data>
 </root>

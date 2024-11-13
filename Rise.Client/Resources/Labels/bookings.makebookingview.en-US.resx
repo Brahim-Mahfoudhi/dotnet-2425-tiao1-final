@@ -57,4 +57,10 @@
     <data name="DlgBookingErrorMsg" xml:space="preserve">
         <value>Booking could not be created. Please try again.</value>
     </data>
+    <data name="DlgBookingCompleteTtl" xml:space="preserve">
+        <value>Booking succeeded!</value>
+    </data>
+    <data name="DlgBookingCompletePt1" xml:space="preserve">
+        <value>Your booking on {0} at {1} has been successful!&lt;br&gt;&lt;br&gt;Two days before your booking you will get an e-mail and a notification with information about the boat and the battery.</value>
+    </data>
 </root>

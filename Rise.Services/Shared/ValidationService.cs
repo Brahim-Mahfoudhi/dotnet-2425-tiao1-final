@@ -1,16 +1,20 @@
 using Rise.Shared.Bookings;
 using Rise.Shared.Users;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Rise.Persistence;
+using Rise.Server.Settings;
 
 namespace Rise.Shared.Services;
 
 public class ValidationService
 {
+    private readonly int _maxBookingLimit;
     private readonly ApplicationDbContext _dbContext;
 
-    public ValidationService(ApplicationDbContext dbContext)
+    public ValidationService(ApplicationDbContext dbContext, IOptions<BookingSettings> options)
     {
+        _maxBookingLimit = options.Value.MaxBookingLimit;
         this._dbContext = dbContext;
     }
 
@@ -19,11 +23,20 @@ public class ValidationService
         return await _dbContext.Users
             .AnyAsync(u => u.IsDeleted == false && u.Id == userId);
     }
-    
+
     public async Task<bool> BookingExists(DateTime bookingDate)
     {
         return await _dbContext.Bookings
             .AnyAsync(x => x.IsDeleted == false && x.BookingDate == bookingDate);
+    }
+
+    public async Task<bool> CheckUserMaxBookings(string userId)
+    {
+        //returns true if the user has reached its limit
+        return await _dbContext.Bookings.Where(x => x.IsDeleted == false
+                                                    && x.UserId == userId
+                                                    && x.BookingDate >= DateTime.Today).CountAsync() >=
+               _maxBookingLimit;
     }
 
     public async Task<bool> ValidateBookingAsync(string userId, BookingDto.UpdateBooking booking)

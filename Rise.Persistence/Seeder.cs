@@ -106,8 +106,10 @@ public class Seeder
         // userPending.AddRole(new Role(RolesEnum.Pending));
 
         userAdmin.Roles.Add(roleAdmin);
+        userAdmin.Roles.Add(roleUser);
         userUser.Roles.Add(roleUser);
         userGodparent.Roles.Add(roleGodparent);
+        userGodparent.Roles.Add(roleUser);
         userPending.Roles.Add(rolePending);
         dbContext.Users.AddRange(userAdmin, userUser, userGodparent, userPending);
         dbContext.Roles.AddRange(roleAdmin, roleUser, roleGodparent, rolePending);
@@ -119,16 +121,16 @@ public class Seeder
         // // temp seed bookings (Andries)
         var bookings = new List<Booking>
         {
-            new Booking(new DateTime(2025, 01, 01), "auth0|6713ad614fda04f4b9ae2156", TimeSlot.Morning),
-            new Booking(new DateTime(2025, 01, 02), "auth0|6713ad614fda04f4b9ae2156", TimeSlot.Evening),
-            new Booking(new DateTime(2025, 01, 03), "auth0|6713ad614fda04f4b9ae2156", TimeSlot.Afternoon),
-            new Booking(new DateTime(2025, 01, 04), "auth0|6713ad614fda04f4b9ae2156", TimeSlot.Afternoon),
-            new Booking(new DateTime(2025, 01, 05), "auth0|6713ad614fda04f4b9ae2156", TimeSlot.Evening),
-            new Booking(new DateTime(2025, 01, 06), "auth0|6713ad614fda04f4b9ae2156", TimeSlot.Evening),
-            new Booking(new DateTime(2025, 01, 07), "auth0|6713ad614fda04f4b9ae2156", TimeSlot.Morning),
-            new Booking(new DateTime(2025, 01, 08), "auth0|6713ad614fda04f4b9ae2156", TimeSlot.Afternoon),
-            new Booking(new DateTime(2025, 01, 09), "auth0|6713ad614fda04f4b9ae2156", TimeSlot.Evening),
-            new Booking(new DateTime(2025, 01, 10), "auth0|6713ad614fda04f4b9ae2156", TimeSlot.Morning)
+            new Booking(new DateTime(2023, 01, 01), "auth0|6713ad614fda04f4b9ae2156", TimeSlot.Morning),
+            new Booking(new DateTime(2023, 01, 02), "auth0|6713ad614fda04f4b9ae2156", TimeSlot.Evening),
+            new Booking(new DateTime(2023, 01, 03), "auth0|6713ad614fda04f4b9ae2156", TimeSlot.Afternoon),
+            new Booking(new DateTime(2023, 01, 04), "auth0|6713ad614fda04f4b9ae2156", TimeSlot.Afternoon),
+            new Booking(new DateTime(2023, 01, 05), "auth0|6713ad614fda04f4b9ae2156", TimeSlot.Evening),
+            new Booking(new DateTime(2023, 01, 06), "auth0|6713ad614fda04f4b9ae2156", TimeSlot.Evening),
+            new Booking(new DateTime(2023, 01, 07), "auth0|6713ad614fda04f4b9ae2156", TimeSlot.Morning),
+            new Booking(new DateTime(2023, 01, 08), "auth0|6713ad614fda04f4b9ae2156", TimeSlot.Afternoon),
+            new Booking(new DateTime(2023, 01, 09), "auth0|6713ad614fda04f4b9ae2156", TimeSlot.Evening),
+            new Booking(new DateTime(2023, 01, 10), "auth0|6713ad614fda04f4b9ae2156", TimeSlot.Morning)
         };
 
         foreach(var booking in bookings){

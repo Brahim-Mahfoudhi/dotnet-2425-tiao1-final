@@ -7,7 +7,7 @@ public class BookingDto
 {
     public class NewBooking
     {
-        public TimeSlot timeSlot { get; set; }
+        // public TimeSlot timeSlot { get; set; }
         public DateTime bookingDate { get; set; } = DateTime.Now;
         public string userId { get; set; } = default!;
     }

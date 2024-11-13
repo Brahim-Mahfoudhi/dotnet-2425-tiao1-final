@@ -16,15 +16,14 @@ public class BookingService : IBookingService
 {
     private readonly ApplicationDbContext _dbContext;
     private readonly JsonSerializerOptions _jsonSerializerOptions;
-    private readonly int _maxBookingLimit;
     private readonly int _minReservationDays;
     private readonly int _maxReservationDays;
     private readonly ValidationService _validationService;
 
 
-    public BookingService(ApplicationDbContext dbContext, IOptions<BookingSettings> options, ValidationService validationService)
+    public BookingService(ApplicationDbContext dbContext, IOptions<BookingSettings> options,
+        ValidationService validationService)
     {
-        _maxBookingLimit = options.Value.MaxBookingLimit;
         _minReservationDays = options.Value.MinReservationDays;
         _maxReservationDays = options.Value.MaxReservationDays;
         _validationService = validationService;
@@ -82,19 +81,17 @@ public class BookingService : IBookingService
         }
 
         //Check if user has not reached the maximum allowed bookings
-        var userBookings = await GetAllUserBookings(booking.userId);
-
-        if ((userBookings?.Count() ?? 0) >= _maxBookingLimit)
+        if (await _validationService.CheckUserMaxBookings(booking.userId))
         {
             throw new InvalidOperationException("You have reached the maximum number of bookings allowed.");
         }
-        
+
         //Check if the requested booking is still available
         if (await _validationService.BookingExists(booking.bookingDate))
         {
             throw new InvalidDataException("Booking already exists on this date");
         }
-        
+
         //Check if requested booking is within the set timerange
         if (!CheckWithinDateRange(booking.bookingDate))
         {
@@ -104,7 +101,7 @@ public class BookingService : IBookingService
         }
 
         var entity = new Booking(
-            timeSlot: booking.timeSlot,
+            timeSlot: TimeSlotEnumExtensions.ToTimeSlot(booking.bookingDate.Hour),
             bookingDate: booking.bookingDate,
             userId: booking.userId
         );
@@ -118,15 +115,16 @@ public class BookingService : IBookingService
     {
         var entity = await _dbContext.Bookings.FindAsync(booking.bookingId) ?? throw new Exception("Booking not found");
 
-        if (booking.bookingDate != null && booking.bookingDate !=entity.BookingDate)
+        if (booking.bookingDate != null && booking.bookingDate != entity.BookingDate)
         {
             if (await _validationService.BookingExists(booking.bookingDate.Value))
             {
                 throw new InvalidOperationException("Booking already exists on this date");
             }
+
             entity.BookingDate = booking.bookingDate.Value;
         }
-        
+
         /*entity.Boat = booking.boat ?? entity.Boat;
         entity.Battery = booking.battery ?? entity.Battery;
 
@@ -148,6 +146,10 @@ public class BookingService : IBookingService
 
     public async Task<IEnumerable<BookingDto.ViewBooking>?> GetAllUserBookings(string userId)
     {
+        if (!await _validationService.CheckUserExistsAsync(userId))
+        {
+            throw new UserNotFoundException("Invalid user");
+        }
         // Changed method so that DTO creation is out of the LINQ Query
         // You need to avoid using methods with optional parameters directly
         // in the LINQ query that EF is trying to translate
@@ -166,23 +168,49 @@ public class BookingService : IBookingService
         return query.Select(MapToDto);
     }
 
-    public async Task<BookingDto.ViewBooking?> GetFutureUserBooking(string userId)
+    public async Task<IEnumerable<BookingDto.ViewBooking>?> GetFutureUserBookings(string userId)
     {
+        if (!await _validationService.CheckUserExistsAsync(userId))
+        {
+            throw new UserNotFoundException("Invalid user");
+        }
         // Changed method so that DTO creation is out of the LINQ Query
         // You need to avoid using methods with optional parameters directly
         // in the LINQ query that EF is trying to translate
-
         var query = await _dbContext.Bookings
             .Include(x => x.Battery)
             .Include(x => x.Boat)
-            .FirstOrDefaultAsync(x => x.UserId.Equals(userId) && x.IsDeleted == false && x.BookingDate > DateTime.Now);
+            .Where(x => x.UserId.Equals(userId) && x.IsDeleted == false && x.BookingDate >= DateTime.Now)
+            .OrderByDescending(x => x.BookingDate)
+            .ToListAsync();
 
         if (query == null)
         {
             return null;
         }
 
-        return MapToDto(query);
+        return query.Select(MapToDto);
+    }
+
+    public async Task<IEnumerable<BookingDto.ViewBooking>?> GetPastUserBookings(string userId)
+    {
+        if (!await _validationService.CheckUserExistsAsync(userId))
+        {
+            throw new UserNotFoundException("Invalid user");
+        }
+        var query = await _dbContext.Bookings
+            .Include(x => x.Battery)
+            .Include(x => x.Boat)
+            .Where(x => x.UserId.Equals(userId) && x.IsDeleted == false && x.BookingDate < DateTime.Now)
+            .OrderByDescending(x => x.BookingDate)
+            .ToListAsync();
+
+        if (query == null)
+        {
+            return null;
+        }
+
+        return query.Select(MapToDto);
     }
 
     private BookingDto.ViewBooking MapToDto(Booking booking)
@@ -328,6 +356,7 @@ public class BookingService : IBookingService
 
     private bool CheckWithinDateRange(DateTime bookingDate)
     {
-        return DateTime.Now.AddDays(_minReservationDays) <= bookingDate && bookingDate <= DateTime.Now.AddDays(_maxReservationDays);
+        return DateTime.Now.AddDays(_minReservationDays) <= bookingDate &&
+               bookingDate <= DateTime.Now.AddDays(_maxReservationDays);
     }
 }

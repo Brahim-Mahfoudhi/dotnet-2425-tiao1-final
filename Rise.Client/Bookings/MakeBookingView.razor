@@ -23,8 +23,6 @@
 </MudCalendar>
 
 
-
-
 @code {
     [Inject] private IDialogService DialogService { get; set; }
     [Inject] public required IBookingService BookingService { get; set; }
@@ -104,7 +102,7 @@
         var _booking = new BookingDto.NewBooking
         {
             bookingDate = item.Start,
-            timeSlot = TimeSlotEnumExtensions.ToTimeSlot(item.Start.Hour),
+            // timeSlot = TimeSlotEnumExtensions.ToTimeSlot(item.Start.Hour),
             userId = userId!
         };
 
@@ -112,6 +110,13 @@
         {
             await BookingService.CreateBookingAsync(_booking);
             item.Available = false;
+            var message = Localizer["DlgBookingCompletePt1", _booking.bookingDate.ToString("d"), _booking.bookingDate.TimeOfDay];
+
+            var markupMessage = new MarkupString(message);
+            
+            await DialogService.ShowMessageBox(
+                @Localizer["DlgBookingCompleteTtl"],
+                markupMessage);
         }
         catch (Exception e)
         {

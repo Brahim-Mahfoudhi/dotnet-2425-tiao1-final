@@ -67,10 +67,16 @@ public class BookingService : IBookingService
         return JsonSerializer.Deserialize<IEnumerable<BookingDto.ViewBooking>>(bookings, jsonSerializerOptions);
     }
 
-    public async Task<BookingDto.ViewBooking?> GetFutureUserBooking(string userid)
+    public async Task<IEnumerable<BookingDto.ViewBooking>?> GetFutureUserBookings(string userid)
     {
-        var booking = await httpClient.GetStringAsync($"user/{userid}/bookings/future");
-        return JsonSerializer.Deserialize<BookingDto.ViewBooking>(booking, jsonSerializerOptions);
+        var bookings = await httpClient.GetStringAsync($"user/{userid}/bookings/future");
+        return JsonSerializer.Deserialize<IEnumerable<BookingDto.ViewBooking>>(bookings, jsonSerializerOptions);
+    }
+
+    public async Task<IEnumerable<BookingDto.ViewBooking>?> GetPastUserBookings(string userid)
+    {
+        var bookings = await httpClient.GetStringAsync($"user/{userid}/bookings/past");
+        return JsonSerializer.Deserialize<IEnumerable<BookingDto.ViewBooking>>(bookings, jsonSerializerOptions);
     }
 
     public async Task<IEnumerable<BookingDto.ViewBookingCalender>?> GetTakenTimeslotsInDateRange(DateTime? startDate,
