@@ -21,22 +21,19 @@ namespace Rise.Server.Controllers;
 public class UserController : ControllerBase
 {
     private readonly IUserService _userService;
-
     private readonly IAuth0UserService _auth0UserService;
-    private readonly IManagementApiClient _managementApiClient;
     private readonly IBookingService _bookingService;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="UserController"/> class with the specified user service.
     /// </summary>
     /// <param name="userService">The user service that handles user operations.</param>
-    /// <param name="managementApiClient">The management API for Auth0</param>
+    /// <param name="auth0UserService">The user service that handles Auth0 user operations</param>
     /// <param name="bookingService">The booking service that handles booking operations</param>
     public UserController(IUserService userService, IAuth0UserService auth0UserService, IBookingService bookingService)
     {
         _userService = userService;
         _auth0UserService = auth0UserService;
-
         _bookingService = bookingService;
     }
 
@@ -58,7 +55,7 @@ public class UserController : ControllerBase
     /// <summary>
     /// Retrieves a user by their ID asynchronously.
     /// </summary>
-    /// <param name="id">The ID of the user to retrieve.</param>
+    /// <param name="userid">The ID of the user to retrieve.</param>
     /// <returns>The <see cref="UserDto"/> object or <c>null</c> if no user with the specified ID is found.</returns>
     [HttpGet("{userid}")]
     [Authorize]
@@ -71,7 +68,7 @@ public class UserController : ControllerBase
     /// <summary>
     /// Retrieves detailed information about a user by their ID asynchronously.
     /// </summary>
-    /// <param name="id">The ID of the user to retrieve details for.</param>
+    /// <param name="userid">The ID of the user to retrieve details for.</param>
     /// <returns>The detailed <see cref="UserDto.UserDetails"/> object or <c>null</c> if no user with the specified ID is found.</returns>
     [HttpGet("{userid}/details")]
     [Authorize]
@@ -126,7 +123,6 @@ public class UserController : ControllerBase
     /// <summary>
     /// Updates an existing user asynchronously.
     /// </summary>
-    /// <param name="id">The id of an existing <see cref="User"/></param>
     /// <param name="userDetails">The <see cref="UserDto.UpdateUser"/> object containing updated user details.</param>
     /// <returns><c>true</c> if the update is successful; otherwise, <c>false</c>.</returns>
     [HttpPut]
@@ -194,7 +190,7 @@ public class UserController : ControllerBase
     /// <summary>
     /// Deletes a user by their ID asynchronously.
     /// </summary>
-    /// <param name="id">The ID of the user to delete.</param>
+    /// <param name="userid">The ID of the user to delete.</param>
     /// <returns><c>true</c> if the deletion is successful; otherwise, <c>false</c>.</returns>
     [HttpDelete("{userid}")]
     [Authorize]
@@ -204,6 +200,10 @@ public class UserController : ControllerBase
         return deleted;
     }
 
+    /// <summary>
+    /// Retrieves all Auth0 users asynchronously.
+    /// </summary>
+    /// <returns>A list of Auth0 users.</returns>
     [HttpGet("authUsers")]
     [Authorize]
     public async Task<IActionResult> GetUsers()
@@ -226,9 +226,14 @@ public class UserController : ControllerBase
         }
     }
 
+    /// <summary>
+    /// Retrieves an Auth0 user by their ID asynchronously.
+    /// </summary>
+    /// <param name="userid">The ID of the user to retrieve.</param>
+    /// <returns>The Auth0 user object or a suitable error response if the user is not found or an error occurs.</returns>
     [HttpGet("auth/{userid}")]
     [Authorize]
-    public async Task<IActionResult> GetUser(String userid)
+    public async Task<IActionResult> GetUser(string userid)
     {
         try
         {
@@ -259,6 +264,7 @@ public class UserController : ControllerBase
     /// <summary>
     /// Retrieves all bookings asynchronously for specific user.
     /// </summary>
+    /// <param name="userid">The ID of the user to retrieve their bookings.</param>
     /// <returns>List of <see cref="BookingDto"/> objects or <c>null</c> if no bookings are found.</returns>
     [HttpGet("{userid}/bookings")]
     public async Task<IActionResult> GetAllUserBookings(string userid)
@@ -283,6 +289,7 @@ public class UserController : ControllerBase
     /// <summary>
     /// Retrieves future bookings asynchronously for specific user.
     /// </summary>
+    /// <param name="userid">The ID of the user to retrieve their future bookings.</param>
     /// <returns><see cref="BookingDto"/> object or <c>null</c> if no booking is found.</returns>
     [HttpGet("{userid}/bookings/future")]
     public async Task<IActionResult> GetFutureUserBookings(string userid)
@@ -362,6 +369,11 @@ public class UserController : ControllerBase
     }
 
 
+    /// <summary>
+    /// Retrieves filtered users based on the provided filter asynchronously.
+    /// </summary>
+    /// <param name="filter">The filter criteria to apply when retrieving users.</param>
+    /// <returns>A list of filtered users or a suitable error response if no users are found or an error occurs.</returns>
     [HttpGet("filtered")]
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> GetFilteredUsers([FromQuery] UserFilter filter)

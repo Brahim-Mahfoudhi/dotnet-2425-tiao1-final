@@ -17,6 +17,11 @@ public class UserService : IUserService
     private readonly JsonSerializerOptions _jsonSerializerOptions;
 
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="UserService"/> class.
+    /// </summary>
+    /// <param name="dbContext">The database context.</param>
+    /// <param name="httpClient">The HTTP client.</param>
     public UserService(ApplicationDbContext dbContext, HttpClient httpClient)
     {
         this._dbContext = dbContext;
@@ -28,7 +33,11 @@ public class UserService : IUserService
         this._jsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
     }
 
-    public async Task<IEnumerable<UserDto.UserBase>?> GetAllAsync()
+    /// <summary>
+    /// Retrieves all users that are not marked as deleted.
+    /// </summary>
+    /// <returns>A collection of UserBase DTOs.</returns>
+    public async Task<IEnumerable<UserDto.UserBase>> GetAllAsync()
     {
         // Changed method so that DTO creation is out of the LINQ Query
         // You need to avoid using methods with optional parameters directly
@@ -45,7 +54,12 @@ public class UserService : IUserService
 
         return query.Select(MapToUserBase);
     }
-    
+
+    /// <summary>
+    /// Retrieves a user by their ID.
+    /// </summary>
+    /// <param name="userid">The ID of the user to retrieve.</param>
+    /// <returns>A UserBase DTO if the user is found; otherwise, null.</returns>
     public async Task<UserDto.UserBase?> GetUserByIdAsync(string userid)
     {
         // Changed method so that DTO creation is out of the LINQ Query
@@ -63,6 +77,11 @@ public class UserService : IUserService
         return MapToUserBase(query);
     }
 
+    /// <summary>
+    /// Retrieves detailed information about a user by their ID.
+    /// </summary>
+    /// <param name="userid">The ID of the user to retrieve details for.</param>
+    /// <returns>A UserDetails DTO if the user is found; otherwise, null.</returns>
     public async Task<UserDto.UserDetails?> GetUserDetailsByIdAsync(string userid)
     {
         // Changed method so that DTO creation is out of the LINQ Query
@@ -81,6 +100,11 @@ public class UserService : IUserService
         return MapToUserDetails(query);
     }
 
+    /// <summary>
+    /// Creates a new user.
+    /// </summary>
+    /// <param name="userDetails">The details of the user to create.</param>
+    /// <returns>A tuple indicating success and a message.</returns>
     public async Task<(bool Success, string? Message)> CreateUserAsync(UserDto.RegistrationUser userDetails)
     {
         try
@@ -102,7 +126,8 @@ public class UserService : IUserService
                     bus: userDetails.Address.Bus),
                 phoneNumber: userDetails.PhoneNumber
             );
-            entity.AddRole(new Role(RolesEnum.Pending));
+            Role pending = await GetRoleByNameFromDBAsync(new Role(RolesEnum.Pending)) ?? throw new Exception("Role not found");
+            entity.AddRole(pending);
 
             _dbContext.Users.Add(entity);
             Int32 response = await _dbContext.SaveChangesAsync();
@@ -120,67 +145,78 @@ public class UserService : IUserService
     }
 
 
+    /// <summary>
+    /// Updates the details of an existing user.
+    /// </summary>
+    /// <param name="userDetails">The details of the user to update.</param>
+    /// <returns>A boolean indicating whether the update was successful.</returns>
     public async Task<bool> UpdateUserAsync(UserDto.UpdateUser userDetails)
-{
-    // Fetch the user entity from the database, including the related roles
-    var entity = await _dbContext.Users
-        .Include(u => u.Roles).Include(u => u.Address)
-        .FirstOrDefaultAsync(u => u.Id == userDetails.Id) 
-        ?? throw new Exception("User not found");
-
-    // Update user details only if they are provided
-    if (userDetails.FirstName != null) entity.FirstName = userDetails.FirstName;
-    if (userDetails.LastName != null) entity.LastName = userDetails.LastName;
-    if (userDetails.Email != null) entity.Email = userDetails.Email;
-    if (userDetails.BirthDate != null) entity.BirthDate = (DateTime)userDetails.BirthDate;
-    if (userDetails.PhoneNumber != null) entity.PhoneNumber = userDetails.PhoneNumber;
-    
-    if (userDetails.Address != null)
     {
-        if (userDetails.Address.Street != null)
-        {
-            entity.Address.Street = userDetails.Address.Street.ToString();
-        }
-        if (userDetails.Address.HouseNumber != null)
-        {
-            entity.Address.HouseNumber = userDetails.Address.HouseNumber;
-        }
-        if (userDetails.Address.Bus != null)
-        {
-            entity.Address.Bus = userDetails.Address.Bus;
-        }
-    }
+        // Fetch the user entity from the database, including the related roles
+        var entity = await _dbContext.Users
+            .Include(u => u.Roles).Include(u => u.Address)
+            .FirstOrDefaultAsync(u => u.Id == userDetails.Id)
+            ?? throw new Exception("User not found");
 
-    // Update roles only if they are provided
-    if (userDetails.Roles != null)
-    {
-        // Get the list of current roles
-        var currentRoleNames = entity.Roles.Select(r => r.Name).ToList();
+        // Update user details only if they are provided
+        if (userDetails.FirstName != null) entity.FirstName = userDetails.FirstName;
+        if (userDetails.LastName != null) entity.LastName = userDetails.LastName;
+        if (userDetails.Email != null) entity.Email = userDetails.Email;
+        if (userDetails.BirthDate != null) entity.BirthDate = (DateTime)userDetails.BirthDate;
+        if (userDetails.PhoneNumber != null) entity.PhoneNumber = userDetails.PhoneNumber;
 
-        // Remove roles that are no longer in the new list
-        var rolesToRemove = entity.Roles.Where(r => !userDetails.Roles.Any(newRole => newRole.Name == r.Name)).ToList();
-        foreach (var roleToRemove in rolesToRemove)
+        if (userDetails.Address != null)
         {
-            entity.Roles.Remove(roleToRemove);
-        }
-
-        // Add new roles that are not already present
-        foreach (var newRole in userDetails.Roles)
-        {
-            if (!currentRoleNames.Contains(newRole.Name))
+            if (userDetails.Address.Street != null)
             {
-                entity.Roles.Add(new Role(newRole.Name));
+                entity.Address.Street = userDetails.Address.Street.ToString();
+            }
+            if (userDetails.Address.HouseNumber != null)
+            {
+                entity.Address.HouseNumber = userDetails.Address.HouseNumber;
+            }
+            if (userDetails.Address.Bus != null)
+            {
+                entity.Address.Bus = userDetails.Address.Bus;
             }
         }
+
+        // Update roles only if they are provided
+        if (userDetails.Roles != null)
+        {
+            // Get the list of current roles
+            var currentRoleNames = entity.Roles.Select(r => r.Name).ToList();
+
+            // Remove roles that are no longer in the new list
+            var rolesToRemove = entity.Roles.Where(r => !userDetails.Roles.Any(newRole => newRole.Name == r.Name)).ToList();
+            foreach (var roleToRemove in rolesToRemove)
+            {
+                entity.Roles.Remove(roleToRemove);
+            }
+
+            // Add new roles that are not already present
+            foreach (var newRole in userDetails.Roles)
+            {
+                if (!currentRoleNames.Contains(newRole.Name))
+                {
+                    Role DBrole = await GetRoleByNameFromDBAsync(new Role (newRole.Name)) ?? throw new Exception("Role not found");
+                    entity.Roles.Add(DBrole);
+                }
+            }
+        }
+
+        // Update the user entity in the database
+        _dbContext.Users.Update(entity);
+        int response = await _dbContext.SaveChangesAsync();
+
+        return response > 0;
     }
 
-    // Update the user entity in the database
-    _dbContext.Users.Update(entity);
-    int response = await _dbContext.SaveChangesAsync();
-
-    return response > 0;
-}
-
+    /// <summary>
+    /// Deletes a user by their ID.
+    /// </summary>
+    /// <param name="userid">The ID of the user to delete.</param>
+    /// <returns>A boolean indicating whether the deletion was successful.</returns>
     public async Task<bool> DeleteUserAsync(string userid)
     {
         var entity = await _dbContext.Users.FindAsync(userid) ?? throw new Exception("User not found");
@@ -191,6 +227,10 @@ public class UserService : IUserService
         return true;
     }
 
+    /// <summary>
+    /// Retrieves a list of Auth0 users.
+    /// </summary>
+    /// <returns>A collection of Auth0User DTOs.</returns>
     public async Task<IEnumerable<UserDto.Auth0User>> GetAuth0Users()
     {
         var users = await _httpClient.GetFromJsonAsync<IEnumerable<UserDto.Auth0User>>("user/auth/users");
@@ -237,7 +277,7 @@ public class UserService : IUserService
     /// Extracts list of roles from a User
     /// </summary>
     /// <param name="user"></param>
-    /// <returns>ImmutableList<RoleDto></returns>
+    /// <returns>ImmutableList&lt;RoleDto&gt;</returns>
     private ImmutableList<RoleDto> ExtractRoles(User user)
     {
         return user.Roles.Select(r => new RoleDto
@@ -250,7 +290,7 @@ public class UserService : IUserService
     /// Extracts AdressDTO from a User
     /// </summary>
     /// <param name="user"></param>
-    /// <returns>ddressDto.GetAdress</returns>
+    /// <returns>AddressDto.GetAdress</returns>
     private AddressDto.GetAdress ExtractAdress(User user)
     {
         return new AddressDto.GetAdress
@@ -276,6 +316,11 @@ public class UserService : IUserService
         throw new NotImplementedException();
     }
 
+    /// <summary>
+    /// Retrieves a filtered list of users based on the provided filter criteria.
+    /// </summary>
+    /// <param name="filter">The filter criteria to apply.</param>
+    /// <returns>A collection of UserBase DTOs that match the filter criteria.</returns>
     public async Task<IEnumerable<UserDto.UserBase>> GetFilteredUsersAsync(UserFilter filter)
     {
         // Start with the base query, including necessary relationships
@@ -328,5 +373,10 @@ public class UserService : IUserService
         // Execute the query and map the results to UserBase DTOs
         var users = await query.ToListAsync();
         return users.Select(MapToUserBase).ToList();
+    }
+
+    private Task<Role?> GetRoleByNameFromDBAsync(Role role)
+    {
+        return _dbContext.Roles.FirstOrDefaultAsync(r => r.Name == role.Name);
     }
 }
