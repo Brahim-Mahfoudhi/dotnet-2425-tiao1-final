@@ -82,22 +82,9 @@ public class BookingService : IBookingService
     public async Task<IEnumerable<BookingDto.ViewBookingCalender>?> GetTakenTimeslotsInDateRange(DateTime? startDate,
         DateTime? endDate)
     {
-        var query = $"/api/Booking/byDateRange";
-        if (startDate.HasValue || endDate.HasValue)
-        {
-            query += "?";
-            if (startDate.HasValue)
-            {
-                query += $"startDate={startDate.ToIsoDateString()}";
-            }
-
-            if (endDate.HasValue)
-            {
-                query += $"{(startDate.HasValue ? "&" : "")}endDate={endDate.ToIsoDateString()}";
-            }
-        }
-
-        var timeslots = await httpClient.GetStringAsync(query);
+        var baseUrl = $"/api/Booking/byDateRange";
+        
+        var timeslots = await httpClient.GetStringAsync(BuildQuery(baseUrl, startDate, endDate));
         return JsonSerializer.Deserialize<IEnumerable<BookingDto.ViewBookingCalender>>(timeslots,
             jsonSerializerOptions);
     }
@@ -105,23 +92,9 @@ public class BookingService : IBookingService
     public async Task<IEnumerable<BookingDto.ViewBookingCalender>?> GetFreeTimeslotsInDateRange(DateTime? startDate,
         DateTime? endDate)
     {
-        var query = $"/api/Booking/free/byDateRange";
-        if (startDate.HasValue || endDate.HasValue)
-        {
-            query += "?";
-            if (startDate.HasValue)
-            {
-                query += $"startDate={startDate.ToIsoDateString()}";
-            }
-
-            if (endDate.HasValue)
-            {
-                query += $"{(startDate.HasValue ? "&" : "")}endDate={endDate.ToIsoDateString()}";
-            }
-        }
-
+        var baseUrl = $"/api/Booking/free/byDateRange";
         var timeslots = await httpClient
-            .GetStringAsync(query);
+            .GetStringAsync(BuildQuery(baseUrl, startDate, endDate));
 
         // to make the json serializer work correctly
         var options = new JsonSerializerOptions
@@ -134,5 +107,20 @@ public class BookingService : IBookingService
             JsonSerializer.Deserialize<IEnumerable<BookingDto.ViewBookingCalender>>(timeslots, options);
 
         return convertedTimeSlots;
+    }
+    
+    private string BuildQuery(string baseUrl, DateTime? startDate, DateTime? endDate)  
+    {
+        var query = baseUrl;
+        if (startDate.HasValue || endDate.HasValue)
+        {
+            var parameters = new List<string>();
+            if (startDate.HasValue)
+                parameters.Add($"startDate={startDate.Value.ToIsoDateString()}");
+            if (endDate.HasValue)
+                parameters.Add($"endDate={endDate.Value.ToIsoDateString()}");
+            query += $"?{string.Join("&", parameters)}";
+        }
+        return query;
     }
 }

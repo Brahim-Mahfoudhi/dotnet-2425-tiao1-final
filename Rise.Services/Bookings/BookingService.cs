@@ -262,7 +262,7 @@ public class BookingService : IBookingService
         }
 
         // Validate the date range
-        if (startDate > endDate)
+        if (startDate.Value.Date > endDate.Value.Date)
         {
             throw new ArgumentException("Start date must be before the end date.", nameof(startDate));
         }
@@ -293,7 +293,7 @@ public class BookingService : IBookingService
         }
 
         // Validate the date range
-        if (startDate > endDate)
+        if (startDate.Value.Date > endDate.Value.Date)
         {
             throw new ArgumentException("Start date must be before the end date.", nameof(startDate));
         }

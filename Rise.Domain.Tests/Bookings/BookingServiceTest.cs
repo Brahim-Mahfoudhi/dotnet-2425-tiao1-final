@@ -5,6 +5,7 @@ using Rise.Domain.Bookings;
 using Rise.Persistence;
 using Rise.Server.Settings;
 using Rise.Services.Bookings;
+using Rise.Shared.Bookings;
 using Rise.Shared.Enums;
 using Rise.Shared.Services;
 
@@ -28,7 +29,7 @@ public class BookingServiceTests
             MinReservationDays = 3,
             MaxReservationDays = 30
         });
-        var validationService = new ValidationService(_dbContext);
+        var validationService = new ValidationService(_dbContext, tOptions);
         
         _bookingService = new BookingService(_dbContext, tOptions, validationService);
     }
@@ -58,9 +59,24 @@ public class BookingServiceTests
     [Fact]
     public async Task GetTakenTimeslotsInDateRange_StartDateEqualToEndDate_ThrowsArgumentException()
     {
-        DateTime? startDate = DateTime.Now;
-        DateTime? endDate = startDate;
-        await Assert.ThrowsAsync<ArgumentException>(() => _bookingService.GetTakenTimeslotsInDateRange(startDate, endDate));
+        DateTime startDate = DateTime.Now.Date;
+        DateTime endDate = startDate;
+        
+        // Add bookings that should return to the in-memory database
+        _dbContext.Bookings.Add(new Booking(startDate, "1", TimeSlot.Morning ));
+        _dbContext.Bookings.Add(new Booking(startDate, "1", TimeSlot.Afternoon));
+        // Add bookings that should not return
+        _dbContext.Bookings.Add(new Booking(startDate.AddDays( + 1), "1", TimeSlot.Evening ));
+        _dbContext.Bookings.Add(new Booking(startDate.AddDays( - 1), "1", TimeSlot.Morning ));
+        
+        await _dbContext.SaveChangesAsync();
+
+        var result = await _bookingService.GetTakenTimeslotsInDateRange(startDate, endDate);
+
+        Assert.NotNull(result);
+        Assert.Equal(2, result.Count());
+        Assert.Contains(result, b => b.BookingDate.Date == startDate.Date && b.TimeSlot == TimeSlot.Morning);
+        Assert.Contains(result, b => b.BookingDate.Date == startDate.Date && b.TimeSlot == TimeSlot.Afternoon);
     }
 
     [Fact]
@@ -79,8 +95,8 @@ public class BookingServiceTests
     public async Task GetTakenTimeslotsInDateRange_WithBookings_ReturnsCorrectTimeslots()
     {
         const int END_DATE_EXTRA_DAYS = 5;
-        DateTime startDate = DateTime.Now;
-        DateTime endDate = DateTime.Now.AddDays(END_DATE_EXTRA_DAYS);
+        DateTime startDate = DateTime.Now.Date;
+        DateTime endDate = DateTime.Now.Date.AddDays(END_DATE_EXTRA_DAYS);
 
         // Add bookings that should return to the in-memory database
         _dbContext.Bookings.Add(new Booking(startDate.AddDays(END_DATE_EXTRA_DAYS - 1), "1", TimeSlot.Morning ));
@@ -96,8 +112,8 @@ public class BookingServiceTests
 
         Assert.NotNull(result);
         Assert.Equal(2, result.Count());
-        Assert.Contains(result, b => b.BookingDate == startDate.AddDays(END_DATE_EXTRA_DAYS - 1) && b.TimeSlot == TimeSlot.Morning);
-        Assert.Contains(result, b => b.BookingDate == startDate.AddDays(END_DATE_EXTRA_DAYS - 2) && b.TimeSlot == TimeSlot.Afternoon);
+        Assert.Contains(result, b => b.BookingDate.Date == startDate.Date.AddDays(END_DATE_EXTRA_DAYS - 1) && b.TimeSlot == TimeSlot.Morning);
+        Assert.Contains(result, b => b.BookingDate.Date == startDate.Date.AddDays(END_DATE_EXTRA_DAYS - 2) && b.TimeSlot == TimeSlot.Afternoon);
     }
 
     [Fact]
@@ -123,11 +139,32 @@ public class BookingServiceTests
     }
 
     [Fact]
-    public async Task GetFreeTimeslotsInDateRange_StartDateEqualToEndDate_ThrowsArgumentException()
+    public async Task GetFreeTimeslotsInDateRange_StartDateEqualToEndDate_ReturnsCorrectTimeslots()
     {
-        DateTime? startDate = DateTime.Now.AddDays(5);
-        DateTime? endDate = startDate;
-        await Assert.ThrowsAsync<ArgumentException>(() => _bookingService.GetFreeTimeslotsInDateRange(startDate, endDate));
+        DateTime startDate = DateTime.Now.Date.AddDays(3);
+        DateTime endDate = startDate;
+        
+        // Add bookings that should return to the in-memory database
+        _dbContext.Bookings.Add(new Booking(startDate, "1", TimeSlot.Morning ));
+        _dbContext.Bookings.Add(new Booking(startDate, "1", TimeSlot.Afternoon));
+        // Add bookings that should not return
+        _dbContext.Bookings.Add(new Booking(startDate.AddDays( + 1), "1", TimeSlot.Evening ));
+        _dbContext.Bookings.Add(new Booking(startDate.AddDays( - 1), "1", TimeSlot.Morning ));
+        
+        var booking = new BookingDto.ViewBookingCalender
+        {
+            BookingDate = startDate,
+            TimeSlot = TimeSlot.Evening,
+            Available = true
+        };
+        
+        await _dbContext.SaveChangesAsync();
+
+        var result = await _bookingService.GetFreeTimeslotsInDateRange(startDate, endDate);
+
+        Assert.NotNull(result);
+        Assert.Equal(1, result.Count());
+        Assert.Equivalent(result.First(), booking);
     }
 
     [Fact]
