@@ -1,5 +1,22 @@
-@media screen and (max-width: 600px) {
+#ship {
+  max-width: 10%;
+}
+
+
+@media screen and (max-width: 800px) {
   .calendar {
     transform: scale(0.3);
   }
+
+  #ship {
+    max-width: 50%;
+  }
 }
+
+
+@media screen and (max-width: 600px) {
+  #ship {
+    max-width: 100%;
+  }
+}
+

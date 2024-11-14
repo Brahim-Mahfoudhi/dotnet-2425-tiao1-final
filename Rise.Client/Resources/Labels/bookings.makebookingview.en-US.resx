@@ -25,13 +25,13 @@
         <value>Please select the preferred time</value>
     </data>
     <data name="Forenoon" xml:space="preserve">
-        <value>Forenoon</value>
+        <value>10 am</value>
     </data>
     <data name="Noon" xml:space="preserve">
-        <value>Noon</value>
+        <value>2 pm</value>
     </data>
     <data name="Afternoon" xml:space="preserve">
-        <value>Afternoon</value>
+        <value>5 pm</value>
     </data>
     <data name="PrefDay" xml:space="preserve">
         <value>Please select the preferred day</value>
