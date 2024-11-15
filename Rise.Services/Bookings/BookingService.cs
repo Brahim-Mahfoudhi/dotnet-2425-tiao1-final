@@ -18,11 +18,11 @@ public class BookingService : IBookingService
     private readonly JsonSerializerOptions _jsonSerializerOptions;
     private readonly int _minReservationDays;
     private readonly int _maxReservationDays;
-    private readonly ValidationService _validationService;
+    private readonly IValidationService _validationService;
 
 
     public BookingService(ApplicationDbContext dbContext, IOptions<BookingSettings> options,
-        ValidationService validationService)
+        IValidationService validationService)
     {
         _minReservationDays = options.Value.MinReservationDays;
         _maxReservationDays = options.Value.MaxReservationDays;
@@ -41,7 +41,6 @@ public class BookingService : IBookingService
         // You need to avoid using methods with optional parameters directly
         // in the LINQ query that EF is trying to translate
         var query = await _dbContext.Bookings
-            .Include(b => b.Id)
             .Include(b => b.Battery)
             .Include(b => b.Boat)
             .Where(x => x.IsDeleted == false)
@@ -89,13 +88,13 @@ public class BookingService : IBookingService
         //Check if the requested booking is still available
         if (await _validationService.BookingExists(booking.bookingDate))
         {
-            throw new InvalidDataException("Booking already exists on this date");
+            throw new InvalidOperationException("Booking already exists on this date");
         }
 
         //Check if requested booking is within the set timerange
         if (!CheckWithinDateRange(booking.bookingDate))
         {
-            throw new InvalidDataException(
+            throw new ArgumentException(
                 $"Invalid date selection. Please choose a date that is at least {_minReservationDays} days from " +
                 $"today and no more than {_maxReservationDays} days ahead.");
         }

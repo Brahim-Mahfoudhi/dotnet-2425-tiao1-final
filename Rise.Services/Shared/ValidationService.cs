@@ -7,7 +7,7 @@ using Rise.Server.Settings;
 
 namespace Rise.Shared.Services;
 
-public class ValidationService
+public class ValidationService : IValidationService
 {
     private readonly int _maxBookingLimit;
     private readonly ApplicationDbContext _dbContext;

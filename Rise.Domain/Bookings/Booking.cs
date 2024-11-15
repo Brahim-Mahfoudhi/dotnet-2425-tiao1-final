@@ -108,6 +108,7 @@ public class Booking : Entity
     public void AddBoat(Boat boat)
     {
         Guard.Against.Null(boat, nameof(boat));
+        boat.AddBooking();
         Boat = boat;
     }
 
@@ -118,6 +119,7 @@ public class Booking : Entity
     public void AddBattery(Battery battery)
     {
         Guard.Against.Null(battery, nameof(battery));
+        battery.AddBooking();
         Battery = battery;
     }
 
