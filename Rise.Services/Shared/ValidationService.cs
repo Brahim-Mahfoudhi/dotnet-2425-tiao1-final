@@ -20,9 +20,12 @@ public class ValidationService : IValidationService
 
     public async Task<bool> CheckUserExistsAsync(string userId)
     {
+        // Check if user exists in the database
         return await _dbContext.Users
             .AnyAsync(u => u.IsDeleted == false && u.Id == userId);
     }
+
+
 
     public async Task<bool> BookingExists(DateTime bookingDate)
     {
@@ -50,4 +53,6 @@ public class ValidationService : IValidationService
         // Further booking validation logic (e.g., check if a time slot is available)
         return true;
     }
+
+    
 }

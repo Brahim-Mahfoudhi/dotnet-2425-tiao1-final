@@ -56,6 +56,7 @@ public class BookingService : IBookingService
 
     public async Task<BookingDto.ViewBooking> GetBookingById(string id)
     {
+        CheckBookingIdNullOrWhiteSpace(id);
         // Changed method so that DTO creation is out of the LINQ Query
         // You need to avoid using methods with optional parameters directly
         // in the LINQ query that EF is trying to translate
@@ -74,10 +75,7 @@ public class BookingService : IBookingService
 
     public async Task<BookingDto.ViewBooking> CreateBookingAsync(BookingDto.NewBooking booking)
     {
-        if (!await _validationService.CheckUserExistsAsync(booking.userId))
-        {
-            throw new UserNotFoundException("Invalid user");
-        }
+        await ValidateUser(booking.userId); // Await the call to ensure exceptions are caught
 
         //Check if user has not reached the maximum allowed bookings
         if (await _validationService.CheckUserMaxBookings(booking.userId))
@@ -112,10 +110,20 @@ public class BookingService : IBookingService
 
     public async Task<bool> UpdateBookingAsync(BookingDto.UpdateBooking booking)
     {
+        CheckBookingIdNullOrWhiteSpace(booking.bookingId);
+
         var entity = await _dbContext.Bookings.FindAsync(booking.bookingId) ?? throw new Exception("Booking not found");
 
         if (booking.bookingDate != null && booking.bookingDate != entity.BookingDate)
         {
+            // Check if the new booking date is within the allowed range (+3 to +30 days from today)
+            if (booking.bookingDate.Value < DateTime.UtcNow.Date.AddDays(_minReservationDays) ||
+                booking.bookingDate.Value > DateTime.UtcNow.Date.AddDays(_maxReservationDays))
+            {
+                throw new ArgumentOutOfRangeException(nameof(booking.bookingDate),
+                    $"Booking date must be between {_minReservationDays} and {_maxReservationDays} days from today.");
+            }
+
             if (await _validationService.BookingExists(booking.bookingDate.Value))
             {
                 throw new InvalidOperationException("Booking already exists on this date");
@@ -124,10 +132,10 @@ public class BookingService : IBookingService
             entity.BookingDate = booking.bookingDate.Value;
         }
 
-        /*entity.Boat = booking.boat ?? entity.Boat;
-        entity.Battery = booking.battery ?? entity.Battery;
-
-        _dbContext.Users.Update(entity);*/
+//         /*entity.Boat = booking.boat ?? entity.Boat;
+//         entity.Battery = booking.battery ?? entity.Battery;
+//
+        _dbContext.Bookings.Update(entity);
         int response = await _dbContext.SaveChangesAsync();
 
         return response > 0;
@@ -135,6 +143,8 @@ public class BookingService : IBookingService
 
     public async Task<bool> DeleteBookingAsync(string bookingId)
     {
+        CheckBookingIdNullOrWhiteSpace(bookingId);
+
         var entity = await _dbContext.Bookings.FindAsync(bookingId) ?? throw new Exception("Booking not found");
 
         entity.SoftDelete();
@@ -143,12 +153,19 @@ public class BookingService : IBookingService
         return true;
     }
 
+    private static void CheckBookingIdNullOrWhiteSpace(string bookingId)
+    {
+        if (string.IsNullOrWhiteSpace(bookingId))
+        {
+            throw new ArgumentException("Booking ID cannot be null or empty.", nameof(bookingId));
+        }
+    }
+
+
     public async Task<IEnumerable<BookingDto.ViewBooking>?> GetAllUserBookings(string userId)
     {
-        if (!await _validationService.CheckUserExistsAsync(userId))
-        {
-            throw new UserNotFoundException("Invalid user");
-        }
+        await ValidateUser(userId); // Await the call to ensure exceptions are caught
+
         // Changed method so that DTO creation is out of the LINQ Query
         // You need to avoid using methods with optional parameters directly
         // in the LINQ query that EF is trying to translate
@@ -169,17 +186,15 @@ public class BookingService : IBookingService
 
     public async Task<IEnumerable<BookingDto.ViewBooking>?> GetFutureUserBookings(string userId)
     {
-        if (!await _validationService.CheckUserExistsAsync(userId))
-        {
-            throw new UserNotFoundException("Invalid user");
-        }
+        await ValidateUser(userId); // Await the call to ensure exceptions are caught
+
         // Changed method so that DTO creation is out of the LINQ Query
         // You need to avoid using methods with optional parameters directly
         // in the LINQ query that EF is trying to translate
         var query = await _dbContext.Bookings
             .Include(x => x.Battery)
             .Include(x => x.Boat)
-            .Where(x => x.UserId.Equals(userId) && x.IsDeleted == false && x.BookingDate >= DateTime.Now)
+            .Where(x => x.UserId.Equals(userId) && x.IsDeleted == false && x.BookingDate.Date >= DateTime.Now.Date)
             .OrderByDescending(x => x.BookingDate)
             .ToListAsync();
 
@@ -193,10 +208,8 @@ public class BookingService : IBookingService
 
     public async Task<IEnumerable<BookingDto.ViewBooking>?> GetPastUserBookings(string userId)
     {
-        if (!await _validationService.CheckUserExistsAsync(userId))
-        {
-            throw new UserNotFoundException("Invalid user");
-        }
+        await ValidateUser(userId); // Await the call to ensure exceptions are caught
+
         var query = await _dbContext.Bookings
             .Include(x => x.Battery)
             .Include(x => x.Boat)
@@ -357,5 +370,24 @@ public class BookingService : IBookingService
     {
         return DateTime.Now.AddDays(_minReservationDays) <= bookingDate &&
                bookingDate <= DateTime.Now.AddDays(_maxReservationDays);
+    }
+
+    private async Task ValidateUser(string userId)
+    {
+        CheckUserIdNullOrWhiteSpace(userId);
+        
+        bool userExists = await _validationService.CheckUserExistsAsync(userId);
+        if (!userExists)
+        {
+            throw new UserNotFoundException("User with given id was not found.");
+        }
+    }
+    
+    private static void CheckUserIdNullOrWhiteSpace(string userId)
+    {
+        if (string.IsNullOrWhiteSpace(userId))
+        {
+            throw new ArgumentException("User ID cannot be null or empty.", nameof(userId));
+        }
     }
 }
