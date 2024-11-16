@@ -7,7 +7,7 @@ using Rise.Server.Settings;
 
 namespace Rise.Shared.Services;
 
-public class ValidationService
+public class ValidationService : IValidationService
 {
     private readonly int _maxBookingLimit;
     private readonly ApplicationDbContext _dbContext;
@@ -20,9 +20,12 @@ public class ValidationService
 
     public async Task<bool> CheckUserExistsAsync(string userId)
     {
+        // Check if user exists in the database
         return await _dbContext.Users
             .AnyAsync(u => u.IsDeleted == false && u.Id == userId);
     }
+
+
 
     public async Task<bool> BookingExists(DateTime bookingDate)
     {
@@ -50,4 +53,6 @@ public class ValidationService
         // Further booking validation logic (e.g., check if a time slot is available)
         return true;
     }
+
+    
 }
