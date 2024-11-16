@@ -1,8 +1,7 @@
 using Rise.Domain.Bookings;
-using Rise.Shared.Bookings;
+using Rise.Domain.Notifications;
 
 namespace Rise.Domain.Users;
-using System.ComponentModel.DataAnnotations;
 
 /// <summary>
 /// Represents a user entity in the system
@@ -21,6 +20,8 @@ public class User : Entity
     private List<Role> _roles = [];
     private string _phoneNumber = default!;
     private List<Booking> _bookings = [];
+
+    private List<Notification> _notifications = [];
 
     #endregion
 
@@ -115,6 +116,8 @@ public class User : Entity
     /// Gets the bookings associated with the user.
     /// </summary>
     public IReadOnlyList<Booking> Bookings => _bookings;
+
+    public List<Notification> Notifications => _notifications;
 
     /// <summary>
     /// Gets or sets the phone number of the user.
