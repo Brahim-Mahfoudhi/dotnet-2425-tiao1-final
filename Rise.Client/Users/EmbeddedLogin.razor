@@ -12,14 +12,14 @@
                                 <div
                                     class="d-md-flex flex-column flex-md-row justify-content-center align-items-center mb-2">
                                     <label style="min-width: 80px;">@Localizer["Email"]: </label>
-                                    <InputText @bind-Value="loginModel.Email" class="form-control" />
+                                    <InputText id="Email" autocomplete="username" @bind-Value="loginModel.Email" class="form-control" />
                                 </div>
                                 <ValidationMessage For="@(() => loginModel.Email)" />
 
                                 <div
                                     class="d-md-flex flex-column flex-md-row justify-content-center align-items-center mb-2">
                                     <label style="min-width: 80px;">@Localizer["Password"]: </label>
-                                    <InputText @bind-Value="loginModel.Password" type="password"
+                                    <InputText id="Password" autocomplete="current-password" @bind-Value="loginModel.Password" type="password"
                                         class="form-control" />
                                 </div>
                                 <ValidationMessage For="@(() => loginModel.Password)" />
