@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Threading.Tasks;
+using Microsoft.VisualBasic.CompilerServices;
 using Rise.Domain.Users;
 using Rise.Shared.Enums;
 
@@ -39,9 +40,9 @@ namespace Rise.Server.Tests.Controllers
 
         private UserDto.RegistrationUser CreateRegistrationUser(string userid = "1")
         {
-            return new UserDto.RegistrationUser("John", "Doe", "john.doe@example.com", "+3245784578",
-                "verystrongpassword", userid,
-                new AddressDto.GetAdress() { Street = StreetEnum.AFRIKALAAN, HouseNumber = "1" },
+            return new UserDto.RegistrationUser($"John{userid}", $"Doe{userid}", $"john{userid}.doe@example.com", "+3245784578",
+                $"verystrongpassword{userid}", userid,
+                new AddressDto.GetAdress() { Street = StreetEnum.AFRIKALAAN, HouseNumber = $"1{userid}" },
                 new DateTime(1990, 1, 1));
         }
 
@@ -54,9 +55,9 @@ namespace Rise.Server.Tests.Controllers
         {
             return new UserDto.UserDetails()
             {
-                Id = userid, FirstName = "Keoma", LastName = "King", Email = "kingkeoma@gmail.in",
-                Address = new AddressDto.GetAdress() { Street = StreetEnum.AFRIKALAAN, HouseNumber = "1" },
-                Roles = [new RoleDto() { Name = RolesEnum.User }], BirthDate = new DateTime(1990, 1, 1)
+                Id = userid, FirstName = $"Keoma{userid}", LastName = $"King{userid}", Email = $"kingkeoma{userid}@gmail.in",
+                Address = new AddressDto.GetAdress() { Street = StreetEnum.AFRIKALAAN, HouseNumber = $"1{userid}" },
+                Roles = [new RoleDto() { Name = RolesEnum.User }], BirthDate = new DateTime(1990, 1, IntegerType.FromString(userid))
             };
         }
 
@@ -81,9 +82,9 @@ namespace Rise.Server.Tests.Controllers
             return new UserDto.UpdateUser
             {
                 Id = id,
-                FirstName = "John",
-                LastName = "Doe",
-                Email = "john.doe@example.com"
+                FirstName = $"John{id}",
+                LastName = $"Doe{id}",
+                Email = $"john{id}.doe@example.com"
             };
         }
 
