@@ -32,19 +32,29 @@ namespace Rise.Server.Tests.Controllers
                 _bookingServiceMock.Object);
         }
 
-        private UserDto.RegistrationUser CreateRegistrationUser()
+        private UserDto.RegistrationUser CreateRegistrationUser(int id)
+        {
+            return CreateRegistrationUser(id.ToString());
+        }
+
+        private UserDto.RegistrationUser CreateRegistrationUser(string userid = "1")
         {
             return new UserDto.RegistrationUser("John", "Doe", "john.doe@example.com", "+3245784578",
-                "verystrongpassword", "1",
+                "verystrongpassword", userid,
                 new AddressDto.GetAdress() { Street = StreetEnum.AFRIKALAAN, HouseNumber = "1" },
                 new DateTime(1990, 1, 1));
         }
 
-        private UserDto.UserDetails CreateUserDetails()
+        private UserDto.UserDetails CreateUserDetails(int userid)
+        {
+            return CreateUserDetails(userid.ToString());
+        }
+
+        private UserDto.UserDetails CreateUserDetails(string userid = "1")
         {
             return new UserDto.UserDetails()
             {
-                Id = "1", FirstName = "Keoma", LastName = "King", Email = "kingkeoma@gmail.in",
+                Id = userid, FirstName = "Keoma", LastName = "King", Email = "kingkeoma@gmail.in",
                 Address = new AddressDto.GetAdress() { Street = StreetEnum.AFRIKALAAN, HouseNumber = "1" },
                 Roles = [new RoleDto() { Name = RolesEnum.User }], BirthDate = new DateTime(1990, 1, 1)
             };
@@ -52,8 +62,29 @@ namespace Rise.Server.Tests.Controllers
 
         private UserDto.UserBase CreateUserBase(int id)
         {
-            return new UserDto.UserBase(id.ToString(), $"Keoma{id}", $"King{id}", $"kingkeoma{id}@gmail.in",
+            return CreateUserBase(id.ToString());
+        }
+
+        private UserDto.UserBase CreateUserBase(string id = "1")
+        {
+            return new UserDto.UserBase(id, $"Keoma{id}", $"King{id}", $"kingkeoma{id}@gmail.in",
                 [new RoleDto() { Name = RolesEnum.User }]);
+        }
+
+        private UserDto.UpdateUser CreateUpdateUser(int id)
+        {
+            return CreateUpdateUser(id.ToString());
+        }
+
+        private UserDto.UpdateUser CreateUpdateUser(string id = "1")
+        {
+            return new UserDto.UpdateUser
+            {
+                Id = id,
+                FirstName = "John",
+                LastName = "Doe",
+                Email = "john.doe@example.com"
+            };
         }
 
         [Fact]
@@ -95,7 +126,7 @@ namespace Rise.Server.Tests.Controllers
         {
             // Arrange
             var userId = "1";
-            var user = new UserDto.UserBase(userId, "John", "Doe", "john.doe@example.com");
+            var user = CreateUserBase(userId);
             _userServiceMock.Setup(s => s.GetUserByIdAsync(userId)).ReturnsAsync(user);
 
             // Act
@@ -140,8 +171,7 @@ namespace Rise.Server.Tests.Controllers
         {
             // Arrange
             var userId = "1";
-            var userDetails = new UserDto.UserDetails(userId, "John", "Doe", "john.doe@example.com", null, null,
-                DateTime.UtcNow);
+            var userDetails = CreateUserDetails(userId);
 
             _userServiceMock.Setup(s => s.GetUserDetailsByIdAsync(userId)).ReturnsAsync(userDetails);
 
@@ -158,7 +188,7 @@ namespace Rise.Server.Tests.Controllers
             Assert.Equal(userDetails.LastName, returnedUser.LastName);
             Assert.Equal(userDetails.Email, returnedUser.Email);
         }
-        
+
         [Fact]
         public async Task GetDetails_ShouldReturnNotFound_WhenUserDetailsNotExist()
         {
@@ -247,8 +277,7 @@ namespace Rise.Server.Tests.Controllers
         public async Task Put_ShouldReturnOk_WhenUserUpdatedSuccessfully()
         {
             // Arrange
-            var userDetails = new UserDto.UpdateUser
-                { Id = "1", FirstName = "John", LastName = "Doe", Email = "john.doe@example.com" };
+            var userDetails = CreateUpdateUser();
             _auth0UserServiceMock.Setup(a => a.UpdateUserAuth0(userDetails)).ReturnsAsync(true);
             _auth0UserServiceMock.Setup(a => a.AssignRoleToUser(userDetails)).ReturnsAsync(true);
             _userServiceMock.Setup(s => s.UpdateUserAsync(userDetails)).ReturnsAsync(true);
@@ -280,13 +309,7 @@ namespace Rise.Server.Tests.Controllers
         public async Task Put_ShouldReturnNotFound_WhenUserDoesNotExist()
         {
             // Arrange
-            var userDetails = new UserDto.UpdateUser
-            {
-                Id = "1",
-                FirstName = "John",
-                LastName = "Doe",
-                Email = "john.doe@example.com"
-            };
+            var userDetails = CreateUpdateUser();
             _userServiceMock.Setup(s => s.UpdateUserAsync(userDetails)).ReturnsAsync(false);
 
             // Act
@@ -311,7 +334,7 @@ namespace Rise.Server.Tests.Controllers
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result);
             Assert.Equal(200, okResult.StatusCode);
-            Assert.NotNull( okResult.Value);
+            Assert.NotNull(okResult.Value);
         }
 
 
@@ -384,6 +407,126 @@ namespace Rise.Server.Tests.Controllers
             var notFoundResult = Assert.IsType<NotFoundObjectResult>(result);
             Assert.Equal(404, notFoundResult.StatusCode);
             Assert.NotNull(notFoundResult.Value);
+        }
+
+        [Fact]
+        public async Task IsEmailTaken_ShouldReturnTrue_WhenEmailIsTaken()
+        {
+            // Arrange
+            string email = "taken@example.com";
+            _auth0UserServiceMock.Setup(a => a.IsEmailTakenAsync(email)).ReturnsAsync(true);
+
+            // Act
+            var result = await _userController.IsEmailTaken(email);
+
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result);
+            Assert.Equal(200, okResult.StatusCode);
+            Assert.True((bool)okResult.Value);
+        }
+
+        [Fact]
+        public async Task IsEmailTaken_ShouldReturnFalse_WhenEmailIsNotTaken()
+        {
+            // Arrange
+            string email = "not_taken@example.com";
+            _auth0UserServiceMock.Setup(a => a.IsEmailTakenAsync(email)).ReturnsAsync(false);
+
+            // Act
+            var result = await _userController.IsEmailTaken(email);
+
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result);
+            Assert.Equal(200, okResult.StatusCode);
+            Assert.False((bool)okResult.Value);
+        }
+
+        [Fact]
+        public async Task GetFilteredUsers_ShouldReturnOk_WhenUsersAreFound()
+        {
+            // Arrange
+            var filter = new UserFilter();
+            var users = new List<UserDto.UserBase>();
+
+            for (int i = 0; i < 10; i++)
+            {
+                users.Add(CreateUserBase(i));
+            }
+            
+            _userServiceMock.Setup(s => s.GetFilteredUsersAsync(filter)).ReturnsAsync(users);
+
+            // Act
+            var result = await _userController.GetFilteredUsers(filter);
+
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result);
+            Assert.Equal(200, okResult.StatusCode);
+            Assert.Equal(users, okResult.Value);
+        }
+
+        [Fact]
+        public async Task GetFilteredUsers_ShouldReturnNotFound_WhenNoUsersAreFound()
+        {
+            // Arrange
+            var filter = new UserFilter();
+            _userServiceMock.Setup(s => s.GetFilteredUsersAsync(filter))
+                .ReturnsAsync((IEnumerable<UserDto.UserBase>)null);
+
+            // Act
+            var result = await _userController.GetFilteredUsers(filter);
+
+            // Assert
+            var notFoundResult = Assert.IsType<NotFoundObjectResult>(result);
+            Assert.Equal(404, notFoundResult.StatusCode);
+            Assert.Equal("No users found matching the given filters.", notFoundResult.Value);
+        }
+
+        [Fact]
+        public async Task GetFilteredUsers_ShouldReturnBadRequest_WhenFilterIsInvalid()
+        {
+            // Arrange
+            var filter = new UserFilter();
+            _userServiceMock.Setup(s => s.GetFilteredUsersAsync(filter))
+                .ThrowsAsync(new ArgumentException("Invalid filter"));
+
+            // Act
+            var result = await _userController.GetFilteredUsers(filter);
+
+            // Assert
+            var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
+            Assert.Equal(400, badRequestResult.StatusCode);
+            Assert.Equal("Invalid filter argument: Invalid filter", badRequestResult.Value);
+        }
+
+        [Fact]
+        public async Task GetFilteredUsers_ShouldReturnForbid_WhenUnauthorizedAccessExceptionIsThrown()
+        {
+            // Arrange
+            var filter = new UserFilter();
+            _userServiceMock.Setup(s => s.GetFilteredUsersAsync(filter))
+                .ThrowsAsync(new UnauthorizedAccessException("Access denied"));
+
+            // Act
+            var result = await _userController.GetFilteredUsers(filter);
+
+            // Assert
+            var forbidResult = Assert.IsType<ForbidResult>(result);
+        }
+
+        [Fact]
+        public async Task GetFilteredUsers_ShouldReturnInternalServerError_WhenUnexpectedErrorOccurs()
+        {
+            // Arrange
+            var filter = new UserFilter();
+            _userServiceMock.Setup(s => s.GetFilteredUsersAsync(filter)).ThrowsAsync(new Exception("Unexpected error"));
+
+            // Act
+            var result = await _userController.GetFilteredUsers(filter);
+
+            // Assert
+            var objectResult = Assert.IsType<ObjectResult>(result);
+            Assert.Equal(500, objectResult.StatusCode);
+            Assert.Equal("An unexpected error occurred: Unexpected error", objectResult.Value);
         }
     }
 }
