@@ -109,6 +109,12 @@ public class UserService : IUserService
     {
         try
         {
+            if (string.IsNullOrWhiteSpace(userDetails.Email) ||
+                !new System.ComponentModel.DataAnnotations.EmailAddressAttribute().IsValid(userDetails.Email))
+            {
+                return (false, "InvalidEmailFormat"); // Localization key
+            }
+            
             if (_dbContext.Users.Any(x => x.Email == userDetails.Email))
             {
                 return (false, "UserAlreadyExists"); // Localization key
