@@ -26,6 +26,6 @@ internal class RoleConfiguration : EntityConfiguration<Role>
                 v => v.ToString(), // Convert RolesEnum to string when saving to the database
                 v => (RolesEnum)Enum.Parse(typeof(RolesEnum), v) // Convert string back to RolesEnum when retrieving from the database
             )
-            .HasColumnType("nvarchar(50)"); // Specify the column type.HasConversion<string>().HasColumnType("nvarchar(50)");
+            .HasColumnType("nvarchar(50)"); // Specify the column 
     }
 }

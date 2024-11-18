@@ -32,7 +32,7 @@ public class NotificationService : INotificationService
     /// Retrieves all notifications.
     /// </summary>
     /// <returns>A task that represents the asynchronous operation. The task result contains a collection of view notifications.</returns>
-    public async Task<IEnumerable<NotificationDto.ViewNotification>?> GetAllAsync(String language = "en")
+    public async Task<IEnumerable<NotificationDto.ViewNotification>?> GetAllNotificationsAsync(String language = "en")
     {
         try
         {
@@ -76,16 +76,19 @@ public class NotificationService : INotificationService
     {
         try
         {
+            if (string.IsNullOrWhiteSpace(userId))
+            {
+                throw new ArgumentNullException(nameof(userId), "User ID cannot be null or empty.");
+            }
             // Query the notifications
-            var query = _dbContext.Notifications
-                .Where(n => n.UserId == userId && !n.IsDeleted);
+            var query = await _dbContext.Notifications
+                .Where(n => n.UserId == userId && !n.IsDeleted).ToListAsync();
 
             // Transform to ViewNotification
             var notifications = query
-                .Select(n => CreateViewNotification(n, language))
-                .ToList();
+                .Select(n => CreateViewNotification(n, language));
 
-            return await Task.FromResult(notifications);
+            return notifications;
         }
         catch (ArgumentNullException ex)
         {
@@ -101,9 +104,7 @@ public class NotificationService : INotificationService
         {
             // Log the error (you can use a logging framework like Serilog, NLog, etc.)
             Console.Error.WriteLine($"Error fetching notifications for user {userId}: {ex.Message}");
-
-            // Optionally, you can throw a custom exception or return null
-            return null;
+            throw;
         }
     }
 
@@ -177,6 +178,11 @@ public class NotificationService : INotificationService
     {
         try
         {
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                throw new ArgumentNullException(nameof(id), "Notification ID cannot be null or empty.");
+            }
+            
             // Find the notification by ID
             var notification = await _dbContext.Notifications.FindAsync(id);
 
@@ -292,6 +298,11 @@ public class NotificationService : INotificationService
     {
         try
         {
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                throw new ArgumentNullException(nameof(id), "Notification ID cannot be null or empty.");
+            }
+
             // Find the notification by ID
             var notification = await _dbContext.Notifications.FindAsync(id);
 
@@ -333,6 +344,11 @@ public class NotificationService : INotificationService
     {
         try
         {
+            if (string.IsNullOrWhiteSpace(userId))
+            {
+                throw new ArgumentNullException(nameof(userId), "User ID cannot be null or empty.");
+            }
+
             // Query unread notifications for the user
             var notifications = await _dbContext.Notifications
                 .Where(n => n.UserId == userId && !n.IsDeleted && !n.IsRead)
@@ -371,6 +387,11 @@ public class NotificationService : INotificationService
     {
         try
         {
+            if (string.IsNullOrWhiteSpace(userId))
+            {
+                throw new ArgumentNullException(nameof(userId), "User ID cannot be null or empty.");
+            }
+
             // Query read notifications for the user
             var notifications = await _dbContext.Notifications
                 .Where(n => n.UserId == userId && !n.IsDeleted && n.IsRead)
@@ -411,6 +432,11 @@ public class NotificationService : INotificationService
     {
         try
         {
+            if (string.IsNullOrWhiteSpace(userId))
+            {
+                throw new ArgumentNullException(nameof(userId), "User ID cannot be null or empty.");
+            }
+
             // Query notifications for the user filtered by type
             var notifications = await _dbContext.Notifications
                 .Where(n => n.UserId == userId && !n.IsDeleted && n.Type == type)

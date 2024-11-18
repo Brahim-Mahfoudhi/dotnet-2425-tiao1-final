@@ -10,6 +10,14 @@ public enum NotificationType
     /// </summary>
     General,
     /// <summary>
+    /// Alert notification
+    /// </summary>
+    Alert,
+    /// <summary>
+    /// Reminder notification
+    /// </summary>
+    Reminder,
+    /// <summary>
     /// Notification for booking
     /// </summary>
     Booking,

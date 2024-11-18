@@ -1,4 +1,6 @@
 namespace Rise.Domain.Notifications;
+
+using System.ComponentModel.DataAnnotations.Schema;
 using Rise.Shared.Enums;
 
 /// <summary>
@@ -15,6 +17,7 @@ public class Notification : Entity
 
     private string _userId = default!;
     private bool _isRead = false;
+    [Column(TypeName = "nvarchar(50)")]
     private NotificationType _type;
     private string? _relatedEntityId;
     #endregion
@@ -36,7 +39,7 @@ public class Notification : Entity
     /// <param name="message_NL">The Dutch notification message.</param>
     /// <param name="type">The type of the notification.</param>
     /// <param name="relatedEntityId">The ID of the related entity (optional).</param>
-    public Notification(string userId, string title_EN, string title_NL, string message_EN, string message_NL, NotificationType type, string? relatedEntityId = null)
+    public Notification(string userId, string title_EN, string title_NL, string message_EN, string message_NL, NotificationType type, bool isRead = false, string? relatedEntityId = null)
     {
         UserId = userId;
         Title_EN = title_EN;
@@ -44,6 +47,7 @@ public class Notification : Entity
         Title_NL = title_NL;
         Message_NL = message_NL;
         Type = type;
+        IsRead = isRead;
         CreatedAt = DateTime.UtcNow;
         RelatedEntityId = relatedEntityId;
     }

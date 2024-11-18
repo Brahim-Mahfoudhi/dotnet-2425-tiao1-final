@@ -11,7 +11,7 @@ namespace Rise.Shared.Notifications
         /// Retrieves all notifications.
         /// </summary>
         /// <returns>A task that represents the asynchronous operation. The task result contains a collection of notifications.</returns>
-        Task<IEnumerable<NotificationDto.ViewNotification>?> GetAllAsync(String language = "en");
+        Task<IEnumerable<NotificationDto.ViewNotification>?> GetAllNotificationsAsync(String language = "en");
         /// <summary>
         /// Retrieves a notification by its identifier.
         /// </summary>

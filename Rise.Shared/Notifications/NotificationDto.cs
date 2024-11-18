@@ -37,7 +37,6 @@ public class NotificationDto
         /// Gets or sets the type of the notification.
         /// </summary>
         public NotificationType Type { get; set; }
-
         /// <summary>
         /// Gets or sets the related entity ID associated with the notification.
         /// </summary>
@@ -73,6 +72,10 @@ public class NotificationDto
         /// Gets or sets the creation date and time of the notification.
         /// </summary>
         public DateTime CreatedAt { get; set; } = DateTime.Now;
+        /// <summary>
+        /// Gets or sets the related entity ID associated with the notification.
+        /// </summary>
+        public string? RelatedEntityId { get; set; }
     }
 
     /// <summary>
@@ -87,20 +90,20 @@ public class NotificationDto
         /// <summary>
         /// Gets or sets the English title of the notification.
         /// </summary>
-        public string Title_EN { get; set; } = default!;
+        public string? Title_EN { get; set; } = default!;
         /// <summary>
         /// Gets or sets the Dutch title of the notification.
         /// </summary>
-        public string Title_NL { get; set; } = default!;
-
+        public string? Title_NL { get; set; } = default!;
         /// <summary>
         /// Gets or sets the English message of the notification.
         /// </summary>
-        public string Message_EN { get; set; } = default!;
+        public string? Message_EN { get; set; } = default!;
         /// <summary>
         /// Gets or sets the Dutch message of the notification.
         /// </summary>
-        public string Message_NL { get; set; } = default!;
+        public string? Message_NL { get; set; } = default!;
+
         /// <summary>
         /// Gets or sets a value indicating whether the notification has been read.
         /// </summary>
@@ -109,5 +112,9 @@ public class NotificationDto
         /// Gets or sets the type of the notification.
         /// </summary>
         public NotificationType Type { get; set; }
+        /// <summary>
+        /// Gets or sets the related entity ID associated with the notification.
+        /// </summary>
+        public string? RelatedEntityId { get; set; }
     }
 }
