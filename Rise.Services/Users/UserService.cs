@@ -13,7 +13,6 @@ namespace Rise.Services.Users;
 public class UserService : IUserService
 {
     private readonly ApplicationDbContext _dbContext;
-    private readonly HttpClient _httpClient;
     private readonly JsonSerializerOptions _jsonSerializerOptions;
 
 
@@ -21,16 +20,15 @@ public class UserService : IUserService
     /// Initializes a new instance of the <see cref="UserService"/> class.
     /// </summary>
     /// <param name="dbContext">The database context.</param>
-    /// <param name="httpClient">The HTTP client.</param>
-    public UserService(ApplicationDbContext dbContext, HttpClient httpClient)
+    /// <param name="jsonSerializerOptions">The JSON serializer options.</param>
+    public UserService(ApplicationDbContext dbContext)
     {
         this._dbContext = dbContext;
-        this._httpClient = httpClient;
+        // this._httpClient = httpClient;
         this._jsonSerializerOptions = new JsonSerializerOptions
         {
             PropertyNameCaseInsensitive = true
         };
-        this._jsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
     }
 
     /// <summary>
@@ -199,7 +197,7 @@ public class UserService : IUserService
             {
                 if (!currentRoleNames.Contains(newRole.Name))
                 {
-                    Role DBrole = await GetRoleByNameFromDBAsync(new Role (newRole.Name)) ?? throw new Exception("Role not found");
+                    Role DBrole = await GetRoleByNameFromDBAsync(new Role(newRole.Name)) ?? throw new Exception("Role not found");
                     entity.Roles.Add(DBrole);
                 }
             }
@@ -231,10 +229,9 @@ public class UserService : IUserService
     /// Retrieves a list of Auth0 users.
     /// </summary>
     /// <returns>A collection of Auth0User DTOs.</returns>
-    public async Task<IEnumerable<UserDto.Auth0User>> GetAuth0Users()
+    public Task<IEnumerable<UserDto.Auth0User>> GetAuth0Users()
     {
-        var users = await _httpClient.GetFromJsonAsync<IEnumerable<UserDto.Auth0User>>("user/auth/users");
-        return users!;
+        throw new NotImplementedException();
     }
 
     /// <summary>

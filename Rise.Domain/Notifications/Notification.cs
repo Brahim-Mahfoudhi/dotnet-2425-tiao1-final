@@ -106,6 +106,9 @@ public class Notification : Entity
         set => _message_NL = Guard.Against.NullOrWhiteSpace(value, nameof(Message_NL));
     }
 
+    /// <summary>
+    /// Gets or sets a value indicating whether the notification has been read.
+    /// </summary>
     public bool IsRead
     {
         get => _isRead;
