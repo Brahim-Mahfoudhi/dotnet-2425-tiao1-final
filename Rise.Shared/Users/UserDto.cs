@@ -81,19 +81,21 @@ public class UserDto
         public string LastName { get; init; }
         public string Email { get; init; }
         public AddressDto.GetAdress Address { get; init; }
+        public string PhoneNumber { get; init; }
         public ImmutableList<RoleDto> Roles { get; init; } = ImmutableList<RoleDto>.Empty;
         public DateTime BirthDate { get; init; } = DateTime.Now;
 
         // Parameterless constructor for deserialization
         public UserDetails() { }
 
-        public UserDetails(string id, string firstName, string lastName, string email,
+        public UserDetails(string id, string firstName, string lastName, string email, string phoneNumber,
             AddressDto.GetAdress address, ImmutableList<RoleDto>? roles = null, DateTime? birthDate = null)
         {
             Id = id;
             FirstName = firstName;
             LastName = lastName;
             Email = email;
+            PhoneNumber = phoneNumber;
             Address = address;
             Roles = roles ?? ImmutableList<RoleDto>.Empty;
             BirthDate = birthDate ?? DateTime.Now;
