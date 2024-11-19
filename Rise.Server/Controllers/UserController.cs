@@ -22,7 +22,7 @@ public class UserController : ControllerBase
 {
     private readonly IUserService _userService;
     private readonly IAuth0UserService _auth0UserService;
-    private readonly IBookingService _bookingService;
+    private readonly IValidationService _validationService;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="UserController"/> class with the specified user service.
@@ -30,11 +30,11 @@ public class UserController : ControllerBase
     /// <param name="userService">The user service that handles user operations.</param>
     /// <param name="auth0UserService">The user service that handles Auth0 user operations</param>
     /// <param name="bookingService">The booking service that handles booking operations</param>
-    public UserController(IUserService userService, IAuth0UserService auth0UserService, IBookingService bookingService)
+    public UserController(IUserService userService, IAuth0UserService auth0UserService, IValidationService validationService)
     {
         _userService = userService;
         _auth0UserService = auth0UserService;
-        _bookingService = bookingService;
+        _validationService = validationService;
     }
 
     /// <summary>
@@ -236,8 +236,8 @@ public class UserController : ControllerBase
     {
         try
         {
-            var activeBookings = await _bookingService.GetAllUserBookings(userid);
-            if (activeBookings != null && activeBookings.Any())
+            var activeBookings = await _validationService.CheckActiveBookings(userid);
+            if (activeBookings)
             {
                 return BadRequest(new { message = "User has active bookings" });
             }
@@ -316,87 +316,6 @@ public class UserController : ControllerBase
             // Handle any other unexpected errors
             return StatusCode(500,
                 new { message = "An unexpected error occurred while fetching the user.", detail = ex.Message });
-        }
-    }
-
-
-    /// <summary>
-    /// Retrieves all bookings asynchronously for specific user.
-    /// </summary>
-    /// <param name="userid">The ID of the user to retrieve their bookings.</param>
-    /// <returns>List of <see cref="BookingDto"/> objects or <c>null</c> if no bookings are found.</returns>
-    [HttpGet("{userid}/bookings")]
-    public async Task<IActionResult> GetAllUserBookings(string userid)
-    {
-        try
-        {
-            var bookings = await _bookingService.GetAllUserBookings(userid);
-            return Ok(bookings);
-        }
-        catch (UserNotFoundException)
-        {
-            return NotFound(new { message = $"User with ID {userid} was not found." });
-        }
-        catch (Exception ex)
-        {
-            // Handle any other unexpected errors
-            return StatusCode(500,
-                new { message = "An unexpected error occurred while fetching all bookings.", detail = ex.Message });
-        }
-    }
-
-    /// <summary>
-    /// Retrieves future bookings asynchronously for specific user.
-    /// </summary>
-    /// <param name="userid">The ID of the user to retrieve their future bookings.</param>
-    /// <returns><see cref="BookingDto"/> object or <c>null</c> if no booking is found.</returns>
-    [HttpGet("{userid}/bookings/future")]
-    public async Task<IActionResult> GetFutureUserBookings(string userid)
-    {
-        try
-        {
-            var bookings = await _bookingService.GetFutureUserBookings(userid);
-            return Ok(bookings);
-        }
-        catch (UserNotFoundException)
-        {
-            return NotFound(new { message = $"User with ID {userid} was not found." });
-        }
-        catch (Exception ex)
-        {
-            // Handle any other unexpected errors
-            return StatusCode(500,
-                new
-                {
-                    message = "An unexpected error occurred while fetching the future bookings.", detail = ex.Message
-                });
-        }
-    }
-
-    /// <summary>
-    /// Retrieves past bookings asynchronously for specific user.
-    /// </summary>
-    /// <returns><see cref="BookingDto"/> object or <c>null</c> if no booking is found.</returns>
-    [HttpGet("{userid}/bookings/past")]
-    public async Task<IActionResult> GetPastUserBookings(string userid)
-    {
-        try
-        {
-            var bookings = await _bookingService.GetPastUserBookings(userid);
-            return Ok(bookings);
-        }
-        catch (UserNotFoundException)
-        {
-            return NotFound(new { message = $"User with ID {userid} was not found." });
-        }
-        catch (Exception ex)
-        {
-            // Handle any other unexpected errors
-            return StatusCode(500,
-                new
-                {
-                    message = "An unexpected error occurred while fetching the past bookings.", detail = ex.Message
-                });
         }
     }
 
