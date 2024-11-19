@@ -21,16 +21,16 @@ namespace Rise.Server.Tests.Controllers
     {
         private readonly Mock<IUserService> _userServiceMock;
         private readonly Mock<IAuth0UserService> _auth0UserServiceMock;
-        private readonly Mock<IBookingService> _bookingServiceMock;
+        private readonly Mock<IValidationService> _validationServiceMock;
         private readonly UserController _userController;
 
         public UserControllerTests()
         {
             _userServiceMock = new Mock<IUserService>();
             _auth0UserServiceMock = new Mock<IAuth0UserService>();
-            _bookingServiceMock = new Mock<IBookingService>();
+            _validationServiceMock = new Mock<IValidationService>();
             _userController = new UserController(_userServiceMock.Object, _auth0UserServiceMock.Object,
-                _bookingServiceMock.Object);
+                _validationServiceMock.Object);
         }
 
         private UserDto.RegistrationUser CreateRegistrationUser(int id)
@@ -362,8 +362,7 @@ namespace Rise.Server.Tests.Controllers
         {
             // Arrange
             var userId = "1";
-            _bookingServiceMock.Setup(b => b.GetAllUserBookings(userId)).ReturnsAsync(new List<BookingDto.ViewBooking>
-                { new BookingDto.ViewBooking() { bookingId = "123" } });
+            _validationServiceMock.Setup(b => b.CheckActiveBookings(userId)).ReturnsAsync(true);
 
             // Act
             var result = await _userController.Delete(userId);
