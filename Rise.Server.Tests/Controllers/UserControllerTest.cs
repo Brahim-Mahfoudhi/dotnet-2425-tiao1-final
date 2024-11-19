@@ -374,6 +374,7 @@ namespace Rise.Server.Tests.Controllers
             Assert.NotNull(badRequestResult.Value);
         }
 
+
         [Fact]
         public async Task IsEmailTaken_ShouldReturnTrue_WhenEmailIsTaken()
         {
@@ -493,7 +494,5 @@ namespace Rise.Server.Tests.Controllers
             Assert.Equal(500, objectResult.StatusCode);
             Assert.Equal("An unexpected error occurred: Unexpected error", objectResult.Value);
         }
-        
-        
     }
 }
