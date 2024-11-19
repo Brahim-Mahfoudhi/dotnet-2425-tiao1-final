@@ -25,7 +25,7 @@ public class UserServiceTests
             .Options;
 
         _dbContext = new ApplicationDbContext(options);
-        _userService = new UserService(_dbContext, null);
+        _userService = new UserService(_dbContext);
     }
 
     private User CreateUser(string id, string firstname, string lastname)
