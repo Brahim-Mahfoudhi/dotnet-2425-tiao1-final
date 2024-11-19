@@ -398,4 +398,38 @@ public class BookingControllerTest
         statusCodeResult.StatusCode.ShouldBe(StatusCodes.Status500InternalServerError);
         statusCodeResult.Value.ShouldBe("An error occurred while processing your request.");
     }
+    
+    [Fact]
+    public async Task GetAllUserBookings_ShouldReturnOkResult_WhenUserHasBookings()
+    {
+        // Arrange
+        var userId = "1";
+        var bookings = new List<BookingDto.ViewBooking> { new BookingDto.ViewBooking() { bookingId = "123" } };
+        _mockBookingService.Setup(b => b.GetAllUserBookings(userId)).ReturnsAsync(bookings);
+
+        // Act
+        var result = await _controller.GetAllUserBookings(userId);
+
+        // Assert
+        var okResult = Assert.IsType<OkObjectResult>(result);
+        Assert.Equal(200, okResult.StatusCode);
+        Assert.Equal(bookings, okResult.Value);
+    }
+
+    [Fact]
+    public async Task GetAllUserBookings_ShouldReturnNotFound_WhenUserDoesNotExist()
+    {
+        // Arrange
+        var userId = "1";
+        _mockBookingService.Setup(b => b.GetAllUserBookings(userId))
+            .ThrowsAsync(new UserNotFoundException("User not found"));
+
+        // Act
+        var result = await _controller.GetAllUserBookings(userId);
+
+        // Assert
+        var notFoundResult = Assert.IsType<NotFoundObjectResult>(result);
+        Assert.Equal(404, notFoundResult.StatusCode);
+        Assert.NotNull(notFoundResult.Value);
+    }
 }

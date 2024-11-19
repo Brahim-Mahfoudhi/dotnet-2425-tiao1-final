@@ -375,41 +375,6 @@ namespace Rise.Server.Tests.Controllers
             Assert.NotNull(badRequestResult.Value);
         }
 
-
-        [Fact]
-        public async Task GetAllUserBookings_ShouldReturnOkResult_WhenUserHasBookings()
-        {
-            // Arrange
-            var userId = "1";
-            var bookings = new List<BookingDto.ViewBooking> { new BookingDto.ViewBooking() { bookingId = "123" } };
-            _bookingServiceMock.Setup(b => b.GetAllUserBookings(userId)).ReturnsAsync(bookings);
-
-            // Act
-            var result = await _userController.GetAllUserBookings(userId);
-
-            // Assert
-            var okResult = Assert.IsType<OkObjectResult>(result);
-            Assert.Equal(200, okResult.StatusCode);
-            Assert.Equal(bookings, okResult.Value);
-        }
-
-        [Fact]
-        public async Task GetAllUserBookings_ShouldReturnNotFound_WhenUserDoesNotExist()
-        {
-            // Arrange
-            var userId = "1";
-            _bookingServiceMock.Setup(b => b.GetAllUserBookings(userId))
-                .ThrowsAsync(new UserNotFoundException("User not found"));
-
-            // Act
-            var result = await _userController.GetAllUserBookings(userId);
-
-            // Assert
-            var notFoundResult = Assert.IsType<NotFoundObjectResult>(result);
-            Assert.Equal(404, notFoundResult.StatusCode);
-            Assert.NotNull(notFoundResult.Value);
-        }
-
         [Fact]
         public async Task IsEmailTaken_ShouldReturnTrue_WhenEmailIsTaken()
         {
@@ -529,5 +494,7 @@ namespace Rise.Server.Tests.Controllers
             Assert.Equal(500, objectResult.StatusCode);
             Assert.Equal("An unexpected error occurred: Unexpected error", objectResult.Value);
         }
+        
+        
     }
 }
