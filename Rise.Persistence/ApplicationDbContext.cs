@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Rise.Domain.Bookings;
 using Rise.Domain.Notifications;
 using Rise.Domain.Users;

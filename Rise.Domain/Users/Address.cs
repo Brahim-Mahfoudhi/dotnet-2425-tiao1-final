@@ -89,8 +89,17 @@ public class Address : Entity
     public string HouseNumber
     {
         get => _houseNumber;
-        set => _houseNumber = Guard.Against.NullOrWhiteSpace(value, nameof(HouseNumber));
+        set
+        {
+            _houseNumber = Guard.Against.NullOrWhiteSpace(value, nameof(HouseNumber));
+
+            if (!int.TryParse(value, out int parsedNumber) || parsedNumber <= 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(HouseNumber), "House number must be greater than zero.");
+            }
+        }
     }
+
 
     /// <summary>
     /// Gets or sets the optional bus number of the address.

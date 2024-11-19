@@ -63,19 +63,19 @@ public class BookingService : IBookingService
 
     public async Task<IEnumerable<BookingDto.ViewBooking>?> GetAllUserBookings(string userid)
     {
-        var bookings = await httpClient.GetStringAsync($"user/{userid}/bookings");
+        var bookings = await httpClient.GetStringAsync($"booking/user/{userid}");
         return JsonSerializer.Deserialize<IEnumerable<BookingDto.ViewBooking>>(bookings, jsonSerializerOptions);
     }
 
     public async Task<IEnumerable<BookingDto.ViewBooking>?> GetFutureUserBookings(string userid)
     {
-        var bookings = await httpClient.GetStringAsync($"user/{userid}/bookings/future");
+        var bookings = await httpClient.GetStringAsync($"booking/user/{userid}/future");
         return JsonSerializer.Deserialize<IEnumerable<BookingDto.ViewBooking>>(bookings, jsonSerializerOptions);
     }
 
     public async Task<IEnumerable<BookingDto.ViewBooking>?> GetPastUserBookings(string userid)
     {
-        var bookings = await httpClient.GetStringAsync($"user/{userid}/bookings/past");
+        var bookings = await httpClient.GetStringAsync($"booking/user/{userid}/past");
         return JsonSerializer.Deserialize<IEnumerable<BookingDto.ViewBooking>>(bookings, jsonSerializerOptions);
     }
 

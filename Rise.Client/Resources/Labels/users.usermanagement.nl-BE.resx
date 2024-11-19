@@ -26,7 +26,7 @@
 
 //UserManagement labels
 <data name="Navigation" xml:space="preserve">
-  <value>Navigatie</value>
+  <value>Snelle Toegang</value>
 </data>
 <data name="Users" xml:space="preserve">
   <value>Gebruikers</value>
@@ -38,7 +38,7 @@
   <value>Auth0 Gebruikers</value>
 </data>
 <data name="NewlyRegistered" xml:space="preserve">
-  <value>Nieuw Geregistreerd</value>
+  <value>Wacht op goedkeuring</value>
 </data>
 
 //Users labels

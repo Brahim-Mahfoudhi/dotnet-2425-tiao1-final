@@ -23,7 +23,34 @@ namespace Rise.Client.Users
 
         private LoginModel loginModel = new LoginModel();
         private string? loginError;
-        
+
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            if (firstRender)
+            {
+                // Register autofill events for Email and Password fields
+                await Js.InvokeVoidAsync("addAutofillEvent", "Email", DotNetObjectReference.Create(this));
+                await Js.InvokeVoidAsync("addAutofillEvent", "Password", DotNetObjectReference.Create(this));
+            }
+        }
+
+        [JSInvokable]
+        public void UpdateValue(string inputId, string value)
+        {
+            // Update the corresponding property in loginModel
+            switch (inputId)
+            {
+                case "Email":
+                    loginModel.Email = value;
+                    break;
+                case "Password":
+                    loginModel.Password = value;
+                    break;
+            }
+
+            StateHasChanged(); // Notify Blazor to re-render the UI
+        }
+
         [CascadingParameter]
         public string HeaderImage { get; set; } = "img/Buut_BG3.png";
         private void HandleCancelClick()
@@ -33,11 +60,11 @@ namespace Rise.Client.Users
 
         private async Task LoginAs(string role)
         {
-            loginModel.Email = role +  "@hogent.be";
+            loginModel.Email = role + "@hogent.be";
             loginModel.Password = "test";
             await HandleLogin();
-        }        
-        
+        }
+
         private async Task HandleLogin()
         {
             try

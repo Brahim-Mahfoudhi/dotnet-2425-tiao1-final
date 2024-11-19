@@ -10,6 +10,7 @@ using Rise.Server.Controllers;
 using Rise.Services.Bookings;
 using Rise.Shared.Bookings;
 using Microsoft.Extensions.Options;
+using Rise.Domain.Bookings;
 using Rise.Server.Settings;
 using Rise.Shared.Enums;
 using Shouldly;
@@ -293,8 +294,8 @@ public class BookingControllerTest
         var endDate = DateTime.UtcNow.Date.AddDays(1);
         var bookings = new List<BookingDto.ViewBookingCalender>
         {
-            new BookingDto.ViewBookingCalender { BookingDate = startDate.AddDays(1), TimeSlot = TimeSlot.Morning},
-            new BookingDto.ViewBookingCalender { BookingDate = startDate.AddDays(1), TimeSlot = TimeSlot.Afternoon}
+            new BookingDto.ViewBookingCalender { BookingDate = startDate.AddDays(1), TimeSlot = TimeSlot.Morning },
+            new BookingDto.ViewBookingCalender { BookingDate = startDate.AddDays(1), TimeSlot = TimeSlot.Afternoon }
         };
 
         _mockBookingService.Setup(s => s.GetTakenTimeslotsInDateRange(startDate, endDate)).ReturnsAsync(bookings);
@@ -350,8 +351,10 @@ public class BookingControllerTest
         var endDate = DateTime.UtcNow.Date.AddDays(2);
         var freeTimeslots = new List<BookingDto.ViewBookingCalender>
         {
-            new BookingDto.ViewBookingCalender { BookingDate = DateTime.Now, Available = true, TimeSlot = TimeSlot.Morning},
-            new BookingDto.ViewBookingCalender { BookingDate = DateTime.Now, Available = true, TimeSlot = TimeSlot.Afternoon }
+            new BookingDto.ViewBookingCalender
+                { BookingDate = DateTime.Now, Available = true, TimeSlot = TimeSlot.Morning },
+            new BookingDto.ViewBookingCalender
+                { BookingDate = DateTime.Now, Available = true, TimeSlot = TimeSlot.Afternoon }
         };
 
         _mockBookingService.Setup(s => s.GetFreeTimeslotsInDateRange(startDate, endDate)).ReturnsAsync(freeTimeslots);
@@ -398,4 +401,187 @@ public class BookingControllerTest
         statusCodeResult.StatusCode.ShouldBe(StatusCodes.Status500InternalServerError);
         statusCodeResult.Value.ShouldBe("An error occurred while processing your request.");
     }
+
+    [Fact]
+    public async Task GetAllUserBookings_ShouldReturnOkResult_WhenUserHasBookings()
+    {
+        // Arrange
+        var userId = "1";
+        var bookings = new List<BookingDto.ViewBooking> { new BookingDto.ViewBooking() { bookingId = "123" } };
+        _mockBookingService.Setup(b => b.GetAllUserBookings(userId)).ReturnsAsync(bookings);
+
+        // Act
+        var result = await _controller.GetAllUserBookings(userId);
+
+        // Assert
+        var okResult = Assert.IsType<OkObjectResult>(result);
+        Assert.Equal(200, okResult.StatusCode);
+        Assert.Equal(bookings, okResult.Value);
+    }
+
+    [Fact]
+    public async Task GetAllUserBookings_ShouldReturnNotFound_WhenUserDoesNotExist()
+    {
+        // Arrange
+        var userId = "1";
+        _mockBookingService.Setup(b => b.GetAllUserBookings(userId))
+            .ThrowsAsync(new UserNotFoundException("User not found"));
+
+        // Act
+        var result = await _controller.GetAllUserBookings(userId);
+
+        // Assert
+        var notFoundResult = Assert.IsType<NotFoundObjectResult>(result);
+        Assert.Equal(404, notFoundResult.StatusCode);
+        Assert.NotNull(notFoundResult.Value);
+    }
+
+    [Fact]
+    public async Task GetFutureUserBookings_ShouldReturnFutureBookings_WhenUserExists()
+    {
+        // Arrange
+        var userId = "1";
+        var futureBooking = new Booking(DateTime.UtcNow.AddDays(1), userId)
+        {
+            Id = Guid.NewGuid().ToString(),
+            IsDeleted = false
+        };
+
+        _mockBookingService.Setup(b => b.GetFutureUserBookings(userId)).ReturnsAsync(new List<BookingDto.ViewBooking>
+        {
+            new BookingDto.ViewBooking { bookingId = futureBooking.Id }
+        });
+
+        // Act
+        var result = await _controller.GetFutureUserBookings(userId);
+
+        // Assert
+        var okResult = Assert.IsType<OkObjectResult>(result);
+        var bookings = Assert.IsType<List<BookingDto.ViewBooking>>(okResult.Value);
+        Assert.Single(bookings);
+        Assert.Equal(futureBooking.Id, bookings.First().bookingId);
+    }
+
+    [Fact]
+    public async Task GetFutureUserBookings_ShouldReturnNotFound_WhenUserDoesNotExist()
+    {
+        // Arrange
+        var userId = "nonexistent_user";
+        _mockBookingService.Setup(b => b.GetFutureUserBookings(userId)).ThrowsAsync(new UserNotFoundException("error"));
+
+        // Act
+        var result = await _controller.GetFutureUserBookings(userId);
+
+        // Assert
+        var notFoundResult = Assert.IsType<NotFoundObjectResult>(result);
+        Assert.Equal(404, notFoundResult.StatusCode);
+        Assert.NotNull(notFoundResult.Value);
+    }
+
+    [Fact]
+    public async Task GetFutureUserBookings_ShouldReturnEmptyList_WhenNoFutureBookingsExist()
+    {
+        // Arrange
+        var userId = "1";
+        _mockBookingService.Setup(b => b.GetFutureUserBookings(userId))
+            .ReturnsAsync(new List<BookingDto.ViewBooking>());
+
+        // Act
+        var result = await _controller.GetFutureUserBookings(userId);
+
+        // Assert
+        var okResult = Assert.IsType<OkObjectResult>(result);
+        var bookings = Assert.IsType<List<BookingDto.ViewBooking>>(okResult.Value);
+        Assert.Empty(bookings);
+    }
+
+    [Fact]
+    public async Task GetFutureUserBookings_ShouldHandleUnexpectedException()
+    {
+        // Arrange
+        var userId = "1";
+        _mockBookingService.Setup(b => b.GetFutureUserBookings(userId)).ThrowsAsync(new Exception("Unexpected error"));
+
+        // Act
+        var result = await _controller.GetFutureUserBookings(userId);
+
+        // Assert
+        var objectResult = Assert.IsType<ObjectResult>(result);
+        Assert.Equal(500, objectResult.StatusCode);
+        Assert.NotNull(objectResult.Value);
+    }
+    
+    [Fact]
+public async Task GetPastUserBookings_ShouldReturnPastBookings_WhenUserExists()
+{
+    // Arrange
+    var userId = "1";
+    var pastBooking = new Booking(DateTime.UtcNow.AddDays(-1), userId)
+    {
+        Id = Guid.NewGuid().ToString(),
+        IsDeleted = false
+    };
+
+    _mockBookingService.Setup(b => b.GetPastUserBookings(userId)).ReturnsAsync(new List<BookingDto.ViewBooking>
+    {
+        new BookingDto.ViewBooking { bookingId = pastBooking.Id }
+    });
+
+    // Act
+    var result = await _controller.GetPastUserBookings(userId);
+
+    // Assert
+    var okResult = Assert.IsType<OkObjectResult>(result);
+    var bookings = Assert.IsType<List<BookingDto.ViewBooking>>(okResult.Value);
+    Assert.Single(bookings);
+    Assert.Equal(pastBooking.Id, bookings.First().bookingId);
+}
+
+[Fact]
+public async Task GetPastUserBookings_ShouldReturnNotFound_WhenUserDoesNotExist()
+{
+    // Arrange
+    var userId = "nonexistent_user";
+    _mockBookingService.Setup(b => b.GetPastUserBookings(userId)).ThrowsAsync(new UserNotFoundException("error"));
+
+    // Act
+    var result = await _controller.GetPastUserBookings(userId);
+
+    // Assert
+    var notFoundResult = Assert.IsType<NotFoundObjectResult>(result);
+    Assert.Equal(404, notFoundResult.StatusCode);
+    Assert.NotNull(notFoundResult.Value);
+}
+
+[Fact]
+public async Task GetPastUserBookings_ShouldReturnEmptyList_WhenNoPastBookingsExist()
+{
+    // Arrange
+    var userId = "1";
+    _mockBookingService.Setup(b => b.GetPastUserBookings(userId)).ReturnsAsync(new List<BookingDto.ViewBooking>());
+
+    // Act
+    var result = await _controller.GetPastUserBookings(userId);
+
+    // Assert
+    var okResult = Assert.IsType<OkObjectResult>(result);
+    var bookings = Assert.IsType<List<BookingDto.ViewBooking>>(okResult.Value);
+    Assert.Empty(bookings);
+}
+
+[Fact]
+public async Task GetPastUserBookings_ShouldHandleUnexpectedException()
+{
+    // Arrange
+    var userId = "1";
+    _mockBookingService.Setup(b => b.GetPastUserBookings(userId)).ThrowsAsync(new Exception("Unexpected error"));
+
+    // Act
+    var result = await _controller.GetPastUserBookings(userId);
+
+    // Assert
+    var objectResult = Assert.IsType<ObjectResult>(result);
+    Assert.Equal(500, objectResult.StatusCode);
+    Assert.NotNull(objectResult.Value);
+}
 }

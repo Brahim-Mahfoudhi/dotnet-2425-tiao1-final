@@ -22,7 +22,7 @@ public class UserController : ControllerBase
 {
     private readonly IUserService _userService;
     private readonly IAuth0UserService _auth0UserService;
-    private readonly IBookingService _bookingService;
+    private readonly IValidationService _validationService;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="UserController"/> class with the specified user service.
@@ -30,11 +30,11 @@ public class UserController : ControllerBase
     /// <param name="userService">The user service that handles user operations.</param>
     /// <param name="auth0UserService">The user service that handles Auth0 user operations</param>
     /// <param name="bookingService">The booking service that handles booking operations</param>
-    public UserController(IUserService userService, IAuth0UserService auth0UserService, IBookingService bookingService)
+    public UserController(IUserService userService, IAuth0UserService auth0UserService, IValidationService validationService)
     {
         _userService = userService;
         _auth0UserService = auth0UserService;
-        _bookingService = bookingService;
+        _validationService = validationService;
     }
 
     /// <summary>
@@ -43,13 +43,27 @@ public class UserController : ControllerBase
     /// <returns>List of <see cref="UserDto"/> objects or <c>null</c> if no users are found.</returns>
     [HttpGet]
     [Authorize(Roles = "Admin")]
-    public async Task<IEnumerable<UserDto.UserBase>?> GetAllUsers()
+    public async Task<IActionResult> GetAllUsers()
     {
+        try
+        {
+            var users = await _userService.GetAllAsync();
 
-        // var users2 = await _managementApiClient.Users.GetAllAsync(new GetUsersRequest(), new PaginationInfo());
-        var users = await _userService.GetAllAsync();
-        // return users2.Select(x => new UserDto.UserBase(x.UserId, x.FirstName, x.LastName, x.Email));
-        return users;
+            if (users == null || !users.Any())
+            {
+                return NotFound(new { message = "No users found." });
+            }
+
+            return Ok(users);
+        }
+        catch (UnauthorizedAccessException)
+        {
+            return Unauthorized();
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { message = "An unexpected error occurred.", detail = ex.Message });
+        }
     }
 
     /// <summary>
@@ -72,10 +86,24 @@ public class UserController : ControllerBase
     /// <returns>The detailed <see cref="UserDto.UserDetails"/> object or <c>null</c> if no user with the specified ID is found.</returns>
     [HttpGet("{userid}/details")]
     [Authorize]
-    public async Task<UserDto.UserDetails?> GetDetails(string userid)
+    public async Task<IActionResult> GetDetails(string userid)
     {
-        var user = await _userService.GetUserDetailsByIdAsync(userid);
-        return user;
+        try
+        {
+            var user = await _userService.GetUserDetailsByIdAsync(userid);
+
+            if (user == null)
+            {
+                return NotFound(new { message = $"User with ID {userid} was not found." });
+            }
+
+            return Ok(user);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500,
+                new { message = "An unexpected error occurred while fetching the user details.", detail = ex.Message });
+        }
     }
 
     /// <summary>
@@ -129,13 +157,18 @@ public class UserController : ControllerBase
     [Authorize]
     public async Task<IActionResult> Put(UserDto.UpdateUser userDetails)
     {
+        if (userDetails == null)
+        {
+            return BadRequest(new { message = "User details cannot be null." });
+        }
+
         try
         {
             // Update the user in Auth0
             var userUpdatedInAuth0 = await _auth0UserService.UpdateUserAuth0(userDetails);
             if (!userUpdatedInAuth0)
             {
-                return StatusCode(500, new { message = "Failed to update user in Auth0." });
+                return NotFound(new { message = "User not found in Auth0." });
             }
 
             // Assign new roles to the user in Auth0
@@ -149,7 +182,7 @@ public class UserController : ControllerBase
             var userUpdatedInDb = await _userService.UpdateUserAsync(userDetails);
             if (!userUpdatedInDb)
             {
-                return StatusCode(500, new { message = "Failed to update user in the local database." });
+                return NotFound(new { message = $"User with ID {userDetails.Id} was not found." });
             }
 
             return Ok(new { message = "User updated successfully." });
@@ -157,12 +190,17 @@ public class UserController : ControllerBase
         catch (ApiException ex)
         {
             // Handle specific Auth0 API exceptions
-            return StatusCode(503, new { message = "Auth0 service is unavailable. Please try again later.", detail = ex.Message });
+            return StatusCode(503,
+                new { message = "Auth0 service is unavailable. Please try again later.", detail = ex.Message });
         }
         catch (DatabaseOperationException ex)
         {
             // Handle specific exceptions related to the local database
-            return StatusCode(500, new { message = "An error occurred while updating the user in the local database.", detail = ex.Message });
+            return StatusCode(500,
+                new
+                {
+                    message = "An error occurred while updating the user in the local database.", detail = ex.Message
+                });
         }
         catch (ExternalServiceException ex)
         {
@@ -178,12 +216,12 @@ public class UserController : ControllerBase
         {
             // Handle unauthorized access exceptions
             return StatusCode(403, new { message = $"Access denied: {ex.Message}" });
-
         }
         catch (Exception ex)
         {
             // Handle any other unexpected errors
-            return StatusCode(500, new { message = "An unexpected error occurred while updating the user.", detail = ex.Message });
+            return StatusCode(500,
+                new { message = "An unexpected error occurred while updating the user.", detail = ex.Message });
         }
     }
 
@@ -194,11 +232,29 @@ public class UserController : ControllerBase
     /// <returns><c>true</c> if the deletion is successful; otherwise, <c>false</c>.</returns>
     [HttpDelete("{userid}")]
     [Authorize]
-    public async Task<bool> Delete(string userid)
+    public async Task<IActionResult> Delete(string userid)
     {
-        var deleted = await _userService.DeleteUserAsync(userid);
-        return deleted;
+        try
+        {
+            var activeBookings = await _validationService.CheckActiveBookings(userid);
+            if (activeBookings)
+            {
+                return BadRequest(new { message = "User has active bookings" });
+            }
+            
+            var deleted = await _userService.DeleteUserAsync(userid);
+            return Ok(new { message = $"User with ID {userid} has been deleted successfully." });
+        }
+        catch (UserNotFoundException)
+        {
+            return NotFound(new { message = $"User with ID {userid} was not found." });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { message = "An unexpected error occurred while deleting the user.", detail = ex.Message });
+        }
     }
+
 
     /// <summary>
     /// Retrieves all Auth0 users asynchronously.
@@ -217,12 +273,14 @@ public class UserController : ControllerBase
         catch (ApiException ex)
         {
             // Handle specific Auth0 API exceptions, like network or request issues
-            return StatusCode(503, new { message = "Auth0 service is unavailable. Please try again later.", detail = ex.Message });
+            return StatusCode(503,
+                new { message = "Auth0 service is unavailable. Please try again later.", detail = ex.Message });
         }
         catch (Exception ex)
         {
             // Handle any unexpected errors and return a 500 Internal Server Error
-            return StatusCode(500, new { message = "An unexpected error occurred while fetching users.", detail = ex.Message });
+            return StatusCode(500,
+                new { message = "An unexpected error occurred while fetching users.", detail = ex.Message });
         }
     }
 
@@ -250,92 +308,14 @@ public class UserController : ControllerBase
         catch (ApiException ex)
         {
             // Handle specific Auth0 API exceptions
-            return StatusCode(503, new { message = "Auth0 service is unavailable. Please try again later.", detail = ex.Message });
-        }
-        catch (Exception ex)
-        {
-            // Handle any other unexpected errors
-            return StatusCode(500, new { message = "An unexpected error occurred while fetching the user.", detail = ex.Message });
-        }
-    }
-
-
-
-    /// <summary>
-    /// Retrieves all bookings asynchronously for specific user.
-    /// </summary>
-    /// <param name="userid">The ID of the user to retrieve their bookings.</param>
-    /// <returns>List of <see cref="BookingDto"/> objects or <c>null</c> if no bookings are found.</returns>
-    [HttpGet("{userid}/bookings")]
-    public async Task<IActionResult> GetAllUserBookings(string userid)
-    {
-        try
-        {
-            var bookings = await _bookingService.GetAllUserBookings(userid);
-            return Ok(bookings);
-        }
-        catch (UserNotFoundException)
-        {
-            return NotFound(new { message = $"User with ID {userid} was not found." });
-
-        }
-        catch (Exception ex)
-        {
-            // Handle any other unexpected errors
-            return StatusCode(500, new { message = "An unexpected error occurred while fetching all bookings.", detail = ex.Message });
-        }
-    }
-
-    /// <summary>
-    /// Retrieves future bookings asynchronously for specific user.
-    /// </summary>
-    /// <param name="userid">The ID of the user to retrieve their future bookings.</param>
-    /// <returns><see cref="BookingDto"/> object or <c>null</c> if no booking is found.</returns>
-    [HttpGet("{userid}/bookings/future")]
-    public async Task<IActionResult> GetFutureUserBookings(string userid)
-    {
-        try
-        {
-            var bookings = await _bookingService.GetFutureUserBookings(userid);
-            return Ok(bookings);
-        }
-        catch (UserNotFoundException)
-        {
-            return NotFound(new { message = $"User with ID {userid} was not found." });
-
-        }
-        catch (Exception ex)
-        {
-            // Handle any other unexpected errors
-            return StatusCode(500, new { message = "An unexpected error occurred while fetching the future bookings.", detail = ex.Message });
-        }
-    }
-    
-    /// <summary>
-    /// Retrieves past bookings asynchronously for specific user.
-    /// </summary>
-    /// <returns><see cref="BookingDto"/> object or <c>null</c> if no booking is found.</returns>
-    [HttpGet("{userid}/bookings/past")]
-    public async Task<IActionResult> GetPastUserBookings(string userid)
-    {
-        try
-        {
-            var bookings = await _bookingService.GetPastUserBookings(userid);
-            return Ok(bookings);
-        }
-        catch (UserNotFoundException)
-        {
-            return NotFound(new { message = $"User with ID {userid} was not found." });
-
+            return StatusCode(503,
+                new { message = "Auth0 service is unavailable. Please try again later.", detail = ex.Message });
         }
         catch (Exception ex)
         {
             // Handle any other unexpected errors
             return StatusCode(500,
-                new
-                {
-                    message = "An unexpected error occurred while fetching the past bookings.", detail = ex.Message
-                });
+                new { message = "An unexpected error occurred while fetching the user.", detail = ex.Message });
         }
     }
 
@@ -364,7 +344,8 @@ public class UserController : ControllerBase
         catch (Exception ex)
         {
             // Handle any other unexpected errors
-            return StatusCode(500, new { message = "An unexpected error occurred while checking the email.", detail = ex.Message });
+            return StatusCode(500,
+                new { message = "An unexpected error occurred while checking the email.", detail = ex.Message });
         }
     }
 

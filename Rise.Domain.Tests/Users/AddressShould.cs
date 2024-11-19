@@ -35,6 +35,9 @@ public class AddressShould
     [Theory]
     [InlineData("0")]
     [InlineData("-1")]
+    [InlineData("a")]
+    [InlineData("10+")]
+
     public void ShouldThrowIncorrectHouseNumber(string houseNumber)
     {
         Action act = () =>
@@ -42,6 +45,7 @@ public class AddressShould
             Address address = new Address("Afrikalaan", houseNumber);
         };
 
-        act.ShouldThrow<ArgumentException>();
+        act.ShouldThrow<ArgumentOutOfRangeException>();
     }
+
 }

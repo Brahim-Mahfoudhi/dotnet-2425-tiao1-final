@@ -81,7 +81,7 @@ public class Booking : Entity
     public Boat Boat
     {
         get => _boat;
-        set => _boat = Guard.Against.Default(value, nameof(Boat));
+        set => _boat = value;
     }
 
     public string? BatteryId { get; set; }
@@ -92,7 +92,7 @@ public class Booking : Entity
     public Battery Battery
     {
         get => _battery;
-        set => _battery = Guard.Against.Default(value, nameof(Battery));
+        set => _battery = value;
     }
 
     #endregion
@@ -107,6 +107,7 @@ public class Booking : Entity
     public void AddBoat(Boat boat)
     {
         Guard.Against.Null(boat, nameof(boat));
+        boat.AddBooking();
         Boat = boat;
     }
 
@@ -117,6 +118,7 @@ public class Booking : Entity
     public void AddBattery(Battery battery)
     {
         Guard.Against.Null(battery, nameof(battery));
+        battery.AddBooking();
         Battery = battery;
     }
 
