@@ -3,6 +3,8 @@ using Rise.Persistence;
 using Rise.Persistence.Triggers;
 using Rise.Services.Users;
 using Rise.Shared.Users;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -13,6 +15,8 @@ using Rise.Server.Settings;
 using Rise.Services.Bookings;
 using Rise.Shared.Bookings;
 using Rise.Shared.Services;
+using Rise.Services.Notifications;
+using Rise.Shared.Notifications;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,9 +24,9 @@ builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
         // This ensures enums are serialized as strings
-        options.JsonSerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
     });
-;
+
 builder.Services.AddEndpointsApiExplorer();
 // builder.Services.AddSwaggerGen();
 builder.Services.AddSwaggerGen(options =>
@@ -93,6 +97,7 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IBookingService, BookingService>();
 builder.Services.AddScoped<IAuth0UserService, Auth0UserService>();
 builder.Services.AddScoped<IValidationService, ValidationService>();
+builder.Services.AddScoped<INotificationService, NotificationService>();
 
 var app = builder.Build();
 
