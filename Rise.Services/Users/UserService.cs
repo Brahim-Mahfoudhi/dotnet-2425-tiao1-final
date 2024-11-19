@@ -109,6 +109,12 @@ public class UserService : IUserService
     {
         try
         {
+            if (string.IsNullOrWhiteSpace(userDetails.Email) ||
+                !new System.ComponentModel.DataAnnotations.EmailAddressAttribute().IsValid(userDetails.Email))
+            {
+                return (false, "InvalidEmailFormat"); // Localization key
+            }
+            
             if (_dbContext.Users.Any(x => x.Email == userDetails.Email))
             {
                 return (false, "UserAlreadyExists"); // Localization key
@@ -219,8 +225,12 @@ public class UserService : IUserService
     /// <returns>A boolean indicating whether the deletion was successful.</returns>
     public async Task<bool> DeleteUserAsync(string userid)
     {
-        var entity = await _dbContext.Users.FindAsync(userid) ?? throw new Exception("User not found");
-
+        var entity = await _dbContext.Users.FindAsync(userid);
+        if (entity == null)
+        {
+            throw new UserNotFoundException($"User with ID {userid} not found.");
+        }
+        
         entity.SoftDelete();
         _dbContext.Users.Update(entity);
         await _dbContext.SaveChangesAsync();
