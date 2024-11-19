@@ -26,19 +26,19 @@
 
 //UserManagement labels
 <data name="Navigation" xml:space="preserve">
-  <value>Navigation</value>
+  <value>Quick Links</value>
 </data>
   <data name="Users" xml:space="preserve">
   <value>Users</value>
 </data>
 <data name="UsersManagement" xml:space="preserve">
-  <value>Users Management</value>
+  <value>User Management</value>
 </data>
 <data name="AuthUsers" xml:space="preserve">
   <value>Auth Users</value>
 </data>
 <data name="NewlyRegistered" xml:space="preserve">
-  <value>Newly Registered</value>
+  <value>Awaiting validation</value>
 </data> 
 
 //Users labels
