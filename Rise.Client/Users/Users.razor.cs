@@ -23,7 +23,7 @@ public partial class Users
 
         // Get the current user's authentication state
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-        userIdAuth0 = authState.User.Claims.FirstOrDefault(c => c.Type == "sub").Value;
+        userIdAuth0 = authState.User.Claims.FirstOrDefault(c => c.Type == "sub")?.Value;
 
         if (!string.IsNullOrEmpty(userIdAuth0))
         {
