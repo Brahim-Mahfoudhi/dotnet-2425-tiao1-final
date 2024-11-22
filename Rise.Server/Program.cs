@@ -17,6 +17,8 @@ using Rise.Shared.Bookings;
 using Rise.Shared.Services;
 using Rise.Services.Notifications;
 using Rise.Shared.Notifications;
+using Rise.Services.Events;
+using Rise.Services.Events.User;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -93,11 +95,23 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseTriggers(options => options.AddTrigger<EntityBeforeSaveTrigger>());
 });
 
+// Register event dispatcher
+builder.Services.AddSingleton<IEventDispatcher, EventDispatcher>();
+
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IBookingService, BookingService>();
 builder.Services.AddScoped<IAuth0UserService, Auth0UserService>();
 builder.Services.AddScoped<IValidationService, ValidationService>();
 builder.Services.AddScoped<INotificationService, NotificationService>();
+
+builder.Services.AddSingleton<IEventDispatcher, EventDispatcher>();
+
+// Register open generic handlers
+builder.Services.AddScoped(typeof(IEventHandler<>), typeof(GenericEventHandler<>));
+
+// Register specific event handlers
+builder.Services.AddScoped<IEventHandler<UserRegisteredEvent>, NotifyAdminsOnUserRegistrationHandler>();
+
 
 var app = builder.Build();
 

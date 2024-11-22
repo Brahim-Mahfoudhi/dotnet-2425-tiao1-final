@@ -45,7 +45,7 @@ public class UserService : IUserService
         }
     }
 
-    public async Task<bool> DeleteUserAsync(string userid)
+    public async Task<bool> SoftDeleteUserAsync(string userid)
     {
         var response = await _httpClient.DeleteAsync($"user/{userid}");
         return response.IsSuccessStatusCode;

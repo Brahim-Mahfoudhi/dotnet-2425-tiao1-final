@@ -196,6 +196,43 @@ public class Auth0UserService : IAuth0UserService
         }
     }
 
+    /// <summary>
+    /// Soft deletes a user in Auth0 by updating the user's app_metadata.
+    /// </summary>
+    /// <param name="userId">The ID of the user to be soft deleted.</param>
+    /// <returns>True if the user was successfully soft deleted, otherwise false.</returns>
+    public async Task<bool> SoftDeleteAuth0UserAsync(string userId)
+    {
+        try
+        {
+            // Retrieve the existing user to ensure it exists in Auth0
+            var user = await _managementApiClient.Users.GetAsync(userId) ?? throw new Exception($"User with ID {userId} not found in Auth0.");
+
+            // Update the app_metadata to mark the user as soft deleted
+            var userUpdateRequest = new UserUpdateRequest
+            {
+                AppMetadata = new Dictionary<string, object>
+            {
+                { "softDeleted", true }
+            }
+            };
+
+            var response = await _managementApiClient.Users.UpdateAsync(userId, userUpdateRequest);
+
+            // Return true if the update was successful
+            return response != null;
+        }
+        catch (ApiException ex)
+        {
+            throw new ExternalServiceException("Failed to soft delete user in Auth0.", ex);
+        }
+        catch (Exception ex)
+        {
+            throw new ExternalServiceException("Unexpected error occurred during soft delete.", ex);
+        }
+    }
+
+
     public async Task<bool> IsEmailTakenAsync(String email)
     {
         try
@@ -237,5 +274,4 @@ public class Auth0UserService : IAuth0UserService
             throw new ExternalServiceException("Unexpected error occurred while fetching roles", ex);
         }
     }
-
 }

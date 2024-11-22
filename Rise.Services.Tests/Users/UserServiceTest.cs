@@ -584,7 +584,6 @@ public class UserServiceTests
             Id = userId,
             FirstName = "UpdatedFirstName",
             LastName = "UpdatedLastName",
-            Email = $"updated.email{userId}@example.com",
             BirthDate = new DateTime(1995, 5, 10),
             PhoneNumber = $"1234567890-{userId}",
             Address = new AddressDto.UpdateAddress()
@@ -607,7 +606,6 @@ public class UserServiceTests
         Assert.NotNull(updatedUser);
         Assert.Equal(updatedUserDetails.FirstName, updatedUser.FirstName);
         Assert.Equal(updatedUserDetails.LastName, updatedUser.LastName);
-        Assert.Equal(updatedUserDetails.Email, updatedUser.Email);
         Assert.Equal(updatedUserDetails.BirthDate, updatedUser.BirthDate);
         Assert.Equal(updatedUserDetails.PhoneNumber, updatedUser.PhoneNumber);
         Assert.Equal(updatedUserDetails.Address.Street.ToString().ToLower(), updatedUser.Address.Street.ToLower());
@@ -827,7 +825,7 @@ public class UserServiceTests
         await _dbContext.SaveChangesAsync();
 
         // Act
-        var result = await _userService.DeleteUserAsync(userId);
+        var result = await _userService.SoftDeleteUserAsync(userId);
 
         // Assert
         Assert.True(result);
@@ -844,7 +842,7 @@ public class UserServiceTests
 
         // Act & Assert
         var exception =
-            await Assert.ThrowsAsync<UserNotFoundException>(() => _userService.DeleteUserAsync(nonExistentUserId));
+            await Assert.ThrowsAsync<UserNotFoundException>(() => _userService.SoftDeleteUserAsync(nonExistentUserId));
         Assert.Equal($"User with ID {nonExistentUserId} not found.", exception.Message);
     }
 
@@ -859,7 +857,7 @@ public class UserServiceTests
         await _dbContext.SaveChangesAsync();
 
         // Act
-        var result = await _userService.DeleteUserAsync(userId);
+        var result = await _userService.SoftDeleteUserAsync(userId);
 
         // Assert
         Assert.True(result);

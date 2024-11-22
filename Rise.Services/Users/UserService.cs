@@ -112,7 +112,7 @@ public class UserService : IUserService
             {
                 return (false, "InvalidEmailFormat"); // Localization key
             }
-            
+
             if (_dbContext.Users.Any(x => x.Email == userDetails.Email))
             {
                 return (false, "UserAlreadyExists"); // Localization key
@@ -165,7 +165,6 @@ public class UserService : IUserService
         // Update user details only if they are provided
         if (userDetails.FirstName != null) entity.FirstName = userDetails.FirstName;
         if (userDetails.LastName != null) entity.LastName = userDetails.LastName;
-        if (userDetails.Email != null) entity.Email = userDetails.Email;
         if (userDetails.BirthDate != null) entity.BirthDate = (DateTime)userDetails.BirthDate;
         if (userDetails.PhoneNumber != null) entity.PhoneNumber = userDetails.PhoneNumber;
 
@@ -221,14 +220,9 @@ public class UserService : IUserService
     /// </summary>
     /// <param name="userid">The ID of the user to delete.</param>
     /// <returns>A boolean indicating whether the deletion was successful.</returns>
-    public async Task<bool> DeleteUserAsync(string userid)
+    public async Task<bool> SoftDeleteUserAsync(string userid)
     {
-        var entity = await _dbContext.Users.FindAsync(userid);
-        if (entity == null)
-        {
-            throw new UserNotFoundException($"User with ID {userid} not found.");
-        }
-        
+        var entity = await _dbContext.Users.FindAsync(userid) ?? throw new UserNotFoundException($"User with ID {userid} not found.");
         entity.SoftDelete();
         _dbContext.Users.Update(entity);
         await _dbContext.SaveChangesAsync();

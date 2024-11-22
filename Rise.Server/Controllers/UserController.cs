@@ -9,6 +9,8 @@ using Rise.Shared.Bookings;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Auth0.Core.Exceptions;
 using Rise.Shared.Services;
+using Rise.Services.Events;
+using Rise.Services.Events.User;
 
 namespace Rise.Server.Controllers;
 
@@ -24,17 +26,20 @@ public class UserController : ControllerBase
     private readonly IAuth0UserService _auth0UserService;
     private readonly IValidationService _validationService;
 
+    private readonly IEventDispatcher _eventDispatcher;
+
     /// <summary>
     /// Initializes a new instance of the <see cref="UserController"/> class with the specified user service.
     /// </summary>
     /// <param name="userService">The user service that handles user operations.</param>
     /// <param name="auth0UserService">The user service that handles Auth0 user operations</param>
     /// <param name="bookingService">The booking service that handles booking operations</param>
-    public UserController(IUserService userService, IAuth0UserService auth0UserService, IValidationService validationService)
+    public UserController(IUserService userService, IAuth0UserService auth0UserService, IValidationService validationService, IEventDispatcher eventDispatcher)
     {
         _userService = userService;
         _auth0UserService = auth0UserService;
         _validationService = validationService;
+        _eventDispatcher = eventDispatcher;
     }
 
     /// <summary>
@@ -120,14 +125,20 @@ public class UserController : ControllerBase
             var userDb = await _auth0UserService.RegisterUserAuth0(userDetails);
             var (success, message) = await _userService.CreateUserAsync(userDb);
 
-            if (success)
-            {
-                return Ok(new { message }); // Localization key
-            }
-            else
+            if (!success)
             {
                 return BadRequest(new { message }); // Localization key
             }
+            if (userDb.Id == null || userDb.FirstName == null || userDb.LastName == null)
+            {
+                return BadRequest(new { message = "User registration data is incomplete." });
+            }
+
+            var userRegistrationEvent = new UserRegisteredEvent(userDb.Id, userDb.FirstName, userDb.LastName);
+            await _eventDispatcher.DispatchAsync(userRegistrationEvent);
+
+            return Ok(new { message }); // Localization key
+
         }
         catch (UserAlreadyExistsException)
         {
@@ -199,7 +210,8 @@ public class UserController : ControllerBase
             return StatusCode(500,
                 new
                 {
-                    message = "An error occurred while updating the user in the local database.", detail = ex.Message
+                    message = "An error occurred while updating the user in the local database.",
+                    detail = ex.Message
                 });
         }
         catch (ExternalServiceException ex)
@@ -230,24 +242,47 @@ public class UserController : ControllerBase
     /// </summary>
     /// <param name="userid">The ID of the user to delete.</param>
     /// <returns><c>true</c> if the deletion is successful; otherwise, <c>false</c>.</returns>
-    [HttpDelete("{userid}")]
+    [HttpDelete("{userid}/softdelete")]
     [Authorize]
     public async Task<IActionResult> Delete(string userid)
     {
         try
         {
+            if (string.IsNullOrWhiteSpace(userid))
+            {
+                return BadRequest(new { message = "User ID cannot be null or empty." });
+            }
+
             var activeBookings = await _validationService.CheckActiveBookings(userid);
             if (activeBookings)
             {
                 return BadRequest(new { message = "User has active bookings" });
             }
-            
-            var deleted = await _userService.DeleteUserAsync(userid);
+
+            var user = await _userService.GetUserByIdAsync(userid);
+            var deleted = await _userService.SoftDeleteUserAsync(userid);
+            var result = await _auth0UserService.SoftDeleteAuth0UserAsync(userid);
+            if (user is null || !deleted || !result)
+            {
+                return NotFound(new { message = $"User with ID {userid} was not found." });
+            }
+
+            var userDeletionEvent = new UserDeletedEvent(user.Id, user.FirstName, user.LastName);
+            await _eventDispatcher.DispatchAsync(userDeletionEvent);
+
             return Ok(new { message = $"User with ID {userid} has been deleted successfully." });
         }
-        catch (UserNotFoundException)
+        catch (UnauthorizedAccessException ex)
         {
-            return NotFound(new { message = $"User with ID {userid} was not found." });
+            return StatusCode(403, new { message = $"Access denied: {ex.Message}" });
+        }
+        catch (UserNotFoundException ex)
+        {
+            return NotFound(new { message = ex.Message });
+        }
+        catch (DatabaseOperationException ex)
+        {
+            return StatusCode(500, new { message = "An error occurred while deleting the user.", detail = ex.Message });
         }
         catch (Exception ex)
         {
@@ -392,4 +427,5 @@ public class UserController : ControllerBase
             return StatusCode(500, $"An unexpected error occurred: {ex.Message}");
         }
     }
+
 }

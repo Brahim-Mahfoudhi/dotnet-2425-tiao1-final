@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using Microsoft.VisualBasic.CompilerServices;
 using Rise.Domain.Users;
 using Rise.Shared.Enums;
+using Rise.Services.Events;
 
 namespace Rise.Server.Tests.Controllers
 {
@@ -22,6 +23,8 @@ namespace Rise.Server.Tests.Controllers
         private readonly Mock<IUserService> _userServiceMock;
         private readonly Mock<IAuth0UserService> _auth0UserServiceMock;
         private readonly Mock<IValidationService> _validationServiceMock;
+
+        private readonly Mock<IEventDispatcher> _eventDispatcherMock;
         private readonly UserController _userController;
 
         public UserControllerTests()
@@ -29,8 +32,9 @@ namespace Rise.Server.Tests.Controllers
             _userServiceMock = new Mock<IUserService>();
             _auth0UserServiceMock = new Mock<IAuth0UserService>();
             _validationServiceMock = new Mock<IValidationService>();
+            _eventDispatcherMock = new Mock<IEventDispatcher>();
             _userController = new UserController(_userServiceMock.Object, _auth0UserServiceMock.Object,
-                _validationServiceMock.Object);
+                _validationServiceMock.Object, _eventDispatcherMock.Object);
         }
 
         private UserDto.RegistrationUser CreateRegistrationUser(int id)
@@ -55,9 +59,13 @@ namespace Rise.Server.Tests.Controllers
         {
             return new UserDto.UserDetails()
             {
-                Id = userid, FirstName = $"Keoma{userid}", LastName = $"King{userid}", Email = $"kingkeoma{userid}@gmail.in",
+                Id = userid,
+                FirstName = $"Keoma{userid}",
+                LastName = $"King{userid}",
+                Email = $"kingkeoma{userid}@gmail.in",
                 Address = new AddressDto.GetAdress() { Street = StreetEnum.AFRIKALAAN, HouseNumber = $"1{userid}" },
-                Roles = [new RoleDto() { Name = RolesEnum.User }], BirthDate = new DateTime(1990, 1, IntegerType.FromString(userid))
+                Roles = [new RoleDto() { Name = RolesEnum.User }],
+                BirthDate = new DateTime(1990, 1, IntegerType.FromString(userid))
             };
         }
 
@@ -327,7 +335,18 @@ namespace Rise.Server.Tests.Controllers
         {
             // Arrange
             var userId = "1";
-            _userServiceMock.Setup(s => s.DeleteUserAsync(userId)).ReturnsAsync(true);
+
+            var user = new UserDto.UserBase(
+                userId,
+                "John",
+                "Doe",
+                "john.doe@example.com",
+                ImmutableList.Create(new RoleDto { Name = RolesEnum.User })
+            );
+
+            _userServiceMock.Setup(s => s.GetUserByIdAsync(userId)).ReturnsAsync(user);
+            _userServiceMock.Setup(s => s.SoftDeleteUserAsync(userId)).ReturnsAsync(true);
+            _auth0UserServiceMock.Setup(a => a.SoftDeleteAuth0UserAsync(userId)).ReturnsAsync(true);
 
             // Act
             var result = await _userController.Delete(userId);
@@ -345,7 +364,7 @@ namespace Rise.Server.Tests.Controllers
             // Arrange
             var userId = "1";
             _userServiceMock
-                .Setup(s => s.DeleteUserAsync(userId))
+                .Setup(s => s.SoftDeleteUserAsync(userId))
                 .ThrowsAsync(new UserNotFoundException($"User with ID {userId} not found."));
 
             // Act
@@ -418,7 +437,7 @@ namespace Rise.Server.Tests.Controllers
             {
                 users.Add(CreateUserBase(i));
             }
-            
+
             _userServiceMock.Setup(s => s.GetFilteredUsersAsync(filter)).ReturnsAsync(users);
 
             // Act
