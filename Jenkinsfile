@@ -13,7 +13,7 @@ pipeline {
         JENKINS_CREDENTIALS_ID = "jenkins-master-key"
         SSH_KEY_FILE = '/var/lib/jenkins/.ssh/id_rsa'
         REMOTE_HOST = 'jenkins@139.162.148.79' // NEEDS TO BE CHANGED
-        TRX_FILE_PATH = 'dotnet-2425-tiao1/Rise.Domain.Tests/TestResults/test-results.trx'
+        TRX_FILE_PATH = 'Rise.Domain.Tests/TestResults/test-results.trx'
         TEST_RESULT_PATH = 'Rise.Domain.Tests/TestResults'
         TRX_TO_XML_PATH = 'Rise.Domain.Tests/TestResults/test-results.xml'
         PUBLISH_DIR_PATH = '/var/lib/jenkins/artifacts/'
