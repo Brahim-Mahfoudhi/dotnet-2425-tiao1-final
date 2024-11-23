@@ -5,11 +5,11 @@ pipeline {
     }
 
     environment {
-        JENKINS_SERVER = 'http://139.162.132.174:8080' //NEEDS TO BE CHANGED
+        JENKINS_SERVER = 'http://139.162.132.174:8080'
         DOTNET_PROJECT_PATH = 'Rise.Server/Rise.Server.csproj'
         DOTNET_TEST_PATH = 'Rise.Domain.Tests/Rise.Domain.Tests.csproj'
         PUBLISH_OUTPUT = 'publish'
-        DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1301160382307766292/kROxjtgZ-XVOibckTMri2fy5-nNOEjzjPLbT9jEpr_R0UH9JG0ZXb2XzUsYGE0d3yk6I" // NEEDS TO BE CHANGED
+        DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1305826859665063936/xP1yD9MIf9vEwehqBE01c3AdIh-_62ZDrOzD0Zak5ti3Gm15gE8l3iWHBWMu_VzCmT_j" // NEEDS TO BE CHANGED
         JENKINS_CREDENTIALS_ID = "jenkins-master-key"
         SSH_KEY_FILE = '/var/lib/jenkins/.ssh/id_rsa'
         REMOTE_HOST = 'jenkins@139.162.148.79' // NEEDS TO BE CHANGED
