@@ -37,7 +37,7 @@ public class FakeUserService : IUserService
         throw new NotImplementedException();
     }
 
-    public Task<Boolean> DeleteUserAsync(string id)
+    public Task<Boolean> SoftDeleteUserAsync(string id)
     {
         throw new NotImplementedException();
     }
@@ -78,7 +78,7 @@ public class FakeUserService : IUserService
 
     public Task<UserDto.UserDetails?> GetUserDetailsByIdAsync(string id)
     {
-        var userDetails = new UserDto.UserDetails(id, $"First {id}", $"Last {id}", $"test{id}@test.com",new AddressDto.GetAdress { Street = StreetEnum.AFRIKALAAN, HouseNumber = "1" },
+        var userDetails = new UserDto.UserDetails(id, $"First {id}", $"Last {id}", $"test{id}@test.com","+32478457845",new AddressDto.GetAdress { Street = StreetEnum.AFRIKALAAN, HouseNumber = "1" },
             roles, DateTime.Now);
         return Task.FromResult(userDetails ?? null);
     }
