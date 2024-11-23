@@ -34,7 +34,7 @@ pipeline {
         stage('Checkout Code') {
             steps {
                 script {
-                    git credentialsId: 'jenkins-master-key', url: 'git@github.com:HOGENT-RISE/dotnet-2425-tiao1.git', branch:'main'
+                    git credentialsId: 'jenkins-master-key', url: 'git@github.com:HOGENT-RISE/dotnet-2425-tiao1.git', branch:'ACC'
                     echo 'Gather GitHub info!'
                     def gitInfo = sh(script: 'git show -s HEAD --pretty=format:"%an%n%ae%n%s%n%H%n%h" 2>/dev/null', returnStdout: true).trim().split("\n")
                     env.GIT_AUTHOR_NAME = gitInfo[0]
@@ -70,7 +70,7 @@ pipeline {
 
         stage('Running Unit Tests') {
             steps {
-                echo 'Running unit tests and collecting Clover coverage data...'
+                echo 'Running unit tests and collecting coverage data...'
                 sh """
                     dotnet test ${DOTNET_TEST_PATH} --collect:"XPlat Code Coverage" --logger 'trx;LogFileName=test-results.trx' \
                     /p:CollectCoverage=true /p:CoverletOutput='/var/lib/jenkins/agent/workspace/dotnet_pipeline/coverage/coverage.xml' \
@@ -104,7 +104,7 @@ pipeline {
                     keepAll: true,
                     reportDir: '/var/lib/jenkins/agent/workspace/dotnet_pipeline/coverage-report',
                     reportFiles: 'index.html',
-                    reportName: 'Clover Coverage Report'
+                    reportName: 'Coverage Report'
                 ])
             }
         }
