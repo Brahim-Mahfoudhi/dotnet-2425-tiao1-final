@@ -1,82 +1,11 @@
 @page "/mybookings"
-@using Microsoft.IdentityModel.Tokens
-@using Rise.Shared.Enums
+@using Rise.Shared.Bookings
+@using Rise.Client.Components.Table
 @attribute [Authorize(Roles = "User")]
 @inject Microsoft.Extensions.Localization.IStringLocalizer<MyBookingsView> Localizer
 
-<main class="main-content mt-0 background-overlay">
-    <div class="page-header align-items-center min-vh-95">
-        <div class="container my-auto">
-            <div class="row">
-                <div class="col-lg-12 col-md-12 col-12 mx-auto">
-                    <div class="card z-index-0 fadeIn3 fadeInBottom">
-                        <div class="card-body">
-                            <PageTitle>@Localizer["Title"]</PageTitle>
+<PageTitle>@Localizer["BookingsTitle"]</PageTitle>
 
-                            <h1>@Localizer["BookingsTitle"]</h1>
-
-                            <MudExpansionPanels>
-                                <MudExpansionPanel MaxHeight="150" Expanded="true">
-                                    <TitleContent>
-                                        <MudText class="PanelTitle">@Localizer["FutureBookingsTitle"]</MudText>
-                                    </TitleContent>
-                                    <ChildContent>
-                                        @if (_futureBookings == null || !_futureBookings.Any())
-                                        {
-                                            <p>@Localizer["NoFutureBookings"]</p>
-                                        }
-                                        else
-                                        {
-                                            <MudTable Class="futureBookings" Items="@_futureBookings" Hover="true" Breakpoint="Breakpoint.Sm" Loading="@_loadingFutureBookings" LoadingProgressColor="Color.Info">
-                                                <HeaderContent >
-                                                    <MudTh class="header-style">@Localizer["FutureBookingTblDate"]</MudTh>
-                                                    <MudTh class="header-style">@Localizer["FutureBookingTblTimeSlot"]</MudTh>
-                                                    <MudTh class="header-style">@Localizer["FutureBookingTblBoat"]</MudTh>
-                                                    <MudTh class="header-style">@Localizer["FutureBookingTblBattery"]</MudTh>
-                                                    <MudTh class="header-style">@Localizer["FutureBookingTblCancel"]</MudTh>
-                                                </HeaderContent>
-                                                <RowTemplate>
-                                                    <MudTd DataLabel="Date" class="datarow-style">@context.bookingDate.ToString("d")</MudTd>
-                                                    <MudTd DataLabel="TimeSlot" class="datarow-style">@(TimeSlotEnumExtensions.GetStartHour(context.timeSlot))@Localizer["TimeNotation"] - @(TimeSlotEnumExtensions.GetEndHour(context.timeSlot))@Localizer["TimeNotation"]</MudTd>
-                                                    <MudTd DataLabel="Boat" class="datarow-style">@(!string.IsNullOrEmpty(context.boat.name) ? context.boat.name : "Still needs to be defined")</MudTd>
-                                                    <MudTd DataLabel="Battery" class="datarow-style">@(!string.IsNullOrEmpty(context.battery.name) ? context.boat.name : "Still needs to be defined")</MudTd>
-                                                    <MudTd class="datarow-style">
-                                                        <MudButton class="deleteBookingButton" Variant="Variant.Outlined" Size="Size.Small" OnClick="() => DeleteBooking(context.bookingId)" Disabled="@(context.bookingDate.Date <= DateTime.Today.AddDays(2))">@Localizer["FutureBookingTblCancel"]</MudButton>
-                                                    </MudTd>
-                                                </RowTemplate>
-                                            </MudTable>
-                                        }
-                                    </ChildContent>
-                                </MudExpansionPanel>
-                                <MudExpansionPanel MaxHeight="1000">
-                                    <TitleContent>
-                                        <MudText class="PanelTitle">@Localizer["PreviousBookingsTblTitle"]</MudText>
-                                    </TitleContent>
-                                    <ChildContent>
-                                        @if (_pastBookings == null || !_pastBookings!.Any())
-                                        {
-                                            <p>@Localizer["NoPastBookings"]</p>
-                                        }
-                                        else
-                                        {
-                                            <MudTable Class="pastBookings" Items="@_pastBookings" Hover="true" Breakpoint="Breakpoint.Sm" Loading="@_loadingFutureBookings" LoadingProgressColor="Color.Info">
-                                                <HeaderContent>
-                                                    <MudTh class="header-style">@Localizer["PreviousBookingsTblDate"]</MudTh>
-                                                    <MudTh Class="header-style">@Localizer["PreviousBookingsTblTimeSlot"]</MudTh>
-                                                </HeaderContent>
-                                                <RowTemplate>
-                                                    <MudTd DataLabel="Date" class="datarow-style">@context.bookingDate.ToString("d")</MudTd>
-                                                    <MudTd DataLabel="TimeSlot" class="datarow-style">@(TimeSlotEnumExtensions.GetStartHour(context.timeSlot))@Localizer["TimeNotation"] - @(TimeSlotEnumExtensions.GetEndHour(context.timeSlot))@Localizer["TimeNotation"]</MudTd>
-                                                </RowTemplate>
-                                            </MudTable>
-                                        }
-                                    </ChildContent>
-                                </MudExpansionPanel>
-                            </MudExpansionPanels>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</main>
+<div>
+    <GenericTable Headers="Headers" Data="Data(_bookings ?? Array.Empty<BookingDto.ViewBooking>())"  NoDataDisplay="@Localizer["NoBookings"]" IsLoading="_isLoading"/>
+</div>

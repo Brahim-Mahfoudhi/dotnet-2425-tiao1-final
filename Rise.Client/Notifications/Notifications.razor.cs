@@ -44,15 +44,16 @@ public partial class Notifications
         {
             notifications = await NotificationService.GetAllUserNotifications(userIdAuth0, language);
             notificationCount = await NotificationService.GetUnreadUserNotificationsCount(userIdAuth0);
+            NotificationState.UpdateNotificationCount(notificationCount.Count);
         }
     }
 
-    private async void HandleNotificationClick(string NotificationId)
+    private async void HandleNotificationClick(string NotificationId, bool IsRead)
     {
         NotificationDto.UpdateNotification updateNotification = new NotificationDto.UpdateNotification
         {
             NotificationId = NotificationId,
-            IsRead = true
+            IsRead = !IsRead
         };
 
         var response = await NotificationService.UpdateNotificationAsync(updateNotification);

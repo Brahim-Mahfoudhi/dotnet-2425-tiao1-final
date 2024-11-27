@@ -20,10 +20,10 @@
     <data name="CancelBookingMessage" xml:space="preserve">
         <value>Are you sure you want to cancel your booking?</value>
     </data>
-    <data name="CancelBookingYes" xml:space="preserve">
+    <data name="ChoiceYes" xml:space="preserve">
         <value>Yes</value>
     </data>
-    <data name="CancelBookingNo" xml:space="preserve">
+    <data name="ChoiceNo" xml:space="preserve">
         <value>No</value>
     </data>
     <data name="FutureBookingTblBattery" xml:space="preserve">
@@ -67,5 +67,76 @@
     </data>
     <data name="FutureBookingsTitle" xml:space="preserve">
         <value>Next bookings</value>
+    </data>
+    <data name="EditBookingMessage" xml:space="preserve">
+        <value>Are you sure you want to edit this booking?</value>
+    </data>
+    <data name="EditBookingTitle" xml:space="preserve">
+        <value>Edit booking</value>
+    </data>
+    <data name="FutureBookingTblEdit" xml:space="preserve">
+        <value>Edit</value>
+    </data>
+    <data name="NoBatteryAssigned" xml:space="preserve">
+        <value>Not assigned</value>
+    </data>
+    <data name="NoBoatAssigned" xml:space="preserve">
+        <value>Not assigned</value>
+    </data>
+
+	<data name="Status" xml:space="preserve">
+        <value>Status</value>
+    </data>
+	<data name="Boat" xml:space="preserve">
+        <value>Boat</value>
+    </data>
+	<data name="Contact" xml:space="preserve">
+        <value>Contact</value>
+    </data>
+	<data name="Credits" xml:space="preserve">
+        <value>Credits</value>
+    </data>
+	
+	<data name="Morning" xml:space="preserve">
+        <value>10 am</value>
+    </data>
+    <data name="Afternoon" xml:space="preserve">
+        <value>2 pm</value>
+    </data>
+    <data name="Evening" xml:space="preserve">
+        <value>5 pm</value>
+    </data>
+	<data name="OPEN" xml:space="preserve">
+        <value>OPEN</value>
+    </data>
+	<data name="REFUNDED" xml:space="preserve">
+        <value>REFUNDED</value>
+    </data>
+	<data name="CLOSED" xml:space="preserve">
+        <value>CLOSED</value>
+    </data>
+	<data name="COMPLETED" xml:space="preserve">
+        <value>COMPLETED</value>
+    </data>
+    <data name="FutureBookingsTitle" xml:space="preserve">
+        <value>Next bookings</value>
+    </data>
+    <data name="EditBookingMessage" xml:space="preserve">
+        <value>Are you sure you want to edit this booking?</value>
+    </data>
+    <data name="EditBookingTitle" xml:space="preserve">
+        <value>Edit booking</value>
+    </data>
+    <data name="FutureBookingTblEdit" xml:space="preserve">
+        <value>Edit</value>
+    </data>
+    <data name="CANCELED" xml:space="preserve">
+        <value>CANCELED</value>
+    </data>
+    <data name="NoBatteryAssigned" xml:space="preserve">
+        <value>Not assigned</value>
+    </data>
+    <data name="NoBoatAssigned" xml:space="preserve">
+        <value>Not assigned</value>
     </data>
 </root>
