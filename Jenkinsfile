@@ -9,19 +9,14 @@ pipeline {
         DOTNET_PROJECT_PATH = 'Rise.Server/Rise.Server.csproj'
         DOTNET_TEST_PATH = 'Rise.Domain.Tests/Rise.Domain.Tests.csproj'
         PUBLISH_OUTPUT = 'publish'
-        DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1305826859665063936/xP1yD9MIf9vEwehqBE01c3AdIh-_62ZDrOzD0Zak5ti3Gm15gE8l3iWHBWMu_VzCmT_j" // NEEDS TO BE CHANGED
+        DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1305826859665063936/xP1yD9MIf9vEwehqBE01c3AdIh-_62ZDrOzD0Zak5ti3Gm15gE8l3iWHBWMu_VzCmT_j"
         JENKINS_CREDENTIALS_ID = "jenkins-master-key"
         SSH_KEY_FILE = '/var/lib/jenkins/.ssh/id_rsa'
-        REMOTE_HOST = 'jenkins@139.162.133.163' // NEEDS TO BE CHANGED
+        REMOTE_HOST = 'jenkins@139.162.133.163'
         TRX_FILE_PATH = 'Rise.Domain.Tests/TestResults/test-results.trx'
         TEST_RESULT_PATH = 'Rise.Domain.Tests/TestResults'
         TRX_TO_XML_PATH = 'Rise.Domain.Tests/TestResults/test-results.xml'
         PUBLISH_DIR_PATH = '/var/lib/jenkins/artifacts/'
-        M2MCLIENTID = credentials('M2MClientId') 
-        M2MCLIENTSECRET = credentials('M2MClientSecret')
-        BLAZORCLIENTID = credentials('BlazorClientId')
-        BLAZORCLIENTSECRET = credentials('BlazorClientSecret')
-        SQL_CONNECTION_STRING = credentials('SQLConnectionString')
     }
 
     stages {
@@ -118,11 +113,48 @@ pipeline {
 
         stage('Deploy to Remote Server') {
             steps {
-                sshagent([JENKINS_CREDENTIALS_ID]) {
-                    script {
-                        sh """
-                            scp -i ${SSH_KEY_FILE} -o StrictHostKeyChecking=no -r ${PUBLISH_OUTPUT}/* ${REMOTE_HOST}:${PUBLISH_DIR_PATH}
-                        """
+                withCredentials([
+                    string(credentialsId: 'Authority', variable: 'AUTHORITY'),
+                    string(credentialsId: 'Audience', variable: 'AUDIENCE'),
+                    string(credentialsId: 'M2MClientId', variable: 'M2MCLIENTID'),
+                    string(credentialsId: 'M2MClientSecret', variable: 'M2MCLIENTSECRET'),
+                    string(credentialsId: 'BlazorClientId', variable: 'BLAZORCLIENTID'),
+                    string(credentialsId: 'BlazorClientSecret', variable: 'BLAZORCLIENTSECRET'),
+                    string(credentialsId: 'SQLConnectionString', variable: 'SQL_CONNECTION_STRING')
+                ]) {
+                    sshagent([JENKINS_CREDENTIALS_ID]) {
+                        script {
+                            def remoteScript = "/tmp/deploy_script.sh"
+                            def publishDir = "${PUBLISH_DIR_PATH}"                            
+                            
+                            sh """
+                                echo '#!/bin/bash
+                                export AUTHORITY="${AUTHORITY}"
+                                export AUDIENCE="${AUDIENCE}"
+                                export M2MCLIENTID="${M2MCLIENTID}"
+                                export M2MCLIENTSECRET="${M2MCLIENTSECRET}"
+                                export BLAZORCLIENTID="${BLAZORCLIENTID}"
+                                export BLAZORCLIENTSECRET="${BLAZORCLIENTSECRET}"
+                                export SQL_CONNECTION_STRING="${SQL_CONNECTION_STRING}"
+                
+                                sed -i "s|\\\\"ConnectionStrings\\": {}|\\\\"ConnectionStrings\\": {\\\\"SqlServer\\": \\\\"Server=\${SQL_CONNECTION_STRING};TrustServerCertificate=True;\\\\"}|g" ${publishDir}/appsettings.json
+                                sed -i "s|\\\\"ConnectionStrings\\": {}|\\\\"ConnectionStrings\\": {\\\\"SqlServer\\": \\\\"Server=\${SQL_CONNECTION_STRING};TrustServerCertificate=True;\\\\"}|g" ${publishDir}/appsettings.Development.json
+                                sed -i "s|\\\\"Auth0\\": {}|\\\\"Auth0\\": {\\\\"Authority\\": \\\\"https://dev-6yunsksn11owe71c.us.auth0.com/\\\\", \\\\"Audience\\": \\\\"https://api.rise.buut.com/\\\\", \\\\"M2MClientId\\": \\\\"\${M2MCLIENTID}\\", \\\\"M2MClientSecret\\": \\\\"\${M2MCLIENTSECRET}\\", \\\\"BlazorClientId\\": \\\\"\${BLAZORCLIENTID}\\", \\\\"BlazorClientSecret\\": \\\\"\${BLAZORCLIENTSECRET}\\\\"}|g" ${publishDir}/appsettings.json
+                                sed -i "s|\\\\"Logging\\": {}|\\\\"Logging\\": {\\\\"LogLevel\\": {\\\\"Default\\": \\\\"Information\\\\", \\\\"Microsoft.AspNetCore\\": \\\\"Warning\\\\"}}|g" ${publishDir}/appsettings.json
+                                ' > ${remoteScript}
+                            """
+
+                            sh """
+                                scp -i ${SSH_KEY_FILE} -o StrictHostKeyChecking=no -r ${PUBLISH_OUTPUT}/* ${REMOTE_HOST}:${PUBLISH_DIR_PATH}
+                            """
+                            sh """
+                                scp -i ${SSH_KEY_FILE} -o StrictHostKeyChecking=no ${remoteScript} ${REMOTE_HOST}:${remoteScript}
+                            """
+                            
+                            sh """
+                                ssh -i ${SSH_KEY_FILE} -o StrictHostKeyChecking=no ${REMOTE_HOST} "bash ${remoteScript} && rm ${remoteScript}"
+                            """  
+                        }
                     }
                 }
             }
