@@ -11,8 +11,8 @@ pipeline {
         PUBLISH_OUTPUT = 'publish'
         DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1305826859665063936/xP1yD9MIf9vEwehqBE01c3AdIh-_62ZDrOzD0Zak5ti3Gm15gE8l3iWHBWMu_VzCmT_j"
         JENKINS_CREDENTIALS_ID = "jenkins-master-key"
-        SSH_KEY_FILE = '/var/lib/jenkins/.ssh/id_rsa'
-        REMOTE_HOST = 'jenkins@139.162.133.163'
+        SSH_KEY_FILE = '/var/lib/jenkins/.ssh/control_linode'
+        REMOTE_HOST = 'root@139.162.133.163'
         TRX_FILE_PATH = 'Rise.Domain.Tests/TestResults/test-results.trx'
         TEST_RESULT_PATH = 'Rise.Domain.Tests/TestResults'
         TRX_TO_XML_PATH = 'Rise.Domain.Tests/TestResults/test-results.xml'
@@ -52,8 +52,21 @@ pipeline {
 
         stage('Restore Dependencies') {
             steps {
+                echo "Restoring dependencies..."
                 sh "dotnet restore ${DOTNET_PROJECT_PATH}"
-                sh "dotnet restore ${DOTNET_TEST_PATH}"
+                script {
+                    def testPaths = [
+                        domain: 'Rise.Domain.Tests/Rise.Domain.Tests.csproj',
+                        client: 'Rise.Client.Tests/Rise.Client.Tests.csproj',
+                        server: 'Rise.Server.Tests/Rise.Server.Tests.csproj',
+                        service: 'Rise.Services.Tests/Rise.Services.Tests.csproj'
+                    ]
+                    
+                    testPaths.each { name, path ->
+                        echo "Restoring unit tests for ${name} located at ${path}..."
+                        sh "dotnet restore ${path}"
+                    }
+                }
             }
         }
 
@@ -63,17 +76,29 @@ pipeline {
             }
         }
 
-        stage('Running Unit Tests') {
+        stage('Run Unit Tests') {
             steps {
-                echo 'Running unit tests and collecting coverage data...'
-                sh """
-                    dotnet test ${DOTNET_TEST_PATH} --collect:"XPlat Code Coverage" --logger 'trx;LogFileName=test-results.trx' \
-                    /p:CollectCoverage=true /p:CoverletOutput='/var/lib/jenkins/agent/workspace/dotnet_pipeline/coverage/coverage.xml' \
-                    /p:CoverletOutputFormat=cobertura
-                """
+                script {
+                    def testPaths = [
+                        Domain: 'Rise.Domain.Tests/Rise.Domain.Tests.csproj',
+                        Client: 'Rise.Client.Tests/Rise.Client.Tests.csproj',
+                        Server: 'Rise.Server.Tests/Rise.Server.Tests.csproj',
+                        Service: 'Rise.Services.Tests/Rise.Services.Tests.csproj'
+                    ]
+        
+                    testPaths.each { name, path ->
+                        echo "Running unit tests for ${name} located at ${path}..."
+                        
+                        def testOutput = sh(script: """
+                            dotnet test ${path} --collect:"XPlat Code Coverage" --logger 'trx;LogFileName=${name}.trx' \
+                            /p:CollectCoverage=true /p:CoverletOutput='/var/lib/jenkins/agent/workspace/dotnet_pipeline/coverage/coverage.xml' \
+                            /p:CoverletOutputFormat=cobertura
+                        """, returnStdout: true)
+                    }
+                }
             }
         }
-        
+    /*  
         stage('Coverage Report') {
             steps {
                 script {
@@ -103,7 +128,7 @@ pipeline {
                 ])
             }
         }
-
+    */
     
         stage('Publish Application') {
             steps {
@@ -168,7 +193,7 @@ pipeline {
         success {
             echo 'Build and deployment completed successfully!'
             archiveArtifacts artifacts: '**/*.dll', fingerprint: true
-            archiveArtifacts artifacts: "${TRX_FILE_PATH}", fingerprint: true
+            // archiveArtifacts artifacts: "${TRX_FILE_PATH}", fingerprint: true
             script {
                 sendDiscordNotification("Build Success")
             }
@@ -181,9 +206,9 @@ pipeline {
         }
         always {
             echo 'Build process has completed.'
-            echo 'Generate Test report...'
-            sh "/home/jenkins/.dotnet/tools/trx2junit --output ${TEST_RESULT_PATH} ${TRX_FILE_PATH}"
-            junit "${TRX_TO_XML_PATH}"
+            // echo 'Generate Test report...'
+            // sh "/home/jenkins/.dotnet/tools/trx2junit --output ${TEST_RESULT_PATH} ${TRX_FILE_PATH}"
+            // junit "${TRX_TO_XML_PATH}"
         }
     }
 }
