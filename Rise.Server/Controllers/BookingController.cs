@@ -3,10 +3,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Rise.Domain.Bookings;
 using Rise.Server.Settings;
-using Rise.Services.Bookings;
 using Rise.Services.Events;
 using Rise.Services.Events.Booking;
 using Rise.Shared.Bookings;
+using Rise.Shared.Enums;
 using Rise.Shared.Enums;
 
 namespace Rise.Server.Controllers;
@@ -21,8 +21,10 @@ public class BookingController : ControllerBase
 {
     private readonly IBookingService _bookingService;
     private readonly IEventDispatcher _eventDispatcher;
+    private readonly IEventDispatcher _eventDispatcher;
     private readonly int _minReservationDays;
     private readonly int _maxReservationDays;
+    private readonly ILogger<BookingController> _logger;
 
 
 
@@ -32,12 +34,13 @@ public class BookingController : ControllerBase
     /// <param name="bookingService">The booking service that handles booking operations.</param>
     /// <param name="options">The booking settings options.</param>
     /// <param name="eventDispatcher">The event dispatcher that handles event dispatching.</param>
-    public BookingController(IBookingService bookingService, IOptions<BookingSettings> options, IEventDispatcher eventDispatcher)
+    public BookingController(IBookingService bookingService, IOptions<BookingSettings> options, IEventDispatcher eventDispatcher, ILogger<BookingController> logger)
     {
         _bookingService = bookingService;
         _minReservationDays = options.Value.MinReservationDays;
         _maxReservationDays = options.Value.MaxReservationDays;
         _eventDispatcher = eventDispatcher;
+        _logger = logger;
     }
 
     /// <summary>
@@ -50,11 +53,31 @@ public class BookingController : ControllerBase
         try
         {
             var bookings = await _bookingService.GetAllAsync();
+            _logger.LogInformation("Successfully retrieved all bookings.");
             return Ok(bookings);
         }
         catch (Exception ex)
         {
-            // _logger.LogError(ex, "An error occurred while retrieving all bookings.");
+            _logger.LogError(ex, "An error occurred while retrieving all bookings.");
+            return StatusCode(500, "An error occurred while processing your request.");
+        }
+    }
+    
+    /// <summary>
+    /// Retrieves the first free timeslot.
+    /// </summary>
+    /// <returns><see cref="BookingDto"/> viewBookingCalender object or <c>null</c> if no free slot is found.</returns>
+    [HttpGet("free/first-timeslot")]
+    [AllowAnonymous]
+    public async Task<ActionResult<BookingDto.ViewBookingCalender>> GetFirstFreeTimeSlot()
+    {
+        try
+        {
+            var timeSlot = await _bookingService.GetFirstFreeTimeSlot();
+            return Ok(timeSlot);
+        }
+        catch (Exception ex)
+        {
             return StatusCode(StatusCodes.Status500InternalServerError,
                 "An error occurred while processing your request.");
         }
@@ -70,6 +93,7 @@ public class BookingController : ControllerBase
     {
         if (string.IsNullOrWhiteSpace(id))
         {
+            _logger.LogWarning("Booking ID cannot be null or empty.");
             return BadRequest("Booking ID cannot be null or empty.");
         }
 
@@ -77,19 +101,19 @@ public class BookingController : ControllerBase
         {
             var booking = await _bookingService.GetBookingById(id);
 
-            if (booking == null)
+            if (booking is null)
             {
+                _logger.LogWarning("Booking with ID {BookingId} not found.", id);
                 return NotFound($"Booking with ID '{id}' was not found.");
             }
 
+            _logger.LogInformation("Successfully retrieved booking with ID {BookingId}.", id);
             return Ok(booking);
         }
         catch (Exception ex)
         {
-            // _logger.LogError(ex, "An error occurred while retrieving the booking with ID '{BookingId}'.", id);
-
-            return StatusCode(StatusCodes.Status500InternalServerError,
-                "An error occurred while processing your request.");
+            _logger.LogError(ex, "An error occurred while retrieving the booking with ID '{BookingId}'.", id);
+            return StatusCode(500, "An error occurred while processing your request.");
         }
     }
 
@@ -101,16 +125,18 @@ public class BookingController : ControllerBase
     [HttpPost]
     public async Task<ActionResult> Post([FromBody] BookingDto.NewBooking? booking)
     {
-        if (booking == null)
+        if (booking is null)
         {
+            _logger.LogWarning("Booking details cannot be null.");
             return BadRequest("Booking details cannot be null.");
         }
 
         try
         {
             var createdBooking = await _bookingService.CreateBookingAsync(booking);
-            if (createdBooking == null)
+            if (createdBooking is null)
             {
+                _logger.LogWarning("Booking creation failed for user {UserId}.", booking.userId);
                 return BadRequest("Booking creation failed.");
             }
 
@@ -119,14 +145,25 @@ public class BookingController : ControllerBase
                 createdBooking.bookingDate, createdBooking.timeSlot);
             await _eventDispatcher.DispatchAsync(bookingCreatedEvent);
 
+            _logger.LogInformation("Booking successfully created with ID {BookingId}.", createdBooking.bookingId);
             return CreatedAtAction(nameof(Get), new { id = createdBooking.bookingId }, createdBooking);
+        }
+        catch (UserNotFoundException ex)
+        {
+            _logger.LogWarning(ex, "User with ID {UserId} not found while creating booking.", booking.userId);
+            return NotFound(new { message = $"User with ID {booking.userId} was not found." });
+        }
+        catch (InvalidOperationException ex)
+        {
+            _logger.LogWarning(ex, "Validation error occurred while creating booking.");
+            return BadRequest(ex.Message);
         }
         catch (Exception ex)
         {
-            // _logger.LogError(ex, "An error occurred while creating a new booking.");
-            return StatusCode(StatusCodes.Status500InternalServerError,
-                $"An error occurred while processing your request: {ex.Message}");
+            _logger.LogError(ex, "An error occurred while creating a new booking.");
+            return StatusCode(500, "An error occurred while processing your request.");
         }
+
     }
 
     /// <summary>
@@ -138,16 +175,18 @@ public class BookingController : ControllerBase
     [HttpPut("{id}")]
     public async Task<ActionResult> Put(string id, [FromBody] BookingDto.UpdateBooking? booking)
     {
-        if (string.IsNullOrWhiteSpace(id) || booking == null || booking.bookingId != id)
+        if (string.IsNullOrWhiteSpace(id) || booking is null || booking.bookingId != id)
         {
+            _logger.LogWarning("Invalid booking ID or details provided for update.");
             return BadRequest("Invalid booking ID or details.");
         }
 
         try
         {
             var existingBooking = await _bookingService.GetBookingById(id);
-            if (existingBooking == null)
+            if (existingBooking is null)
             {
+                _logger.LogWarning("Booking with ID {BookingId} not found for update.", id);
                 return NotFound($"Booking with ID '{id}' was not found.");
             }
 
@@ -163,17 +202,20 @@ public class BookingController : ControllerBase
                     existingBooking.bookingDate, existingBooking.timeSlot, booking.bookingDate ?? existingBooking.bookingDate, updatedTimeSlot);
                 await _eventDispatcher.DispatchAsync(bookingUpdatedEvent);
 
+                _logger.LogInformation("Booking with ID {BookingId} updated successfully.", id);
                 return NoContent(); // Explicitly return NoContentResult
             }
 
+            _logger.LogWarning("Booking with ID {BookingId} update failed.", id);
             return NotFound($"Booking with ID '{id}' was not found.");
         }
         catch (Exception ex)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError,
-                "An error occurred while processing your request.");
+            _logger.LogError(ex, "An error occurred while updating booking with ID {BookingId}.", id);
+            return StatusCode(500, "An error occurred while processing your request.");
         }
     }
+
 
 
     /// <summary>
@@ -186,14 +228,16 @@ public class BookingController : ControllerBase
     {
         if (string.IsNullOrWhiteSpace(id))
         {
+            _logger.LogWarning("Invalid booking ID provided for deletion.");
             return BadRequest("Booking ID cannot be null or empty.");
         }
 
         try
         {
             var existingBooking = await _bookingService.GetBookingById(id);
-            if (existingBooking == null)
+            if (existingBooking is null)
             {
+                _logger.LogWarning("Booking with ID {BookingId} not found for deletion.", id);
                 return NotFound($"Booking with ID '{id}' was not found.");
             }
 
@@ -205,17 +249,20 @@ public class BookingController : ControllerBase
                     existingBooking.bookingDate, existingBooking.timeSlot);
                 await _eventDispatcher.DispatchAsync(bookingDeletedEvent);
 
+                _logger.LogInformation("Booking with ID {BookingId} deleted successfully.", id);
                 return NoContent(); // Explicitly return NoContentResult
             }
 
+            _logger.LogWarning("Booking with ID {BookingId} deletion failed.", id);
             return NotFound($"Booking with ID '{id}' was not found.");
         }
         catch (Exception ex)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError,
-                "An error occurred while processing your request.");
+            _logger.LogError(ex, "An error occurred while deleting booking with ID {BookingId}.", id);
+            return StatusCode(500, "An error occurred while processing your request.");
         }
     }
+
 
 
     /// <summary>
@@ -232,24 +279,25 @@ public class BookingController : ControllerBase
     {
         if (!startDate.HasValue || !endDate.HasValue)
         {
+            _logger.LogWarning("Start date and end date are required for fetching bookings by date range.");
             return BadRequest("Start date and end date are required.");
         }
 
         try
         {
             var bookings = await _bookingService.GetTakenTimeslotsInDateRange(startDate, endDate);
+            _logger.LogInformation("Successfully retrieved bookings between {StartDate} and {EndDate}.", startDate, endDate);
             return Ok(bookings);
         }
         catch (ArgumentException ex)
         {
-            // _logger.LogWarning(ex, "Invalid date range provided.");
+            _logger.LogWarning(ex, "Invalid date range provided.");
             return BadRequest(ex.Message);
         }
         catch (Exception ex)
         {
-            // _logger.LogError(ex, "An error occurred while retrieving bookings by date range.");
-            return StatusCode(StatusCodes.Status500InternalServerError,
-                "An error occurred while processing your request.");
+            _logger.LogError(ex, "An error occurred while retrieving bookings by date range.");
+            return StatusCode(500, "An error occurred while processing your request.");
         }
     }
 
@@ -265,7 +313,17 @@ public class BookingController : ControllerBase
         DateTime fixedStartDate = DateTime.UtcNow.Date.AddDays(_minReservationDays);
         DateTime fixedEndDate = DateTime.UtcNow.Date.AddDays(_maxReservationDays);
 
-        return await GetFreeTimeslotsByDateRange(fixedStartDate, fixedEndDate);
+        try
+        {
+            var freeTimeSlots = await GetFreeTimeslotsByDateRange(fixedStartDate, fixedEndDate);
+            _logger.LogInformation("Successfully retrieved free timeslots between {StartDate} and {EndDate}.", fixedStartDate, fixedEndDate);
+            return Ok(freeTimeSlots);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "An error occurred while retrieving free timeslots for fixed date range.");
+            return StatusCode(500, "An error occurred while processing your request.");
+        }
     }
 
     /// <summary>
@@ -282,22 +340,45 @@ public class BookingController : ControllerBase
     {
         if (!startDate.HasValue || !endDate.HasValue)
         {
+            _logger.LogWarning("Start date and end date are required for fetching free timeslots.");
             return BadRequest("Start date and end date are required.");
         }
 
         try
         {
             var freeTimeslots = await _bookingService.GetFreeTimeslotsInDateRange(startDate.Value, endDate.Value);
+            _logger.LogInformation("Successfully retrieved free timeslots between {StartDate} and {EndDate}.", startDate, endDate);
             return Ok(freeTimeslots);
         }
         catch (ArgumentException ex)
         {
-            // _logger.LogWarning(ex, "Invalid date range provided.");
+            _logger.LogWarning(ex, "Invalid date range provided for free timeslots.");
             return BadRequest(ex.Message);
         }
         catch (Exception ex)
         {
-            // _logger.LogError(ex, "An error occurred while retrieving free timeslots by date range.");
+            _logger.LogError(ex, "An error occurred while retrieving free timeslots by date range.");
+            return StatusCode(500, "An error occurred while processing your request.");
+        }
+    }
+    
+    /// <summary>
+    /// Retrieves the amount free timeslots for the week
+    /// </summary>
+    /// <returns>An <see cref="IActionResult"/> containing the amount of free timeslots or an error message if the input is invalid.</returns>
+    /// <response code="200">Returns the amount of free timeslots.</response>
+    /// <response code="400">If the date range is invalid or any other argument exception occurs.</response>
+    [HttpGet("free/count")]
+    [AllowAnonymous]
+    public async Task<IActionResult> GetAmountOfFreeTimeslotsForWeek()
+    { 
+        try
+        {
+            var freeTimeslots = await _bookingService.GetAmountOfFreeTimeslotsForWeek();
+            return Ok(freeTimeslots);
+        }
+        catch (Exception ex)
+        {
             return StatusCode(StatusCodes.Status500InternalServerError,
                 "An error occurred while processing your request.");
         }
@@ -311,18 +392,26 @@ public class BookingController : ControllerBase
     [HttpGet("user/{userid}")]
     public async Task<IActionResult> GetAllUserBookings(string userid)
     {
+        if (string.IsNullOrWhiteSpace(userid))
+        {
+            _logger.LogWarning("User ID cannot be null or empty for fetching all bookings.");
+            return BadRequest("User ID cannot be null or empty.");
+        }
+
         try
         {
             var bookings = await _bookingService.GetAllUserBookings(userid);
+            _logger.LogInformation("Successfully retrieved all bookings for user with ID {UserId}.", userid);
             return Ok(bookings);
         }
-        catch (UserNotFoundException)
+        catch (UserNotFoundException ex)
         {
+            _logger.LogWarning(ex, "User with ID {UserId} not found.", userid);
             return NotFound(new { message = $"User with ID {userid} was not found." });
         }
         catch (Exception ex)
         {
-            // Handle any other unexpected errors
+            _logger.LogError(ex, "An error occurred while fetching all bookings for user with ID {UserId}.", userid);
             return StatusCode(500,
                 new { message = "An unexpected error occurred while fetching all bookings.", detail = ex.Message });
         }
@@ -336,24 +425,31 @@ public class BookingController : ControllerBase
     [HttpGet("user/{userid}/future")]
     public async Task<IActionResult> GetFutureUserBookings(string userid)
     {
+        if (string.IsNullOrWhiteSpace(userid))
+        {
+            _logger.LogWarning("User ID cannot be null or empty for fetching future bookings.");
+            return BadRequest("User ID cannot be null or empty.");
+        }
         try
         {
             var bookings = await _bookingService.GetFutureUserBookings(userid);
+            _logger.LogInformation("Successfully retrieved future bookings for user with ID {UserId}.", userid);
             return Ok(bookings);
         }
-        catch (UserNotFoundException)
+        catch (UserNotFoundException ex)
         {
+            _logger.LogWarning(ex, "User with ID {UserId} not found.", userid);
             return NotFound(new { message = $"User with ID {userid} was not found." });
         }
         catch (Exception ex)
         {
+            _logger.LogError(ex, "An error occurred while fetching future bookings for user with ID {UserId}.", userid);
             // Handle any other unexpected errors
-            return StatusCode(500,
-                new
-                {
-                    message = "An unexpected error occurred while fetching the future bookings.",
-                    detail = ex.Message
-                });
+            return StatusCode(500, new
+            {
+                message = "An unexpected error occurred while fetching the future bookings.",
+                detail = ex.Message
+            });
         }
     }
 
@@ -364,21 +460,31 @@ public class BookingController : ControllerBase
     [HttpGet("user/{userid}/past")]
     public async Task<IActionResult> GetPastUserBookings(string userid)
     {
+        if (string.IsNullOrWhiteSpace(userid))
+        {
+            _logger.LogWarning("User ID cannot be null or empty for fetching past bookings.");
+            return BadRequest("User ID cannot be null or empty.");
+        }
         try
         {
             var bookings = await _bookingService.GetPastUserBookings(userid);
+            _logger.LogInformation("Successfully retrieved past bookings for user with ID {UserId}.", userid);
             return Ok(bookings);
         }
-        catch (UserNotFoundException)
+        catch (UserNotFoundException ex)
         {
+            _logger.LogWarning(ex, "User with ID {UserId} not found.", userid);
             return NotFound(new { message = $"User with ID {userid} was not found." });
         }
         catch (Exception ex)
         {
+            _logger.LogError(ex, "An error occurred while fetching past bookings for user with ID {UserId}.", userid);
             // Handle any other unexpected errors
             return StatusCode(500,
                 new
                 {
+                    message = "An unexpected error occurred while fetching the past bookings.",
+                    detail = ex.Message
                     message = "An unexpected error occurred while fetching the past bookings.",
                     detail = ex.Message
                 });

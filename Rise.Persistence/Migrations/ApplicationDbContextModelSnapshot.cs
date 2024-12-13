@@ -28,6 +28,10 @@ namespace Rise.Persistence.Migrations
                         .HasMaxLength(4000)
                         .HasColumnType("nvarchar(4000)");
 
+                    b.Property<string>("BatteryBuutAgentId")
+                        .HasMaxLength(4000)
+                        .HasColumnType("nvarchar(4000)");
+
                     b.Property<int>("CountBookings")
                         .HasColumnType("int");
 
@@ -35,6 +39,10 @@ namespace Rise.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("GETUTCDATE()");
+
+                    b.Property<string>("CurrentUserId")
+                        .HasMaxLength(4000)
+                        .HasColumnType("nvarchar(4000)");
 
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
@@ -56,6 +64,10 @@ namespace Rise.Persistence.Migrations
                         .HasDefaultValueSql("GETUTCDATE()");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BatteryBuutAgentId");
+
+                    b.HasIndex("CurrentUserId");
 
                     b.HasIndex("Id")
                         .IsUnique();
@@ -373,6 +385,21 @@ namespace Rise.Persistence.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("UserRole");
+                });
+
+            modelBuilder.Entity("Rise.Domain.Bookings.Battery", b =>
+                {
+                    b.HasOne("Rise.Domain.Users.User", "BatteryBuutAgent")
+                        .WithMany()
+                        .HasForeignKey("BatteryBuutAgentId");
+
+                    b.HasOne("Rise.Domain.Users.User", "CurrentUser")
+                        .WithMany()
+                        .HasForeignKey("CurrentUserId");
+
+                    b.Navigation("BatteryBuutAgent");
+
+                    b.Navigation("CurrentUser");
                 });
 
             modelBuilder.Entity("Rise.Domain.Bookings.Booking", b =>

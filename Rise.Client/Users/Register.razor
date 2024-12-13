@@ -247,7 +247,7 @@
     private string searchQuery = string.Empty;
     private List<string> filteredStreets = new();
 
-    private UserDto.TempUser tempUser = new();
+    private UserDto.TempRegisterUser tempUser = new();
     private bool? _userCreated = null;
     private bool _isSubmitted = false;
     private bool _isLoading = false;
@@ -264,22 +264,27 @@
     {
         _editContext = new EditContext(tempUser);
     }
-
     protected override async Task OnAfterRenderAsync(bool firstRender)
+{
+    if (firstRender)
     {
-        if (firstRender)
+        try
         {
-            // Register autofill event for each input field
             await Js.InvokeVoidAsync("addAutofillEvent", "FirstName", DotNetObjectReference.Create(this));
             await Js.InvokeVoidAsync("addAutofillEvent", "LastName", DotNetObjectReference.Create(this));
             await Js.InvokeVoidAsync("addAutofillEvent", "Email", DotNetObjectReference.Create(this));
             await Js.InvokeVoidAsync("addAutofillEvent", "PhoneNumber", DotNetObjectReference.Create(this));
             await Js.InvokeVoidAsync("addAutofillEvent", "BirthDate", DotNetObjectReference.Create(this));
-            // Add more fields as necessary
 
             await Js.InvokeVoidAsync("promptAutofill");
         }
+        catch (JSException ex)
+        {
+            Console.WriteLine($"JSInterop error: {ex.Message}"); // Optional: Log the error for debugging
+        }
     }
+}
+
 
     [JSInvokable]
     public void UpdateValue(string inputId, string value)

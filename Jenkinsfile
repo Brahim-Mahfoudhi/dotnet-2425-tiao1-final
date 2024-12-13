@@ -11,8 +11,8 @@ pipeline {
         PUBLISH_OUTPUT = 'publish'
         DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1305826859665063936/xP1yD9MIf9vEwehqBE01c3AdIh-_62ZDrOzD0Zak5ti3Gm15gE8l3iWHBWMu_VzCmT_j"
         JENKINS_CREDENTIALS_ID = "jenkins-master-key"
-        SSH_KEY_FILE = '/var/lib/jenkins/.ssh/control_linode'
-        REMOTE_HOST = 'jenkins@139.162.133.163'
+        SSH_KEY_FILE = '/var/lib/jenkins/.ssh/id_rsa'
+        REMOTE_HOST = 'jenkins@139.162.133.163' // NEEDS TO BE CHANGED
         TRX_FILE_PATH = 'Rise.Domain.Tests/TestResults/test-results.trx'
         TEST_RESULT_PATH = 'Rise.Domain.Tests/TestResults'
         TRX_TO_XML_PATH = 'Rise.Domain.Tests/TestResults/test-results.xml'

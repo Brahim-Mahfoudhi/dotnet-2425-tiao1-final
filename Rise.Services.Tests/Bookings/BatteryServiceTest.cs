@@ -5,6 +5,8 @@ using Rise.Persistence;
 using Moq;
 using Rise.Shared.Services;
 using Rise.Shared.Bookings;
+using Rise.Services.Batteries;
+using Microsoft.Extensions.Logging;
 
 namespace Rise.Services.Tests.Bookings;
 
@@ -12,7 +14,9 @@ public class BatteryServiceTest
 {
     private readonly ApplicationDbContext _dbContext;
     private readonly BatteryService _batteryService;
+
     private readonly Mock<IValidationService> _validationServiceMock;
+    private readonly Mock<ILogger<BatteryService>> _loggerMock;
 
     public BatteryServiceTest()
     {
@@ -22,7 +26,8 @@ public class BatteryServiceTest
 
         _dbContext = new ApplicationDbContext(options);
         _validationServiceMock = new Mock<IValidationService>();
-        _batteryService = new BatteryService(_dbContext, _validationServiceMock.Object);
+        _loggerMock = new Mock<ILogger<BatteryService>>();
+        _batteryService = new BatteryService(_dbContext, _validationServiceMock.Object, _loggerMock.Object);
     }
 
     #region GetAllAsync
@@ -42,20 +47,20 @@ public class BatteryServiceTest
 
     [Fact]
     public async Task GetAllAsync_NoExistingBatteries_ShouldReturnNull()
-    {      
-        var result = await _batteryService.GetAllAsync();        
+    {
+        var result = await _batteryService.GetAllAsync();
         Assert.Null(result);
     }
 
     #endregion
 
-     #region CreateBatteryAsync
+    #region CreateBatteryAsync
 
     [Fact]
     public async Task CreateAsync_WithValidName_ShouldCreateBattery()
     {
         //Arrange
-        var newBattery = new BatteryDto.NewBattery{name = "NewBattery"};
+        var newBattery = new BatteryDto.NewBattery { name = "NewBattery" };
         _validationServiceMock.Setup(service => service.BatteryExists(newBattery.name)).ReturnsAsync(false);
 
         //Act
@@ -70,15 +75,15 @@ public class BatteryServiceTest
     public async Task CreateAsync_BatteryAlreadyExists_ShouldThrowException()
     {
         //Arrange
-        var newBattery = new BatteryDto.NewBattery{name = "NewBattery"};
+        var newBattery = new BatteryDto.NewBattery { name = "NewBattery" };
         _validationServiceMock.Setup(service => service.BatteryExists(newBattery.name)).ReturnsAsync(true);
 
         //Act & Assert
-        await Assert.ThrowsAsync<InvalidOperationException>(() => _batteryService.CreateAsync(newBattery));       
+        await Assert.ThrowsAsync<InvalidOperationException>(() => _batteryService.CreateAsync(newBattery));
 
     }
 
     #endregion
-    
+
 
 }

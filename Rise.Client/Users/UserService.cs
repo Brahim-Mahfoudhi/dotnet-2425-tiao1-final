@@ -19,6 +19,8 @@ public class UserService : IUserService
         {
             PropertyNameCaseInsensitive = true
         };
+                // Add the immutable converters for System.Collections.Immutable types
+        this._jsonSerializerOptions.Converters.Add(new ImmutableListJsonConverter<RoleDto>());
         this._jsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
     }
 
@@ -72,14 +74,33 @@ public class UserService : IUserService
 
     public async Task<bool> UpdateUserAsync(UserDto.UpdateUser userDetails)
     {
-        // Convert the object to a JSON string
-        String jsonString = JsonSerializer.Serialize(userDetails, _jsonSerializerOptions);
+        // // Convert the object to a JSON string
+        // String jsonString = JsonSerializer.Serialize(userDetails, _jsonSerializerOptions);
 
-        // Print the JSON string
-        Console.WriteLine(jsonString);
+        // // Print the JSON string
+        // Console.WriteLine(jsonString);
+        try
+        {
+            Console.WriteLine(userDetails);
+            var response = await _httpClient.PutAsJsonAsync("user", userDetails);
+            if (response.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            else
+            {
+                var errorContent = await response.Content.ReadFromJsonAsync<Dictionary<string, string>>();
+                var message = errorContent != null && errorContent.TryGetValue("message", out var errorMessage)
+                    ? errorMessage
+                    : "Failed to create user due to an unknown error.";
+                return false;
+            }
+        }
+        catch (Exception ex)
+        {
+            return false;
+        }
 
-        var response = await _httpClient.PutAsJsonAsync<UserDto.UpdateUser>($"user", userDetails);
-        return response.IsSuccessStatusCode;
     }
 
     // public async Task<IEnumerable<UserDto.Auth0User>> GetAuth0Users()

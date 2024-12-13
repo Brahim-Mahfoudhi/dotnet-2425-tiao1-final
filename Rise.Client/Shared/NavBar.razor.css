@@ -9,19 +9,24 @@
     background-color: lightgrey;
 }
 
-a > i, .auth {
-    color: #a3a3a3; !important;
-    font-size: 1.5rem; !important;
-}
-
-.settings {
-    font-size: 1.75rem;
-}
-
-
 
 @media (max-width: 992px) {
     .navbar.navbar-transparent .navbar-collapse.show {
         background:rgba(0, 0, 0, 0.7);  !important;
     }
+    .dropdown-menu {
+        position: static; /* Makes the dropdown appear inline on mobile */
+        width: 100%; /* Allows it to take the full screen width */
+        padding: 1rem; /* Improves touch usability */
+    }
 }
+
+@media (max-width: 768px) {
+    .navbar-nav {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+}
+
+

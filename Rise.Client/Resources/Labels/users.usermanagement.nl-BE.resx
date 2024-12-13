@@ -51,9 +51,14 @@
 <data name="User" xml:space="preserve">
 <value>Gebruiker</value>
 </data>
+<data name="User" xml:space="preserve">
+<value>Gebruiker</value>
+</data>
 <data name="Id" xml:space="preserve">
 <value>ID</value>
 </data>
+<data name="NoUsers" xml:space="preserve">
+<value>Geen gebruikers gevonden</value>
 <data name="NoUsers" xml:space="preserve">
 <value>Geen gebruikers gevonden</value>
 </data>
@@ -65,9 +70,6 @@
 <data name="Admin" xml:space="preserve">
 <value>Administrator</value>
 </data>
-<data name="User" xml:space="preserve">
-<value>Gebruiker</value>
-</data>
 <data name="BUUTAgent" xml:space="preserve">
 <value>Meter/Peter</value>
 </data>
@@ -75,4 +77,5 @@
 <value>Wachtend op goedkeuring</value>
 </data>
 
+</root>
 </root>

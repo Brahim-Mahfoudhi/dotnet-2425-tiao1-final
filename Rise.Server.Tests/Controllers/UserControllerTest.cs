@@ -18,6 +18,7 @@ using Rise.Services.Events;
 using Rise.Services.Events.User;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 
 namespace Rise.Server.Tests.Controllers;
 
@@ -28,7 +29,9 @@ public class UserControllerTests
     private readonly Mock<IValidationService> _validationServiceMock;
 
     private readonly Mock<IEventDispatcher> _eventDispatcherMock;
+
     private readonly UserController _userController;
+    private readonly Mock<ILogger<UserController>> _loggerMock;
 
     public UserControllerTests()
     {
@@ -36,10 +39,15 @@ public class UserControllerTests
         _auth0UserServiceMock = new Mock<IAuth0UserService>();
         _validationServiceMock = new Mock<IValidationService>();
         _eventDispatcherMock = new Mock<IEventDispatcher>();
+        _loggerMock = new Mock<ILogger<UserController>>();
         _userController = new UserController(_userServiceMock.Object, _auth0UserServiceMock.Object,
-            _validationServiceMock.Object, _eventDispatcherMock.Object);
+            _validationServiceMock.Object, _eventDispatcherMock.Object, _loggerMock.Object);
     }
 
+    private UserDto.RegistrationUser CreateRegistrationUser(int id)
+    {
+        return CreateRegistrationUser(id.ToString());
+    }
     private UserDto.RegistrationUser CreateRegistrationUser(int id)
     {
         return CreateRegistrationUser(id.ToString());
@@ -52,7 +60,18 @@ public class UserControllerTests
             new AddressDto.GetAdress() { Street = StreetEnum.AFRIKALAAN, HouseNumber = $"1{userid}" },
             new DateTime(1990, 1, 1));
     }
+    private UserDto.RegistrationUser CreateRegistrationUser(string userid = "1")
+    {
+        return new UserDto.RegistrationUser($"John{userid}", $"Doe{userid}", $"john{userid}.doe@example.com", "+3245784578",
+            $"verystrongpassword{userid}", userid,
+            new AddressDto.GetAdress() { Street = StreetEnum.AFRIKALAAN, HouseNumber = $"1{userid}" },
+            new DateTime(1990, 1, 1));
+    }
 
+    private UserDto.UserDetails CreateUserDetails(int userid)
+    {
+        return CreateUserDetails(userid.ToString());
+    }
     private UserDto.UserDetails CreateUserDetails(int userid)
     {
         return CreateUserDetails(userid.ToString());
@@ -71,7 +90,24 @@ public class UserControllerTests
             BirthDate = new DateTime(1990, 1, IntegerType.FromString(userid))
         };
     }
+    private UserDto.UserDetails CreateUserDetails(string userid = "1")
+    {
+        return new UserDto.UserDetails()
+        {
+            Id = userid,
+            FirstName = $"Keoma{userid}",
+            LastName = $"King{userid}",
+            Email = $"kingkeoma{userid}@gmail.in",
+            Address = new AddressDto.GetAdress() { Street = StreetEnum.AFRIKALAAN, HouseNumber = $"1{userid}" },
+            Roles = [new RoleDto() { Name = RolesEnum.User }],
+            BirthDate = new DateTime(1990, 1, IntegerType.FromString(userid))
+        };
+    }
 
+    private UserDto.UserBase CreateUserBase(int id)
+    {
+        return CreateUserBase(id.ToString());
+    }
     private UserDto.UserBase CreateUserBase(int id)
     {
         return CreateUserBase(id.ToString());
@@ -82,12 +118,31 @@ public class UserControllerTests
         return new UserDto.UserBase(id, $"Keoma{id}", $"King{id}", $"kingkeoma{id}@gmail.in",
             [new RoleDto() { Name = RolesEnum.User }]);
     }
+    private UserDto.UserBase CreateUserBase(string id = "1")
+    {
+        return new UserDto.UserBase(id, $"Keoma{id}", $"King{id}", $"kingkeoma{id}@gmail.in",
+            [new RoleDto() { Name = RolesEnum.User }]);
+    }
 
     private UserDto.UpdateUser CreateUpdateUser(int id)
     {
         return CreateUpdateUser(id.ToString());
     }
+    private UserDto.UpdateUser CreateUpdateUser(int id)
+    {
+        return CreateUpdateUser(id.ToString());
+    }
 
+    private UserDto.UpdateUser CreateUpdateUser(string id = "1")
+    {
+        return new UserDto.UpdateUser
+        {
+            Id = id,
+            FirstName = $"John{id}",
+            LastName = $"Doe{id}",
+            Email = $"john{id}.doe@example.com"
+        };
+    }
     private UserDto.UpdateUser CreateUpdateUser(string id = "1")
     {
         return new UserDto.UpdateUser
@@ -108,12 +163,29 @@ public class UserControllerTests
         {
             users.Add(CreateUserBase(i));
         }
+    [Fact]
+    public async Task GetAllUsers_ShouldReturnOkResult_WhenUsersExist()
+    {
+        // Arrange
+        var users = new List<UserDto.UserBase>();
+        for (int i = 0; i < 10; i++)
+        {
+            users.Add(CreateUserBase(i));
+        }
 
+        _userServiceMock.Setup(s => s.GetAllAsync()).ReturnsAsync(users);
         _userServiceMock.Setup(s => s.GetAllAsync()).ReturnsAsync(users);
 
         // Act
         var result = await _userController.GetAllUsers();
+        // Act
+        var result = await _userController.GetAllUsers();
 
+        // Assert
+        var okResult = Assert.IsType<OkObjectResult>(result);
+        Assert.Equal(200, okResult.StatusCode);
+        Assert.Equal(users, okResult.Value);
+    }
         // Assert
         var okResult = Assert.IsType<OkObjectResult>(result);
         Assert.Equal(200, okResult.StatusCode);
@@ -125,10 +197,20 @@ public class UserControllerTests
     {
         // Arrange
         _userServiceMock.Setup(s => s.GetAllAsync()).ReturnsAsync((IEnumerable<UserDto.UserBase>)null);
+    [Fact]
+    public async Task GetAllUsers_ShouldReturnNotFound_WhenNoUsersExist()
+    {
+        // Arrange
+        _userServiceMock.Setup(s => s.GetAllAsync()).ReturnsAsync((IEnumerable<UserDto.UserBase>)null);
 
         // Act
         var result = await _userController.GetAllUsers();
+        // Act
+        var result = await _userController.GetAllUsers();
 
+        // Assert
+        Assert.IsType<NotFoundObjectResult>(result);
+    }
         // Assert
         Assert.IsType<NotFoundObjectResult>(result);
     }
@@ -143,9 +225,33 @@ public class UserControllerTests
 
         // Mock authenticated user context
         _userController.ControllerContext = CreateMockControllerContext(userId, RolesEnum.User);
+    [Fact]
+    public async Task Get_ShouldReturnUser_WhenUserExists()
+    {
+        // Arrange
+        var userId = "1";
+        var user = CreateUserBase(userId);
+        _userServiceMock.Setup(s => s.GetUserByIdAsync(userId)).ReturnsAsync(user);
+
+        // Mock authenticated user context
+        _userController.ControllerContext = CreateMockControllerContext(userId, RolesEnum.User);
 
         // Act
         var result = await _userController.Get(userId);
+        // Act
+        var result = await _userController.Get(userId);
+
+        // Assert
+        var okResult = Assert.IsType<OkObjectResult>(result); // Verify the response is an OkObjectResult
+        Assert.Equal(200, okResult.StatusCode); // Verify the status code is 200 (OK)
+
+        var returnedUser = Assert.IsType<UserDto.UserBase>(okResult.Value); // Extract and verify the value
+        Assert.Equal(user.Id, returnedUser.Id);
+        Assert.Equal(user.FirstName, returnedUser.FirstName);
+        Assert.Equal(user.LastName, returnedUser.LastName);
+        Assert.Equal(user.Email, returnedUser.Email);
+        Assert.Equal(user.Roles, returnedUser.Roles);
+    }
 
         // Assert
         var okResult = Assert.IsType<OkObjectResult>(result); // Verify the response is an OkObjectResult
@@ -169,10 +275,31 @@ public class UserControllerTests
 
         // Mock authenticated user context
         _userController.ControllerContext = CreateMockControllerContext(userId, RolesEnum.User);
+    [Fact]
+    public async Task Get_ShouldReturnNotFound_WhenUserDoesNotExist()
+    {
+        // Arrange
+        var userId = "1";
+        _userServiceMock.Setup(s => s.GetUserByIdAsync(userId)).ReturnsAsync((UserDto.UserBase)null);
+
+        // Mock authenticated user context
+        _userController.ControllerContext = CreateMockControllerContext(userId, RolesEnum.User);
 
         // Act
         var result = await _userController.Get(userId);
+        // Act
+        var result = await _userController.Get(userId);
 
+        // Assert
+        var notFoundResult = Assert.IsType<NotFoundObjectResult>(result); // Verify the response is a NotFoundObjectResult
+        Assert.Equal(404, notFoundResult.StatusCode); // Verify the status code is 404 (Not Found)
+
+        // Verify the content of the NotFound response
+        var responseObject = notFoundResult.Value;
+        Assert.NotNull(responseObject);
+        var message = responseObject.GetType().GetProperty("message")?.GetValue(responseObject, null)?.ToString();
+        Assert.Equal($"User with ID {userId} was not found.", message);
+    }
         // Assert
         var notFoundResult = Assert.IsType<NotFoundObjectResult>(result); // Verify the response is a NotFoundObjectResult
         Assert.Equal(404, notFoundResult.StatusCode); // Verify the status code is 404 (Not Found)
@@ -190,7 +317,15 @@ public class UserControllerTests
         // Arrange
         var userId = "1";
         _userServiceMock.Setup(s => s.GetUserByIdAsync(userId)).ThrowsAsync(new Exception("Unexpected error"));
+    [Fact]
+    public async Task Get_ShouldHandleException_WhenUnexpectedErrorOccurs()
+    {
+        // Arrange
+        var userId = "1";
+        _userServiceMock.Setup(s => s.GetUserByIdAsync(userId)).ThrowsAsync(new Exception("Unexpected error"));
 
+        // Act
+        var result = await _userController.Get(userId);
         // Act
         var result = await _userController.Get(userId);
 
@@ -204,11 +339,17 @@ public class UserControllerTests
 
         var message = responseObject.GetType().GetProperty("message")?.GetValue(responseObject, null)?.ToString();
 
-        Assert.Equal("An unexpected error occurred while fetching the user details.", message);
+        Assert.Equal("An unexpected error occurred while fetching the user.", message);
 
     }
 
 
+    [Fact]
+    public async Task GetDetails_ShouldReturnUserDetails_WhenUserExists()
+    {
+        // Arrange
+        var userId = "1";
+        var userDetails = CreateUserDetails(userId);
     [Fact]
     public async Task GetDetails_ShouldReturnUserDetails_WhenUserExists()
     {
@@ -220,14 +361,29 @@ public class UserControllerTests
 
         // Mock authenticated user context
         _userController.ControllerContext = CreateMockControllerContext(userId, RolesEnum.User);
+        _userServiceMock.Setup(s => s.GetUserDetailsByIdAsync(userId)).ReturnsAsync(userDetails);
 
+        // Mock authenticated user context
+        _userController.ControllerContext = CreateMockControllerContext(userId, RolesEnum.User);
+
+        // Act
+        var result = await _userController.GetDetails(userId);
         // Act
         var result = await _userController.GetDetails(userId);
 
         // Assert
         var okResult = Assert.IsType<OkObjectResult>(result); // Verify the response is an OK (200) status
         Assert.Equal(200, okResult.StatusCode);
+        // Assert
+        var okResult = Assert.IsType<OkObjectResult>(result); // Verify the response is an OK (200) status
+        Assert.Equal(200, okResult.StatusCode);
 
+        var returnedUser = Assert.IsType<UserDto.UserDetails>(okResult.Value); // Extract the returned user details
+        Assert.Equal(userDetails.Id, returnedUser.Id);
+        Assert.Equal(userDetails.FirstName, returnedUser.FirstName);
+        Assert.Equal(userDetails.LastName, returnedUser.LastName);
+        Assert.Equal(userDetails.Email, returnedUser.Email);
+    }
         var returnedUser = Assert.IsType<UserDto.UserDetails>(okResult.Value); // Extract the returned user details
         Assert.Equal(userDetails.Id, returnedUser.Id);
         Assert.Equal(userDetails.FirstName, returnedUser.FirstName);
@@ -244,9 +400,33 @@ public class UserControllerTests
 
         // Mock authenticated user context
         _userController.ControllerContext = CreateMockControllerContext(userId, RolesEnum.User);
+    [Fact]
+    public async Task GetDetails_ShouldReturnNotFound_WhenUserDetailsNotExist()
+    {
+        // Arrange
+        var userId = "1";
+        _userServiceMock.Setup(s => s.GetUserDetailsByIdAsync(userId)).ReturnsAsync((UserDto.UserDetails)null);
+
+        // Mock authenticated user context
+        _userController.ControllerContext = CreateMockControllerContext(userId, RolesEnum.User);
 
         // Act
         var result = await _userController.GetDetails(userId);
+        // Act
+        var result = await _userController.GetDetails(userId);
+
+        // Assert
+        var notFoundObjectResult = Assert.IsType<NotFoundObjectResult>(result); // Validate the response is an ObjectResult
+        Assert.Equal(404, notFoundObjectResult.StatusCode); // Ensure the status code is 404
+
+        // Check the response content
+        var responseObject = notFoundObjectResult.Value;
+        Assert.NotNull(responseObject);
+
+        // Validate the message property in the response
+        var message = responseObject.GetType().GetProperty("message")?.GetValue(responseObject, null)?.ToString();
+        Assert.Equal($"User with ID {userId} was not found.", message);
+    }
 
         // Assert
         var notFoundObjectResult = Assert.IsType<NotFoundObjectResult>(result); // Validate the response is an ObjectResult
@@ -269,10 +449,23 @@ public class UserControllerTests
         var userDetails = CreateRegistrationUser();
         _auth0UserServiceMock.Setup(a => a.RegisterUserAuth0(userDetails)).ReturnsAsync(userDetails);
         _userServiceMock.Setup(s => s.CreateUserAsync(userDetails)).ReturnsAsync((true, "UserCreatedSuccess"));
+    [Fact]
+    public async Task Post_ShouldReturnOk_WhenUserCreatedSuccessfully()
+    {
+        // Arrange
+        var userDetails = CreateRegistrationUser();
+        _auth0UserServiceMock.Setup(a => a.RegisterUserAuth0(userDetails)).ReturnsAsync(userDetails);
+        _userServiceMock.Setup(s => s.CreateUserAsync(userDetails)).ReturnsAsync((true, "UserCreatedSuccess"));
 
         // Act
         var result = await _userController.Post(userDetails);
+        // Act
+        var result = await _userController.Post(userDetails);
 
+        // Assert
+        var okResult = Assert.IsType<OkObjectResult>(result);
+        Assert.Equal(200, okResult.StatusCode);
+    }
         // Assert
         var okResult = Assert.IsType<OkObjectResult>(result);
         Assert.Equal(200, okResult.StatusCode);
@@ -285,10 +478,23 @@ public class UserControllerTests
         var userDetails = CreateRegistrationUser();
         _auth0UserServiceMock.Setup(a => a.RegisterUserAuth0(userDetails))
             .ThrowsAsync(new UserAlreadyExistsException("User already exists"));
+    [Fact]
+    public async Task Post_ShouldReturnConflict_WhenUserAlreadyExists()
+    {
+        // Arrange
+        var userDetails = CreateRegistrationUser();
+        _auth0UserServiceMock.Setup(a => a.RegisterUserAuth0(userDetails))
+            .ThrowsAsync(new UserAlreadyExistsException("User already exists"));
 
         // Act
         var result = await _userController.Post(userDetails);
+        // Act
+        var result = await _userController.Post(userDetails);
 
+        // Assert
+        var conflictResult = Assert.IsType<ConflictObjectResult>(result);
+        Assert.Equal(409, conflictResult.StatusCode);
+    }
         // Assert
         var conflictResult = Assert.IsType<ConflictObjectResult>(result);
         Assert.Equal(409, conflictResult.StatusCode);
@@ -299,10 +505,21 @@ public class UserControllerTests
     {
         // Arrange
         UserDto.RegistrationUser userDetails = null;
+    [Fact]
+    public async Task Post_ShouldReturnBadRequest_WhenUserDetailsAreInvalid()
+    {
+        // Arrange
+        UserDto.RegistrationUser userDetails = null;
 
         // Act
         var result = await _userController.Post(userDetails);
+        // Act
+        var result = await _userController.Post(userDetails);
 
+        // Assert
+        var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
+        Assert.Equal(400, badRequestResult.StatusCode);
+    }
         // Assert
         var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
         Assert.Equal(400, badRequestResult.StatusCode);
@@ -315,10 +532,23 @@ public class UserControllerTests
         var userDetails = CreateRegistrationUser();
         _auth0UserServiceMock.Setup(a => a.RegisterUserAuth0(userDetails))
             .ThrowsAsync(new Exception("Unexpected error"));
+    [Fact]
+    public async Task Post_ShouldReturnInternalServerError_WhenUnexpectedExceptionOccurs()
+    {
+        // Arrange
+        var userDetails = CreateRegistrationUser();
+        _auth0UserServiceMock.Setup(a => a.RegisterUserAuth0(userDetails))
+            .ThrowsAsync(new Exception("Unexpected error"));
 
         // Act
         var result = await _userController.Post(userDetails);
+        // Act
+        var result = await _userController.Post(userDetails);
 
+        // Assert
+        var internalServerErrorResult = Assert.IsType<ObjectResult>(result);
+        Assert.Equal(500, internalServerErrorResult.StatusCode);
+    }
         // Assert
         var internalServerErrorResult = Assert.IsType<ObjectResult>(result);
         Assert.Equal(500, internalServerErrorResult.StatusCode);
@@ -345,9 +575,38 @@ public class UserControllerTests
 
         // Mock authenticated user context
         _userController.ControllerContext = CreateMockControllerContext(userDetails.Id, RolesEnum.User);
+    [Fact]
+    public async Task Put_ShouldReturnOk_WhenUserUpdatedSuccessfully()
+    {
+        // Arrange
+        var userDetails = CreateUpdateUser();
+        var existingUser = new UserDto.UserBase(
+            userDetails.Id,
+            "ExistingFirstName",
+            "ExistingLastName",
+            "existing.email@example.com",
+            [new RoleDto { Name = RolesEnum.User }]);
+
+        // Mock the existing user in the database
+        _userServiceMock.Setup(s => s.GetUserByIdAsync(userDetails.Id)).ReturnsAsync(existingUser);
+
+        // Mock successful updates
+        _userServiceMock.Setup(s => s.UpdateUserAsync(It.IsAny<UserDto.UpdateUser>())).ReturnsAsync(true);
+        _auth0UserServiceMock.Setup(a => a.UpdateUserAuth0(It.IsAny<UserDto.UpdateUser>())).ReturnsAsync(true);
+
+        // Mock authenticated user context
+        _userController.ControllerContext = CreateMockControllerContext(userDetails.Id, RolesEnum.User);
 
         // Act
         var result = await _userController.Put(userDetails);
+        // Act
+        var result = await _userController.Put(userDetails);
+
+        // Assert
+        var okResult = Assert.IsType<OkObjectResult>(result); // Verify response type
+        Assert.Equal(200, okResult.StatusCode); // Verify the status code
+    }
+
 
         // Assert
         var okResult = Assert.IsType<OkObjectResult>(result); // Verify response type
@@ -361,10 +620,21 @@ public class UserControllerTests
     {
         // Arrange
         UserDto.UpdateUser userDetails = null;
+    [Fact]
+    public async Task Put_ShouldReturnBadRequest_WhenUserDetailsAreInvalid()
+    {
+        // Arrange
+        UserDto.UpdateUser userDetails = null;
 
         // Act
         var result = await _userController.Put(userDetails);
+        // Act
+        var result = await _userController.Put(userDetails);
 
+        // Assert
+        var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
+        Assert.Equal(400, badRequestResult.StatusCode);
+    }
         // Assert
         var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
         Assert.Equal(400, badRequestResult.StatusCode);
@@ -382,10 +652,35 @@ public class UserControllerTests
 
         // Mock authenticated user context
         _userController.ControllerContext = CreateMockControllerContext(userDetails.Id, RolesEnum.User);
+    [Fact]
+    public async Task Put_ShouldReturnNotFound_WhenUserDoesNotExist()
+    {
+        // Arrange
+        var userDetails = CreateUpdateUser();
+
+        // Simulate user not found by returning null
+        _userServiceMock.Setup(s => s.GetUserByIdAsync(userDetails.Id)).ReturnsAsync((UserDto.UserBase)null);
+
+        // Mock authenticated user context
+        _userController.ControllerContext = CreateMockControllerContext(userDetails.Id, RolesEnum.User);
 
         // Act
         var result = await _userController.Put(userDetails);
+        // Act
+        var result = await _userController.Put(userDetails);
 
+        // Assert
+        var notFoundResult = Assert.IsType<NotFoundObjectResult>(result); // Expect NotFoundObjectResult
+        Assert.Equal(404, notFoundResult.StatusCode); // Verify status code is 404
+
+        // Verify the message in the response
+        var responseObject = notFoundResult.Value;
+        Assert.NotNull(responseObject); // Ensure response content is not null
+
+        // Use reflection to access the message property dynamically
+        var message = responseObject.GetType().GetProperty("message")?.GetValue(responseObject, null)?.ToString();
+        Assert.Equal("User not found.", message);
+    }
         // Assert
         var notFoundResult = Assert.IsType<NotFoundObjectResult>(result); // Expect NotFoundObjectResult
         Assert.Equal(404, notFoundResult.StatusCode); // Verify status code is 404
@@ -405,6 +700,11 @@ public class UserControllerTests
     {
         // Arrange
         var userId = "1";
+    [Fact]
+    public async Task Delete_ShouldReturnOk_WhenUserDeletedSuccessfully()
+    {
+        // Arrange
+        var userId = "1";
 
         var user = new UserDto.UserBase(
             userId,
@@ -414,13 +714,26 @@ public class UserControllerTests
             [new RoleDto { Name = RolesEnum.User }]
         );
 
+        // Mock authenticated user context
+        _userController.ControllerContext = CreateMockControllerContext(user.Id, RolesEnum.User);
+
+        _userServiceMock.Setup(s => s.GetUserByIdAsync(userId)).ReturnsAsync(user);
+        _userServiceMock.Setup(s => s.SoftDeleteUserAsync(userId)).ReturnsAsync(true);
+        _auth0UserServiceMock.Setup(a => a.SoftDeleteAuth0UserAsync(userId)).ReturnsAsync(true);
         _userServiceMock.Setup(s => s.GetUserByIdAsync(userId)).ReturnsAsync(user);
         _userServiceMock.Setup(s => s.SoftDeleteUserAsync(userId)).ReturnsAsync(true);
         _auth0UserServiceMock.Setup(a => a.SoftDeleteAuth0UserAsync(userId)).ReturnsAsync(true);
 
         // Act
         var result = await _userController.Delete(userId);
+        // Act
+        var result = await _userController.Delete(userId);
 
+        // Assert
+        var okResult = Assert.IsType<OkObjectResult>(result);
+        Assert.Equal(200, okResult.StatusCode);
+        Assert.NotNull(okResult.Value);
+    }
         // Assert
         var okResult = Assert.IsType<OkObjectResult>(result);
         Assert.Equal(200, okResult.StatusCode);
@@ -436,10 +749,26 @@ public class UserControllerTests
         _userServiceMock
             .Setup(s => s.SoftDeleteUserAsync(userId))
             .ThrowsAsync(new UserNotFoundException($"User with ID {userId} not found."));
+    [Fact]
+    public async Task Delete_ShouldReturnNotFound_WhenUserDoesNotExist()
+    {
+        // Arrange
+        var userId = "1";
+        _userServiceMock
+            .Setup(s => s.SoftDeleteUserAsync(userId))
+            .ThrowsAsync(new UserNotFoundException($"User with ID {userId} not found."));
+
+        // Mock authenticated user context
+        _userController.ControllerContext = CreateMockControllerContext(userId, RolesEnum.User);
 
         // Act
         var result = await _userController.Delete(userId);
 
+        // Assert
+        var notFoundResult = Assert.IsType<NotFoundObjectResult>(result);
+        Assert.Equal(404, notFoundResult.StatusCode);
+        Assert.NotNull(notFoundResult.Value);
+    }
         // Assert
         var notFoundResult = Assert.IsType<NotFoundObjectResult>(result);
         Assert.Equal(404, notFoundResult.StatusCode);
@@ -453,9 +782,20 @@ public class UserControllerTests
         var userId = "1";
         _validationServiceMock.Setup(b => b.CheckActiveBookings(userId)).ReturnsAsync(true);
 
+        // Mock authenticated user context
+        _userController.ControllerContext = CreateMockControllerContext(userId, RolesEnum.User);
+
+        // Act
+        var result = await _userController.Delete(userId);
         // Act
         var result = await _userController.Delete(userId);
 
+        // Assert
+        var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
+        Assert.NotNull(badRequestResult);
+        Assert.Equal(400, badRequestResult.StatusCode);
+        Assert.NotNull(badRequestResult.Value);
+    }
         // Assert
         var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
         Assert.NotNull(badRequestResult);
@@ -470,10 +810,23 @@ public class UserControllerTests
         // Arrange
         string email = "taken@example.com";
         _auth0UserServiceMock.Setup(a => a.IsEmailTakenAsync(email)).ReturnsAsync(true);
+    [Fact]
+    public async Task IsEmailTaken_ShouldReturnTrue_WhenEmailIsTaken()
+    {
+        // Arrange
+        string email = "taken@example.com";
+        _auth0UserServiceMock.Setup(a => a.IsEmailTakenAsync(email)).ReturnsAsync(true);
 
         // Act
         var result = await _userController.IsEmailTaken(email);
+        // Act
+        var result = await _userController.IsEmailTaken(email);
 
+        // Assert
+        var okResult = Assert.IsType<OkObjectResult>(result);
+        Assert.Equal(200, okResult.StatusCode);
+        Assert.True((bool)okResult.Value);
+    }
         // Assert
         var okResult = Assert.IsType<OkObjectResult>(result);
         Assert.Equal(200, okResult.StatusCode);
@@ -486,10 +839,23 @@ public class UserControllerTests
         // Arrange
         string email = "not_taken@example.com";
         _auth0UserServiceMock.Setup(a => a.IsEmailTakenAsync(email)).ReturnsAsync(false);
+    [Fact]
+    public async Task IsEmailTaken_ShouldReturnFalse_WhenEmailIsNotTaken()
+    {
+        // Arrange
+        string email = "not_taken@example.com";
+        _auth0UserServiceMock.Setup(a => a.IsEmailTakenAsync(email)).ReturnsAsync(false);
 
         // Act
         var result = await _userController.IsEmailTaken(email);
+        // Act
+        var result = await _userController.IsEmailTaken(email);
 
+        // Assert
+        var okResult = Assert.IsType<OkObjectResult>(result);
+        Assert.Equal(200, okResult.StatusCode);
+        Assert.False((bool)okResult.Value);
+    }
         // Assert
         var okResult = Assert.IsType<OkObjectResult>(result);
         Assert.Equal(200, okResult.StatusCode);
@@ -502,17 +868,35 @@ public class UserControllerTests
         // Arrange
         var filter = new UserFilter();
         var users = new List<UserDto.UserBase>();
+    [Fact]
+    public async Task GetFilteredUsers_ShouldReturnOk_WhenUsersAreFound()
+    {
+        // Arrange
+        var filter = new UserFilter();
+        var users = new List<UserDto.UserBase>();
 
+        for (int i = 0; i < 10; i++)
+        {
+            users.Add(CreateUserBase(i));
+        }
         for (int i = 0; i < 10; i++)
         {
             users.Add(CreateUserBase(i));
         }
 
         _userServiceMock.Setup(s => s.GetFilteredUsersAsync(filter)).ReturnsAsync(users);
+        _userServiceMock.Setup(s => s.GetFilteredUsersAsync(filter)).ReturnsAsync(users);
 
         // Act
         var result = await _userController.GetFilteredUsers(filter);
+        // Act
+        var result = await _userController.GetFilteredUsers(filter);
 
+        // Assert
+        var okResult = Assert.IsType<OkObjectResult>(result);
+        Assert.Equal(200, okResult.StatusCode);
+        Assert.Equal(users, okResult.Value);
+    }
         // Assert
         var okResult = Assert.IsType<OkObjectResult>(result);
         Assert.Equal(200, okResult.StatusCode);
@@ -526,10 +910,24 @@ public class UserControllerTests
         var filter = new UserFilter();
         _userServiceMock.Setup(s => s.GetFilteredUsersAsync(filter))
             .ReturnsAsync(new List<UserDto.UserBase>());
+    [Fact]
+    public async Task GetFilteredUsers_ShouldReturnNotFound_WhenNoUsersAreFound()
+    {
+        // Arrange
+        var filter = new UserFilter();
+        _userServiceMock.Setup(s => s.GetFilteredUsersAsync(filter))
+            .ReturnsAsync(new List<UserDto.UserBase>());
 
         // Act
         var result = await _userController.GetFilteredUsers(filter);
+        // Act
+        var result = await _userController.GetFilteredUsers(filter);
 
+        // Assert
+        var notFoundResult = Assert.IsType<NotFoundObjectResult>(result);
+        Assert.Equal(404, notFoundResult.StatusCode);
+        Assert.Equal("No users found matching the given filters.", notFoundResult.Value);
+    }
         // Assert
         var notFoundResult = Assert.IsType<NotFoundObjectResult>(result);
         Assert.Equal(404, notFoundResult.StatusCode);
@@ -543,10 +941,24 @@ public class UserControllerTests
         var filter = new UserFilter();
         _userServiceMock.Setup(s => s.GetFilteredUsersAsync(filter))
             .ThrowsAsync(new ArgumentException("Invalid filter"));
+    [Fact]
+    public async Task GetFilteredUsers_ShouldReturnBadRequest_WhenFilterIsInvalid()
+    {
+        // Arrange
+        var filter = new UserFilter();
+        _userServiceMock.Setup(s => s.GetFilteredUsersAsync(filter))
+            .ThrowsAsync(new ArgumentException("Invalid filter"));
 
         // Act
         var result = await _userController.GetFilteredUsers(filter);
+        // Act
+        var result = await _userController.GetFilteredUsers(filter);
 
+        // Assert
+        var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
+        Assert.Equal(400, badRequestResult.StatusCode);
+        Assert.Equal("Invalid filter argument: Invalid filter", badRequestResult.Value);
+    }
         // Assert
         var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
         Assert.Equal(400, badRequestResult.StatusCode);
@@ -560,10 +972,22 @@ public class UserControllerTests
         var filter = new UserFilter();
         _userServiceMock.Setup(s => s.GetFilteredUsersAsync(filter))
             .ThrowsAsync(new UnauthorizedAccessException("Access denied"));
+    [Fact]
+    public async Task GetFilteredUsers_ShouldReturnForbid_WhenUnauthorizedAccessExceptionIsThrown()
+    {
+        // Arrange
+        var filter = new UserFilter();
+        _userServiceMock.Setup(s => s.GetFilteredUsersAsync(filter))
+            .ThrowsAsync(new UnauthorizedAccessException("Access denied"));
 
         // Act
         var result = await _userController.GetFilteredUsers(filter);
+        // Act
+        var result = await _userController.GetFilteredUsers(filter);
 
+        // Assert
+        var forbidResult = Assert.IsType<ForbidResult>(result);
+    }
         // Assert
         var forbidResult = Assert.IsType<ForbidResult>(result);
     }
@@ -574,7 +998,15 @@ public class UserControllerTests
         // Arrange
         var filter = new UserFilter();
         _userServiceMock.Setup(s => s.GetFilteredUsersAsync(filter)).ThrowsAsync(new Exception("Unexpected error"));
+    [Fact]
+    public async Task GetFilteredUsers_ShouldReturnInternalServerError_WhenUnexpectedErrorOccurs()
+    {
+        // Arrange
+        var filter = new UserFilter();
+        _userServiceMock.Setup(s => s.GetFilteredUsersAsync(filter)).ThrowsAsync(new Exception("Unexpected error"));
 
+        // Act
+        var result = await _userController.GetFilteredUsers(filter);
         // Act
         var result = await _userController.GetFilteredUsers(filter);
 
@@ -630,6 +1062,9 @@ public class UserControllerTests
         _userServiceMock.Setup(s => s.SoftDeleteUserAsync(userId)).ReturnsAsync(true);
         _auth0UserServiceMock.Setup(a => a.SoftDeleteAuth0UserAsync(userId)).ReturnsAsync(true);
 
+        // Mock authenticated user context
+        _userController.ControllerContext = CreateMockControllerContext(user.Id, RolesEnum.User);
+
         // Act
         await _userController.Delete(userId);
 
@@ -683,6 +1118,7 @@ public class UserControllerTests
 
         var userBase = CreateUserBase(userDetails.Id);
         _userServiceMock.Setup(s => s.GetUserByIdAsync(userDetails.Id)).ReturnsAsync(userBase);
+        _auth0UserServiceMock.Setup(s => s.UpdateUserAuth0(It.IsAny<UserDto.UpdateUser>())).ReturnsAsync(true);
         _userServiceMock.Setup(s => s.UpdateUserAsync(It.IsAny<UserDto.UpdateUser>())).ReturnsAsync(true);
 
         // Mock user identity
@@ -714,6 +1150,7 @@ public class UserControllerTests
         userBase = userBase with { Roles = [new RoleDto { Name = RolesEnum.Pending }] }; // Original role is Pending
 
         _userServiceMock.Setup(s => s.GetUserByIdAsync(userDetails.Id)).ReturnsAsync(userBase);
+        _auth0UserServiceMock.Setup(s => s.UpdateUserAuth0(It.IsAny<UserDto.UpdateUser>())).ReturnsAsync(true);
         _userServiceMock.Setup(s => s.UpdateUserAsync(It.IsAny<UserDto.UpdateUser>())).ReturnsAsync(true);
         _auth0UserServiceMock.Setup(a => a.AssignRoleToUser(userDetails)).ReturnsAsync(true);
         _userServiceMock.Setup(s => s.UpdateUserRolesAsync(userDetails.Id, userDetails.Roles)).ReturnsAsync(true);
@@ -754,6 +1191,7 @@ public class UserControllerTests
         };
 
         _userServiceMock.Setup(s => s.GetUserByIdAsync(userDetails.Id)).ReturnsAsync(userBase);
+        _auth0UserServiceMock.Setup(s => s.UpdateUserAuth0(It.IsAny<UserDto.UpdateUser>())).ReturnsAsync(true);
         _userServiceMock.Setup(s => s.UpdateUserAsync(It.IsAny<UserDto.UpdateUser>())).ReturnsAsync(true);
         _auth0UserServiceMock.Setup(a => a.AssignRoleToUser(userDetails)).ReturnsAsync(true);
         _userServiceMock.Setup(s => s.UpdateUserRolesAsync(userDetails.Id, userDetails.Roles)).ReturnsAsync(true);
@@ -799,6 +1237,7 @@ public class UserControllerTests
 
         // Properly mock service methods
         _userServiceMock.Setup(s => s.GetUserByIdAsync(userDetails.Id)).ReturnsAsync(userBase); // User exists
+        _auth0UserServiceMock.Setup(a => a.UpdateUserAuth0(It.IsAny<UserDto.UpdateUser>())).ReturnsAsync(true); // User updated in Auth0
         _auth0UserServiceMock.Setup(a => a.AssignRoleToUser(userDetails)).ReturnsAsync(true); // Roles assigned in Auth0
         _userServiceMock.Setup(s => s.UpdateUserAsync(It.IsAny<UserDto.UpdateUser>())).ReturnsAsync(true); // User updated in the database
         _userServiceMock.Setup(s => s.UpdateUserRolesAsync(userDetails.Id, userDetails.Roles)).ReturnsAsync(false); // Role update fails in the database

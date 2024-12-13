@@ -4,6 +4,8 @@ using Rise.Domain.Notifications;
 namespace Rise.Domain.Users;
 
 using System.ComponentModel.DataAnnotations;
+using Rise.Shared.Enums;
+using Rise.Shared.Users;
 
 /// <summary>
 /// Represents a user entity in the system
@@ -27,6 +29,7 @@ public class User : Entity
     private List<Booking> _bookings = [];
 
     private List<Notification> _notifications = [];
+    
 
     #endregion
 
@@ -147,7 +150,6 @@ public class User : Entity
         get => _phoneNumber;
         set => _phoneNumber = Guard.Against.NullOrWhiteSpace(value, nameof(PhoneNumber));
     }
-
     #endregion
 
 
@@ -207,6 +209,36 @@ public class User : Entity
     public void Activate()
     {
         IsDeleted = false;
+    }
+
+    /// <summary>
+    /// Checks if the user has the given Role.
+    /// </summary>
+    /// <param name="role">The role to check if the User has it.</param>
+    public bool HasRole(Role role)
+    {
+        return Roles.Contains(role);
+    }
+
+    /// <summary>
+    /// Maps the current user entity to a <see cref="UserDto.UserContactDetails"/> DTO.
+    /// </summary>
+    /// <returns>
+    /// A <see cref="UserDto.UserContactDetails"/> object that contains the user's details, including their address.
+    /// </returns>
+    /// <remarks>
+    /// This method maps the <see cref="User"/> properties such as <see cref="FirstName"/>, <see cref="LastName"/>, 
+    /// <see cref="Email"/>, <see cref="PhoneNumber"/>, and <see cref="Address"/> to the corresponding properties in 
+    /// the <see cref="UserDto.UserContactDetails"/> DTO.
+    /// </remarks>
+    public UserDto.UserContactDetails mapToUserContactDetails(){
+        Address address = this.Address;
+        AddressDto.GetAdress adressDto = new AddressDto.GetAdress();
+        adressDto.Street = StreetEnumExtensions.GetStreetEnum(address.Street);
+        adressDto.HouseNumber = address.HouseNumber;
+        adressDto.Bus = address.Bus;
+
+        return new UserDto.UserContactDetails(this.Id, this.FirstName, this.LastName, this.Email, this.PhoneNumber, adressDto); 
     }
 
     #endregion

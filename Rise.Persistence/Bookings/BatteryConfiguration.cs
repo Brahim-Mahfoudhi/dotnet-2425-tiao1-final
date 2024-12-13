@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Rise.Domain.Bookings;
+using Rise.Domain.Users;
 
 namespace Rise.Persistence.Bookings;
 

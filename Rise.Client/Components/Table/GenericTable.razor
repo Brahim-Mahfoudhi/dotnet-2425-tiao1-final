@@ -2,7 +2,7 @@
 @inject Microsoft.Extensions.Localization.IStringLocalizer<GenericTable> Localizer
 
 
-   <section class="pt-5 mt-5">
+   <section class="pt-5 mt-5 align-items-start">
      <div class="container table-container">
        <div class="row justify-content-center">
            <div class="col-12">
@@ -56,8 +56,10 @@
                                    </tfoot>
                                }
                            </table>
+                           
                        </div>
                    } 
+                   @FormContent
                </div>
            </div>
        </div>
@@ -70,6 +72,7 @@
     [Parameter] public List<List<RenderFragment>>? Data { get; set; } = new();
     [Parameter] public string NoDataDisplay { get; set; } = string.Empty;
     [Parameter] public bool IsLoading { get; set; } = false;
+    [Parameter] public RenderFragment? FormContent { get; set; }
 
     
     private List<List<RenderFragment>> paginatedData = new();

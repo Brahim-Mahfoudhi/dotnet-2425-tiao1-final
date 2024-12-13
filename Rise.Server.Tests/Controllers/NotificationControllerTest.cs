@@ -7,16 +7,19 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xunit;
+using Microsoft.Extensions.Logging;
 
 public class NotificationControllerTests
 {
     private readonly Mock<INotificationService> _mockNotificationService;
     private readonly NotificationController _controller;
+    private readonly Mock<ILogger<NotificationController>> _mockLogger;
 
     public NotificationControllerTests()
     {
         _mockNotificationService = new Mock<INotificationService>();
-        _controller = new NotificationController(_mockNotificationService.Object);
+        _mockLogger = new Mock<ILogger<NotificationController>>();
+        _controller = new NotificationController(_mockNotificationService.Object, _mockLogger.Object);
     }
 
     /// <summary>
@@ -126,7 +129,8 @@ public class NotificationControllerTests
             IsRead = false,
             Type = NotificationType.General
         };
-        _mockNotificationService.Setup(service => service.CreateNotificationAsync(newNotification, It.IsAny<string>())).ReturnsAsync(createdNotification);
+        _mockNotificationService.Setup(service => service.CreateNotificationAsync(newNotification, It.IsAny<string>(), It.IsAny<bool>()))
+        .ReturnsAsync(createdNotification);
 
         // Act
         var result = await _controller.CreateNotification(newNotification);
@@ -142,8 +146,9 @@ public class NotificationControllerTests
     {
         // Arrange
         var newNotification = new NotificationDto.NewNotification();
-        _mockNotificationService.Setup(service => service.CreateNotificationAsync(newNotification, It.IsAny<string>())).ThrowsAsync(new ArgumentNullException("notification"));
-
+        _mockNotificationService.Setup(service => service.CreateNotificationAsync(newNotification, It.IsAny<string>(), It.IsAny<bool>()))
+        .ThrowsAsync(new ArgumentNullException("notification"));
+        
         // Act
         var result = await _controller.CreateNotification(newNotification);
 

@@ -1,9 +1,12 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.IdentityModel.Tokens;
 using MudBlazor;
 using Rise.Client.Components.Table;
+using Rise.Client.Components.Table;
 using Rise.Shared.Bookings;
+using Rise.Shared.Enums;
 using Rise.Shared.Enums;
 
 namespace Rise.Client.Bookings;
@@ -15,18 +18,25 @@ public partial class MyBookingsView
     [Inject] AuthenticationStateProvider AuthenticationStateProvider { get; set; }
     
     
+    
+    private IEnumerable<BookingDto.ViewBooking>? _bookings;
+
     private IEnumerable<BookingDto.ViewBooking>? _bookings;
 
     private int _maxBookings;
     private string? userIdAuth0;
     private bool _isLoading = false;
+    private bool _isLoading = false;
 
     protected override async Task OnInitializedAsync()
     {
         _isLoading = true;
+        _isLoading = true;
         // Get the current user's authentication state
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         userIdAuth0 = authState.User.Claims.FirstOrDefault(c => c.Type == "sub").Value;
+        _bookings = await BookingService.GetAllUserBookings(userIdAuth0) ?? new List<BookingDto.ViewBooking>();
+        _isLoading = false;
         _bookings = await BookingService.GetAllUserBookings(userIdAuth0) ?? new List<BookingDto.ViewBooking>();
         _isLoading = false;
     }
@@ -36,6 +46,8 @@ public partial class MyBookingsView
         var result = await DialogService.ShowMessageBox(
             Localizer["CancelBookingTitle"],
             Localizer["CancelBookingMessage"],
+            Localizer["ChoiceYes"],
+            Localizer["ChoiceNo"]
             Localizer["ChoiceYes"],
             Localizer["ChoiceNo"]
         );
@@ -70,16 +82,31 @@ public partial class MyBookingsView
         
         foreach (var booking in bookings)
         {
-            var row = new List<RenderFragment>
+            var row = new List<RenderFragment>();
+            
+            var userCell = TableCellService.UserCell(Localizer["NoBatteryAssigned"]);
+            if (booking.battery.currentUser is not null)
+            {
+                var currentUser = booking.battery.currentUser;
+                userCell = TableCellService.UserCell(
+                    currentUser.FirstName,
+                    currentUser.LastName,
+                    currentUser.PhoneNumber);
+            }
+
+            row = new List<RenderFragment>
             {
                 TableCellService.DefaultTableCell(booking.bookingDate.ToString("D")),
                 TableCellService.DefaultTableCell(Localizer[booking.timeSlot.ToString()]),
                 TableCellService.BadgeCell(Localizer[booking.status.ToString()], "badge bg-gradient-" + GetBadgeBackground(booking.status)),
-                TableCellService.DefaultTableCell(booking.boat.name),
-                TableCellService.UserCell(booking.contact.FirstName, booking.contact.LastName, booking.contact.PhoneNumber),
+                TableCellService.DefaultTableCell(booking.boat.name == null ? Localizer["NoBoatAssigned"] : booking.boat.name),
+                userCell,
                 TableCellService.DefaultTableCell("Todo"),
-                booking.status == BookingStatus.OPEN ? TableCellService.ActionCell(booking.bookingId, this,  EditBooking, DeleteBooking) : TableCellService.DefaultTableCell("")
+                booking.status == BookingStatus.OPEN 
+                    ? TableCellService.ActionCell(booking.bookingId, this, EditBooking, DeleteBooking) 
+                    : TableCellService.DefaultTableCell("")
             };
+
 
             rows.Add(row);
         }
@@ -89,9 +116,9 @@ public partial class MyBookingsView
     
     private string GetBadgeBackground(BookingStatus status) => status switch
     {
-        BookingStatus.OPEN => "dark",
-        BookingStatus.CLOSED => "secondary",
-        BookingStatus.COMPLETED => "success",
+        BookingStatus.OPEN => "success",
+        BookingStatus.CLOSED => "dark",
+        BookingStatus.COMPLETED => "secondary",
         BookingStatus.REFUNDED => "warning",
         BookingStatus.CANCELED => "danger",
         _ => "light"

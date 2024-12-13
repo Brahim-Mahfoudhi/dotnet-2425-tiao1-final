@@ -38,7 +38,16 @@
   <value>Logout</value>
 </data>
   <data name="MakeBooking" xml:space="preserve">
-    <value>Book now</value>
+    <value>Book now....</value>
+  </data>
+  <data name="Boats" xml:space="preserve">
+    <value>Boats</value>
+  </data>
+  <data name="GodchildBattery" xml:space="preserve">
+    <value>meterbatterie</value>
+  </data>
+    <data name="MyBookings" xml:space="preserve">
+    <value>Mijn bookingen</value>
   </data>
   <data name="Boats" xml:space="preserve">
     <value>Boats</value>

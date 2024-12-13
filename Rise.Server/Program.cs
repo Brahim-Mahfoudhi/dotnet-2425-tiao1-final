@@ -3,13 +3,11 @@ using Rise.Persistence;
 using Rise.Persistence.Triggers;
 using Rise.Services.Users;
 using Rise.Shared.Users;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Security.Claims;
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Auth0Net.DependencyInjection;
-using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Rise.Server.Settings;
 using Rise.Services.Bookings;
@@ -20,21 +18,45 @@ using Rise.Shared.Notifications;
 using Rise.Services.Events;
 using Rise.Services.Events.User;
 using Rise.Services.Events.Booking;
-using AngleSharp.Text;
 using Rise.Domain.Bookings;
 using Rise.Shared.Boats;
+using Rise.Shared.Batteries;
+using Rise.Services.Batteries;
+using NLog.Web;
+using Rise.Server.LoggingEnrichers;
+using NLog;
+using Rise.Shared;
+using Rise.Services.Events.Battery;
+using Rise.Services.Mail;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Add NLog as the logging provider
+builder.Logging.ClearProviders();
+builder.Host.UseNLog();
+
+// Register HttpContextAccessor and enrichers
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<UserIdEnricher>();
+builder.Services.AddScoped<ClientIpAddressEnricher>();
+
+// Configure NLog globally to include custom enrichers
+LogManager.Setup().LoadConfigurationFromFile("nlog.config");
+
+
+// Adding json services
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
+        // Add the immutable converters for System.Collections.Immutable types
+        options.JsonSerializerOptions.Converters.Add(new ImmutableListJsonConverter<RoleDto>());
         // This ensures enums are serialized as strings
         options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
     });
 
 builder.Services.AddEndpointsApiExplorer();
 
+// Adding Swagger for API documentation
 builder.Services.AddSwaggerGen(options =>
 {
     options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
@@ -67,30 +89,39 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
+// Adding settings from the configuration
 builder.Services.Configure<BookingSettings>(builder.Configuration.GetSection("BookingSettings"));
+// Register EmailSettings
+builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
+builder.Services.Configure<BatterySettings>(builder.Configuration.GetSection("BatterySettings"));
 
-builder.Services.AddAuthentication(options =>
+// If not in testing environment, add authentication
+if(!builder.Environment.IsEnvironment("Testing")) 
 {
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(options =>
-{
-    options.Authority = builder.Configuration["Auth0:Authority"];
-    options.Audience = builder.Configuration["Auth0:Audience"];
-    options.TokenValidationParameters = new TokenValidationParameters
+    builder.Services.AddAuthentication(options =>
     {
-        NameClaimType = ClaimTypes.NameIdentifier
-    };
-});
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    }).AddJwtBearer(options =>
+    {
+        options.Authority = builder.Configuration["Auth0:Authority"];
+        options.Audience = builder.Configuration["Auth0:Audience"];
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            NameClaimType = ClaimTypes.NameIdentifier
+        };
+    });
 
-builder.Services.AddAuth0AuthenticationClient(config =>
-{
-    config.Domain = builder.Configuration["Auth0:Authority"]!;
-    config.ClientId = builder.Configuration["Auth0:M2MClientId"];
-    config.ClientSecret = builder.Configuration["Auth0:M2MClientSecret"];
-});
-builder.Services.AddAuth0ManagementClient().AddManagementAccessToken();
+    builder.Services.AddAuth0AuthenticationClient(config =>
+    {
+        config.Domain = builder.Configuration["Auth0:Authority"]!;
+        config.ClientId = builder.Configuration["Auth0:M2MClientId"];
+        config.ClientSecret = builder.Configuration["Auth0:M2MClientSecret"];
+    });
+    builder.Services.AddAuth0ManagementClient().AddManagementAccessToken();
+}
 
+// Add the DbContext with the connection string from the configuration
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer"));
@@ -99,18 +130,22 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseTriggers(options => options.AddTrigger<EntityBeforeSaveTrigger>());
 });
 
-// Register services
+// Register custom services
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IBookingService, BookingService>();
-builder.Services.AddScoped<IEquipmentService<BoatDto.ViewBoat, BoatDto.NewBoat>, BoatService>();
-builder.Services.AddScoped<IEquipmentService<BatteryDto.ViewBattery, BatteryDto.NewBattery>, BatteryService>();
+builder.Services.AddScoped<IEquipmentService<BoatDto.ViewBoat, BoatDto.NewBoat, BoatDto.UpdateBoat>, BoatService>();
+builder.Services.AddScoped<IBatteryService, BatteryService>();
 builder.Services.AddScoped<IAuth0UserService, Auth0UserService>();
 builder.Services.AddScoped<IValidationService, ValidationService>();
 builder.Services.AddScoped<INotificationService, NotificationService>();
 builder.Services.AddScoped<BookingAllocator>();
 builder.Services.AddScoped<BookingAllocationService>();
-
+builder.Services.AddScoped<BatteryCheckingService>();
+builder.Services.AddScoped<HealthService>();
 builder.Services.AddHostedService<DailyTaskService>();
+// Register EmailService
+builder.Services.AddScoped<IEmailService, EmailService>();
+
 
 // Register event dispatcher
 builder.Services.AddSingleton<IEventDispatcher, EventDispatcher>();
@@ -118,6 +153,7 @@ builder.Services.AddSingleton<IEventDispatcher, EventDispatcher>();
 // Register open generic handlers
 builder.Services.AddScoped(typeof(IEventHandler<>), typeof(GenericEventHandler<>));
 
+// Register specific User event handlers
 // Register specific User event handlers
 builder.Services.AddScoped<IEventHandler<UserRegisteredEvent>, NotifyAdminsOnUserRegistrationHandler>();
 builder.Services.AddScoped<IEventHandler<UserDeletedEvent>, NotifyAdminsOnUserDeletionHandler>();
@@ -129,6 +165,9 @@ builder.Services.AddScoped<IEventHandler<UserRoleUpdatedEvent>, NotifyUserOnNewR
 builder.Services.AddScoped<IEventHandler<BookingCreatedEvent>, NotifyOnBookingCreatedHandler>();
 builder.Services.AddScoped<IEventHandler<BookingUpdatedEvent>, NotifyOnBookingUpdatedHandler>();
 builder.Services.AddScoped<IEventHandler<BookingDeletedEvent>, NotifyOnBookingDeletedHandler>();
+
+// Register specific Battery event handlers
+builder.Services.AddScoped<IEventHandler<BatteryTooLongWithUserEvent>, NotifyOnBatteryTooLongWithUserEventHandler>();
 
 
 var app = builder.Build();
@@ -145,6 +184,7 @@ if (app.Environment.IsDevelopment())
     });
 }
 
+
 app.UseHttpsRedirection();
 
 app.UseBlazorFrameworkFiles();
@@ -154,15 +194,52 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
+
+// Middleware to enrich logs
+app.Use(async (context, next) =>
+{
+    IDisposable? userIdScope = null;
+    IDisposable? clientIpScope = null;
+
+    if (!context.Request.Path.StartsWithSegments("/swagger")) // Skip Swagger requests
+    {
+        var userIdEnricher = context.RequestServices.GetRequiredService<UserIdEnricher>();
+        var clientIpEnricher = context.RequestServices.GetRequiredService<ClientIpAddressEnricher>();
+
+        // Use ScopeContext.PushProperty to set the properties
+        userIdScope = ScopeContext.PushProperty("UserId", userIdEnricher.Enrich());
+        clientIpScope = ScopeContext.PushProperty("ClientIpAddress", clientIpEnricher.Enrich());
+    }
+
+    try
+    {
+        await next();
+    }
+    finally
+    {
+        // Dispose of the scope after the request
+        userIdScope?.Dispose();
+        clientIpScope?.Dispose();
+    }
+});
+
+
 app.MapControllers();
 app.MapFallbackToFile("index.html");
 
-using (var scope = app.Services.CreateScope())
-{
-    // Require a DbContext from the service provider and seed the database.
-    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    Seeder seeder = new(dbContext);
-    seeder.Seed();
+if(app.Environment.IsDevelopment()){
+    using (var scope = app.Services.CreateScope())
+    {
+        // Require a DbContext from the service provider and seed the database.
+        var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        Seeder seeder = new(dbContext);
+        seeder.Seed();
+    }
 }
 
+
+
 app.Run();
+
+// needed for E2E tests
+public partial class Program{ }
