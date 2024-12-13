@@ -9,10 +9,10 @@ pipeline {
         DOTNET_PROJECT_PATH = 'Rise.Server/Rise.Server.csproj'
         DOTNET_TEST_PATH = 'Rise.Domain.Tests/Rise.Domain.Tests.csproj'
         PUBLISH_OUTPUT = 'publish'
-        DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1305826859665063936/xP1yD9MIf9vEwehqBE01c3AdIh-_62ZDrOzD0Zak5ti3Gm15gE8l3iWHBWMu_VzCmT_j"
+        DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1301160382307766292/kROxjtgZ-XVOibckTMri2fy5-nNOEjzjPLbT9jEpr_R0UH9JG0ZXb2XzUsYGE0d3yk6I"
         JENKINS_CREDENTIALS_ID = "jenkins-master-key"
         SSH_KEY_FILE = '/var/lib/jenkins/.ssh/id_rsa'
-        REMOTE_HOST = 'jenkins@139.162.133.163' // NEEDS TO BE CHANGED
+        REMOTE_HOST = 'jenkins@139.162.133.163'
         TRX_FILE_PATH = 'Rise.Domain.Tests/TestResults/test-results.trx'
         TEST_RESULT_PATH = 'Rise.Domain.Tests/TestResults'
         TRX_TO_XML_PATH = 'Rise.Domain.Tests/TestResults/test-results.xml'
@@ -75,7 +75,7 @@ pipeline {
                 sh "dotnet build ${DOTNET_PROJECT_PATH}"
             }
         }
-
+        
         stage('Run Unit Tests') {
             steps {
                 script {
@@ -88,47 +88,54 @@ pipeline {
         
                     testPaths.each { name, path ->
                         echo "Running unit tests for ${name} located at ${path}..."
-                        
-                        def testOutput = sh(script: """
+        
+                        sh """
                             dotnet test ${path} --collect:"XPlat Code Coverage" --logger 'trx;LogFileName=${name}.trx' \
-                            /p:CollectCoverage=true /p:CoverletOutput='/var/lib/jenkins/agent/workspace/dotnet_pipeline/coverage/coverage.xml' \
-                            /p:CoverletOutputFormat=cobertura
-                        """, returnStdout: true)
+                            /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura
+                        """
                     }
                 }
             }
         }
-    /*  
+        
         stage('Coverage Report') {
             steps {
                 script {
-                    def testOutput = sh(script: "dotnet test ${DOTNET_TEST_PATH} --collect \"XPlat Code Coverage\"", returnStdout: true).trim()
-                    def coverageFiles = testOutput.split('\n').findAll { it.contains('coverage.cobertura.xml') }.join(';')
-                    echo "Coverage files: ${coverageFiles}"
+                    sh "mkdir -p /var/lib/jenkins/agent/workspace/Dotnet-test-Pipeline/coverage/"
         
-                    if (coverageFiles) {
+                    def coverageFiles = sh(script: """
+                        find Rise.*/TestResults -type f -name 'coverage.cobertura.xml'
+                    """, returnStdout: true).trim().split("\n")
+        
+                    if (coverageFiles.size() > 0) {
+                        echo "Found coverage files: ${coverageFiles.join(', ')}"
+        
+                        coverageFiles.each { file ->
+                            sh "cp ${file} /var/lib/jenkins/agent/workspace/Dotnet-test-Pipeline/coverage/"
+                        }
+        
                         sh """
-                            mkdir -p /var/lib/jenkins/agent/workspace/dotnet_pipeline/coverage-report/
-                            mkdir -p /var/lib/jenkins/agent/workspace/dotnet_pipeline/coverage/
-                            cp ${coverageFiles} /var/lib/jenkins/agent/workspace/dotnet_pipeline/coverage/
-                            /home/jenkins/.dotnet/tools/reportgenerator -reports:/var/lib/jenkins/agent/workspace/dotnet_pipeline/coverage/coverage.cobertura.xml -targetdir:/var/lib/jenkins/agent/workspace/dotnet_pipeline/coverage-report/ -reporttype:Html
+                            /home/jenkins/.dotnet/tools/reportgenerator \
+                            -reports:/var/lib/jenkins/agent/workspace/Dotnet-test-Pipeline/coverage/*.cobertura.xml \
+                            -targetdir:/var/lib/jenkins/agent/workspace/Dotnet-test-Pipeline/coverage-report/ \
+                            -reporttype:Html
                         """
                     } else {
                         error 'No coverage files found'
                     }
                 }
+        
                 echo 'Publishing coverage report...'
                 publishHTML([
                     allowMissing: false,
                     alwaysLinkToLastBuild: true,
                     keepAll: true,
-                    reportDir: '/var/lib/jenkins/agent/workspace/dotnet_pipeline/coverage-report',
+                    reportDir: '/var/lib/jenkins/agent/workspace/Dotnet-test-Pipeline/coverage-report',
                     reportFiles: 'index.html',
                     reportName: 'Coverage Report'
                 ])
             }
         }
-    */
     
         stage('Publish Application') {
             steps {
@@ -193,7 +200,7 @@ pipeline {
         success {
             echo 'Build and deployment completed successfully!'
             archiveArtifacts artifacts: '**/*.dll', fingerprint: true
-            // archiveArtifacts artifacts: "${TRX_FILE_PATH}", fingerprint: true
+            archiveArtifacts artifacts: "${TRX_FILE_PATH}", fingerprint: true
             script {
                 sendDiscordNotification("Build Success")
             }
@@ -206,9 +213,9 @@ pipeline {
         }
         always {
             echo 'Build process has completed.'
-            // echo 'Generate Test report...'
-            // sh "/home/jenkins/.dotnet/tools/trx2junit --output ${TEST_RESULT_PATH} ${TRX_FILE_PATH}"
-            // junit "${TRX_TO_XML_PATH}"
+            echo 'Generate Test report...'
+            sh "/home/jenkins/.dotnet/tools/trx2junit --output ${TEST_RESULT_PATH} ${TRX_FILE_PATH}"
+            junit "${TRX_TO_XML_PATH}"
         }
     }
 }
