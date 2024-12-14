@@ -218,15 +218,20 @@ pipeline {
     
             script {
                 def testPaths = [
-                    Domain: 'Rise.Domain.Tests/TestResults/Domain.trx',
-                    Client: 'Rise.Client.Tests/TestResults/Client.trx',
-                    //Server: 'Rise.Server.Tests/TestResults/Server.trx',
-                    Service: 'Rise.Services.Tests/TestResults/Service.trx'
-                ]
-                
-                testPaths.each { name, path ->
-                    sh "/home/jenkins/.dotnet/tools/trx2junit --output ${TEST_RESULT_PATH} ${path}"                
-                    junit "${TRX_TO_XML_PATH}"
+                        Domain: 'Rise.Domain.Tests/TestResults/Domain.trx',
+                        Client: 'Rise.Client.Tests/TestResults/Client.trx',
+                        //Server: 'Rise.Server.Tests/TestResults/Server.trx',
+                        Service: 'Rise.Services.Tests/TestResults/Service.trx'
+                    ]
+                    
+                    testPaths.each { name, path ->
+                        // Generate JUnit XML file from TRX file
+                        def outputXml = "${TEST_RESULT_PATH}/${name}.xml"
+                        sh "/home/jenkins/.dotnet/tools/trx2junit --output ${outputXml} ${path}"
+                        
+                        // Record test results
+                        junit outputXml
+                    }
                 }
             }
         }
