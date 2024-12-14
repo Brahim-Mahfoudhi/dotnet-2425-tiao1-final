@@ -248,6 +248,7 @@ def sendDiscordNotification(status) {
             footer: "Build Duration: ${currentBuild.durationString.replace(' and counting', '')}",
             webhookURL: DISCORD_WEBHOOK_URL,
             result: status == "Build Success" ? 'SUCCESS' : 'FAILURE'
-        )
+            )
+        }
     }
 }
