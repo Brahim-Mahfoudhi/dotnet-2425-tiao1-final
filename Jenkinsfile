@@ -225,6 +225,7 @@ pipeline {
             testPaths.each { name, path ->
                 sh "/home/jenkins/.dotnet/tools/trx2junit --output ${TEST_RESULT_PATH} ${path}"                
                 junit "${TRX_TO_XML_PATH}"
+            }
         }
     }
 }
@@ -248,7 +249,6 @@ def sendDiscordNotification(status) {
             footer: "Build Duration: ${currentBuild.durationString.replace(' and counting', '')}",
             webhookURL: DISCORD_WEBHOOK_URL,
             result: status == "Build Success" ? 'SUCCESS' : 'FAILURE'
-            )
-        }
+        )
     }
 }
