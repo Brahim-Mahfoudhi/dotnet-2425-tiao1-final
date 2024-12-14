@@ -186,7 +186,7 @@ pipeline {
                             sh """
                                 ssh -i ${SSH_KEY_FILE} -o StrictHostKeyChecking=no ${REMOTE_HOST} "bash ${remoteScript} && rm ${remoteScript}"
                             """
-                             sh """
+                            sh """
                                 ssh -i ${SSH_KEY_FILE} -o StrictHostKeyChecking=no ${REMOTE_HOST} "screen -dmS rise_server dotnet /var/lib/jenkins/artifacts/Rise.Server.dll --urls 'http://0.0.0.0:5000;https://0.0.0.0:5001'"
                             """
                         }
@@ -214,17 +214,19 @@ pipeline {
         always {
             echo 'Build process has completed.'
             echo 'Generate Test report...'
-            
-            def testPaths = [
-                Domain: 'Rise.Domain.Tests/TestResults/Domain.trx',
-                Client: 'Rise.Client.Tests/TestResults/Client.trx',
-                Server: 'Rise.Server.Tests/TestResults/Server.trx',
-                Service: 'Rise.Services.Tests/TestResults/Service.trx'
-            ]
-            
-            testPaths.each { name, path ->
-                sh "/home/jenkins/.dotnet/tools/trx2junit --output ${TEST_RESULT_PATH} ${path}"                
-                junit "${TRX_TO_XML_PATH}"
+    
+            script {
+                def testPaths = [
+                    Domain: 'Rise.Domain.Tests/TestResults/Domain.trx',
+                    Client: 'Rise.Client.Tests/TestResults/Client.trx',
+                    Server: 'Rise.Server.Tests/TestResults/Server.trx',
+                    Service: 'Rise.Services.Tests/TestResults/Service.trx'
+                ]
+                
+                testPaths.each { name, path ->
+                    sh "/home/jenkins/.dotnet/tools/trx2junit --output ${TEST_RESULT_PATH} ${path}"                
+                    junit "${TRX_TO_XML_PATH}"
+                }
             }
         }
     }
