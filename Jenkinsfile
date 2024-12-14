@@ -142,7 +142,7 @@ pipeline {
                 sh "dotnet publish ${DOTNET_PROJECT_PATH} -c Release -o ${PUBLISH_OUTPUT}"
             }
         }
-
+    /*
         stage('Deploy to Remote Server') {
             steps {
                 withCredentials([
@@ -194,6 +194,7 @@ pipeline {
                 }
             }
         }
+        */
     }
 
     post {
