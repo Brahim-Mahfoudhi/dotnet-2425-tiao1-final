@@ -231,7 +231,6 @@ pipeline {
                         
                         // Record test results
                         junit outputXml
-                    }
                 }
             }
         }
