@@ -217,20 +217,22 @@ pipeline {
             echo 'Generate Test report...'
     
             script {
-                def testPaths = [
-                        Domain: 'Rise.Domain.Tests/TestResults/Domain.trx',
-                        Client: 'Rise.Client.Tests/TestResults/Client.trx',
-                        //Server: 'Rise.Server.Tests/TestResults/Server.trx',
-                        Service: 'Rise.Services.Tests/TestResults/Service.trx'
-                    ]
+              def testPaths = [
+                    Domain: 'Rise.Domain.Tests/TestResults/Domain.trx',
+                    Client: 'Rise.Client.Tests/TestResults/Client.trx',
+                    //Server: 'Rise.Server.Tests/TestResults/Server.trx',
+                    Service: 'Rise.Services.Tests/TestResults/Service.trx'
+                ]
+                
+                testPaths.each { name, path ->
+                    // Define the correct output XML file path
+                    def outputXml = "${TEST_RESULT_PATH}/${name}.xml"
                     
-                    testPaths.each { name, path ->
-                        // Generate JUnit XML file from TRX file
-                        def outputXml = "${TEST_RESULT_PATH}/${name}.xml"
-                        sh "/home/jenkins/.dotnet/tools/trx2junit --output ${outputXml} ${path}"
-                        
-                        // Record test results
-                        junit outputXml
+                    // Generate JUnit XML file from TRX file
+                    sh "/home/jenkins/.dotnet/tools/trx2junit --output ${outputXml} ${path}"
+                    
+                    // Ensure correct test report path is used for junit
+                    junit "${TEST_RESULT_PATH}/${name}.xml"
                 }
             }
         }
