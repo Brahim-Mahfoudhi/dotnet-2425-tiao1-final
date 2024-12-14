@@ -214,8 +214,17 @@ pipeline {
         always {
             echo 'Build process has completed.'
             echo 'Generate Test report...'
-            sh "/home/jenkins/.dotnet/tools/trx2junit --output ${TEST_RESULT_PATH} ${TRX_FILE_PATH}"
-            junit "${TRX_TO_XML_PATH}"
+            
+            def testPaths = [
+                Domain: 'Rise.Domain.Tests/TestResults/Domain.trx',
+                Client: 'Rise.Client.Tests/TestResults/Client.trx',
+                Server: 'Rise.Server.Tests/TestResults/Server.trx',
+                Service: 'Rise.Services.Tests/TestResults/Service.trx'
+            ]
+            
+            testPaths.each { name, path ->
+                sh "/home/jenkins/.dotnet/tools/trx2junit --output ${TEST_RESULT_PATH} ${path}"                
+                junit "${TRX_TO_XML_PATH}"
         }
     }
 }
