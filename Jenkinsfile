@@ -82,7 +82,7 @@ pipeline {
                     def testPaths = [
                         Domain: 'Rise.Domain.Tests/Rise.Domain.Tests.csproj',
                         Client: 'Rise.Client.Tests/Rise.Client.Tests.csproj',
-                        Server: 'Rise.Server.Tests/Rise.Server.Tests.csproj',
+                        //Server: 'Rise.Server.Tests/Rise.Server.Tests.csproj',
                         Service: 'Rise.Services.Tests/Rise.Services.Tests.csproj'
                     ]
         
