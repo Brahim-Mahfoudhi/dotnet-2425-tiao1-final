@@ -226,7 +226,7 @@ pipeline {
                 
                 testPaths.each { name, path ->
                     // Define the correct output XML file path
-                    def outputXml = "${TEST_RESULT_PATH}/${name}.xml"
+                    def outputXml = "${TEST_RESULT_PATH}"
                     
                     // Generate JUnit XML file from TRX file
                     sh "/home/jenkins/.dotnet/tools/trx2junit --output ${outputXml} ${path}"
