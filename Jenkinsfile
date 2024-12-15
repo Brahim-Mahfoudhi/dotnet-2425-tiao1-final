@@ -5,7 +5,7 @@ pipeline {
     }
 
     environment {
-        JENKINS_SERVER = 'http://139.162.132.174:8080'
+        JENKINS_SERVER = 'http://139.162.180.76:8080'
         DOTNET_PROJECT_PATH = 'Rise.Server/Rise.Server.csproj'
         DOTNET_TEST_PATH = 'Rise.Domain.Tests/Rise.Domain.Tests.csproj'
         PUBLISH_OUTPUT = 'publish'
@@ -225,7 +225,7 @@ pipeline {
                 ]
                 
                 testPaths.each { name, path ->
-                    def outputXml = "${TEST_RESULT_PATH}
+                    def outputXml = "${TEST_RESULT_PATH}"
                     sh "/home/jenkins/.dotnet/tools/trx2junit --output ${outputXml} ${path}"                    
                     junit "${TEST_RESULT_PATH}/${name}.xml"
                 }
