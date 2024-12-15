@@ -56,10 +56,10 @@ pipeline {
                 sh "dotnet restore ${DOTNET_PROJECT_PATH}"
                 script {
                     def testPaths = [
-                        domain: 'Rise.Domain.Tests/Rise.Domain.Tests.csproj',
-                        client: 'Rise.Client.Tests/Rise.Client.Tests.csproj',
-                        //server: 'Rise.Server.Tests/Rise.Server.Tests.csproj',
-                        service: 'Rise.Services.Tests/Rise.Services.Tests.csproj'
+                        Domain: 'Rise.Domain.Tests/Rise.Domain.Tests.csproj',
+                        Client: 'Rise.Client.Tests/Rise.Client.Tests.csproj',
+                        Server: 'Rise.Server.Tests/Rise.Server.Tests.csproj',
+                        Service: 'Rise.Services.Tests/Rise.Services.Tests.csproj'
                     ]
                     
                     testPaths.each { name, path ->
@@ -82,7 +82,7 @@ pipeline {
                     def testPaths = [
                         Domain: 'Rise.Domain.Tests/Rise.Domain.Tests.csproj',
                         Client: 'Rise.Client.Tests/Rise.Client.Tests.csproj',
-                        //Server: 'Rise.Server.Tests/Rise.Server.Tests.csproj',
+                        Server: 'Rise.Server.Tests/Rise.Server.Tests.csproj',
                         Service: 'Rise.Services.Tests/Rise.Services.Tests.csproj'
                     ]
         
@@ -220,18 +220,13 @@ pipeline {
               def testPaths = [
                     Domain: 'Rise.Domain.Tests/TestResults/Domain.trx',
                     Client: 'Rise.Client.Tests/TestResults/Client.trx',
-                    //Server: 'Rise.Server.Tests/TestResults/Server.trx',
+                    Server: 'Rise.Server.Tests/TestResults/Server.trx',
                     Service: 'Rise.Services.Tests/TestResults/Service.trx'
                 ]
                 
                 testPaths.each { name, path ->
-                    // Define the correct output XML file path
-                    def outputXml = "${TEST_RESULT_PATH}"
-                    
-                    // Generate JUnit XML file from TRX file
-                    sh "/home/jenkins/.dotnet/tools/trx2junit --output ${outputXml} ${path}"
-                    
-                    // Ensure correct test report path is used for junit
+                    def outputXml = "${TEST_RESULT_PATH}
+                    sh "/home/jenkins/.dotnet/tools/trx2junit --output ${outputXml} ${path}"                    
                     junit "${TEST_RESULT_PATH}/${name}.xml"
                 }
             }
