@@ -158,71 +158,58 @@ pipeline {
                 ]) {
                     sshagent([JENKINS_CREDENTIALS_ID]) {
                         script {
-                            def remoteScript = "/tmp/deploy_script.sh"
                             def publishDir = "/var/lib/jenkins/artifacts"
+                            def remoteAppDir = "/var/www/rise-app"
         
-                            withEnv([
-                                "AUTHORITY=${AUTHORITY}",
-                                "AUDIENCE=${AUDIENCE}",
-                                "M2MCLIENTID=${M2MCLIENTID}",
-                                "M2MCLIENTSECRET=${M2MCLIENTSECRET}",
-                                "BLAZORCLIENTID=${BLAZORCLIENTID}",
-                                "BLAZORCLIENTSECRET=${BLAZORCLIENTSECRET}",
-                                "SQL_CONNECTION_STRING=${SQL_CONNECTION_STRING}",
-                                "SMTP_USERNAME=${SMTP_USERNAME}",
-                                "SMTP_PASSWORD=${SMTP_PASSWORD}"
-                            ]) {
-                                sh """
-                                    echo '#!/bin/bash
-                                    # Check if jq is available
-                                    if command -v jq &> /dev/null; then
-                                        # Use jq for JSON manipulation
-                                        jq ".ConnectionStrings.SqlServer = \\"${SQL_CONNECTION_STRING}\\" |
-                                            .Auth0.Authority = \\"${AUTHORITY}\\" |
-                                            .Auth0.Audience = \\"${AUDIENCE}\\" |
-                                            .Auth0.M2MClientId = \\"${M2MCLIENTID}\\" |
-                                            .Auth0.M2MClientSecret = \\"${M2MCLIENTSECRET}\\" |
-                                            .Auth0.BlazorClientId = \\"${BLAZORCLIENTID}\\" |
-                                            .Auth0.BlazorClientSecret = \\"${BLAZORCLIENTSECRET}\\" |
-                                            .EmailSettings.SmtpServer = \\"smtp.gmail.com\\" |
-                                            .EmailSettings.SmtpPort = 587 |
-                                            .EmailSettings.SmtpUsername = \\"${SMTP_USERNAME}\\" |
-                                            .EmailSettings.SmtpPassword = \\"${SMTP_PASSWORD}\\" |
-                                            .EmailSettings.FromEmail = \\"${SMTP_USERNAME}\\"" \\
-                                            ${publishDir}/appsettings.json > ${publishDir}/appsettings.tmp.json
-                                        mv ${publishDir}/appsettings.tmp.json ${publishDir}/appsettings.json
-                                    else
-                                        # Fallback to sed
-                                        sed -i "s|\"ConnectionStrings\": {}|\"ConnectionStrings\": {\"SqlServer\": \"${SQL_CONNECTION_STRING}\"}|g" ${publishDir}/appsettings.json
-                                        sed -i "s|\"Auth0\": {}|\"Auth0\": {\"Authority\": \"${AUTHORITY}\", \"Audience\": \"${AUDIENCE}\", \"M2MClientId\": \"${M2MCLIENTID}\", \"M2MClientSecret\": \"${M2MCLIENTSECRET}\", \"BlazorClientId\": \"${BLAZORCLIENTID}\", \"BlazorClientSecret\": \"${BLAZORCLIENTSECRET}\"}|g" ${publishDir}/appsettings.json
-                                        if ! grep -q '"EmailSettings"' ${publishDir}/appsettings.json; then
-                                            sed -i "/}/i \\\"EmailSettings\\\": {\\\"SmtpServer\\\": \\\"smtp.gmail.com\\\", \\\"SmtpPort\\\": 587, \\\"SmtpUsername\\\": \\\"${SMTP_USERNAME}\\\", \\\"SmtpPassword\\\": \\\"${SMTP_PASSWORD}\\\", \\\"FromEmail\\\": \\\"${SMTP_USERNAME}\\\"}" ${publishDir}/appsettings.json
-                                        else
-                                            sed -i "s|\"EmailSettings\": {}|\"EmailSettings\": {\"SmtpServer\": \"smtp.gmail.com\", \"SmtpPort\": 587, \"SmtpUsername\": \"${SMTP_USERNAME}\", \"SmtpPassword\": \"${SMTP_PASSWORD}\", \"FromEmail\": \"${SMTP_USERNAME}\"}|g" ${publishDir}/appsettings.json
-                                        fi
-                                    fi
-                                    ' > ${remoteScript}
-                                """
-        
-                                sh """
-                                    scp -i ${SSH_KEY_FILE} -o StrictHostKeyChecking=no -r ${PUBLISH_OUTPUT}/* ${REMOTE_HOST}:${PUBLISH_DIR_PATH}
-                                """
-                                sh """
-                                    scp -i ${SSH_KEY_FILE} -o StrictHostKeyChecking=no ${remoteScript} ${REMOTE_HOST}:${remoteScript}
-                                """
-                                sh """
-                                    ssh -i ${SSH_KEY_FILE} -o StrictHostKeyChecking=no ${REMOTE_HOST} "bash ${remoteScript} && rm ${remoteScript}"
-                                """
-                                sh """
-                                    ssh -i ${SSH_KEY_FILE} -o StrictHostKeyChecking=no ${REMOTE_HOST} "screen -dmS rise_server dotnet /var/lib/jenkins/artifacts/Rise.Server.dll --urls 'http://0.0.0.0:5000;https://0.0.0.0:5001'"
-                                """
+                            def appSettingsContent = """
+                            {
+                              "ConnectionStrings": {
+                                "Sqlserver": "${SQL_CONNECTION_STRING}"
+                              },
+                              "Auth0": {
+                                "Authority": "${AUTHORITY}",
+                                "Audience": "${AUDIENCE}",
+                                "M2MClientId": "${M2MCLIENTID}",
+                                "M2MClientSecret": "${M2MCLIENTSECRET}",
+                                "BlazorClientId": "${BLAZORCLIENTID}",
+                                "BlazorClientSecret": "${BLAZORCLIENTSECRET}"
+                              },
+                              "EmailSettings": {
+                                "SmtpServer": "smtp.gmail.com",
+                                "SmtpPort": 587,
+                                "SmtpUsername": "${SMTP_USERNAME}",
+                                "SmtpPassword": "${SMTP_PASSWORD}",
+                                "FromEmail": "${SMTP_USERNAME}"
+                              }
                             }
+                            """
+        
+                            // Write the new appsettings.json locally
+                            writeFile file: 'appsettings.json', text: appSettingsContent
+        
+                            // Prepare application files for deployment
+                            sh """
+                                mkdir -p deploy_package
+                                cp -r ${publishDir}/* deploy_package/
+                                cp appsettings.json deploy_package/
+                            """
+        
+                            // Copy the entire deployment package to the remote server
+                            sh """
+                                scp -i ${SSH_KEY_FILE} -o StrictHostKeyChecking=no -r deploy_package ${REMOTE_HOST}:${remoteAppDir}
+                                ssh -i ${SSH_KEY_FILE} -o StrictHostKeyChecking=no ${REMOTE_HOST} "chmod -R 755 ${remoteAppDir}"
+                            """
+        
+                            // Restart the application on the remote server
+                            sh """
+                                ssh -i ${SSH_KEY_FILE} -o StrictHostKeyChecking=no ${REMOTE_HOST} "pkill -f Rise.Server || true"
+                                ssh -i ${SSH_KEY_FILE} -o StrictHostKeyChecking=no ${REMOTE_HOST} "screen -dmS rise_server dotnet ${remoteAppDir}/Rise.Server.dll --urls 'http://0.0.0.0:5000;https://0.0.0.0:5001'"
+                            """
                         }
                     }
                 }
             }
         }
-
     }
 
     post {
