@@ -159,7 +159,7 @@ pipeline {
                             def remoteScript = "/tmp/deploy_script.sh"
                             def publishDir = "${PUBLISH_DIR_PATH}"
 
-                            // Pass the credentials as environment variables to the shell script
+                            // Ensure proper quoting in the shell script
                             withEnv([
                                 "AUTHORITY=${AUTHORITY}",
                                 "AUDIENCE=${AUDIENCE}",
@@ -169,7 +169,7 @@ pipeline {
                                 "BLAZORCLIENTSECRET=${BLAZORCLIENTSECRET}",
                                 "SQL_CONNECTION_STRING=${SQL_CONNECTION_STRING}"
                             ]) {
-                                // Create the shell script with proper escaping for sensitive data
+                                // Create the shell script content carefully
                                 sh """
                                     echo '#!/bin/bash
                                     export AUTHORITY="\${AUTHORITY}"
@@ -180,17 +180,19 @@ pipeline {
                                     export BLAZORCLIENTSECRET="\${BLAZORCLIENTSECRET}"
                                     export SQL_CONNECTION_STRING="\${SQL_CONNECTION_STRING}"
 
+                                    # Update appsettings.json with SQL connection string
                                     jq --arg sql_connection_string "\${SQL_CONNECTION_STRING}" \\
-                                    '.ConnectionStrings = {SqlServer: "Server=\${sql_connection_string};TrustServerCertificate=True;"}' \\
+                                    ".ConnectionStrings = {SqlServer: \"Server=\${sql_connection_string};TrustServerCertificate=True;\"}" \\
                                     "\${publishDir}/appsettings.json" > tmp.json && mv tmp.json "\${publishDir}/appsettings.json"
 
+                                    # Update appsettings.json with Auth0 details
                                     jq --arg authority "\${AUTHORITY}" \\
                                     --arg audience "\${AUDIENCE}" \\
                                     --arg m2m_client_id "\${M2MCLIENTID}" \\
                                     --arg m2m_client_secret "\${M2MCLIENTSECRET}" \\
                                     --arg blazor_client_id "\${BLAZORCLIENTID}" \\
                                     --arg blazor_client_secret "\${BLAZORCLIENTSECRET}" \\
-                                    '.Auth0 = {Authority: "\${authority}", Audience: "\${audience}", M2MClientId: "\${m2m_client_id}", M2MClientSecret: "\${m2m_client_secret}", BlazorClientId: "\${blazor_client_id}", BlazorClientSecret: "\${blazor_client_secret)"}' \\
+                                    ".Auth0 = {Authority: \"\${authority}\", Audience: \"\${audience}\", M2MClientId: \"\${m2m_client_id}\", M2MClientSecret: \"\${m2m_client_secret}\", BlazorClientId: \"\${blazor_client_id}\", BlazorClientSecret: \"\${blazor_client_secret}\"}" \\
                                     "\${publishDir}/appsettings.json" > tmp.json && mv tmp.json "\${publishDir}/appsettings.json"
                                     ' > ${remoteScript}
                                 """
