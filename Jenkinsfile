@@ -168,7 +168,7 @@ pipeline {
                             "BLAZORCLIENTSECRET=${BLAZORCLIENTSECRET}",
                             "SQL_CONNECTION_STRING=${SQL_CONNECTION_STRING}"
                         ]) {
-                            sh """
+                           sh """
                                 echo '#!/bin/bash
                                 export AUTHORITY="${AUTHORITY}"
                                 export AUDIENCE="${AUDIENCE}"
@@ -183,6 +183,7 @@ pipeline {
                                 sed -i "s|\\\\\"Logging\\\\\": {}|\\\\\"Logging\\\\\": {\\\\\"LogLevel\\\\\": {\\\\\"Default\\\\\": \\\\\\"Information\\\\\", \\\\\\"Microsoft.AspNetCore\\\\\": \\\\\\"Warning\\\\\"}}|g" \${publishDir}/appsettings.json
                                 ' > ${remoteScript}
                             """
+
 
     
                             sh """
