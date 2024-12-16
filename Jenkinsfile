@@ -157,7 +157,7 @@ pipeline {
                     sshagent([JENKINS_CREDENTIALS_ID]) {
                         script {
                             def remoteScript = "/tmp/deploy_script.sh"
-                            def publishDir = "${PUBLISH_DIR_PATH}"
+                            def publishDir = "/var/lib/jenkins/artifacts"  // Correct path for appsettings.json
 
                             // Ensure proper quoting in the shell script
                             withEnv([
@@ -172,6 +172,7 @@ pipeline {
                                 // Create the shell script content carefully
                                 sh """
                                     echo '#!/bin/bash
+                                    echo "Starting deployment..."
                                     export AUTHORITY="\${AUTHORITY}"
                                     export AUDIENCE="\${AUDIENCE}"
                                     export M2MCLIENTID="\${M2MCLIENTID}"
@@ -180,9 +181,24 @@ pipeline {
                                     export BLAZORCLIENTSECRET="\${BLAZORCLIENTSECRET}"
                                     export SQL_CONNECTION_STRING="\${SQL_CONNECTION_STRING}"
 
+                                    # Print variables for debugging
+                                    echo "AUTHORITY=\${AUTHORITY}"
+                                    echo "AUDIENCE=\${AUDIENCE}"
+                                    echo "M2MCLIENTID=\${M2MCLIENTID}"
+                                    echo "M2MCLIENTSECRET=\${M2MCLIENTSECRET}"
+                                    echo "BLAZORCLIENTID=\${BLAZORCLIENTID}"
+                                    echo "BLAZORCLIENTSECRET=\${BLAZORCLIENTSECRET}"
+                                    echo "SQL_CONNECTION_STRING=\${SQL_CONNECTION_STRING}"
+
+                                    # Check if appsettings.json exists at the correct path
+                                    if [ ! -f "\${publishDir}/appsettings.json" ]; then
+                                        echo "Error: appsettings.json not found at \${publishDir}/appsettings.json"
+                                        exit 1
+                                    fi
+
                                     # Update appsettings.json with SQL connection string
                                     jq --arg sql_connection_string "\${SQL_CONNECTION_STRING}" \\
-                                    ".ConnectionStrings = {\"SqlServer\": \"Server=\${sql_connection_string};TrustServerCertificate=True;\"}" \\
+                                    '.ConnectionStrings = { "SqlServer": "Server=\${sql_connection_string};TrustServerCertificate=True;" }' \\
                                     "\${publishDir}/appsettings.json" > tmp.json && mv tmp.json "\${publishDir}/appsettings.json"
 
                                     # Update appsettings.json with Auth0 details
@@ -192,14 +208,15 @@ pipeline {
                                     --arg m2m_client_secret "\${M2MCLIENTSECRET}" \\
                                     --arg blazor_client_id "\${BLAZORCLIENTID}" \\
                                     --arg blazor_client_secret "\${BLAZORCLIENTSECRET}" \\
-                                    '.Auth0 = {\"Authority\": \"\${authority}\", \"Audience\": \"\${audience}\", \"M2MClientId\": \"\${m2m_client_id}\", \"M2MClientSecret\": \"\${m2m_client_secret}\", \"BlazorClientId\": \"\${blazor_client_id}\", \"BlazorClientSecret\": \"\${blazor_client_secret}\"}' \\
+                                    '.Auth0 = { "Authority": "\${authority}", "Audience": "\${audience}", "M2MClientId": "\${m2m_client_id}", "M2MClientSecret": "\${m2m_client_secret}", "BlazorClientId": "\${blazor_client_id}", "BlazorClientSecret": "\${blazor_client_secret}" }' \\
                                     "\${publishDir}/appsettings.json" > tmp.json && mv tmp.json "\${publishDir}/appsettings.json"
+
                                     ' > ${remoteScript}
                                 """
 
                                 // Copy files and the script to the remote server
                                 sh """
-                                    scp -i ${SSH_KEY_FILE} -o StrictHostKeyChecking=no -r ${PUBLISH_OUTPUT}/* ${REMOTE_HOST}:${PUBLISH_DIR_PATH}
+                                    scp -i ${SSH_KEY_FILE} -o StrictHostKeyChecking=no -r ${PUBLISH_OUTPUT}/* ${REMOTE_HOST}:${publishDir}
                                 """
                                 sh """
                                     scp -i ${SSH_KEY_FILE} -o StrictHostKeyChecking=no ${remoteScript} ${REMOTE_HOST}:${remoteScript}
@@ -218,6 +235,7 @@ pipeline {
                 }
             }
         }
+
     }
 
     post {
