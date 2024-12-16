@@ -178,12 +178,10 @@ pipeline {
                                 export BLAZORCLIENTSECRET="${BLAZORCLIENTSECRET}"
                                 export SQL_CONNECTION_STRING="${SQL_CONNECTION_STRING}"
                                 
-                                # Update ConnectionStrings with SQL connection string using jq
                                 jq --arg sql_connection_string "\${SQL_CONNECTION_STRING}" \
-                                   '.ConnectionStrings = {SqlServer: "Server=\($sql_connection_string);TrustServerCertificate=True;"}' \
+                                   '.ConnectionStrings = {SqlServer: "Server=\\($sql_connection_string);TrustServerCertificate=True;"}' \
                                    \${publishDir}/appsettings.json > tmp.json && mv tmp.json \${publishDir}/appsettings.json
                                 
-                                # Update Auth0 with authentication settings using jq
                                 jq --arg authority "\${AUTHORITY}" \
                                    --arg audience "\${AUDIENCE}" \
                                    --arg m2m_client_id "\${M2MCLIENTID}" \
