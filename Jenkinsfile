@@ -177,23 +177,13 @@ pipeline {
                                     export BLAZORCLIENTID="${BLAZORCLIENTID}"
                                     export BLAZORCLIENTSECRET="${BLAZORCLIENTSECRET}"
                                     export SQL_CONNECTION_STRING="${SQL_CONNECTION_STRING}"
-                                    
-                                    jq --arg sql_connection_string "${SQL_CONNECTION_STRING}" \\
-                                    ".ConnectionStrings = {\"SqlServer\": \"Server=\${sql_connection_string};TrustServerCertificate=True;\"}" \\
-                                    "${publishDir}/appsettings.json" > tmp.json && mv tmp.json "${publishDir}/appsettings.json"
-                                    
-                                    jq --arg authority "${AUTHORITY}" \\
-                                    --arg audience "${AUDIENCE}" \\
-                                    --arg m2m_client_id "${M2MCLIENTID}" \\
-                                    --arg m2m_client_secret "${M2MCLIENTSECRET}" \\
-                                    --arg blazor_client_id "${BLAZORCLIENTID}" \\
-                                    --arg blazor_client_secret "${BLAZORCLIENTSECRET}" \\
-                                    '.Auth0 = {Authority: "${authority}", Audience: "${audience}", M2MClientId: "${m2m_client_id}", M2MClientSecret: "${m2m_client_secret}", BlazorClientId: "${blazor_client_id}", BlazorClientSecret: "${blazor_client_secret}"}' \\
-                                    "${publishDir}/appsettings.json" > tmp.json && mv tmp.json "${publishDir}/appsettings.json"
+                                
+                                    sed -i "s|\\\\\"ConnectionStrings\\\\\": {}|\\\\\"ConnectionStrings\\\\\": {\\\\\"SqlServer\\\\\": \\\\\\\"Server=\${SQL_CONNECTION_STRING};TrustServerCertificate=True;\\\\\"}|g" \${publishDir}/appsettings.json
+                                    sed -i "s|\\\\\"Auth0\\\\\": {}|\\\\\"Auth0\\\\\": {\\\\\"Authority\\\\\": \\\\\\"${AUTHORITY}\\\\\", \\\\\\"Audience\\\\\": \\\\\\"${AUDIENCE}\\\\\", \\\\\\"M2MClientId\\\\\": \\\\\\"${M2MCLIENTID}\\\\\", \\\\\\"M2MClientSecret\\\\\": \\\\\\"${M2MCLIENTSECRET}\\\\\", \\\\\\"BlazorClientId\\\\\": \\\\\\"${BLAZORCLIENTID}\\\\\", \\\\\\"BlazorClientSecret\\\\\": \\\\\\"${BLAZORCLIENTSECRET}\\\\\"}|g" \${publishDir}/appsettings.json
+                                    sed -i "s|\\\\\"Logging\\\\\": {}|\\\\\"Logging\\\\\": {\\\\\"LogLevel\\\\\": {\\\\\"Default\\\\\": \\\\\\"Information\\\\\", \\\\\\"Microsoft.AspNetCore\\\\\": \\\\\\"Warning\\\\\"}}|g" \${publishDir}/appsettings.json
                                     ' > ${remoteScript}
                                 """
 
-                                // Copy files and the script to the remote server
                                 sh """
                                     scp -i ${SSH_KEY_FILE} -o StrictHostKeyChecking=no -r ${PUBLISH_OUTPUT}/* ${REMOTE_HOST}:${publishDir}
                                 """
@@ -202,8 +192,9 @@ pipeline {
                                 """
         
                                 // Execute the remote script and clean up
+                                // rm ${remoteScript}
                                 sh """
-                                    ssh -i ${SSH_KEY_FILE} -o StrictHostKeyChecking=no ${REMOTE_HOST} "bash ${remoteScript} && rm ${remoteScript}"
+                                    ssh -i ${SSH_KEY_FILE} -o StrictHostKeyChecking=no ${REMOTE_HOST} "bash ${remoteScript}" 
                                 """
                                 sh """
                                     ssh -i ${SSH_KEY_FILE} -o StrictHostKeyChecking=no ${REMOTE_HOST} "screen -dmS rise_server dotnet /var/lib/jenkins/artifacts/Rise.Server.dll --urls 'http://0.0.0.0:5000;https://0.0.0.0:5001'"
