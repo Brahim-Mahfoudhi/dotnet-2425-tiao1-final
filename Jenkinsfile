@@ -184,19 +184,15 @@ pipeline {
                                     export SMTP_USERNAME="${SMTP_USERNAME}"
                                     export SMTP_PASSWORD="${SMTP_PASSWORD}"
         
-                                    # Update or add ConnectionStrings
-                                    sed -i "s|\\\\\"ConnectionStrings\\\\\": {}|\\\\\"ConnectionStrings\\\\\": {\\\\\"SqlServer\\\\\": \\\\\\\"Server=\${SQL_CONNECTION_STRING};TrustServerCertificate=True\\\\\"}|g" \${publishDir}/appsettings.json
-        
-                                    # Update or add Auth0
-                                    sed -i "s|\\\\\"Auth0\\\\\": {}|\\\\\"Auth0\\\\\": {\\\\\"Authority\\\\\": \\\\\\"${AUTHORITY}\\\\\", \\\\\\"Audience\\\\\": \\\\\\"${AUDIENCE}\\\\\", \\\\\\"M2MClientId\\\\\": \\\\\\"${M2MCLIENTID}\\\\\", \\\\\\"M2MClientSecret\\\\\": \\\\\\"${M2MCLIENTSECRET}\\\\\", \\\\\\"BlazorClientId\\\\\": \\\\\\"${BLAZORCLIENTID}\\\\\", \\\\\\"BlazorClientSecret\\\\\": \\\\\\"${BLAZORCLIENTSECRET}\\\\\"}|g" \${publishDir}/appsettings.json
-        
-                                    # Ensure EmailSettings section exists
+                                    sed -i "s|\\\"ConnectionStrings\\\": {}|\\\"ConnectionStrings\\\": {\\\"SqlServer\\\": \\\"Server=\${SQL_CONNECTION_STRING};TrustServerCertificate=True\\\"}|g" \${publishDir}/appsettings.json
+                                    
+                                    sed -i "s|\\\"Auth0\\\": {}|\\\"Auth0\\\": {\\\"Authority\\\": \\\"${AUTHORITY}\\\", \\\"Audience\\\": \\\"${AUDIENCE}\\\", \\\"M2MClientId\\\": \\\"${M2MCLIENTID}\\\", \\\"M2MClientSecret\\\": \\\"${M2MCLIENTSECRET}\\\", \\\"BlazorClientId\\\": \\\"${BLAZORCLIENTID}\\\", \\\"BlazorClientSecret\\\": \\\"${BLAZORCLIENTSECRET}\\\"}|g" \\${publishDir}/appsettings.json
+                                    
                                     if ! grep -q '"EmailSettings"' \${publishDir}/appsettings.json; then
-                                        # Add EmailSettings if it doesn't exist
-                                        sed -i "/}/i \\\",\\\"EmailSettings\\\": {\\\"SmtpServer\\\": \\\"smtp.gmail.com\\\", \\\"SmtpPort\\\": 587, \\\"SmtpUsername\\\": \\\"${SMTP_USERNAME}\\\", \\\"SmtpPassword\\\": \\\"${SMTP_PASSWORD}\\\", \\\"FromEmail\\\": \\\"${SMTP_USERNAME}\\\"}" \${publishDir}/appsettings.json
+                                        sed -i "/}/i \\\",\\\"EmailSettings\\\": {\\\"SmtpServer\\\": \\\"smtp.gmail.com\\\", \\\"SmtpPort\\\": 587, \\\"SmtpUsername\\\": \\\"${SMTP_USERNAME}\\\", \\\"SmtpPassword\\\": \\\"${SMTP_PASSWORD}\\\", \\\"FromEmail\\\": \\\"${SMTP_USERNAME}\\\"}" \\${publishDir}/appsettings.json
                                     else
                                         # Update EmailSettings
-                                        sed -i "s|\\\\\"EmailSettings\\\\\": {}|\\\\\"EmailSettings\\\\\": {\\\\\"SmtpServer\\\\\": \\\\\\"smtp.gmail.com\\\\\", \\\\\\"SmtpPort\\\\\": 587, \\\\\\"SmtpUsername\\\\\": \\\\\\"${SMTP_USERNAME}\\\\\", \\\\\\"SmtpPassword\\\\\": \\\\\\"${SMTP_PASSWORD}\\\\\", \\\\\\"FromEmail\\\\\": \\\\\\"${SMTP_USERNAME}\\\\\"}|g" \${publishDir}/appsettings.json
+                                        sed -i "s|\\\\\"EmailSettings\\\\\": {}|\\\\\"EmailSettings\\\\\": {\\\\\"SmtpServer\\\\\": \\\\\\"smtp.gmail.com\\\\\", \\\\\\"SmtpPort\\\\\": 587, \\\\\\"SmtpUsername\\\\\": \\\\\\"${SMTP_USERNAME}\\\\\", \\\\\\"SmtpPassword\\\\\": \\\\\\"${SMTP_PASSWORD}\\\\\", \\\\\\"FromEmail\\\\\": \\\\\\"${SMTP_USERNAME}\\\\\"}|g" \\${publishDir}/appsettings.json
                                     fi
                                     ' > ${remoteScript}
                                 """
@@ -207,7 +203,6 @@ pipeline {
                                 sh """
                                     scp -i ${SSH_KEY_FILE} -o StrictHostKeyChecking=no ${remoteScript} ${REMOTE_HOST}:${remoteScript}
                                 """
-                                
                                 sh """
                                     ssh -i ${SSH_KEY_FILE} -o StrictHostKeyChecking=no ${REMOTE_HOST} "bash ${remoteScript} && rm ${remoteScript}"
                                 """
