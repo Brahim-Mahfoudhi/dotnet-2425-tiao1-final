@@ -143,7 +143,7 @@ pipeline {
             }
         }
     
-        stage('Deploy to Remote Server') {
+       stage('Deploy to Remote Server') {
             steps {
                 withCredentials([
                     string(credentialsId: 'Authority', variable: 'AUTHORITY'),
@@ -158,7 +158,7 @@ pipeline {
                         script {
                             def remoteScript = "/tmp/deploy_script.sh"
                             def publishDir = "/var/lib/jenkins/artifacts"  // Correct path for appsettings.json
-
+        
                             // Ensure proper quoting in the shell script
                             withEnv([
                                 "AUTHORITY=${AUTHORITY}",
@@ -179,12 +179,12 @@ pipeline {
                                     export BLAZORCLIENTID="\\${BLAZORCLIENTID}"
                                     export BLAZORCLIENTSECRET="\\${BLAZORCLIENTSECRET}"
                                     export SQL_CONNECTION_STRING="\\${SQL_CONNECTION_STRING}"
-                                
+        
                                     # Corrected jq command with proper JSON syntax
                                     jq --arg sql_connection_string "\\${SQL_CONNECTION_STRING}" \\
                                     ".ConnectionStrings = {\"SqlServer\": \"Server=\\${sql_connection_string};TrustServerCertificate=True;\"}" \\
                                     "\\${publishDir}/appsettings.json" > tmp.json && mv tmp.json "\\${publishDir}/appsettings.json"
-                                
+        
                                     jq --arg authority "\\${AUTHORITY}" \\
                                     --arg audience "\\${AUDIENCE}" \\
                                     --arg m2m_client_id "\\${M2MCLIENTID}" \\
@@ -195,7 +195,7 @@ pipeline {
                                     "\\${publishDir}/appsettings.json" > tmp.json && mv tmp.json "\\${publishDir}/appsettings.json"
                                     ' > ${remoteScript}
                                 """
-                                
+        
                                 // Copy files and the script to the remote server
                                 sh """
                                     scp -i ${SSH_KEY_FILE} -o StrictHostKeyChecking=no -r ${PUBLISH_OUTPUT}/* ${REMOTE_HOST}:${publishDir}
@@ -203,7 +203,7 @@ pipeline {
                                 sh """
                                     scp -i ${SSH_KEY_FILE} -o StrictHostKeyChecking=no ${remoteScript} ${REMOTE_HOST}:${remoteScript}
                                 """
-
+        
                                 // Execute the remote script and clean up
                                 sh """
                                     ssh -i ${SSH_KEY_FILE} -o StrictHostKeyChecking=no ${REMOTE_HOST} "bash ${remoteScript} && rm ${remoteScript}"
@@ -217,6 +217,7 @@ pipeline {
                 }
             }
         }
+
     }
 
     post {
