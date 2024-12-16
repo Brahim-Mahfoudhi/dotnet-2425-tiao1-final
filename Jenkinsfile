@@ -168,6 +168,13 @@ pipeline {
                                 "BLAZORCLIENTSECRET=${BLAZORCLIENTSECRET}",
                                 "SQL_CONNECTION_STRING=${SQL_CONNECTION_STRING}"
                             ]) {
+
+                                sh """
+                                    echo "Publishing to \${publishDir}"
+                                    echo 'Here is the shell script content:'
+                                    cat \${remoteScript}
+                                """
+
                                 // Create the shell script content carefully
                                 sh """
                                     echo '#!/bin/bash
