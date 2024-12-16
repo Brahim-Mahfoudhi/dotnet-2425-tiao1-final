@@ -204,6 +204,7 @@ pipeline {
             }
         }
     }
+}
 
     post {
         success {
