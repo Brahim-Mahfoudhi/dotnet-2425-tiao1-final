@@ -29,7 +29,7 @@ pipeline {
         stage('Checkout Code') {
             steps {
                 script {
-                    git credentialsId: 'jenkins-master-key', url: 'git@github.com:Brahim-Mahfoudhi/dotnet-2425-tiao1-final.git', branch:'ACC'
+                    git credentialsId: 'jenkins-master-key', url: 'git@github.com:HOGENT-RISE/dotnet-2425-tiao1.git', branch:'ACC'
                     echo 'Gather GitHub info!'
                     def gitInfo = sh(script: 'git show -s HEAD --pretty=format:"%an%n%ae%n%s%n%H%n%h" 2>/dev/null', returnStdout: true).trim().split("\n")
                     env.GIT_AUTHOR_NAME = gitInfo[0]
@@ -177,13 +177,15 @@ pipeline {
                                 export BLAZORCLIENTID="${BLAZORCLIENTID}"
                                 export BLAZORCLIENTSECRET="${BLAZORCLIENTSECRET}"
                                 export SQL_CONNECTION_STRING="${SQL_CONNECTION_STRING}"
-                
+                                
+                                # Update ConnectionStrings with SQL connection string
                                 sed -i "s|\"ConnectionStrings\": {}|\"ConnectionStrings\": {\"SqlServer\": \"Server=\${SQL_CONNECTION_STRING};TrustServerCertificate=True;\"}|g" \${publishDir}/appsettings.json
-                                sed -i "s|\\\\"Auth0\\": {}|\\\\"Auth0\\": {\\\\"Authority\\": \\\\"https://dev-6yunsksn11owe71c.us.auth0.com/\\\\", \\\\"Audience\\": \\\\"https://api.rise.buut.com/\\\\", \\\\"M2MClientId\\": \\\\"\${M2MCLIENTID}\\", \\\\"M2MClientSecret\\": \\\\"\${M2MCLIENTSECRET}\\", \\\\"BlazorClientId\\": \\\\"\${BLAZORCLIENTID}\\", \\\\"BlazorClientSecret\\": \\\\"\${BLAZORCLIENTSECRET}\\\\"}|g" ${publishDir}/appsettings.json
-                                sed -i "s|\\\\"Logging\\": {}|\\\\"Logging\\": {\\\\"LogLevel\\": {\\\\"Default\\": \\\\"Information\\\\", \\\\"Microsoft.AspNetCore\\": \\\\"Warning\\\\"}}|g" ${publishDir}/appsettings.json
+                                
+                                # Update Auth0 with authentication settings
+                                sed -i "s|\"Auth0\": {}|\"Auth0\": {\"Authority\": \"\${AUTHORITY}\", \"Audience\": \"\${AUDIENCE}\", \"M2MClientId\": \"\${M2MCLIENTID}\", \"M2MClientSecret\": \"\${M2MCLIENTSECRET}\", \"BlazorClientId\": \"\${BLAZORCLIENTID}\", \"BlazorClientSecret\": \"\${BLAZORCLIENTSECRET}\"}|g" \${publishDir}/appsettings.json
                                 ' > ${remoteScript}
                             """
-                            
+
                             sh """
                                 scp -i ${SSH_KEY_FILE} -o StrictHostKeyChecking=no -r ${PUBLISH_OUTPUT}/* ${REMOTE_HOST}:${PUBLISH_DIR_PATH}
                             """
