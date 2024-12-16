@@ -178,11 +178,20 @@ pipeline {
                                 export BLAZORCLIENTSECRET="${BLAZORCLIENTSECRET}"
                                 export SQL_CONNECTION_STRING="${SQL_CONNECTION_STRING}"
                                 
-                                # Update ConnectionStrings with SQL connection string
-                                sed -i "s|\"ConnectionStrings\": {}|\"ConnectionStrings\": {\"SqlServer\": \"Server=\${SQL_CONNECTION_STRING};TrustServerCertificate=True;\"}|g" \${publishDir}/appsettings.json
+                                # Update ConnectionStrings with SQL connection string using jq
+                                jq --arg sql_connection_string "\${SQL_CONNECTION_STRING}" \
+                                   '.ConnectionStrings = {SqlServer: "Server=\($sql_connection_string);TrustServerCertificate=True;"}' \
+                                   \${publishDir}/appsettings.json > tmp.json && mv tmp.json \${publishDir}/appsettings.json
                                 
-                                # Update Auth0 with authentication settings
-                                sed -i "s|\"Auth0\": {}|\"Auth0\": {\"Authority\": \"\${AUTHORITY}\", \"Audience\": \"\${AUDIENCE}\", \"M2MClientId\": \"\${M2MCLIENTID}\", \"M2MClientSecret\": \"\${M2MCLIENTSECRET}\", \"BlazorClientId\": \"\${BLAZORCLIENTID}\", \"BlazorClientSecret\": \"\${BLAZORCLIENTSECRET}\"}|g" \${publishDir}/appsettings.json
+                                # Update Auth0 with authentication settings using jq
+                                jq --arg authority "\${AUTHORITY}" \
+                                   --arg audience "\${AUDIENCE}" \
+                                   --arg m2m_client_id "\${M2MCLIENTID}" \
+                                   --arg m2m_client_secret "\${M2MCLIENTSECRET}" \
+                                   --arg blazor_client_id "\${BLAZORCLIENTID}" \
+                                   --arg blazor_client_secret "\${BLAZORCLIENTSECRET}" \
+                                   '.Auth0 = {Authority: "\($authority)", Audience: "\($audience)", M2MClientId: "\($m2m_client_id)", M2MClientSecret: "\($m2m_client_secret)", BlazorClientId: "\($blazor_client_id)", BlazorClientSecret: "\($blazor_client_secret)"}' \
+                                   \${publishDir}/appsettings.json > tmp.json && mv tmp.json \${publishDir}/appsettings.json
                                 ' > ${remoteScript}
                             """
 
