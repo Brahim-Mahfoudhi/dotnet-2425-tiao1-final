@@ -145,74 +145,74 @@ pipeline {
     
         stage('Deploy to Remote Server') {
             steps {
-               withCredentials([
-                string(credentialsId: 'Authority', variable: 'AUTHORITY'),
-                string(credentialsId: 'Audience', variable: 'AUDIENCE'),
-                string(credentialsId: 'M2MClientId', variable: 'M2MCLIENTID'),
-                string(credentialsId: 'M2MClientSecret', variable: 'M2MCLIENTSECRET'),
-                string(credentialsId: 'BlazorClientId', variable: 'BLAZORCLIENTID'),
-                string(credentialsId: 'BlazorClientSecret', variable: 'BLAZORCLIENTSECRET'),
-                string(credentialsId: 'SQLConnectionString', variable: 'SQL_CONNECTION_STRING')
-            ]) {
-                sshagent([JENKINS_CREDENTIALS_ID]) {
-                    script {
-                        def remoteScript = "/tmp/deploy_script.sh"
-                        def publishDir = "${PUBLISH_DIR_PATH}"                            
-    
-                        withEnv([
-                            "AUTHORITY=${AUTHORITY}",
-                            "AUDIENCE=${AUDIENCE}",
-                            "M2MCLIENTID=${M2MCLIENTID}",
-                            "M2MCLIENTSECRET=${M2MCLIENTSECRET}",
-                            "BLAZORCLIENTID=${BLAZORCLIENTID}",
-                            "BLAZORCLIENTSECRET=${BLAZORCLIENTSECRET}",
-                            "SQL_CONNECTION_STRING=${SQL_CONNECTION_STRING}"
-                        ]) {
-                            sh """
-                                echo '#!/bin/bash
-                                export AUTHORITY="${AUTHORITY}"
-                                export AUDIENCE="${AUDIENCE}"
-                                export M2MCLIENTID="${M2MCLIENTID}"
-                                export M2MCLIENTSECRET="${M2MCLIENTSECRET}"
-                                export BLAZORCLIENTID="${BLAZORCLIENTID}"
-                                export BLAZORCLIENTSECRET="${BLAZORCLIENTSECRET}"
-                                export SQL_CONNECTION_STRING="${SQL_CONNECTION_STRING}"
-                                
-                                jq --arg sql_connection_string "\${SQL_CONNECTION_STRING}" \
-                                   '.ConnectionStrings = {SqlServer: "Server=\\($sql_connection_string);TrustServerCertificate=True;"}' \
-                                   \${publishDir}/appsettings.json > tmp.json && mv tmp.json \${publishDir}/appsettings.json
-                                
-                                jq --arg authority "\${AUTHORITY}" \
-                                   --arg audience "\${AUDIENCE}" \
-                                   --arg m2m_client_id "\${M2MCLIENTID}" \
-                                   --arg m2m_client_secret "\${M2MCLIENTSECRET}" \
-                                   --arg blazor_client_id "\${BLAZORCLIENTID}" \
-                                   --arg blazor_client_secret "\${BLAZORCLIENTSECRET}" \
-                                   '.Auth0 = {Authority: "\\($authority)", Audience: "\\($audience)", M2MClientId: "\\($m2m_client_id)", M2MClientSecret: "\\($m2m_client_secret)", BlazorClientId: "\\($blazor_client_id)", BlazorClientSecret: "\\($blazor_client_secret)"}' \
-                                   \${publishDir}/appsettings.json > tmp.json && mv tmp.json \${publishDir}/appsettings.json
-                                ' > ${remoteScript}
-                            """
-
-                            sh """
-                                scp -i ${SSH_KEY_FILE} -o StrictHostKeyChecking=no -r ${PUBLISH_OUTPUT}/* ${REMOTE_HOST}:${PUBLISH_DIR_PATH}
-                            """
-                            sh """
-                                scp -i ${SSH_KEY_FILE} -o StrictHostKeyChecking=no ${remoteScript} ${REMOTE_HOST}:${remoteScript}
-                            """
-                            
-                            sh """
-                                ssh -i ${SSH_KEY_FILE} -o StrictHostKeyChecking=no ${REMOTE_HOST} "bash ${remoteScript} && rm ${remoteScript}"
-                            """
-                            sh """
-                                ssh -i ${SSH_KEY_FILE} -o StrictHostKeyChecking=no ${REMOTE_HOST} "screen -dmS rise_server dotnet /var/lib/jenkins/artifacts/Rise.Server.dll --urls 'http://0.0.0.0:5000;https://0.0.0.0:5001'"
-                            """
+                withCredentials([
+                    string(credentialsId: 'Authority', variable: 'AUTHORITY'),
+                    string(credentialsId: 'Audience', variable: 'AUDIENCE'),
+                    string(credentialsId: 'M2MClientId', variable: 'M2MCLIENTID'),
+                    string(credentialsId: 'M2MClientSecret', variable: 'M2MCLIENTSECRET'),
+                    string(credentialsId: 'BlazorClientId', variable: 'BLAZORCLIENTID'),
+                    string(credentialsId: 'BlazorClientSecret', variable: 'BLAZORCLIENTSECRET'),
+                    string(credentialsId: 'SQLConnectionString', variable: 'SQL_CONNECTION_STRING')
+                ]) {
+                    sshagent([JENKINS_CREDENTIALS_ID]) {
+                        script {
+                            def remoteScript = "/tmp/deploy_script.sh"
+                            def publishDir = "${PUBLISH_DIR_PATH}"
+        
+                            withEnv([
+                                "AUTHORITY=${AUTHORITY}",
+                                "AUDIENCE=${AUDIENCE}",
+                                "M2MCLIENTID=${M2MCLIENTID}",
+                                "M2MCLIENTSECRET=${M2MCLIENTSECRET}",
+                                "BLAZORCLIENTID=${BLAZORCLIENTID}",
+                                "BLAZORCLIENTSECRET=${BLAZORCLIENTSECRET}",
+                                "SQL_CONNECTION_STRING=${SQL_CONNECTION_STRING}"
+                            ]) {
+                                sh """
+                                    echo '#!/bin/bash
+                                    export AUTHORITY="${AUTHORITY}"
+                                    export AUDIENCE="${AUDIENCE}"
+                                    export M2MCLIENTID="${M2MCLIENTID}"
+                                    export M2MCLIENTSECRET="${M2MCLIENTSECRET}"
+                                    export BLAZORCLIENTID="${BLAZORCLIENTID}"
+                                    export BLAZORCLIENTSECRET="${BLAZORCLIENTSECRET}"
+                                    export SQL_CONNECTION_STRING="${SQL_CONNECTION_STRING}"
+        
+                                    jq --arg sql_connection_string "\${SQL_CONNECTION_STRING}" \\
+                                       '.ConnectionStrings = {SqlServer: "Server=\${sql_connection_string};TrustServerCertificate=True;"}' \\
+                                       \${publishDir}/appsettings.json > tmp.json && mv tmp.json \${publishDir}/appsettings.json
+        
+                                    jq --arg authority "\${AUTHORITY}" \\
+                                       --arg audience "\${AUDIENCE}" \\
+                                       --arg m2m_client_id "\${M2MCLIENTID}" \\
+                                       --arg m2m_client_secret "\${M2MCLIENTSECRET}" \\
+                                       --arg blazor_client_id "\${BLAZORCLIENTID}" \\
+                                       --arg blazor_client_secret "\${BLAZORCLIENTSECRET}" \\
+                                       '.Auth0 = {Authority: "\${authority}", Audience: "\${audience}", M2MClientId: "\${m2m_client_id}", M2MClientSecret: "\${m2m_client_secret}", BlazorClientId: "\${blazor_client_id}", BlazorClientSecret: "\${blazor_client_secret)"}' \\
+                                       \${publishDir}/appsettings.json > tmp.json && mv tmp.json \${publishDir}/appsettings.json
+                                    ' > ${remoteScript}
+                                """
+        
+                                sh """
+                                    scp -i ${SSH_KEY_FILE} -o StrictHostKeyChecking=no -r ${PUBLISH_OUTPUT}/* ${REMOTE_HOST}:${PUBLISH_DIR_PATH}
+                                """
+                                sh """
+                                    scp -i ${SSH_KEY_FILE} -o StrictHostKeyChecking=no ${remoteScript} ${REMOTE_HOST}:${remoteScript}
+                                """
+        
+                                sh """
+                                    ssh -i ${SSH_KEY_FILE} -o StrictHostKeyChecking=no ${REMOTE_HOST} "bash ${remoteScript} && rm ${remoteScript}"
+                                """
+                                sh """
+                                    ssh -i ${SSH_KEY_FILE} -o StrictHostKeyChecking=no ${REMOTE_HOST} "screen -dmS rise_server dotnet /var/lib/jenkins/artifacts/Rise.Server.dll --urls 'http://0.0.0.0:5000;https://0.0.0.0:5001'"
+                                """
+                            }
                         }
                     }
                 }
             }
         }
-    }
-}
+
 
     post {
         success {
