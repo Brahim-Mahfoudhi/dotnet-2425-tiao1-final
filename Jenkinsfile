@@ -158,7 +158,8 @@ pipeline {
                         script {
                             def remoteScript = "/tmp/deploy_script.sh"
                             def publishDir = "${PUBLISH_DIR_PATH}"
-        
+
+                            // Pass the credentials as environment variables to the shell script
                             withEnv([
                                 "AUTHORITY=${AUTHORITY}",
                                 "AUDIENCE=${AUDIENCE}",
@@ -168,38 +169,41 @@ pipeline {
                                 "BLAZORCLIENTSECRET=${BLAZORCLIENTSECRET}",
                                 "SQL_CONNECTION_STRING=${SQL_CONNECTION_STRING}"
                             ]) {
+                                // Create the shell script with proper escaping for sensitive data
                                 sh """
                                     echo '#!/bin/bash
-                                    export AUTHORITY="${AUTHORITY}"
-                                    export AUDIENCE="${AUDIENCE}"
-                                    export M2MCLIENTID="${M2MCLIENTID}"
-                                    export M2MCLIENTSECRET="${M2MCLIENTSECRET}"
-                                    export BLAZORCLIENTID="${BLAZORCLIENTID}"
-                                    export BLAZORCLIENTSECRET="${BLAZORCLIENTSECRET}"
-                                    export SQL_CONNECTION_STRING="${SQL_CONNECTION_STRING}"
-        
+                                    export AUTHORITY=\${AUTHORITY}
+                                    export AUDIENCE=\${AUDIENCE}
+                                    export M2MCLIENTID=\${M2MCLIENTID}
+                                    export M2MCLIENTSECRET=\${M2MCLIENTSECRET}
+                                    export BLAZORCLIENTID=\${BLAZORCLIENTID}
+                                    export BLAZORCLIENTSECRET=\${BLAZORCLIENTSECRET}
+                                    export SQL_CONNECTION_STRING=\${SQL_CONNECTION_STRING}
+
                                     jq --arg sql_connection_string "\${SQL_CONNECTION_STRING}" \\
-                                       '.ConnectionStrings = {SqlServer: "Server=\${sql_connection_string};TrustServerCertificate=True;"}' \\
-                                       \${publishDir}/appsettings.json > tmp.json && mv tmp.json \${publishDir}/appsettings.json
-        
+                                    '.ConnectionStrings = {SqlServer: "Server=\${sql_connection_string};TrustServerCertificate=True;"}' \\
+                                    \${publishDir}/appsettings.json > tmp.json && mv tmp.json \${publishDir}/appsettings.json
+
                                     jq --arg authority "\${AUTHORITY}" \\
-                                       --arg audience "\${AUDIENCE}" \\
-                                       --arg m2m_client_id "\${M2MCLIENTID}" \\
-                                       --arg m2m_client_secret "\${M2MCLIENTSECRET}" \\
-                                       --arg blazor_client_id "\${BLAZORCLIENTID}" \\
-                                       --arg blazor_client_secret "\${BLAZORCLIENTSECRET}" \\
-                                       '.Auth0 = {Authority: "\${authority}", Audience: "\${audience}", M2MClientId: "\${m2m_client_id}", M2MClientSecret: "\${m2m_client_secret}", BlazorClientId: "\${blazor_client_id}", BlazorClientSecret: "\${blazor_client_secret)"}' \\
-                                       \${publishDir}/appsettings.json > tmp.json && mv tmp.json \${publishDir}/appsettings.json
+                                    --arg audience "\${AUDIENCE}" \\
+                                    --arg m2m_client_id "\${M2MCLIENTID}" \\
+                                    --arg m2m_client_secret "\${M2MCLIENTSECRET}" \\
+                                    --arg blazor_client_id "\${BLAZORCLIENTID}" \\
+                                    --arg blazor_client_secret "\${BLAZORCLIENTSECRET}" \\
+                                    '.Auth0 = {Authority: "\${authority}", Audience: "\${audience}", M2MClientId: "\${m2m_client_id}", M2MClientSecret: "\${m2m_client_secret}", BlazorClientId: "\${blazor_client_id}", BlazorClientSecret: "\${blazor_client_secret)"}' \\
+                                    \${publishDir}/appsettings.json > tmp.json && mv tmp.json \${publishDir}/appsettings.json
                                     ' > ${remoteScript}
                                 """
-        
+
+                                // Copy files and the script to the remote server
                                 sh """
                                     scp -i ${SSH_KEY_FILE} -o StrictHostKeyChecking=no -r ${PUBLISH_OUTPUT}/* ${REMOTE_HOST}:${PUBLISH_DIR_PATH}
                                 """
                                 sh """
                                     scp -i ${SSH_KEY_FILE} -o StrictHostKeyChecking=no ${remoteScript} ${REMOTE_HOST}:${remoteScript}
                                 """
-        
+
+                                // Execute the remote script and clean up
                                 sh """
                                     ssh -i ${SSH_KEY_FILE} -o StrictHostKeyChecking=no ${REMOTE_HOST} "bash ${remoteScript} && rm ${remoteScript}"
                                 """
@@ -234,7 +238,7 @@ pipeline {
             echo 'Generate Test report...'
     
             script {
-              def testPaths = [
+                def testPaths = [
                     Domain: 'Rise.Domain.Tests/TestResults/Domain.trx',
                     Client: 'Rise.Client.Tests/TestResults/Client.trx',
                     //Server: 'Rise.Server.Tests/TestResults/Server.trx',
