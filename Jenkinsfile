@@ -170,9 +170,9 @@ pipeline {
                             ]) {
 
                                 sh """
-                                    echo "Publishing to \${publishDir}"
+                                    echo "Publishing to \\${publishDir}"
                                     echo 'Here is the shell script content:'
-                                    cat \${remoteScript}
+                                    cat \\${remoteScript}
                                 """
 
                                 // Create the shell script content carefully
