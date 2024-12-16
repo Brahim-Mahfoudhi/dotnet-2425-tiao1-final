@@ -212,7 +212,7 @@ pipeline {
                 }
             }
         }
-
+    }
 
     post {
         success {
