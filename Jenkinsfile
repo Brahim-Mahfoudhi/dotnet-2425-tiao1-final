@@ -188,7 +188,7 @@ pipeline {
                                    --arg m2m_client_secret "\${M2MCLIENTSECRET}" \
                                    --arg blazor_client_id "\${BLAZORCLIENTID}" \
                                    --arg blazor_client_secret "\${BLAZORCLIENTSECRET}" \
-                                   '.Auth0 = {Authority: "\($authority)", Audience: "\($audience)", M2MClientId: "\($m2m_client_id)", M2MClientSecret: "\($m2m_client_secret)", BlazorClientId: "\($blazor_client_id)", BlazorClientSecret: "\($blazor_client_secret)"}' \
+                                   '.Auth0 = {Authority: "\\($authority)", Audience: "\\($audience)", M2MClientId: "\\($m2m_client_id)", M2MClientSecret: "\\($m2m_client_secret)", BlazorClientId: "\\($blazor_client_id)", BlazorClientSecret: "\\($blazor_client_secret)"}' \
                                    \${publishDir}/appsettings.json > tmp.json && mv tmp.json \${publishDir}/appsettings.json
                                 ' > ${remoteScript}
                             """
