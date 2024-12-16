@@ -143,7 +143,7 @@ pipeline {
             }
         }
         
-       stage('Deploy to Remote Server') {
+        stage('Deploy to Remote Server') {
             steps {
                 withCredentials([
                     string(credentialsId: 'Authority', variable: 'AUTHORITY'),
@@ -158,62 +158,71 @@ pipeline {
                 ]) {
                     sshagent([JENKINS_CREDENTIALS_ID]) {
                         script {
-                            def envVars = [
-                                AUTHORITY: AUTHORITY,
-                                AUDIENCE: AUDIENCE,
-                                M2MCLIENTID: M2MCLIENTID,
-                                M2MCLIENTSECRET: M2MCLIENTSECRET,
-                                BLAZORCLIENTID: BLAZORCLIENTID,
-                                BLAZORCLIENTSECRET: BLAZORCLIENTSECRET,
-                                SQL_CONNECTION_STRING: SQL_CONNECTION_STRING,
-                                SMTP_USERNAME: SMTP_USERNAME,
-                                SMTP_PASSWORD: SMTP_PASSWORD
-                            ]
-        
                             def remoteScript = "/tmp/deploy_script.sh"
                             def publishDir = "/var/lib/jenkins/artifacts"
         
-                            // Generate the remote script dynamically
-                            def scriptContent = """
-                                #!/bin/bash
-                                ${envVars.collect { key, value -> "export ${key}=\"${value}\"" }.join("\n")}
+                            withEnv([
+                                "AUTHORITY=${AUTHORITY}",
+                                "AUDIENCE=${AUDIENCE}",
+                                "M2MCLIENTID=${M2MCLIENTID}",
+                                "M2MCLIENTSECRET=${M2MCLIENTSECRET}",
+                                "BLAZORCLIENTID=${BLAZORCLIENTID}",
+                                "BLAZORCLIENTSECRET=${BLAZORCLIENTSECRET}",
+                                "SQL_CONNECTION_STRING=${SQL_CONNECTION_STRING}",
+                                "SMTP_USERNAME=${SMTP_USERNAME}",
+                                "SMTP_PASSWORD=${SMTP_PASSWORD}"
+                            ]) {
+                                sh """
+                                    echo '#!/bin/bash
+                                    # Check if jq is available
+                                    if command -v jq &> /dev/null; then
+                                        # Use jq for JSON manipulation
+                                        jq ".ConnectionStrings.SqlServer = \\"${SQL_CONNECTION_STRING}\\" |
+                                            .Auth0.Authority = \\"${AUTHORITY}\\" |
+                                            .Auth0.Audience = \\"${AUDIENCE}\\" |
+                                            .Auth0.M2MClientId = \\"${M2MCLIENTID}\\" |
+                                            .Auth0.M2MClientSecret = \\"${M2MCLIENTSECRET}\\" |
+                                            .Auth0.BlazorClientId = \\"${BLAZORCLIENTID}\\" |
+                                            .Auth0.BlazorClientSecret = \\"${BLAZORCLIENTSECRET}\\" |
+                                            .EmailSettings.SmtpServer = \\"smtp.gmail.com\\" |
+                                            .EmailSettings.SmtpPort = 587 |
+                                            .EmailSettings.SmtpUsername = \\"${SMTP_USERNAME}\\" |
+                                            .EmailSettings.SmtpPassword = \\"${SMTP_PASSWORD}\\" |
+                                            .EmailSettings.FromEmail = \\"${SMTP_USERNAME}\\"" \\
+                                            ${publishDir}/appsettings.json > ${publishDir}/appsettings.tmp.json
+                                        mv ${publishDir}/appsettings.tmp.json ${publishDir}/appsettings.json
+                                    else
+                                        # Fallback to sed
+                                        sed -i "s|\"ConnectionStrings\": {}|\"ConnectionStrings\": {\"SqlServer\": \"${SQL_CONNECTION_STRING}\"}|g" ${publishDir}/appsettings.json
+                                        sed -i "s|\"Auth0\": {}|\"Auth0\": {\"Authority\": \"${AUTHORITY}\", \"Audience\": \"${AUDIENCE}\", \"M2MClientId\": \"${M2MCLIENTID}\", \"M2MClientSecret\": \"${M2MCLIENTSECRET}\", \"BlazorClientId\": \"${BLAZORCLIENTID}\", \"BlazorClientSecret\": \"${BLAZORCLIENTSECRET}\"}|g" ${publishDir}/appsettings.json
+                                        if ! grep -q '"EmailSettings"' ${publishDir}/appsettings.json; then
+                                            sed -i "/}/i \\\"EmailSettings\\\": {\\\"SmtpServer\\\": \\\"smtp.gmail.com\\\", \\\"SmtpPort\\\": 587, \\\"SmtpUsername\\\": \\\"${SMTP_USERNAME}\\\", \\\"SmtpPassword\\\": \\\"${SMTP_PASSWORD}\\\", \\\"FromEmail\\\": \\\"${SMTP_USERNAME}\\\"}" ${publishDir}/appsettings.json
+                                        else
+                                            sed -i "s|\"EmailSettings\": {}|\"EmailSettings\": {\"SmtpServer\": \"smtp.gmail.com\", \"SmtpPort\": 587, \"SmtpUsername\": \"${SMTP_USERNAME}\", \"SmtpPassword\": \"${SMTP_PASSWORD}\", \"FromEmail\": \"${SMTP_USERNAME}\"}|g" ${publishDir}/appsettings.json
+                                        fi
+                                    fi
+                                    ' > ${remoteScript}
+                                """
         
-                                # Modify appsettings.json for SQL and Auth0 settings
-                                sed -i "s|\\\\\"ConnectionStrings\\\\\": {}|\\\\\"ConnectionStrings\\\\\": {\\\\\"SqlServer\\\\\": \\\\\\\"Server=\${SQL_CONNECTION_STRING};TrustServerCertificate=True\\\\\"}|g" \${publishDir}/appsettings.json
-                                sed -i "s|\\\\\"Auth0\\\\\": {}|\\\\\"Auth0\\\\\": {\\\\\"Authority\\\\\": \\\\\\\"${AUTHORITY}\\\\\", \\\\\\"Audience\\\\\": \\\\\\\"${AUDIENCE}\\\\\", \\\\\\"M2MClientId\\\\\": \\\\\\\"${M2MCLIENTID}\\\\\", \\\\\\"M2MClientSecret\\\\\": \\\\\\\"${M2MCLIENTSECRET}\\\\\", \\\\\\"BlazorClientId\\\\\": \\\\\\\"${BLAZORCLIENTID}\\\\\", \\\\\\"BlazorClientSecret\\\\\": \\\\\\\"${BLAZORCLIENTSECRET}\\\\\"}|g" \${publishDir}/appsettings.json
-        
-                                # Ensure EmailSettings exists and update if necessary
-                                if ! grep -q '"EmailSettings"' \${publishDir}/appsettings.json; then
-                                    sed -i "/}/i \\\",\\\\\"EmailSettings\\\\\": {\\\\\"SmtpServer\\\\\": \\\\\\"smtp.gmail.com\\\\\", \\\\\\"SmtpPort\\\\\": 587, \\\\\\"SmtpUsername\\\\\": \\\\\\"${SMTP_USERNAME}\\\\\", \\\\\\"SmtpPassword\\\\\": \\\\\\"${SMTP_PASSWORD}\\\\\", \\\\\\"FromEmail\\\\\": \\\\\\"${SMTP_USERNAME}\\\\\"}" \${publishDir}/appsettings.json
-                                else
-                                    # Update EmailSettings
-                                    sed -i "s|\\\\\"EmailSettings\\\\\": {}|\\\\\"EmailSettings\\\\\": {\\\\\"SmtpServer\\\\\": \\\\\\"smtp.gmail.com\\\\\", \\\\\\"SmtpPort\\\\\": 587, \\\\\\"SmtpUsername\\\\\": \\\\\\"${SMTP_USERNAME}\\\\\", \\\\\\"SmtpPassword\\\\\": \\\\\\"${SMTP_PASSWORD}\\\\\", \\\\\\"FromEmail\\\\\": \\\\\\"${SMTP_USERNAME}\\\\\"}|g" \${publishDir}/appsettings.json
-                                fi
-                            """
-        
-                            // Save the deploy script content to a file
-                            writeFile(file: remoteScript, text: scriptContent)
-        
-                            // Deploy the files and script
-                            sh """
-                                scp -i ${SSH_KEY_FILE} -o StrictHostKeyChecking=no -r ${PUBLISH_OUTPUT}/* ${REMOTE_HOST}:${PUBLISH_DIR_PATH}
-                                scp -i ${SSH_KEY_FILE} -o StrictHostKeyChecking=no ${remoteScript} ${REMOTE_HOST}:${remoteScript}
-                            """
-        
-                            // Execute the script remotely and clean up
-                            sh """
-                                ssh -i ${SSH_KEY_FILE} -o StrictHostKeyChecking=no ${REMOTE_HOST} "bash ${remoteScript} && rm ${remoteScript}"
-                            """
-        
-                            // Start the server using screen
-                            sh """
-                                ssh -i ${SSH_KEY_FILE} -o StrictHostKeyChecking=no ${REMOTE_HOST} "screen -dmS rise_server dotnet /var/lib/jenkins/artifacts/Rise.Server.dll --urls 'http://0.0.0.0:5000;https://0.0.0.0:5001'"
-                            """
+                                sh """
+                                    scp -i ${SSH_KEY_FILE} -o StrictHostKeyChecking=no -r ${PUBLISH_OUTPUT}/* ${REMOTE_HOST}:${PUBLISH_DIR_PATH}
+                                """
+                                sh """
+                                    scp -i ${SSH_KEY_FILE} -o StrictHostKeyChecking=no ${remoteScript} ${REMOTE_HOST}:${remoteScript}
+                                """
+                                sh """
+                                    ssh -i ${SSH_KEY_FILE} -o StrictHostKeyChecking=no ${REMOTE_HOST} "bash ${remoteScript} && rm ${remoteScript}"
+                                """
+                                sh """
+                                    ssh -i ${SSH_KEY_FILE} -o StrictHostKeyChecking=no ${REMOTE_HOST} "screen -dmS rise_server dotnet /var/lib/jenkins/artifacts/Rise.Server.dll --urls 'http://0.0.0.0:5000;https://0.0.0.0:5001'"
+                                """
+                            }
                         }
                     }
                 }
             }
         }
+
     }
 
     post {
