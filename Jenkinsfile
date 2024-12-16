@@ -172,17 +172,17 @@ pipeline {
                                 // Create the shell script with proper escaping for sensitive data
                                 sh """
                                     echo '#!/bin/bash
-                                    export AUTHORITY=\${AUTHORITY}
-                                    export AUDIENCE=\${AUDIENCE}
-                                    export M2MCLIENTID=\${M2MCLIENTID}
-                                    export M2MCLIENTSECRET=\${M2MCLIENTSECRET}
-                                    export BLAZORCLIENTID=\${BLAZORCLIENTID}
-                                    export BLAZORCLIENTSECRET=\${BLAZORCLIENTSECRET}
-                                    export SQL_CONNECTION_STRING=\${SQL_CONNECTION_STRING}
+                                    export AUTHORITY="\${AUTHORITY}"
+                                    export AUDIENCE="\${AUDIENCE}"
+                                    export M2MCLIENTID="\${M2MCLIENTID}"
+                                    export M2MCLIENTSECRET="\${M2MCLIENTSECRET}"
+                                    export BLAZORCLIENTID="\${BLAZORCLIENTID}"
+                                    export BLAZORCLIENTSECRET="\${BLAZORCLIENTSECRET}"
+                                    export SQL_CONNECTION_STRING="\${SQL_CONNECTION_STRING}"
 
                                     jq --arg sql_connection_string "\${SQL_CONNECTION_STRING}" \\
                                     '.ConnectionStrings = {SqlServer: "Server=\${sql_connection_string};TrustServerCertificate=True;"}' \\
-                                    \${publishDir}/appsettings.json > tmp.json && mv tmp.json \${publishDir}/appsettings.json
+                                    "\${publishDir}/appsettings.json" > tmp.json && mv tmp.json "\${publishDir}/appsettings.json"
 
                                     jq --arg authority "\${AUTHORITY}" \\
                                     --arg audience "\${AUDIENCE}" \\
@@ -191,7 +191,7 @@ pipeline {
                                     --arg blazor_client_id "\${BLAZORCLIENTID}" \\
                                     --arg blazor_client_secret "\${BLAZORCLIENTSECRET}" \\
                                     '.Auth0 = {Authority: "\${authority}", Audience: "\${audience}", M2MClientId: "\${m2m_client_id}", M2MClientSecret: "\${m2m_client_secret}", BlazorClientId: "\${blazor_client_id}", BlazorClientSecret: "\${blazor_client_secret)"}' \\
-                                    \${publishDir}/appsettings.json > tmp.json && mv tmp.json \${publishDir}/appsettings.json
+                                    "\${publishDir}/appsettings.json" > tmp.json && mv tmp.json "\${publishDir}/appsettings.json"
                                     ' > ${remoteScript}
                                 """
 
