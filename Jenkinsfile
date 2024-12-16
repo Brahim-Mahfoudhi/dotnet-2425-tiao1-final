@@ -5,14 +5,14 @@ pipeline {
     }
 
     environment {
-        JENKINS_SERVER = 'http://139.162.180.76:8080'
+        JENKINS_SERVER = 'http://172.16.128.100:8080'
         DOTNET_PROJECT_PATH = 'Rise.Server/Rise.Server.csproj'
         DOTNET_TEST_PATH = 'Rise.Domain.Tests/Rise.Domain.Tests.csproj'
         PUBLISH_OUTPUT = 'publish'
         DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1301160382307766292/kROxjtgZ-XVOibckTMri2fy5-nNOEjzjPLbT9jEpr_R0UH9JG0ZXb2XzUsYGE0d3yk6I"
         JENKINS_CREDENTIALS_ID = "jenkins-master-key"
         SSH_KEY_FILE = '/var/lib/jenkins/.ssh/id_rsa'
-        REMOTE_HOST = 'jenkins@139.162.133.163'
+        REMOTE_HOST = 'jenkins@172.16.128.101'
         TRX_FILE_PATH = 'Rise.Domain.Tests/TestResults/test-results.trx'
         TEST_RESULT_PATH = 'Rise.Domain.Tests/TestResults'
         TRX_TO_XML_PATH = 'Rise.Domain.Tests/TestResults/test-results.xml'
