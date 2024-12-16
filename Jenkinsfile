@@ -192,14 +192,14 @@ pipeline {
 
                                     # Check if appsettings.json exists at the correct path
                                     if [ ! -f "\${publishDir}/appsettings.json" ]; then
-                                        echo "Error: appsettings.json not found at \${publishDir}/appsettings.json"
+                                        echo "Error: appsettings.json not found at /var/lib/jenkins/artifacts/appsettings.json"
                                         exit 1
                                     fi
 
                                     # Update appsettings.json with SQL connection string
                                     jq --arg sql_connection_string "\${SQL_CONNECTION_STRING}" \\
                                     '.ConnectionStrings = { "SqlServer": "Server=\${sql_connection_string};TrustServerCertificate=True;" }' \\
-                                    "\${publishDir}/appsettings.json" > tmp.json && mv tmp.json "\${publishDir}/appsettings.json"
+                                    "\${publishDir}/appsettings.json" > tmp.json && mv tmp.json "/var/lib/jenkins/artifacts/appsettings.json"
 
                                     # Update appsettings.json with Auth0 details
                                     jq --arg authority "\${AUTHORITY}" \\
@@ -235,7 +235,6 @@ pipeline {
                 }
             }
         }
-
     }
 
     post {
