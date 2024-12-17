@@ -143,70 +143,69 @@ pipeline {
             }
         }
         
-            stage('Deploy to Remote Server') {
-                steps {
-                    withCredentials([
-                        string(credentialsId: 'Authority', variable: 'AUTHORITY'),
-                        string(credentialsId: 'Audience', variable: 'AUDIENCE'),
-                        string(credentialsId: 'M2MClientId', variable: 'M2MCLIENTID'),
-                        string(credentialsId: 'M2MClientSecret', variable: 'M2MCLIENTSECRET'),
-                        string(credentialsId: 'BlazorClientId', variable: 'BLAZORCLIENTID'),
-                        string(credentialsId: 'BlazorClientSecret', variable: 'BLAZORCLIENTSECRET'),
-                        string(credentialsId: 'SQLConnectionString', variable: 'SQL_CONNECTION_STRING'),
-                        string(credentialsId: 'smtp-credentials-id-username', variable: 'SMTP_USERNAME'),
-                        string(credentialsId: 'smtp-credentials-id-password', variable: 'SMTP_PASSWORD')
-                    ]) {
-                        sshagent(['JENKINS_CREDENTIALS_ID']) {
-                            script {
-                                def publishDir = "/var/lib/jenkins/artifacts"
-                                def remoteScript = "/tmp/deploy_script.sh"
-            
-                                def scriptContent = """
-                                    #!/bin/bash
-                                    export AUTHORITY="${AUTHORITY}"
-                                    export AUDIENCE="${AUDIENCE}"
-                                    export M2MCLIENTID="${M2MCLIENTID}"
-                                    export M2MCLIENTSECRET="${M2MCLIENTSECRET}"
-                                    export BLAZORCLIENTID="${BLAZORCLIENTID}"
-                                    export BLAZORCLIENTSECRET="${BLAZORCLIENTSECRET}"
-                                    export SQL_CONNECTION_STRING="${SQL_CONNECTION_STRING}"
-                                    export SMTP_USERNAME="${SMTP_USERNAME}"
-                                    export SMTP_PASSWORD="${SMTP_PASSWORD}"
-            
-                                    PUBLISH_DIR="${publishDir}"
-            
-                                    # Check if files exist in publish directory
-                                    if [ ! -f "\${PUBLISH_DIR}/Rise.Server.dll" ]; then
-                                        echo "ERROR: Deployment files are missing in \${PUBLISH_DIR}. Exiting."
-                                        exit 1
-                                    fi
-            
-                                    # Update appsettings.json
-                                    sed -i "s|\\\\\"ConnectionStrings\\\\\":.*|\\\\\"ConnectionStrings\\\\\": {\\\\\"Sqlserver\\\\\": \\\\\\"${SQL_CONNECTION_STRING}\\\\\"},|" \${PUBLISH_DIR}/appsettings.json
-                                    sed -i "s|\\\\\"Auth0\\\\\":.*|\\\\\"Auth0\\\\\": {\\\\\"Authority\\\\\": \\\\\\"${AUTHORITY}\\\\\", \\\\\\"Audience\\\\\": \\\\\\"${AUDIENCE}\\\\\", \\\\\\"M2MClientId\\\\\": \\\\\\"${M2MCLIENTID}\\\\\", \\\\\\"M2MClientSecret\\\\\": \\\\\\"${M2MCLIENTSECRET}\\\\\", \\\\\\"BlazorClientId\\\\\": \\\\\\"${BLAZORCLIENTID}\\\\\", \\\\\\"BlazorClientSecret\\\\\": \\\\\\"${BLAZORCLIENTSECRET}\\\\\"},|" \${PUBLISH_DIR}/appsettings.json
-                                    sed -i "s|\\\\\"EmailSettings\\\\\":.*|\\\\\"EmailSettings\\\\\": {\\\\\"SmtpServer\\\\\": \\\\\\"smtp.gmail.com\\\\\", \\\\\\"SmtpPort\\\\\": 587, \\\\\\"SmtpUsername\\\\\": \\\\\\"${SMTP_USERNAME}\\\\\", \\\\\\"SmtpPassword\\\\\": \\\\\\"${SMTP_PASSWORD}\\\\\", \\\\\\"FromEmail\\\\\": \\\\\\"${SMTP_USERNAME}\\\\\"},|" \${PUBLISH_DIR}/appsettings.json
-            
-                                    # Start the application using screen
-                                    screen -dmS rise_server dotnet \${PUBLISH_DIR}/Rise.Server.dll --urls "http://0.0.0.0:5000;https://0.0.0.0:5001"
-                                """
-            
-                                writeFile(file: remoteScript, text: scriptContent)
-            
-                                // Deploy files and script to the remote server
-                                sh """
-                                    scp -i ${SSH_KEY_FILE} -o StrictHostKeyChecking=no -r ${PUBLISH_OUTPUT}/* ${REMOTE_HOST}:${PUBLISH_DIR_PATH}
-                                    scp -i ${SSH_KEY_FILE} -o StrictHostKeyChecking=no ${remoteScript} ${REMOTE_HOST}:${remoteScript}
-                                """
-            
-                                // Execute the script on the remote server
-                                sh """
-                                    ssh -i ${SSH_KEY_FILE} -o StrictHostKeyChecking=no ${REMOTE_HOST} "bash ${remoteScript} && rm ${remoteScript}"
-                                """
-                            }
+        stage('Deploy to Remote Server') {
+            steps {
+                withCredentials([
+                    string(credentialsId: 'Authority', variable: 'AUTHORITY'),
+                    string(credentialsId: 'Audience', variable: 'AUDIENCE'),
+                    string(credentialsId: 'M2MClientId', variable: 'M2MCLIENTID'),
+                    string(credentialsId: 'M2MClientSecret', variable: 'M2MCLIENTSECRET'),
+                    string(credentialsId: 'BlazorClientId', variable: 'BLAZORCLIENTID'),
+                    string(credentialsId: 'BlazorClientSecret', variable: 'BLAZORCLIENTSECRET'),
+                    string(credentialsId: 'SQLConnectionString', variable: 'SQL_CONNECTION_STRING'),
+                    string(credentialsId: 'smtp-credentials-id-username', variable: 'SMTP_USERNAME'),
+                    string(credentialsId: 'smtp-credentials-id-password', variable: 'SMTP_PASSWORD')
+                ]) {
+                    sshagent(['JENKINS_CREDENTIALS_ID']) {
+                        script {
+                            def publishDir = "/var/lib/jenkins/artifacts"
+                            def remoteScript = "/tmp/deploy_script.sh"
+        
+                            def scriptContent = """
+                            #!/bin/bash
+                            export AUTHORITY="${AUTHORITY}"
+                            export AUDIENCE="${AUDIENCE}"
+                            export M2MCLIENTID="${M2MCLIENTID}"
+                            export M2MCLIENTSECRET="${M2MCLIENTSECRET}"
+                            export BLAZORCLIENTID="${BLAZORCLIENTID}"
+                            export BLAZORCLIENTSECRET="${BLAZORCLIENTSECRET}"
+                            export SQL_CONNECTION_STRING="${SQL_CONNECTION_STRING}"
+                            export SMTP_USERNAME="${SMTP_USERNAME}"
+                            export SMTP_PASSWORD="${SMTP_PASSWORD}"
+        
+                            # Update appsettings.json
+                            sed -i "s|\\\\\"ConnectionStrings\\\\\":.*|\\\\\"ConnectionStrings\\\\\": {\\\\\"Sqlserver\\\\\": \\\\\\"${SQL_CONNECTION_STRING}\\\\\"},|" \${publishDir}/appsettings.json
+                            sed -i "s|\\\\\"Auth0\\\\\":.*|\\\\\"Auth0\\\\\": {\\\\\"Authority\\\\\": \\\\\\"${AUTHORITY}\\\\\", \\\\\\"Audience\\\\\": \\\\\\"${AUDIENCE}\\\\\", \\\\\\"M2MClientId\\\\\": \\\\\\"${M2MCLIENTID}\\\\\", \\\\\\"M2MClientSecret\\\\\": \\\\\\"${M2MCLIENTSECRET}\\\\\", \\\\\\"BlazorClientId\\\\\": \\\\\\"${BLAZORCLIENTID}\\\\\", \\\\\\"BlazorClientSecret\\\\\": \\\\\\"${BLAZORCLIENTSECRET}\\\\\"},|" \${publishDir}/appsettings.json
+                            sed -i "s|\\\\\"EmailSettings\\\\\":.*|\\\\\"EmailSettings\\\\\": {\\\\\"SmtpServer\\\\\": \\\\\\"smtp.gmail.com\\\\\", \\\\\\"SmtpPort\\\\\": 587, \\\\\\"SmtpUsername\\\\\": \\\\\\"${SMTP_USERNAME}\\\\\", \\\\\\"SmtpPassword\\\\\": \\\\\\"${SMTP_PASSWORD}\\\\\", \\\\\\"FromEmail\\\\\": \\\\\\"${SMTP_USERNAME}\\\\\"},|" \${publishDir}/appsettings.json
+                            """
+                            
+                            // Write the script content to the remote server
+                            writeFile(file: remoteScript, text: scriptContent)
+        
+                            // Upload files to the remote server
+                            sh """
+                                scp -i ${SSH_KEY_FILE} -o StrictHostKeyChecking=no -r ${PUBLISH_OUTPUT}/* ${REMOTE_HOST}:${PUBLISH_DIR_PATH}
+                            """
+        
+                            // Upload the deployment script to the remote server
+                            sh """
+                                scp -i ${SSH_KEY_FILE} -o StrictHostKeyChecking=no ${remoteScript} ${REMOTE_HOST}:${remoteScript}
+                            """
+        
+                            // Execute the remote script and remove it afterward
+                            sh """
+                                ssh -i ${SSH_KEY_FILE} -o StrictHostKeyChecking=no ${REMOTE_HOST} "bash ${remoteScript} && rm ${remoteScript}"
+                            """
+        
+                            // Run the application using screen on the remote host
+                            sh """
+                                ssh -i ${SSH_KEY_FILE} -o StrictHostKeyChecking=no ${REMOTE_HOST} "screen -dmS rise_server dotnet /var/lib/jenkins/artifacts/Rise.Server.dll --urls 'http://0.0.0.0:5000;https://0.0.0.0:5001'"
+                            """
                         }
                     }
                 }
             }
+        }
     }
 
     post {
