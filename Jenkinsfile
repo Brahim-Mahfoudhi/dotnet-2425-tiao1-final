@@ -169,7 +169,7 @@ pipeline {
                                 export BLAZORCLIENTSECRET="${BLAZORCLIENTSECRET}"
                                 export SQL_CONNECTION_STRING="${SQL_CONNECTION_STRING}"
                 
-                                sed -i "s|\\\"ConnectionStrings\\\": {[[:space:]]*}|\\\"ConnectionStrings\\\": {\\\"SqlServer\\\": \\\"Server=\${SQL_CONNECTION_STRING};TrustServerCertificate=True;\\\"}|g" \${publishDir}/appsettings.json
+                                sed -i "s|\\\"ConnectionStrings\\\": {[[:space:]]*}|\\\"ConnectionStrings\\\": {\\\"SqlServer\\\": \\\"Server=\${SQL_CONNECTION_STRING};TrustServerCertificate=True;\\\"}|g" ${publishDir}/appsettings.json
                                 sed -i "s|\\\\"Auth0\\": {}|\\\\"Auth0\\": {\\\\"Authority\\": \\\\"https://dev-6yunsksn11owe71c.us.auth0.com/\\\\", \\\\"Audience\\": \\\\"https://api.rise.buut.com/\\\\", \\\\"M2MClientId\\": \\\\"\${M2MCLIENTID}\\", \\\\"M2MClientSecret\\": \\\\"\${M2MCLIENTSECRET}\\", \\\\"BlazorClientId\\": \\\\"\${BLAZORCLIENTID}\\", \\\\"BlazorClientSecret\\": \\\\"\${BLAZORCLIENTSECRET}\\\\"}|g" ${publishDir}/appsettings.json
                                 sed -i "s|\\\\"Logging\\": {}|\\\\"Logging\\": {\\\\"LogLevel\\": {\\\\"Default\\": \\\\"Information\\\\", \\\\"Microsoft.AspNetCore\\": \\\\"Warning\\\\"}}|g" ${publishDir}/appsettings.json
                                 ' > ${remoteScript}
