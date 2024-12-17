@@ -174,11 +174,10 @@ pipeline {
                                     export SMTP_PASSWORD="${SMTP_PASSWORD}"
     
             
-                                    # Update appsettings.json
-                                    sed -i "s|\\\\\"ConnectionStrings\\\\\":.*|\\\\\"ConnectionStrings\\\\\": {\\\\\"Sqlserver\\\\\": \\\\\\"${SQL_CONNECTION_STRING}\\\\\"},|" \${PUBLISH_DIR}/appsettings.json
-                                    sed -i "s|\\\\\"Auth0\\\\\":.*|\\\\\"Auth0\\\\\": {\\\\\"Authority\\\\\": \\\\\\"${AUTHORITY}\\\\\", \\\\\\"Audience\\\\\": \\\\\\"${AUDIENCE}\\\\\", \\\\\\"M2MClientId\\\\\": \\\\\\"${M2MCLIENTID}\\\\\", \\\\\\"M2MClientSecret\\\\\": \\\\\\"${M2MCLIENTSECRET}\\\\\", \\\\\\"BlazorClientId\\\\\": \\\\\\"${BLAZORCLIENTID}\\\\\", \\\\\\"BlazorClientSecret\\\\\": \\\\\\"${BLAZORCLIENTSECRET}\\\\\"},|" \${PUBLISH_DIR}/appsettings.json
-                                    sed -i "s|\\\\\"EmailSettings\\\\\":.*|\\\\\"EmailSettings\\\\\": {\\\\\"SmtpServer\\\\\": \\\\\\"smtp.gmail.com\\\\\", \\\\\\"SmtpPort\\\\\": 587, \\\\\\"SmtpUsername\\\\\": \\\\\\"${SMTP_USERNAME}\\\\\", \\\\\\"SmtpPassword\\\\\": \\\\\\"${SMTP_PASSWORD}\\\\\", \\\\\\"FromEmail\\\\\": \\\\\\"${SMTP_USERNAME}\\\\\"},|" \${PUBLISH_DIR}/appsettings.json
-
+                                    sed -i "s|\\\\"ConnectionStrings\\": {}|\\\\"ConnectionStrings\\": {\\\\"SqlServer\\": \\\\"Server=\${SQL_CONNECTION_STRING};TrustServerCertificate=True;\\\\"}|g" ${publishDir}/appsettings.json
+                                    sed -i "s|\\\\"ConnectionStrings\\": {}|\\\\"ConnectionStrings\\": {\\\\"SqlServer\\": \\\\"Server=\${SQL_CONNECTION_STRING};TrustServerCertificate=True;\\\\"}|g" ${publishDir}/appsettings.Development.json
+                                    sed -i "s|\\\\"Auth0\\": {}|\\\\"Auth0\\": {\\\\"Authority\\": \\\\"https://dev-6yunsksn11owe71c.us.auth0.com/\\\\", \\\\"Audience\\": \\\\"https://api.rise.buut.com/\\\\", \\\\"M2MClientId\\": \\\\"\${M2MCLIENTID}\\", \\\\"M2MClientSecret\\": \\\\"\${M2MCLIENTSECRET}\\", \\\\"BlazorClientId\\": \\\\"\${BLAZORCLIENTID}\\", \\\\"BlazorClientSecret\\": \\\\"\${BLAZORCLIENTSECRET}\\\\"}|g" ${publishDir}/appsettings.json
+                                    sed -i "s|\\\\"Logging\\": {}|\\\\"Logging\\": {\\\\"LogLevel\\": {\\\\"Default\\": \\\\"Information\\\\", \\\\"Microsoft.AspNetCore\\": \\\\"Warning\\\\"}}|g" ${publishDir}/appsettings.json
                                     ' > ${remoteScript}
                                    """  
             
